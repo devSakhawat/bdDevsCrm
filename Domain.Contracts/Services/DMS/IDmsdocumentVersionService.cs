@@ -1,5 +1,5 @@
 ﻿// IDmsDocumentVersionService.cs
-using bdDevCRM.Shared.DataTransferObjects.DMS;
+using bdDevs.Shared.DataTransferObjects.DMS;
 using Application.Shared.Grid;
 
 namespace Domain.Contracts.Services.DMS;
@@ -20,10 +20,10 @@ public interface IDmsDocumentVersionService
 
 
 
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
+//using bdDevs.Shared.DataTransferObjects.DMS;
 //using Application.Shared.Grid;
 
-//namespace bdDevCRM.ServiceContract.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 //public interface IDmsDocumentVersionService
 //{

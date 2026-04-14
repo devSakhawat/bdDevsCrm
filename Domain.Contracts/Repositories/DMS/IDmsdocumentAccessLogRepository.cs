@@ -55,7 +55,7 @@ public interface IDmsDocumentAccessLogRepository : IRepositoryBase<DmsDocumentAc
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.RepositoriesContracts.DMS;
+//namespace Domain.Contracts.DMS;
 
 //public interface IDmsDocumentAccessLogRepository : IRepositoryBase<DmsDocumentAccessLog>
 //{

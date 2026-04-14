@@ -113,7 +113,7 @@ public interface ICrmPresentAddressService
 //using bdDevs.Shared.DataTransferObjects.CRM;
 //using Application.Shared.Grid;
 
-//namespace bdDevCRM.ServiceContract.CRM;
+//namespace Domain.Contracts.Services.CRM;
 
 //public interface ICrmPresentAddressService
 //{

@@ -52,7 +52,7 @@ public interface ICrmMonthRepository : IRepositoryBase<CrmMonth>
 
 //using Domain.Entities.Entities.CRM;
 
-//namespace bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//namespace Domain.Contracts.Core.SystemAdmin;
 
 //public interface ICrmMonthRepository : IRepositoryBase<CrmMonth>
 //{

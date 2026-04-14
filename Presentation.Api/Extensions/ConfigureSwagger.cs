@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
-namespace bdDevsCrm.Api.Extensions;
+namespace Presentation.Api.Extensions;
 
 public static class ConfigureSwagger
 {

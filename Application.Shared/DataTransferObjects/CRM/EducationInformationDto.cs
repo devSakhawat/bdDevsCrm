@@ -1,4 +1,4 @@
-namespace bdDevCRM.Shared.DataTransferObjects.CRM;
+namespace bdDevs.Shared.DataTransferObjects.CRM;
 
 /// <summary>
 /// Education And English Language Form Section DTOs

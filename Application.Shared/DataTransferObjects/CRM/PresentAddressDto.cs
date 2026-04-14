@@ -1,6 +1,6 @@
 using System;
 
-namespace bdDevCRM.Shared.DataTransferObjects.CRM;
+namespace bdDevs.Shared.DataTransferObjects.CRM;
 
 public class PresentAddressDto
 {

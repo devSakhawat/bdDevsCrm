@@ -1,4 +1,4 @@
-﻿using Application.Shared.DataTransferObjects.Authentication;
+﻿using bdDevs.Shared.DataTransferObjects.Authentication;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Domain.Entities.Entities.Token;
 

@@ -1,15 +1,15 @@
 // CrmYearService.cs
-using bdDevCRM.Entities.Entities.CRM;
+using Domain.Entities.Entities.CRM;
 using Domain.Entities.Entities.System;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
-using bdDevCRM.ServicesContract.CRM;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Contracts.Services.CRM;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
-using bdDevCRM.Shared.Exceptions;
+using Domain.Exceptions;
 using Domain.Contracts.Repositories;
 using Application.Shared.Grid;
-using bdDevCRM.Utilities.OthersLibrary;
+using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -277,18 +277,18 @@ FROM CrmYear";
 
 
 
-//using bdDevCRM.Entities.Entities.CRM;
+//using Domain.Entities.Entities.CRM;
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.s.CRM;
-//using bdDevCRM.ServicesContract.CRM;
 //using bdDevs.Shared.DataTransferObjects.CRM;
-//using bdDevCRM.Shared.Exceptions;
+//using Domain.Contracts.Services.CRM;
+//using bdDevs.Shared.DataTransferObjects.CRM;
+//using Domain.Exceptions;
 //using Application.Shared.Grid;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Logging;
 
-//namespace bdDevCRM.Services.CRM;
+//namespace Application.Services.CRM;
 
 ///// <summary>
 ///// CrmYear service implementing business logic for CrmYear management.

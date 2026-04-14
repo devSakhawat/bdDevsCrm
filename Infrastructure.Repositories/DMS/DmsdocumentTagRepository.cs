@@ -1,6 +1,6 @@
-﻿using bdDevCRM.Entities.Entities.DMS;
-using bdDevCRM.RepositoriesContracts.DMS;
-using bdDevCRM.Sql.Context;
+﻿using Domain.Entities.Entities.DMS;
+using Domain.Contracts.DMS;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.DMS;
 
@@ -56,16 +56,16 @@ public class DmsDocumentTagRepository : RepositoryBase<DmsDocumentTag>, IDmsDocu
 
 
 
-//using bdDevCRM.Entities.Entities.DMS;
-//using bdDevCRM.RepositoriesContracts.DMS;
-//using bdDevCRM.Sql.Context;
+//using Domain.Entities.Entities.DMS;
+//using Domain.Contracts.DMS;
+//using Infrastructure.Sql.Context;
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.Repositories.DMS;
+//namespace Infrastructure.Repositories.DMS;
 
 //// DmsDocumentTag Repository Implementation
 //public class DmsDocumentTagRepository : RepositoryBase<DmsDocumentTag>, IDmsDocumentTagRepository

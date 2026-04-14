@@ -1,4 +1,4 @@
-//namespace bdDevCRM.Api.Middleware;
+//namespace Presentation.Api.Middleware;
 
 ///// <summary>
 ///// Middleware for adding HTTP caching headers to responses

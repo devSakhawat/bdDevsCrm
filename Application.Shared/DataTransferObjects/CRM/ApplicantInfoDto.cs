@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 
-namespace bdDevCRM.Shared.DataTransferObjects.CRM;
+namespace bdDevs.Shared.DataTransferObjects.CRM;
 
 /// <summary>
 /// Personal Details DTO

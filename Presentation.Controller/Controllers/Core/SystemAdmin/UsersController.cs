@@ -1,10 +1,10 @@
-using bdDevCRM.Presentation.AuthorizeAttributes;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Utilities.Constants;
-using bdDevCRM.Utilities.CRMGrid.GRID;
+using Presentation.AuthorizeAttributes;
+using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
+using bdDevs.Shared.Constants;
+using Application.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Presentation.ActionFIlters;
@@ -158,19 +158,19 @@ public class UsersController : BaseApiController
 }
 
 
-//using bdDevCRM.Presentation.ActionFilters;
-//using bdDevCRM.Presentation.AuthorizeAttributes;
-//using bdDevCRM.Presentation.LinkFactories;
-//using bdDevCRM.ServicesContract;
-//using bdDevCRM.Shared.ApiResponse;
-//using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Shared.Exceptions;
-//using bdDevCRM.Utilities.Constants;
-//using bdDevCRM.Utilities.CRMGrid.GRID;
+//using Presentation.ActionFIlters;
+//using Presentation.AuthorizeAttributes;
+//using Presentation.LinkFactories;
+//using Domain.Contracts.Services;
+//using bdDevs.Shared;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+//using Domain.Exceptions;
+//using bdDevs.Shared.Constants;
+//using Application.Shared.Grid;
 //using Microsoft.AspNetCore.Mvc;
 //using Microsoft.Extensions.Caching.Memory;
 
-//namespace bdDevCRM.Presentation.Controllers.Core.SystemAdmin;
+//namespace Presentation.Controllers.Core.SystemAdmin;
 
 ///// <summary>
 ///// User management endpoints.

@@ -1,4 +1,4 @@
-namespace bdDevCRM.Shared.DataTransferObjects.CRM;
+namespace bdDevs.Shared.DataTransferObjects.CRM;
 
 /// <summary>
 /// Applicant Address DTO

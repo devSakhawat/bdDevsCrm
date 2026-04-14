@@ -1,11 +1,12 @@
+using Domain.Contracts.Repositories;
 ﻿// DmsDocumentService.cs
-using bdDevCRM.Entities.Entities.DMS;
+using Domain.Entities.Entities.DMS;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.ServicesContract.DMS;
-using bdDevCRM.Shared.DataTransferObjects.DMS;
-using bdDevCRM.Shared.Exceptions;
+using Domain.Contracts.Services.DMS;
+using bdDevs.Shared.DataTransferObjects.DMS;
+using Domain.Exceptions;
 using Application.Shared.Grid;
-using bdDevCRM.Utilities.OthersLibrary;
+using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -201,22 +202,22 @@ internal sealed class DmsDocumentService : IDmsDocumentService
 }
 
 
-//using bdDevCRM.Entities.Entities.DMS;
+//using Domain.Entities.Entities.DMS;
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.ServiceContract.DMS;
+//using Domain.Contracts.Services.DMS;
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
-//using bdDevCRM.Shared.Exceptions;
+//using bdDevs.Shared.DataTransferObjects.DMS;
+//using Domain.Exceptions;
 //using Domain.Contracts.Repositories;
 //using Application.Shared.Grid;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Logging;
 //using Newtonsoft.Json;
 //using System.Net.NetworkInformation;
 
-//namespace bdDevCRM.Service.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 
 //internal sealed class DmsDocumentService : IDmsDocumentService

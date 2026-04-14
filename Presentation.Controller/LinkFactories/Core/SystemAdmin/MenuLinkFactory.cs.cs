@@ -1,6 +1,6 @@
-﻿using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Utilities.Constants;
+﻿using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.Constants;
 using Microsoft.AspNetCore.Http;
 using Presentation.LinkFactories;
 

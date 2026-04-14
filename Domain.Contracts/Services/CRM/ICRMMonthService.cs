@@ -103,7 +103,7 @@ public interface ICrmMonthService
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 //using bdDevs.Shared.DataTransferObjects.CRM;
 
-//namespace bdDevCRM.ServiceContract.CRM;
+//namespace Domain.Contracts.Services.CRM;
 
 //public interface ICrmMonthService
 //{

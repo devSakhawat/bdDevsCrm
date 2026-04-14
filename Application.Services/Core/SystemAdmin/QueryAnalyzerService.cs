@@ -1,10 +1,11 @@
+using Domain.Contracts.Repositories;
 ﻿using Domain.Entities.Entities.System;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Application.Services.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Utilities.OthersLibrary;
+using Domain.Exceptions;
+using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -130,7 +131,7 @@ internal sealed class QueryAnalyzerService : IQueryAnalyzerService
 
 
 
-//namespace bdDevCRM.Services.Core.SystemAdmin;
+//namespace Application.Services.Core.SystemAdmin;
 
 
 //internal sealed class QueryAnalyzerService : IQueryAnalyzerService

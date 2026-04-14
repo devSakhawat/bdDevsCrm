@@ -84,7 +84,7 @@ public interface ICrmInstituteTypeService
 //using bdDevs.Shared.DataTransferObjects.CRM;
 //using Application.Shared.Grid;
 
-//namespace bdDevCRM.ServiceContract.CRM;
+//namespace Domain.Contracts.Services.CRM;
 
 //public interface ICrmInstituteTypeService
 //{

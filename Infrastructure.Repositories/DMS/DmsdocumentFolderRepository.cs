@@ -1,6 +1,6 @@
-﻿using bdDevCRM.Entities.Entities.DMS;
-using bdDevCRM.RepositoriesContracts.DMS;
-using bdDevCRM.Sql.Context;
+﻿using Domain.Entities.Entities.DMS;
+using Domain.Contracts.DMS;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.DMS;
 
@@ -60,11 +60,11 @@ public class DmsDocumentFolderRepository : RepositoryBase<DmsDocumentFolder>, ID
 }
 
 
-//using bdDevCRM.Entities.Entities.DMS;
-//using bdDevCRM.RepositoriesContracts.DMS;
-//using bdDevCRM.Sql.Context;
+//using Domain.Entities.Entities.DMS;
+//using Domain.Contracts.DMS;
+//using Infrastructure.Sql.Context;
 
-//namespace bdDevCRM.Repositories.DMS;
+//namespace Infrastructure.Repositories.DMS;
 
 //public class DmsDocumentFolderRepository : RepositoryBase<DmsDocumentFolder>, IDmsDocumentFolderRepository
 //{

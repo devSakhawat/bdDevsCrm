@@ -1,13 +1,14 @@
+using Domain.Contracts.Repositories;
 // CrmApplicationService.cs (Part 1 of 2 - Core Methods)
-using bdDevCRM.Entities.Entities.CRM;
+using Domain.Entities.Entities.CRM;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.s.CRM;
-using bdDevCRM.ServicesContract.CRM;
+using bdDevs.Shared.DataTransferObjects.CRM;
+using Domain.Contracts.Services.CRM;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
-using bdDevCRM.Shared.Exceptions;
+using Domain.Exceptions;
 using Application.Shared.Grid;
-using bdDevCRM.Utilities.OthersLibrary;
+using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -306,22 +307,22 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 
 
 //// CrmApplicationService.cs
-//using bdDevCRM.Entities.Entities.CRM;
+//using Domain.Entities.Entities.CRM;
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.s.CRM;
-//using bdDevCRM.ServicesContract.CRM;
+//using bdDevs.Shared.DataTransferObjects.CRM;
+//using Domain.Contracts.Services.CRM;
 //using bdDevs.Shared.DataTransferObjects.CRM;
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Shared.Exceptions;
-//using bdDevCRM.Shared.Exceptions.BaseException;
+//using Domain.Exceptions;
+//using Domain.Exceptions;
 //using Application.Shared.Grid;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.Data.SqlClient;
 //using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Logging;
 
-//namespace bdDevCRM.Services.CRM;
+//namespace Application.Services.CRM;
 
 ///// <summary>
 ///// CRM Application service implementing business logic for application management.
@@ -619,18 +620,18 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 //}
 
 
-////using bdDevCRM.Entities.Entities.CRM;
+////using Domain.Entities.Entities.CRM;
 ////using Domain.Contracts.Services.Core.SystemAdmin;
-////using bdDevCRM.s.CRM;
-////using bdDevCRM.ServicesContract.CRM;
 ////using bdDevs.Shared.DataTransferObjects.CRM;
-////using bdDevCRM.Shared.Exceptions;
+////using Domain.Contracts.Services.CRM;
+////using bdDevs.Shared.DataTransferObjects.CRM;
+////using Domain.Exceptions;
 ////using Application.Shared.Grid;
-////using bdDevCRM.Utilities.OthersLibrary;
+////using Application.Services.Mappings;
 ////using Microsoft.Extensions.Configuration;
 ////using Microsoft.Extensions.Logging;
 
-////namespace bdDevCRM.Services.CRM;
+////namespace Application.Services.CRM;
 
 /////// <summary>
 /////// CrmApplication service implementing business logic for CrmApplication management.

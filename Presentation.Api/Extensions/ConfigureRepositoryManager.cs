@@ -4,7 +4,7 @@ using Infrastructure.Sql.Context;
 using Infrastructure.Sql.Context.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
-namespace bdDevsCrm.Api.Extensions;
+namespace Presentation.Api.Extensions;
 
 public static class ConfigureRepositoryManager
 {

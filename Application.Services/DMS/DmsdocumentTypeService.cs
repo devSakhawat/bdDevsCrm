@@ -1,11 +1,12 @@
+using Domain.Contracts.Repositories;
 ﻿// DmsDocumentTypeService.cs
-using bdDevCRM.Entities.Entities.DMS;
+using Domain.Entities.Entities.DMS;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.ServicesContract.DMS;
-using bdDevCRM.Shared.DataTransferObjects.DMS;
-using bdDevCRM.Shared.Exceptions;
+using Domain.Contracts.Services.DMS;
+using bdDevs.Shared.DataTransferObjects.DMS;
+using Domain.Exceptions;
 using Application.Shared.Grid;
-using bdDevCRM.Utilities.OthersLibrary;
+using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -181,14 +182,14 @@ internal sealed class DmsDocumentTypeService : IDmsDocumentTypeService
 }
 
 
-//using bdDevCRM.Entities.Entities.DMS;
+//using Domain.Entities.Entities.DMS;
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.ServiceContract.DMS;
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
-//using bdDevCRM.Shared.Exceptions;
+//using Domain.Contracts.Services.DMS;
+//using bdDevs.Shared.DataTransferObjects.DMS;
+//using Domain.Exceptions;
 //using Domain.Contracts.Repositories;
 //using Application.Shared.Grid;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Logging;
 //using System;
@@ -197,7 +198,7 @@ internal sealed class DmsDocumentTypeService : IDmsDocumentTypeService
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.Service.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 //internal sealed class DmsDocumentTypeService : IDmsDocumentTypeService
 //{

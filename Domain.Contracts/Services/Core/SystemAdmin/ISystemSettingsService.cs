@@ -48,11 +48,11 @@ public interface ISystemSettingsService
 }
 
 
-//using bdDevCRM.Entities.Entities;
+//using Domain.Entities.Entities;
 //using Domain.Entities.Entities.System;
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 
-//namespace bdDevCRM.ServiceContract.Core.SystemAdmin;
+//namespace Domain.Contracts.Services.Core.SystemAdmin;
 
 //public interface ISystemSettingsService
 //{

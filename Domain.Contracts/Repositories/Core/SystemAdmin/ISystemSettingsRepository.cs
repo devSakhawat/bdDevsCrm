@@ -18,7 +18,7 @@ namespace Domain.Contracts.Core.SystemAdmin
 
 //using Domain.Entities.Entities.System;
 
-//namespace bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//namespace Domain.Contracts.Core.SystemAdmin;
 
 //public interface ISystemSettingsRepository : IRepositoryBase<SystemSettings>
 //{

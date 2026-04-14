@@ -1,6 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 
-namespace bdDevCRM.Shared.Exceptions;
+namespace Domain.Exceptions;
 
 public sealed class JWTSecurityException : SecurityTokenValidationException
 {

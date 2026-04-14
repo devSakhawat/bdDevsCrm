@@ -6,8 +6,8 @@ public class GridOptions
   public int take { get; set; }
   public int page { get; set; }
   public int pageSize { get; set; }
-  public List<GridFilter.GridSort> sort { get; set; }
-  public GridFilter.GridFilters filter { get; set; }
+  public List<GridFilterModels.GridSort> sort { get; set; }
+  public GridFilterModels.GridFilters filter { get; set; }
 }
 
 public class AutoCompOptions
@@ -16,7 +16,7 @@ public class AutoCompOptions
   public int take { get; set; }
   public int page { get; set; }
   public int pageSize { get; set; }
-  public GridFilter.AutoCompFilters filter { get; set; }
+  public GridFilterModels.AutoCompFilters filter { get; set; }
 }
 
 public class MultiSelectOptions
@@ -25,7 +25,7 @@ public class MultiSelectOptions
   public int take { get; set; }
   public int page { get; set; }
   public int pageSize { get; set; }
-  public GridFilter.AutoCompFilters filter { get; set; }
+  public GridFilterModels.AutoCompFilters filter { get; set; }
 }
 
 public class GridColumns

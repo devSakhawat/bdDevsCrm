@@ -1,10 +1,10 @@
-﻿using bdDevCRM.Presentation.AuthorizeAttributes;
-using bdDevCRM.Presentation.Extensions;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Utilities.Constants;
-using bdDevCRM.Utilities.CRMGrid.GRID;
+﻿using Presentation.AuthorizeAttributes;
+using Presentation.Extensions;
+using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.Constants;
+using Application.Shared.Grid;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -180,14 +180,14 @@ public abstract class BaseApiController : ControllerBase
 
   
 
-//using bdDevCRM.Presentation.AuthorizeAttributes;
-//using bdDevCRM.Presentation.Extensions;
-//using bdDevCRM.Presentation.LinkFactories;
-//using bdDevCRM.ServicesContract;
-//using bdDevCRM.Shared.ApiResponse;
-//using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Utilities.Constants; // Add this using directive if IServiceManager depends on IMemoryCache directly
-//using bdDevCRM.Utilities.CRMGrid.GRID;
+//using Presentation.AuthorizeAttributes;
+//using Presentation.Extensions;
+//using Presentation.LinkFactories;
+//using Domain.Contracts.Services;
+//using bdDevs.Shared;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+//using bdDevs.Shared.Constants; // Add this using directive if IServiceManager depends on IMemoryCache directly
+//using Application.Shared.Grid;
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 //using Microsoft.AspNetCore.Authorization;
 //using Microsoft.AspNetCore.Cors;

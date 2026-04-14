@@ -100,11 +100,11 @@ public interface ICrmYearService
 
 
 //using Application.Shared.Grid;
-//using bdDevCRM.Shared.DataTransferObjects;
+//using bdDevs.Shared.DataTransferObjects;
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 //using bdDevs.Shared.DataTransferObjects.CRM;
 
-//namespace bdDevCRM.ServicesContract.CRM;
+//namespace Domain.Contracts.Services.CRM;
 
 //public interface ICrmYearService
 //{

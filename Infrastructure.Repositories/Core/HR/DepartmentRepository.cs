@@ -1,9 +1,9 @@
-﻿using bdDevCRM.Entities.Entities;
+﻿using Domain.Entities.Entities;
 using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.HR;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.s;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.HR;
+using Domain.Contracts.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.HR;
 

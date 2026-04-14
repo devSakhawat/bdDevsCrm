@@ -1,7 +1,7 @@
-﻿using bdDevsCrm.Api.Middleware;
+﻿using Presentation.Api.Middleware;
 using Presentation.Api.Middleware;
 
-namespace bdDevsCrm.Api.Extensions;
+namespace Presentation.Api.Extensions;
 
 public static class MiddlewareExtensions
 {

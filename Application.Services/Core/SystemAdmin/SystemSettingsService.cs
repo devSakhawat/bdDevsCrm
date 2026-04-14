@@ -1,4 +1,4 @@
-﻿using bdDevCRM.Utilities.OthersLibrary;
+﻿using Application.Services.Mappings;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services.Core.SystemAdmin;
@@ -163,13 +163,13 @@ internal sealed class SystemSettingsService : ISystemSettingsService
 //using Domain.Entities.Entities.System;
 
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.ServiceContract.Core.SystemAdmin;
+//using Domain.Contracts.Services.Core.SystemAdmin;
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Logging;
 
-//namespace bdDevCRM.Service.Core.SystemAdmin;
+//namespace Domain.Contracts.Services.Core.SystemAdmin;
 
 //internal sealed class SystemSettingsService : ISystemSettingsService
 //{

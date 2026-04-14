@@ -1,5 +1,5 @@
 ﻿// IDmsDocumentService.cs
-using bdDevCRM.Shared.DataTransferObjects.DMS;
+using bdDevs.Shared.DataTransferObjects.DMS;
 using Application.Shared.Grid;
 using Microsoft.AspNetCore.Http;
 
@@ -21,11 +21,11 @@ public interface IDmsDocumentService
 }
 
 
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
+//using bdDevs.Shared.DataTransferObjects.DMS;
 //using Application.Shared.Grid;
 //using Microsoft.AspNetCore.Http;
 
-//namespace bdDevCRM.ServiceContract.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 //public interface IDmsDocumentService
 //{

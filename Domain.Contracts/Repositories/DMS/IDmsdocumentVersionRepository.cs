@@ -51,7 +51,7 @@ public interface IDmsDocumentVersionRepository : IRepositoryBase<DmsDocumentVers
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.RepositoriesContracts.DMS;
+//namespace Domain.Contracts.DMS;
 
 //public interface IDmsDocumentVersionRepository : IRepositoryBase<DmsDocumentVersion>
 //{

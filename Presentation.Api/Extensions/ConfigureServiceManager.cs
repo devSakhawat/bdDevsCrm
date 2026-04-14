@@ -5,7 +5,7 @@ using bdDevsCrm.Shared.Settings;
 using Domain.Contracts.Services;
 using Domain.Contracts.Services.Core.Infrastructure;
 
-namespace bdDevsCrm.Api.Extensions;
+namespace Presentation.Api.Extensions;
 
 public static class ConfigureServiceManager
 {

@@ -3,14 +3,14 @@
 
 //using Application.Shared.Grid;
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.Entities.Entities.DMS;
+//using Domain.Entities.Entities.DMS;
 //
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.ServiceContract.DMS;
+//using Domain.Contracts.Services.DMS;
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
+//using bdDevs.Shared.DataTransferObjects.DMS;
 //using Domain.Contracts.Repositories;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.Extensions.Configuration;
 //using System;
@@ -20,7 +20,7 @@
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.Service.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 //internal sealed class DmsDocumentService2 : IDmsDocumentService2
 //{
@@ -358,13 +358,13 @@
 
 
 //using Application.Shared.Grid;
-//using bdDevCRM.Entities.Entities.DMS;
+//using Domain.Entities.Entities.DMS;
 //
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.ServiceContract.DMS;
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
+//using Domain.Contracts.Services.DMS;
+//using bdDevs.Shared.DataTransferObjects.DMS;
 //using Domain.Contracts.Repositories;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.Extensions.Configuration;
 //using System;
 //using System.Collections.Generic;
@@ -372,7 +372,7 @@
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.Service.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 //internal sealed class DmsDocumentService2 : IDmsDocumentService2
 //{

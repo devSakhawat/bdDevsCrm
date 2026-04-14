@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.HR;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.HR;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.HR;
 

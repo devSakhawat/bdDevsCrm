@@ -77,7 +77,7 @@ public class GridDataBuilder<T>
     return sql;
   }
 
-  public static string FilterCondition(GridFilter.GridFilters filter)
+  public static string FilterCondition(GridFilterModels.GridFilters filter)
   {
     string whereClause = "";
 

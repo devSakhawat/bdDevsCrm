@@ -1,8 +1,8 @@
 ﻿// Class: MenuRepository
 using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin
 {
@@ -131,12 +131,12 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 }
 
 
-//using bdDevCRM.Entities.Entities;
+//using Domain.Entities.Entities;
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.s.Core;
-//using bdDevCRM.s.Core.SystemAdmin;
+//using bdDevs.Shared.DataTransferObjects.Core;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 
-//namespace bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//namespace Domain.Contracts.Core.SystemAdmin;
 
 //public interface IMenuRepository : IRepositoryBase<Menu>
 //{

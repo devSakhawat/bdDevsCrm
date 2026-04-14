@@ -58,10 +58,10 @@ namespace Domain.Contracts.Core.SystemAdmin
 
 
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.s.Core.HR;
+//using bdDevs.Shared.DataTransferObjects.Core.HR;
 //using Domain.Contracts.Repositories;
 
-//namespace bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//namespace Domain.Contracts.Core.SystemAdmin;
 
 //public interface IUsersRepository : IRepositoryBase<Users>
 //{

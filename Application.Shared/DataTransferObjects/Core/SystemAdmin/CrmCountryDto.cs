@@ -1,4 +1,4 @@
-﻿namespace bdDevCRM.Shared.DataTransferObjects;
+﻿namespace bdDevs.Shared.DataTransferObjects;
 
 public class CrmCountryDto
 {

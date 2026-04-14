@@ -1,7 +1,7 @@
 ﻿namespace Application.Shared.Grid;
 
 
-public class GridFilter
+public class GridFilterContainer
 {
   public class GridFilter
   {
@@ -63,7 +63,7 @@ public class GridFilter
     public string value { get; set; }
   }
 
-  public class OrderForPaggging
+  public class OrderForPaging
   {
     public string OrderByField { get; set; }
 

@@ -56,7 +56,7 @@ public interface ICRMYearRepository : IRepositoryBase<CrmYear>
 
 //using Domain.Entities.Entities.CRM;
 
-//namespace bdDevCRM.RepositoriesContracts.CRM;
+//namespace Domain.Contracts.CRM;
 
 //public interface ICrmYearRepository : IRepositoryBase<CrmYear>
 //{

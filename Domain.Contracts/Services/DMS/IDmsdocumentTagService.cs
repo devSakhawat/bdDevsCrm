@@ -1,5 +1,5 @@
 ﻿// IDmsDocumentTagService.cs
-using bdDevCRM.Shared.DataTransferObjects.DMS;
+using bdDevs.Shared.DataTransferObjects.DMS;
 using Application.Shared.Grid;
 
 namespace Domain.Contracts.Services.DMS;
@@ -21,9 +21,9 @@ public interface IDmsDocumentTagService
 
 
 //using Application.Shared.Grid;
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
+//using bdDevs.Shared.DataTransferObjects.DMS;
 
-//namespace bdDevCRM.ServiceContract.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 
 //public interface IDmsDocumentTagService

@@ -51,7 +51,7 @@ public interface IStatusRepository : IRepositoryBase<WfState>
 //using Domain.Entities.Entities.System;
 //using Domain.Contracts.Repositories;
 
-//namespace bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//namespace Domain.Contracts.Core.SystemAdmin;
 
 //  public interface IStatusRepository : IRepositoryBase<WfState>
 //  {

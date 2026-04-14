@@ -1,13 +1,13 @@
 // CrmTOEFLInformationService.cs
-using bdDevCRM.Entities.Entities.CRM;
+using Domain.Entities.Entities.CRM;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.ServicesContract.CRM;
+using Domain.Contracts.Services.CRM;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
+using Domain.Exceptions;
 using Domain.Contracts.Repositories;
 using Application.Shared.Grid;
-using bdDevCRM.Utilities.OthersLibrary;
+using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -276,18 +276,18 @@ internal sealed class CrmTOEFLInformationService : ICrmTOEFLInformationService
 	}
 }
 
-//using bdDevCRM.Entities.Entities.CRM;
+//using Domain.Entities.Entities.CRM;
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.s.CRM;
-//using bdDevCRM.ServicesContract.CRM;
 //using bdDevs.Shared.DataTransferObjects.CRM;
-//using bdDevCRM.Shared.Exceptions;
+//using Domain.Contracts.Services.CRM;
+//using bdDevs.Shared.DataTransferObjects.CRM;
+//using Domain.Exceptions;
 //using Application.Shared.Grid;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Logging;
 
-//namespace bdDevCRM.Services.CRM;
+//namespace Application.Services.CRM;
 
 ///// <summary>
 ///// CrmToeflInformation service implementing business logic for CrmToeflInformation management.

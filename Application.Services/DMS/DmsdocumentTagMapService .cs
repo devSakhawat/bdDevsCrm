@@ -1,8 +1,8 @@
 ﻿using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.ServiceContract.DMS;
+using Domain.Contracts.Services.DMS;
 using Domain.Contracts.Repositories;
 using Application.Shared.Grid;
-using bdDevCRM.Utilities.OthersLibrary;
+using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;

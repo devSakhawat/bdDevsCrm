@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace bdDevsCrm.Api.Middleware.Shared;
+namespace Presentation.Api.Middleware.Shared;
 
 public static class RequestBodyReader
 {
@@ -71,7 +71,7 @@ public static class RequestBodyReader
 
 //using System.Text;
 
-//namespace bdDevCRM.Api.Middleware.Shared;
+//namespace Presentation.Api.Middleware.Shared;
 
 ///// <summary>
 ///// Reads the request body once and caches it in PipelineContext.

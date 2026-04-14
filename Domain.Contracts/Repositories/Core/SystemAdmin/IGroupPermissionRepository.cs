@@ -14,7 +14,7 @@ namespace Domain.Contracts.Core.SystemAdmin
 //using Domain.Entities.Entities.System;
 //using Domain.Contracts.Repositories;
 
-//namespace bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//namespace Domain.Contracts.Core.SystemAdmin;
 
 //public interface IGroupPermissionRepository : IRepositoryBase<GroupPermission>
 //{

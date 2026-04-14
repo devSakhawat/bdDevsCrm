@@ -1,8 +1,8 @@
 ﻿using Domain.Entities.Entities.System;
-using bdDevCRM.Sql.Context;
+using Infrastructure.Sql.Context;
 using Presentation.Api.BackgroundServices;
 
-namespace bdDevCRM.Api.BackgroundServices;
+namespace Presentation.Api.BackgroundServices;
 
 /// <summary>
 /// Background service — queue থেকে audit logs নিয়ে batch insert করে।

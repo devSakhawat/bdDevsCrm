@@ -1,4 +1,4 @@
-using bdDevsCrm.Api.Middleware.Shared;
+using Presentation.Api.Middleware.Shared;
 using Domain.Entities.Entities.System;
 using Presentation.Api.BackgroundServices;
 using System.Security.Claims;
@@ -233,10 +233,10 @@ public class EnhancedAuditMiddleware
 //using System.Text;
 //using System.Text.Json;
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.Sql.Context;
+//using Infrastructure.Sql.Context;
 //using Microsoft.AspNetCore.WebUtilities;
 
-//namespace bdDevCRM.Api.Middleware;
+//namespace Presentation.Api.Middleware;
 
 //public class EnhancedAuditMiddleware
 //{

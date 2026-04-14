@@ -1,5 +1,5 @@
 ﻿using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Infrastructure.Sql.Context;
 using Application.Shared.Grid;
 using Domain.Contracts.Repositories;
 using Infrastructure.Sql.Context;

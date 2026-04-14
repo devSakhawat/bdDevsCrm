@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace bdDevCRM.Shared.DataTransferObjects.CRM;
+namespace bdDevs.Shared.DataTransferObjects.CRM;
 
 public class ReferenceDetailsDto
 {

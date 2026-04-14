@@ -1,7 +1,7 @@
 ﻿// Class: SystemSettingsRepository
 using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin
 {
@@ -47,10 +47,10 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 
 
 
-//using bdDevCRM.Entities.Entities;
+//using Domain.Entities.Entities;
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-//using bdDevCRM.Sql.Context;
+//using Domain.Contracts.Core.SystemAdmin;
+//using Infrastructure.Sql.Context;
 //using System;
 //using System.Collections.Generic;
 //using System.Data;
@@ -58,7 +58,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.Repositories.Core.SystemAdmin;
+//namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 //public class SystemSettingsRepository : RepositoryBase<SystemSettings>, ISystemSettingsRepository
 //{

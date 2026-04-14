@@ -46,7 +46,7 @@ public interface ICrmInstituteRepository : IRepositoryBase<CrmInstitute>
 
 //using Domain.Entities.Entities.CRM;
 
-//namespace bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//namespace Domain.Contracts.Core.SystemAdmin;
 
 //public interface ICrmCourseRepository : IRepositoryBase<CrmCourse>
 //{

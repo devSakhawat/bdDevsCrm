@@ -1,6 +1,6 @@
 ﻿using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.Authentication;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.Authentication;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.Authentication;
 

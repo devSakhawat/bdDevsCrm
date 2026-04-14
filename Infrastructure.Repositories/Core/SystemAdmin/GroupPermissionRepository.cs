@@ -2,9 +2,9 @@
 
 // Class: GroupPermissionRepository
 using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin
 {
@@ -48,11 +48,11 @@ WHERE gp.PermissionTableName = 'Access'
 
 
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-//using bdDevCRM.s.Core.SystemAdmin;
-//using bdDevCRM.Sql.Context;
+//using Domain.Contracts.Core.SystemAdmin;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+//using Infrastructure.Sql.Context;
 
-//namespace bdDevCRM.Repositories.Core.SystemAdmin;
+//namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 //public class GroupPermissionRepository : RepositoryBase<GroupPermission>, IGroupPermissionRepository
 //{

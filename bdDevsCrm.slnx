@@ -1,0 +1,32 @@
+<Solution>
+  <Folder Name="/docs/" />
+  <Folder Name="/localPackages/" />
+  <Folder Name="/src/" />
+  <Folder Name="/src/Application/">
+    <Project Path="Application.Services/Application.Services.csproj" />
+  </Folder>
+  <Folder Name="/src/Domain/">
+    <Project Path="Domain.Contracts/Domain.Contracts.csproj" />
+    <Project Path="Domain.Entities/Domain.Entities.csproj" />
+    <Project Path="Domain.Exceptions/Domain.Exceptions.csproj" />
+  </Folder>
+  <Folder Name="/src/Infrastructure/">
+    <Project Path="Infrastructure.Repositories/Infrastructure.Repositories.csproj" />
+    <Project Path="Infrastructure.Security/Infrastructure.Security.csproj" />
+    <Project Path="Infrastructure.Sql/Infrastructure.Sql.csproj" />
+    <Project Path="Infrastructure.Utilities/Infrastructure.Utilities.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/">
+    <Project Path="Presentation.Api/Presentation.Api.csproj" />
+    <Project Path="Presentation.Controller/Presentation.csproj" />
+    <Project Path="Presentation.Logger/Presentation.Logger.csproj" />
+    <Project Path="Presentation.Mvc/Presentation.Mvc.csproj" />
+  </Folder>
+  <Folder Name="/src/SharedKernel/">
+    <Project Path="bdDevs.Shared/bdDevs.Shared.csproj" Id="93b58a80-4d82-4949-800f-7a74521f6ceb" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="bdDevsCrm.IntegrationTests/bdDevsCrm.IntegrationTests.csproj" />
+    <Project Path="bdDevsCrm.UnitTests/bdDevsCrm.UnitTests.csproj" />
+  </Folder>
+</Solution>

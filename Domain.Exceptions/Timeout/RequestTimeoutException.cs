@@ -1,4 +1,4 @@
-﻿namespace Domain.Exceptions.Timeout;
+﻿namespace Domain.Exceptions;
 
 public class RequestTimeoutException : Exception
 {

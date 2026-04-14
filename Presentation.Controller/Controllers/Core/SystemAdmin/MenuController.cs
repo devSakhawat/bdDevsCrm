@@ -42,9 +42,7 @@ public class MenuController : BaseApiController
 		if (model.MenuId <= 0)
 			throw new InvalidCreateOperationException("Failed to create menu record.");
 
-		//return Ok(ApiResponseHelper.Created(model, "Menu created successfully."));
-		//return CreatedResponse(data:model, "Menu created successfully.");
-		return CreatedResponse();
+		return CreatedResponse(model, "Menu created successfully.");
   }
 
 	[HttpPut(RouteConstants.UpdateMenu)]

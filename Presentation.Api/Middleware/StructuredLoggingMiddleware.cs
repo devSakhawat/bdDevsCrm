@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Presentation.Api.Middleware.Shared;
 
 namespace Presentation.Api.Middleware;
 

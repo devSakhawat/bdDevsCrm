@@ -1,6 +1,7 @@
 ﻿using Application.Services;
 using Application.Services.Caching;
 using Application.Services.Core.Infrastructure;
+using Application.Services.Mappings;
 using bdDevsCrm.Shared.Settings;
 using Domain.Contracts.Services;
 using Domain.Contracts.Services.Core.Infrastructure;
@@ -44,6 +45,6 @@ public static class ConfigureServiceManager
       this IServiceCollection services)
   {
     // Mapster global config register
-    MapsterConfig.RegisterMappings();
+    MappingConfig.RegisterMappings();
   }
 }

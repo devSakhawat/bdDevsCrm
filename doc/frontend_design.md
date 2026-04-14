@@ -1,3 +1,1104 @@
-# Frontend Design
+# Frontend Design - bdDevsCrm
 
-This document covers the layout, components, and UI elements used in the frontend of the bdDevsCrm project. It details the framework choices, styling guides, and user experience considerations.
+## 📖 Overview
+
+এই ডকুমেন্টে **bdDevsCrm** প্রজেক্টের frontend architecture, UI/UX design system, এবং layout structure বিস্তারিত বর্ণনা করা হয়েছে।
+
+---
+
+## 🎨 Technology Stack
+
+### Frontend Framework
+- **ASP.NET Core MVC** (.NET 8/10)
+- **Razor Pages** for server-side rendering
+- **jQuery** for DOM manipulation
+- **Kendo UI 2024 Q4** for enterprise UI components
+
+### API Communication
+- **JavaScript Fetch API** (NOT jQuery Ajax)
+- **Promise-based** async/await pattern
+- **Generic API client** for all HTTP requests
+
+### CSS Framework
+- **Bootstrap 5** (optional, for grid system)
+- **Custom CSS** for specific designs
+- **Kendo UI Themes** for consistent styling
+
+---
+
+## 📐 Layout Structure
+
+### Overall Page Layout
+
+```
+┌─────────────────────────────────────────────────────┐
+│              Header (70px - Fixed)                  │
+├──────────┬──────────────────────────────────────────┤
+│          │                                          │
+│ Sidebar  │        Main Content Area                 │
+│ (260px)  │        (Adaptive Width)                  │
+│          │                                          │
+│ Toggle   │                                          │
+│ Button   │                                          │
+│          │                                          │
+│          │                                          │
+├──────────┴──────────────────────────────────────────┤
+│              Footer (20px - Fixed)                  │
+└─────────────────────────────────────────────────────┘
+```
+
+### Layout Dimensions
+
+| Component | Size | Behavior |
+|-----------|------|----------|
+| **Header** | 70px height | Fixed, sticky at top |
+| **Footer** | 20px height | Fixed at bottom |
+| **Sidebar** | 260px width | Collapsible to ~50px (icon only) |
+| **Main Content** | Remaining space | Adaptive, responsive |
+
+---
+
+## 🏗️ Header Design
+
+### Header Structure
+
+```html
+<header class="main-header" style="height: 70px;">
+    <div class="header-container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <img src="/images/logo.png" alt="bdDevsCRM" />
+            <span class="app-title">bdDevsCRM</span>
+        </div>
+
+        <!-- Navigation Items -->
+        <nav class="header-nav">
+            <ul class="nav-items">
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/reports">Reports</a></li>
+            </ul>
+        </nav>
+
+        <!-- User Profile Section -->
+        <div class="user-section">
+            <div class="notifications">
+                <i class="k-icon k-i-bell"></i>
+                <span class="badge">3</span>
+            </div>
+            <div class="user-profile dropdown">
+                <img src="/images/user-avatar.jpg" class="avatar" />
+                <span class="user-name">John Doe</span>
+                <div class="dropdown-menu">
+                    <a href="/profile">Profile</a>
+                    <a href="/settings">Settings</a>
+                    <a href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+```
+
+### Header CSS
+
+```css
+.main-header {
+    height: 70px;
+    background: #2c3e50;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    padding: 0 20px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+```
+
+---
+
+## 📂 Sidebar Design
+
+### Tree Structured Menu (Multi-level: 1 → n)
+
+```html
+<aside class="sidebar" id="sidebar">
+    <!-- Toggle Button -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="k-icon k-i-menu"></i>
+    </button>
+
+    <!-- Menu Tree -->
+    <div class="menu-tree">
+        <ul class="menu-level-1">
+            <!-- Dashboard -->
+            <li class="menu-item">
+                <a href="/dashboard">
+                    <i class="k-icon k-i-home"></i>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+            </li>
+
+            <!-- User Management (with submenu) -->
+            <li class="menu-item has-submenu">
+                <a href="#" class="menu-toggle">
+                    <i class="k-icon k-i-user"></i>
+                    <span class="menu-text">User Management</span>
+                    <i class="k-icon k-i-arrow-chevron-down expand-icon"></i>
+                </a>
+                <ul class="submenu menu-level-2">
+                    <li><a href="/users">Users</a></li>
+                    <li><a href="/roles">Roles</a></li>
+                    <li><a href="/permissions">Permissions</a></li>
+                </ul>
+            </li>
+
+            <!-- Settings (nested submenu) -->
+            <li class="menu-item has-submenu">
+                <a href="#" class="menu-toggle">
+                    <i class="k-icon k-i-gear"></i>
+                    <span class="menu-text">Settings</span>
+                    <i class="k-icon k-i-arrow-chevron-down expand-icon"></i>
+                </a>
+                <ul class="submenu menu-level-2">
+                    <li class="has-submenu">
+                        <a href="#" class="menu-toggle">
+                            <span>System Settings</span>
+                            <i class="k-icon k-i-arrow-chevron-right"></i>
+                        </a>
+                        <ul class="submenu menu-level-3">
+                            <li><a href="/settings/general">General</a></li>
+                            <li><a href="/settings/email">Email</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#" class="menu-toggle">
+                            <span>Security</span>
+                            <i class="k-icon k-i-arrow-chevron-right"></i>
+                        </a>
+                        <ul class="submenu menu-level-3">
+                            <li><a href="/security/password-policy">Password Policy</a></li>
+                            <li><a href="/security/2fa">Two-Factor Auth</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</aside>
+```
+
+### Sidebar States
+
+#### Expanded State (260px)
+
+```css
+.sidebar {
+    width: 260px;
+    background: #34495e;
+    height: calc(100vh - 70px); /* Full height minus header */
+    position: fixed;
+    left: 0;
+    top: 70px;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+}
+
+.sidebar .menu-text {
+    display: inline-block;
+}
+
+.sidebar .submenu {
+    display: none;
+}
+
+.sidebar .menu-item.active > .submenu {
+    display: block;
+}
+```
+
+#### Collapsed State (~50px)
+
+```css
+.sidebar.collapsed {
+    width: 50px;
+}
+
+.sidebar.collapsed .menu-text {
+    display: none;
+}
+
+.sidebar.collapsed .expand-icon {
+    display: none;
+}
+
+.sidebar.collapsed .submenu {
+    display: none;
+}
+
+/* Hover করলে temporary expanded menu দেখাবে */
+.sidebar.collapsed .menu-item:hover .submenu {
+    display: block;
+    position: absolute;
+    left: 50px;
+    background: #34495e;
+    min-width: 200px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+}
+```
+
+### Sidebar Toggle JavaScript
+
+```javascript
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+
+    sidebar.classList.toggle('collapsed');
+
+    if (sidebar.classList.contains('collapsed')) {
+        mainContent.style.marginLeft = '50px';
+    } else {
+        mainContent.style.marginLeft = '260px';
+    }
+}
+
+// Submenu toggle
+document.querySelectorAll('.menu-toggle').forEach(item => {
+    item.addEventListener('click', function(e) {
+        e.preventDefault();
+        const parent = this.parentElement;
+        parent.classList.toggle('active');
+    });
+});
+```
+
+---
+
+## 🧩 Main Content Area
+
+### Responsive Layout
+
+```html
+<main id="mainContent" class="main-content">
+    <div class="content-wrapper">
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb">
+            <a href="/dashboard">Home</a> /
+            <a href="/users">Users</a> /
+            <span>User List</span>
+        </nav>
+
+        <!-- Page Title -->
+        <div class="page-header">
+            <h1>User Management</h1>
+            <div class="page-actions">
+                <button class="k-button k-button-primary">
+                    <i class="k-icon k-i-plus"></i> Add User
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="page-content">
+            @RenderBody()
+        </div>
+    </div>
+</main>
+```
+
+### Main Content CSS
+
+```css
+.main-content {
+    margin-left: 260px; /* Sidebar width */
+    margin-top: 70px;   /* Header height */
+    margin-bottom: 20px; /* Footer height */
+    padding: 20px;
+    transition: margin-left 0.3s ease;
+    min-height: calc(100vh - 90px);
+}
+
+/* Sidebar collapsed হলে */
+.sidebar.collapsed ~ .main-content {
+    margin-left: 50px;
+}
+
+.content-wrapper {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+```
+
+---
+
+## 🧾 Form Design Patterns
+
+### 1️⃣ Inline Form (Grid-based)
+
+**কখন ব্যবহার**: ছোট form (2-5 fields)
+
+```html
+<!-- Kendo Grid with inline editing -->
+<div id="userGrid"></div>
+
+<script>
+$("#userGrid").kendoGrid({
+    dataSource: {
+        transport: {
+            read: async (e) => {
+                const data = await callApi('/api/users');
+                e.success(data);
+            },
+            create: async (e) => {
+                const result = await callApi('/api/users', 'POST', e.data);
+                e.success(result);
+            },
+            update: async (e) => {
+                const result = await callApi(`/api/users/${e.data.userId}`, 'PUT', e.data);
+                e.success(result);
+            },
+            destroy: async (e) => {
+                await callApi(`/api/users/${e.data.userId}`, 'DELETE');
+                e.success();
+            }
+        },
+        schema: {
+            model: {
+                id: "userId",
+                fields: {
+                    userId: { editable: false, nullable: true },
+                    loginId: { validation: { required: true } },
+                    email: { validation: { required: true, email: true } },
+                    status: { type: "boolean" }
+                }
+            }
+        },
+        pageSize: 20
+    },
+    toolbar: ["create"],
+    editable: "inline",
+    columns: [
+        { field: "loginId", title: "Login ID" },
+        { field: "email", title: "Email" },
+        { field: "status", title: "Active", template: "#= status ? 'Yes' : 'No' #" },
+        { command: ["edit", "destroy"], title: "Actions", width: 200 }
+    ],
+    pageable: true,
+    sortable: true,
+    filterable: true
+});
+</script>
+```
+
+### 2️⃣ Modal Form (Popup)
+
+**কখন ব্যবহার**: Medium size form (5-15 fields)
+
+```html
+<!-- Modal trigger button -->
+<button onclick="openUserModal()" class="k-button k-button-primary">
+    Add User
+</button>
+
+<!-- Kendo Window (Modal) -->
+<div id="userModal"></div>
+
+<script>
+function openUserModal(userId = null) {
+    const modal = $("#userModal").kendoWindow({
+        title: userId ? "Edit User" : "Add User",
+        modal: true,
+        width: 600,
+        height: 500,
+        content: {
+            url: userId ? `/users/edit/${userId}` : '/users/create'
+        },
+        close: function() {
+            this.destroy();
+        }
+    }).data("kendoWindow");
+
+    modal.center().open();
+}
+
+// Form submission
+async function saveUser(formData) {
+    try {
+        const method = formData.userId ? 'PUT' : 'POST';
+        const url = formData.userId
+            ? `/api/users/${formData.userId}`
+            : '/api/users';
+
+        const response = await callApi(url, method, formData);
+
+        if (response.success) {
+            showNotification('User saved successfully', 'success');
+            $("#userModal").data("kendoWindow").close();
+            $("#userGrid").data("kendoGrid").dataSource.read();
+        }
+    } catch (error) {
+        showNotification('Failed to save user: ' + error.message, 'error');
+    }
+}
+</script>
+```
+
+### 3️⃣ Complex Tabbed Form (Multi-section)
+
+**কখন ব্যবহার**: বড় form (15+ fields, multiple sections)
+
+```html
+<!-- Employee Form with Tabs -->
+<div id="employeeForm">
+    <ul>
+        <li class="k-active">Personal Information</li>
+        <li>Educational Information</li>
+        <li>Language Skills</li>
+        <li>Financial Information</li>
+        <li>Other Details</li>
+    </ul>
+
+    <!-- Tab 1: Personal Information -->
+    <div>
+        <div class="form-section">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name <span class="required">*</span></label>
+                    <input type="text" name="fullName" class="k-textbox" required />
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth</label>
+                    <input type="date" name="dateOfBirth" class="k-textbox" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select name="gender" class="k-dropdown">
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" name="phone" class="k-textbox" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab 2: Educational Information -->
+    <div>
+        <div class="form-section" data-tab-index="1">
+            <div id="educationGrid"></div>
+            <button onclick="addEducation()" class="k-button">Add Education</button>
+        </div>
+    </div>
+
+    <!-- Tab 3: Language Skills -->
+    <div>
+        <div class="form-section" data-tab-index="2">
+            <!-- Language skills form -->
+        </div>
+    </div>
+
+    <!-- Tab 4: Financial Information -->
+    <div>
+        <div class="form-section" data-tab-index="3">
+            <!-- Financial info form -->
+        </div>
+    </div>
+
+    <!-- Tab 5: Other Details -->
+    <div>
+        <div class="form-section" data-tab-index="4">
+            <!-- Other details form -->
+        </div>
+    </div>
+</div>
+
+<script>
+// Initialize TabStrip
+$("#employeeForm").kendoTabStrip({
+    animation: {
+        open: { effects: "fadeIn", duration: 300 }
+    },
+    activate: function(e) {
+        const tabIndex = $(e.item).index();
+        loadTabData(tabIndex);
+    }
+});
+
+// Lazy loading tab data
+const loadedTabs = new Set();
+
+async function loadTabData(tabIndex) {
+    if (loadedTabs.has(tabIndex)) {
+        return; // Already loaded
+    }
+
+    const employeeId = getEmployeeId();
+
+    try {
+        const data = await callApi(`/api/employees/${employeeId}/tab/${tabIndex}`);
+        populateTabForm(tabIndex, data);
+        loadedTabs.add(tabIndex);
+    } catch (error) {
+        console.error('Error loading tab data:', error);
+    }
+}
+</script>
+```
+
+---
+
+## 💾 Form Data Handling
+
+### Temporary In-Memory Store
+
+```javascript
+// Global form data store
+const formDataStore = new Map();
+
+// Save form data to memory
+function saveFormData(entityId, tabIndex, formData) {
+    const key = `${entityId}_tab_${tabIndex}`;
+    formDataStore.set(key, {
+        data: formData,
+        timestamp: new Date(),
+        isDirty: true
+    });
+}
+
+// Retrieve form data from memory
+function getFormData(entityId, tabIndex) {
+    const key = `${entityId}_tab_${tabIndex}`;
+    return formDataStore.get(key);
+}
+
+// Auto-save interval (every 30 seconds)
+setInterval(() => {
+    formDataStore.forEach((value, key) => {
+        if (value.isDirty) {
+            autoSaveToServer(key, value.data)
+                .then(() => {
+                    value.isDirty = false;
+                    console.log(`Auto-saved: ${key}`);
+                })
+                .catch(err => console.error('Auto-save failed:', err));
+        }
+    });
+}, 30000);
+
+// Submit all tabs data
+async function submitCompleteForm(entityId) {
+    const allTabsData = {};
+
+    // Collect data from all tabs
+    for (let i = 0; i < 5; i++) {
+        const tabData = getFormData(entityId, i);
+        if (tabData) {
+            allTabsData[`tab${i}`] = tabData.data;
+        }
+    }
+
+    try {
+        const response = await callApi(`/api/employees/${entityId}`, 'PUT', allTabsData);
+
+        if (response.success) {
+            showNotification('Employee saved successfully', 'success');
+            formDataStore.clear();
+        }
+    } catch (error) {
+        showNotification('Failed to save: ' + error.message, 'error');
+    }
+}
+```
+
+---
+
+## ✅ Validation Strategy
+
+### Real-time Validation
+
+```javascript
+// Initialize Kendo Validator
+const validator = $("#employeeForm").kendoValidator({
+    rules: {
+        required: function(input) {
+            if (input.is("[required]")) {
+                return $.trim(input.val()) !== "";
+            }
+            return true;
+        },
+        email: function(input) {
+            if (input.is("[type=email]")) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.val());
+            }
+            return true;
+        },
+        minlength: function(input) {
+            const minLength = input.data("min-length");
+            if (minLength) {
+                return input.val().length >= minLength;
+            }
+            return true;
+        }
+    },
+    messages: {
+        required: "This field is required",
+        email: "Please enter a valid email address",
+        minlength: "Minimum {0} characters required"
+    }
+}).data("kendoValidator");
+
+// Validate on blur
+$('input, select, textarea').on('blur', function() {
+    validator.validateInput($(this));
+});
+
+// Validate before submit
+function validateForm() {
+    if (validator.validate()) {
+        return true;
+    } else {
+        showNotification('Please fix validation errors', 'warning');
+        return false;
+    }
+}
+```
+
+### Visual Feedback
+
+```css
+/* Invalid field styling */
+.k-textbox.k-invalid,
+.k-dropdown.k-invalid {
+    border-color: #dc3545;
+    background-color: #fff5f5;
+}
+
+/* Validation error message */
+.k-invalid-msg {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+/* Required field indicator */
+.required {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Valid field styling */
+.k-textbox.k-valid {
+    border-color: #28a745;
+}
+```
+
+---
+
+## 📊 Grid Design System
+
+### Standard Grid Configuration
+
+```javascript
+// Reusable grid configuration
+function createStandardGrid(elementId, options) {
+    $(`#${elementId}`).kendoGrid({
+        dataSource: {
+            transport: {
+                read: async (e) => {
+                    const data = await callApi(options.apiUrl);
+                    e.success(data.data || data);
+                }
+            },
+            pageSize: options.pageSize || 20,
+            schema: {
+                model: {
+                    id: options.idField,
+                    fields: options.fields
+                },
+                data: function(response) {
+                    return response.data || response;
+                },
+                total: function(response) {
+                    return response.total || response.length;
+                }
+            }
+        },
+        columns: options.columns,
+        height: options.height || 600,
+        pageable: {
+            refresh: true,
+            pageSizes: [10, 20, 50, 100],
+            buttonCount: 5
+        },
+        sortable: true,
+        filterable: {
+            mode: "menu"
+        },
+        resizable: true,
+        reorderable: true,
+        columnMenu: true,
+        scrollable: true
+    });
+}
+
+// Usage example
+createStandardGrid('userGrid', {
+    apiUrl: '/api/users',
+    idField: 'userId',
+    fields: {
+        userId: { type: 'number' },
+        loginId: { type: 'string' },
+        email: { type: 'string' },
+        isActive: { type: 'boolean' }
+    },
+    columns: [
+        { field: 'userId', title: 'ID', width: 80 },
+        { field: 'loginId', title: 'Login ID', width: 150 },
+        { field: 'email', title: 'Email', width: 200 },
+        { field: 'isActive', title: 'Active', width: 100, template: '#= isActive ? "Yes" : "No" #' }
+    ],
+    height: 600
+});
+```
+
+### Grid Width & Height Behavior
+
+```css
+/* Grid container */
+.k-grid {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* কম column - auto-fit */
+.k-grid.auto-fit {
+    width: fit-content;
+    max-width: 100%;
+}
+
+/* বেশি column - full width with scroll */
+.k-grid.full-width {
+    width: 100%;
+}
+
+/* Grid content height */
+.k-grid-content {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* Responsive grid */
+@media (max-width: 768px) {
+    .k-grid {
+        font-size: 12px;
+    }
+
+    .k-grid-content {
+        max-height: 400px;
+    }
+}
+```
+
+---
+
+## 🔌 API Client (Generic Fetch)
+
+### Generic API Caller
+
+```javascript
+// Generic API client using Fetch API
+async function callApi(url, method = 'GET', data = null, options = {}) {
+    const token = localStorage.getItem('authToken');
+
+    const config = {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '',
+            ...options.headers
+        }
+    };
+
+    if (data && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+        config.body = JSON.stringify(data);
+    }
+
+    try {
+        const response = await fetch(url, config);
+
+        // Check if response is ok
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || `HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        // Parse JSON response
+        const result = await response.json();
+
+        // Log for debugging
+        console.log(`API Call: ${method} ${url}`, {
+            correlationId: result.correlationId,
+            success: result.success,
+            data: result.data
+        });
+
+        return result;
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+    }
+}
+
+// Helper functions
+async function get(url) {
+    return await callApi(url, 'GET');
+}
+
+async function post(url, data) {
+    return await callApi(url, 'POST', data);
+}
+
+async function put(url, data) {
+    return await callApi(url, 'PUT', data);
+}
+
+async function del(url) {
+    return await callApi(url, 'DELETE');
+}
+```
+
+### Usage Examples
+
+```javascript
+// Get user
+const user = await get('/api/users/123');
+
+// Create user
+const newUser = await post('/api/users', {
+    loginId: 'john.doe',
+    email: 'john@example.com'
+});
+
+// Update user
+const updatedUser = await put('/api/users/123', {
+    email: 'newemail@example.com'
+});
+
+// Delete user
+await del('/api/users/123');
+```
+
+---
+
+## 🎨 UI/UX Best Practices
+
+### Color Scheme
+
+```css
+:root {
+    /* Primary Colors */
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --primary-light: #5dade2;
+
+    /* Secondary Colors */
+    --secondary-color: #2c3e50;
+    --secondary-dark: #1a252f;
+    --secondary-light: #34495e;
+
+    /* Status Colors */
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --info-color: #17a2b8;
+
+    /* Neutral Colors */
+    --background-color: #ecf0f1;
+    --text-color: #2c3e50;
+    --border-color: #bdc3c7;
+}
+```
+
+### Typography
+
+```css
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+h1 { font-size: 28px; font-weight: 600; }
+h2 { font-size: 24px; font-weight: 600; }
+h3 { font-size: 20px; font-weight: 500; }
+h4 { font-size: 18px; font-weight: 500; }
+h5 { font-size: 16px; font-weight: 500; }
+```
+
+### Spacing System
+
+```css
+.p-1 { padding: 4px; }
+.p-2 { padding: 8px; }
+.p-3 { padding: 12px; }
+.p-4 { padding: 16px; }
+.p-5 { padding: 20px; }
+
+.m-1 { margin: 4px; }
+.m-2 { margin: 8px; }
+.m-3 { margin: 12px; }
+.m-4 { margin: 16px; }
+.m-5 { margin: 20px; }
+```
+
+---
+
+## 📱 Responsive Design
+
+### Breakpoints
+
+```css
+/* Mobile First Approach */
+
+/* Small devices (phones, 576px and up) */
+@media (min-width: 576px) { }
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { }
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { }
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { }
+```
+
+### Mobile Adaptations
+
+```css
+@media (max-width: 768px) {
+    /* Sidebar always collapsed on mobile */
+    .sidebar {
+        width: 50px;
+    }
+
+    .main-content {
+        margin-left: 50px;
+    }
+
+    /* Stack form fields vertically */
+    .form-row {
+        flex-direction: column;
+    }
+
+    /* Full width buttons */
+    .k-button {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+}
+```
+
+---
+
+## 🚀 Performance Optimization
+
+### Lazy Loading
+
+```javascript
+// Lazy load images
+document.addEventListener('DOMContentLoaded', function() {
+    const lazyImages = document.querySelectorAll('img[data-src]');
+
+    const imageObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+
+    lazyImages.forEach(img => imageObserver.observe(img));
+});
+```
+
+### Debouncing
+
+```javascript
+// Debounce function for search
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Usage
+const searchInput = document.getElementById('search');
+const debouncedSearch = debounce(async (value) => {
+    const results = await callApi(`/api/search?q=${value}`);
+    displaySearchResults(results);
+}, 300);
+
+searchInput.addEventListener('input', (e) => {
+    debouncedSearch(e.target.value);
+});
+```
+
+---
+
+## 📚 References
+
+- Kendo UI Documentation: https://docs.telerik.com/kendo-ui/
+- Bootstrap 5: https://getbootstrap.com/
+- MDN Web Docs: https://developer.mozilla.org/
+
+---
+
+**Last Updated**: 2026-04-14
+**Version**: 2.0.0
+**Status**: ✅ Complete UI/UX Design System

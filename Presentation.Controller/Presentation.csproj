@@ -7,10 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.9" />
   </ItemGroup>
@@ -25,7 +22,6 @@
     <ProjectReference Include="..\Infrastructure.Security\Infrastructure.Security.csproj" />
     <ProjectReference Include="..\Infrastructure.Sql\Infrastructure.Sql.csproj" />
     <ProjectReference Include="..\Infrastructure.Utilities\Infrastructure.Utilities.csproj" />
-    <ProjectReference Include="..\Presentation.Logger\Presentation.Logger.csproj" />
   </ItemGroup>
 
 </Project>

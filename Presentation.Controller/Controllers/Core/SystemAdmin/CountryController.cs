@@ -3,6 +3,7 @@ using Domain.Contracts.Services;
 using bdDevs.Shared;
 using bdDevs.Shared.DataTransferObjects;
 using bdDevs.Shared.DataTransferObjects.CRM;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Domain.Exceptions;
 using bdDevs.Shared.Constants;
 using Application.Shared.Grid;
@@ -53,10 +54,10 @@ public class CountryController : BaseApiController
     /// Retrieves paginated summary grid of countries.
     /// </summary>
     [HttpPost(RouteConstants.CountrySummary)]
-    public async Task<IActionResult> CountrySummaryAsync([FromBody] CRMGridOptions options, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CountrySummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken = default)
     {
         if (options == null)
-            throw new NullModelBadRequestException(nameof(CRMGridOptions));
+            throw new NullModelBadRequestException(nameof(GridOptions));
 
         var summaryGrid = await _serviceManager.CrmCountries.CountrySummaryAsync(options, cancellationToken);
 

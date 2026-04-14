@@ -101,7 +101,7 @@ public sealed class ServiceManager : IServiceManager
     //_appSettings = appSettings;
 
     _propertyInspectorService = new Lazy<IPropertyInspectorService>(() => new PropertyInspectorService(configuration, loggerFactory.CreateLogger<PropertyInspectorService>(), httpContextAccessor));
-    _tokenBlackListService = new Lazy<ITokenBlacklistService>(() => new TokenBlacklistService(configuration, repository, loggerFactory.CreateLogger<TokenBlacklistService>()));
+    _tokenBlackListService = new Lazy<ITokenBlacklistService>(() => new TokenBlacklistService(repository, loggerFactory.CreateLogger<TokenBlacklistService>()));
     _countryService = new Lazy<ICrmCountryService>(() => new CrmCountryService(repository, loggerFactory.CreateLogger<CrmCountryService>(), configuration));
     _currencyService = new Lazy<ICurrencyService>(() => new CurrencyService(repository, loggerFactory.CreateLogger<CurrencyService>(), configuration));
     _companyService = new Lazy<ICompanyService>(() => new CompanyService(repository, loggerFactory.CreateLogger<CompanyService>(), configuration, _appSettings));

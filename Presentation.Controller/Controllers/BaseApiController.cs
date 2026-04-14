@@ -161,7 +161,7 @@ public abstract class BaseApiController : ControllerBase
       GridEntity<T> gridEntity,
       ILinkFactory<T> factory,
       Func<T, int> keySelector,
-      CRMGridOptions options,
+      GridOptions options,
       string? message = null)
   {
     var linkedGrid = ToLinkedGrid(gridEntity, factory, keySelector);

@@ -97,10 +97,10 @@ public class WorkFlowController : BaseApiController
 	/// Retrieves paginated summary grid of workflows.
 	/// </summary>
 	[HttpPost(RouteConstants.WorkflowSummary)]
-	public async Task<IActionResult> WorkflowSummaryAsync([FromBody] CRMGridOptions options, CancellationToken cancellationToken = default)
+	public async Task<IActionResult> WorkflowSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken = default)
 	{
 		if (options == null)
-			throw new NullModelBadRequestException(nameof(CRMGridOptions));
+			throw new NullModelBadRequestException(nameof(GridOptions));
 
 		var workflows = await _serviceManager.WfState.WorkflowSummaryAsync(trackChanges: false, options, cancellationToken: cancellationToken);
 

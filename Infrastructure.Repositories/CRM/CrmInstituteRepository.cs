@@ -1,3 +1,4 @@
+using Domain.Contracts.CRM;
 using Domain.Entities.Entities.CRM;
 using Infrastructure.Sql.Context;
 

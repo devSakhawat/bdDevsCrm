@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 		/// <summary>
 		/// Retrieves customized report information.
 		/// </summary>
-		public async Task<IEnumerable<QueryAnalyzer>> CustomizedReportsInfoAsync(bool trackChanges, CancellationToken cancellationToken = default)
+		public async Task<IEnumerable<QueryAnalyzerDto>> CustomizedReportsInfoAsync(bool trackChanges, CancellationToken cancellationToken = default)
 		{
 			string query = @"SELECT tblQueryAnalyzer.ReportHeader ,tblQueryAnalyzer.ReportTitle ,tblQueryAnalyzer.ReportHeaderId
                             FROM (
@@ -29,13 +29,13 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
                             ) tblQueryAnalyzer
                             ORDER BY tblQueryAnalyzer.SortOrder ,ReportHeader";
 
-			return await AdoExecuteListQueryAsync<QueryAnalyzer>(query, null, cancellationToken);
+			return await AdoExecuteListQueryAsync<QueryAnalyzerDto>(query, null, cancellationToken);
 		}
 
 		/// <summary>
 		/// Retrieves customized reports by permission.
 		/// </summary>
-		public async Task<IEnumerable<QueryAnalyzer>> CustomizedReportsByPermissionAsync(Users currentUser, string condition, bool trackChanges, CancellationToken cancellationToken = default)
+		public async Task<IEnumerable<QueryAnalyzerDto>> CustomizedReportsByPermissionAsync(Users currentUser, string condition, bool trackChanges, CancellationToken cancellationToken = default)
 		{
 			string query = string.Format(@"SELECT t.ReportHeader ,t.ReportTitle ,t.ReportHeaderId
                                             FROM (
@@ -50,20 +50,20 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
                                             {0}
                                             ORDER BY t.SortOrder ,ReportHeader", condition);
 
-			return await AdoExecuteListQueryAsync<QueryAnalyzer>(query, null, cancellationToken);
+			return await AdoExecuteListQueryAsync<QueryAnalyzerDto>(query, null, cancellationToken);
 		}
 
 		/// <summary>
 		/// Retrieves group permissions for query analyzer reports.
 		/// </summary>
-		public async Task<IEnumerable<QueryAnalyzer>> GroupPermissionsForQueryAnalyzerReportAsync(Users currentUser, CancellationToken cancellationToken = default)
+		public async Task<IEnumerable<QueryAnalyzerDto>> GroupPermissionsForQueryAnalyzerReportAsync(Users currentUser, CancellationToken cancellationToken = default)
 		{
 			string query = string.Format(@"SELECT DISTINCT REFERENCEID AS ReportHeaderId
                                             FROM GroupPermission
                                             INNER JOIN GroupMember ON GroupMember.GroupId = GroupPermission.GROUPID
                                             WHERE UserId = {0} AND PERMISSIONTABLENAME = 'Customized Report'", currentUser.UserId);
 
-			return await AdoExecuteListQueryAsync<QueryAnalyzer>(query, null, cancellationToken);
+			return await AdoExecuteListQueryAsync<QueryAnalyzerDto>(query, null, cancellationToken);
 		}
 	}
 }

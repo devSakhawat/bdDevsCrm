@@ -51,10 +51,10 @@ public class CrmAdditionalDocumentRepository : RepositoryBase<CrmAdditionalDocum
 	/// <summary>
 	/// Retrieves CrmAdditionalDocument records by parent ID asynchronously.
 	/// </summary>
-	public async Task<IEnumerable<AdditionalDocument>> CrmAdditionalDocumentsByParentIdAsync(int parentId, CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<AdditionalDocumentDto>> CrmAdditionalDocumentsByParentIdAsync(int parentId, CancellationToken cancellationToken = default)
 	{
-		string query = $"SELECT * FROM CrmAdditionalDocument WHERE ParentId = {parentId} ORDER BY CrmAdditionalDocumentId";
-		return await AdoExecuteListQueryAsync<AdditionalDocument>(query, null, cancellationToken);
+		string query = $"SELECT * FROM CrmAdditionalDocument WHERE ParentId = {parentId} ORDER BY AdditionalDocumentId";
+		return await AdoExecuteListQueryAsync<AdditionalDocumentDto>(query, null, cancellationToken);
 	}
 
 	/// <summary>

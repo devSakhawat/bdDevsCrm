@@ -20,7 +20,7 @@ public class QueryAnalyzerController : BaseApiController
 	}
 
 	//[HttpPost(RouteConstants.GroupSummary)]
-	//public async Task<IActionResult> GroupSummary([FromBody] CRMGridOptions options)
+	//public async Task<IActionResult> GroupSummary([FromBody] GridOptions options)
 	//{
 	//  var groupSummary = await _serviceManager.Groups.GroupSummary(trackChanges: false, options);
 	//  return (groupSummary != null) ? Ok(groupSummary) : NoContent();

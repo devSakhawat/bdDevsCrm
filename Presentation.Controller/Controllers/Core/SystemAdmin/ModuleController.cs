@@ -81,10 +81,10 @@ public class ModuleController : BaseApiController
 	/// Retrieves paginated summary grid of modules.
 	/// </summary>
 	[HttpPost(RouteConstants.ModuleSummary)]
-	public async Task<IActionResult> ModuleSummaryAsync([FromBody] CRMGridOptions options, CancellationToken cancellationToken = default)
+	public async Task<IActionResult> ModuleSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken = default)
 	{
 		if (options == null)
-			throw new NullModelBadRequestException(nameof(CRMGridOptions));
+			throw new NullModelBadRequestException(nameof(GridOptions));
 
 		var modules = await _serviceManager.Modules.ModuleSummaryAsync(trackChanges: false, options, cancellationToken);
 

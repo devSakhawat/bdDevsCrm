@@ -97,7 +97,7 @@ public class UsersController : BaseApiController
 	/// </summary>
 	[HttpPost(RouteConstants.UserSummary)]
 	public async Task<IActionResult> UserSummaryAsync(
-			[FromBody] CRMGridOptions options,
+			[FromBody] GridOptions options,
 			[FromQuery] int companyId,
 			CancellationToken cancellationToken = default)
 	{
@@ -197,7 +197,7 @@ public class UsersController : BaseApiController
 //    /// Retrieves paginated summary grid of users.
 //    /// </summary>
 //    [HttpPost(RouteConstants.UserSummary)]
-//    public async Task<IActionResult> UserSummaryAsync([FromBody] CRMGridOptions options, [FromQuery] int companyId)
+//    public async Task<IActionResult> UserSummaryAsync([FromBody] GridOptions options, [FromQuery] int companyId)
 //    {
 //        var summaryGrid = await _serviceManager.Users.UserSummaryAsync(companyId, trackChanges: false, options);
 

@@ -1,7 +1,7 @@
 ﻿using Presentation.ActionFilters;
 using Presentation.AuthorizeAttributes;
 using Presentation.Extensions;
-using Application.Services.Core.Infrastructure;
+using Domain.Contracts.Services.Core.Infrastructure;
 using Domain.Contracts.Services;
 using bdDevs.Shared;
 using bdDevs.Shared.DataTransferObjects.Authentication;
@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Presentation.ActionFilters;
 
 namespace Presentation.Controllers.Authentication;
 

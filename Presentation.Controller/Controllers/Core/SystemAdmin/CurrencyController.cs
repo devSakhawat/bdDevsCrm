@@ -87,10 +87,10 @@ public class CurrencyController : BaseApiController
 	/// [Largest Data Volume] POST: /bdDevs-crm/currency-summary
 	/// </summary>
 	[HttpPost(RouteConstants.CurrencySummary)]
-	public async Task<IActionResult> CurrencySummaryAsync([FromBody] CRMGridOptions options, CancellationToken cancellationToken = default)
+	public async Task<IActionResult> CurrencySummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken = default)
 	{
 		if (options == null)
-			throw new NullModelBadRequestException(nameof(CRMGridOptions));
+			throw new NullModelBadRequestException(nameof(GridOptions));
 
 		var currencySummary = await _serviceManager.Currencies.CurrencySummaryAsync( options, cancellationToken: cancellationToken);
 
@@ -187,10 +187,10 @@ public class CurrencyController : BaseApiController
 	///// Retrieves paginated summary grid of currencies.
 	///// </summary>
 	//[HttpPost(RouteConstants.CurrencySummary)]
-	//public async Task<IActionResult> CurrencySummaryAsync([FromBody] CRMGridOptions options)
+	//public async Task<IActionResult> CurrencySummaryAsync([FromBody] GridOptions options)
 	//{
 	//	if (options == null)
-	//		throw new NullModelBadRequestException(nameof(CRMGridOptions));
+	//		throw new NullModelBadRequestException(nameof(GridOptions));
 
 	//	var currencySummary = await _serviceManager.Currencies.CurrencySummaryAsync(options);
 

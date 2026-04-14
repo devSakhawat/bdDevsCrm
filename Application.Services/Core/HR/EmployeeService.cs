@@ -140,10 +140,8 @@ internal sealed class EmployeeService : IEmployeeService
       }
     }
 
-    IEnumerable<EmployeesByCompanyBranchDepartmentRepositoroyDto> employeeTypes = await _repository.Employees.EmployeeByCompanyIdAndBranchIdAndDepartmentId(condition, cancellationToken);
+    IEnumerable<EmployeesByCompanyBranchDepartmentDto> result = await _repository.Employees.EmployeeByCompanyIdAndBranchIdAndDepartmentId(condition, cancellationToken);
 
-    IEnumerable<EmployeesByCompanyBranchDepartmentDto> result = MyMapper.JsonCloneIEnumerableToList<EmployeesByCompanyBranchDepartmentRepositoroyDto, EmployeesByCompanyBranchDepartmentDto>(employeeTypes);
-    
     return result;
   }
 

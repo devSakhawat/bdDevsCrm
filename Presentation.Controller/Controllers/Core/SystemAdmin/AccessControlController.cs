@@ -37,10 +37,10 @@ public class AccessControlController : BaseApiController
     /// Retrieves paginated summary grid of access controls.
     /// </summary>
     [HttpPost(RouteConstants.AccessControlSummary)]
-    public async Task<IActionResult> AccessControlSummaryAsync([FromBody] CRMGridOptions options)
+    public async Task<IActionResult> AccessControlSummaryAsync([FromBody] GridOptions options)
     {
         if (options == null)
-            throw new NullModelBadRequestException(nameof(CRMGridOptions));
+            throw new NullModelBadRequestException(nameof(GridOptions));
 
         var summaryGrid = await _serviceManager.AccessControls.SummaryAsync(trackChanges: false, options);
 

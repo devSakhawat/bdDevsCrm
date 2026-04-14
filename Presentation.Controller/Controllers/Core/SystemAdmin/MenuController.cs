@@ -70,7 +70,7 @@ public class MenuController : BaseApiController
 	///  menu summary with pagination + HATEOAS
 	/// </summary>
 	[HttpPost(RouteConstants.MenuSummary)]
-	public async Task<IActionResult> MenuSummary([FromBody] CRMGridOptions options, CancellationToken cancellationToken = default)
+	public async Task<IActionResult> MenuSummary([FromBody] GridOptions options, CancellationToken cancellationToken = default)
 	{
 		//var res = await _serviceManager.Menus.MenuSummary(trackChanges: false, options);
 
@@ -331,7 +331,7 @@ public class MenuController : BaseApiController
 //	/// <param name="options"></param>
 //	/// <returns></returns>
 //	[HttpPost(RouteConstants.MenuSummary)]
-//	public async Task<IActionResult> MenuSummary([FromBody] CRMGridOptions options)
+//	public async Task<IActionResult> MenuSummary([FromBody] GridOptions options)
 //	{
 //		//var currentUser = HttpContext.CurrentUser();
 //		//var userId = HttpContext.UserId();

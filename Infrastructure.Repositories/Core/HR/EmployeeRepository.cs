@@ -59,10 +59,10 @@ left outer join WFState on WFState.WfStateId=Employee.StateId where Employment.H
 		return data;
 	}
 
-	public async Task<IEnumerable<EmployeesByCompanyBranchDepartmentRepositoroyDto>> EmployeeByCompanyIdAndBranchIdAndDepartmentId(string condition, CancellationToken cancellationToken)
+	public async Task<IEnumerable<EmployeesByCompanyBranchDepartmentDto>> EmployeeByCompanyIdAndBranchIdAndDepartmentId(string condition, CancellationToken cancellationToken)
 	{
 		string sql = string.Format(SELECT_EMPLOYEE_BY_CompanyBranchDepartment_SQL, condition);
-		IEnumerable<EmployeesByCompanyBranchDepartmentRepositoroyDto> returnList = await AdoExecuteListQueryAsync<EmployeesByCompanyBranchDepartmentRepositoroyDto>(sql, cancellationToken: cancellationToken);
+		IEnumerable<EmployeesByCompanyBranchDepartmentDto> returnList = await AdoExecuteListQueryAsync<EmployeesByCompanyBranchDepartmentDto>(sql, cancellationToken: cancellationToken);
 		return returnList;
 	}
 

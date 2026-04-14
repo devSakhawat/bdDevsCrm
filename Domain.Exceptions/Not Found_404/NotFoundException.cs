@@ -8,7 +8,9 @@ public class NotFoundException : AppException
       : base(message, 404, errorCode)
   {
   }
-}
 
-// Usage Example:
-// throw new NotFoundException("Company not found", "COMPANY_NOT_FOUND");
+  public NotFoundException(string entityName, string fieldName, string fieldValue)
+      : base($"{entityName} with {fieldName} '{fieldValue}' was not found.", 404, "NOT_FOUND")
+  {
+  }
+}

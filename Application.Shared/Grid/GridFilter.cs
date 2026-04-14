@@ -1,7 +1,7 @@
 ﻿namespace Application.Shared.Grid;
 
 
-public class GridFilterContainer
+public class GridFilterModels
 {
   public class GridFilter
   {

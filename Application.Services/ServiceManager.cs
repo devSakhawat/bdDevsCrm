@@ -1,3 +1,4 @@
+using Domain.Exceptions;
 ﻿using Application.Services.Authentication;
 using Application.Services.Core.HR;
 using Application.Services.Core.SystemAdmin;

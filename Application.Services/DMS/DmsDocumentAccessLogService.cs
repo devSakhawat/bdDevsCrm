@@ -1,3 +1,4 @@
+using bdDevs.Shared.Constants;
 using Domain.Contracts.Repositories;
 ﻿// DmsDocumentAccessLogService.cs
 using Domain.Entities.Entities.DMS;

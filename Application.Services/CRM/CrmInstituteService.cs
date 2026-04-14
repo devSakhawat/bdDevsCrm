@@ -1,3 +1,4 @@
+using bdDevs.Shared.Constants;
 // CrmInstituteService.cs
 using Domain.Entities.Entities.CRM;
 using Domain.Contracts.Services.Core.SystemAdmin;

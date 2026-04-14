@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmPresentAddressRepository : RepositoryBase<CrmPresentAddress>, ICrmPresentAddressRepository
 {
-	public CrmPresentAddressRepository(CRMContext context) : base(context) { }
+	public CrmPresentAddressRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmPresentAddress records asynchronously.

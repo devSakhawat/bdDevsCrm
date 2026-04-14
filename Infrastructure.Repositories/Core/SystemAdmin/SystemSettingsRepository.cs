@@ -7,7 +7,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 {
 	public class SystemSettingsRepository : RepositoryBase<SystemSettings>, ISystemSettingsRepository
 	{
-		public SystemSettingsRepository(CRMContext context) : base(context) { }
+		public SystemSettingsRepository(CrmContext context) : base(context) { }
 
 		/// <summary>
 		/// Retrieves system settings by Company ID.
@@ -62,7 +62,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 
 //public class SystemSettingsRepository : RepositoryBase<SystemSettings>, ISystemSettingsRepository
 //{
-//  public SystemSettingsRepository(CRMContext context) : base(context) { }
+//  public SystemSettingsRepository(CrmContext context) : base(context) { }
 
 //  #region Global Variable
 

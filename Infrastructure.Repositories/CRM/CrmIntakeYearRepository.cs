@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmIntakeYearRepository : RepositoryBase<CrmIntakeYear>, ICrmIntakeYearRepository
 {
-	public CrmIntakeYearRepository(CRMContext context) : base(context) { }
+	public CrmIntakeYearRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmIntakeYear records asynchronously.

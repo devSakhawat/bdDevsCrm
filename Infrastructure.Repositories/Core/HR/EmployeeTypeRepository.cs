@@ -7,5 +7,5 @@ namespace Infrastructure.Repositories.Core.HR;
 
 public class EmployeeTypeRepository : RepositoryBase<Employeetype>, IEmployeeTypeRepository
 {
-	public EmployeeTypeRepository(CRMContext context) : base(context) { }
+	public EmployeeTypeRepository(CrmContext context) : base(context) { }
 }

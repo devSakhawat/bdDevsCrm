@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmPermanentAddressRepository : RepositoryBase<CrmPermanentAddress>, ICrmPermanentAddressRepository
 {
-	public CrmPermanentAddressRepository(CRMContext context) : base(context) { }
+	public CrmPermanentAddressRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmPermanentAddress records asynchronously.

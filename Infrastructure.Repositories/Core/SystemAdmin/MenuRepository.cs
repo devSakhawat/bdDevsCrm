@@ -8,7 +8,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 {
 	public class MenuRepository : RepositoryBase<Menu>, IMenuRepository
 	{
-		public MenuRepository(CRMContext context) : base(context) { }
+		public MenuRepository(CrmContext context) : base(context) { }
 
 		/// <summary>
 		/// Retrieves menus by module ID using raw SQL.

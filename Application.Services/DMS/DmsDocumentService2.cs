@@ -197,7 +197,7 @@ using bdDevs.Shared.Constants;
 //      {
 //        FolderName = dmsDto.ReferenceEntityType,
 //        OwnerId = null, // OwnerId: Folder Owner.
-//        ReferenceEntityType = dmsDto.ReferenceEntityType, // e.g., "Crminstitute"
+//        ReferenceEntityType = dmsDto.ReferenceEntityType, // e.g., "CrmInstitute"
 //        ReferenceEntityId = "0"
 //      };
 //      Parent folder has no ReferenceEntityId ,OwnerId, and ParentFolderId
@@ -215,16 +215,16 @@ using bdDevs.Shared.Constants;
 //        ParentFolderId = parentFolder.ParentFolderId,
 //        FolderName = dmsDto.ReferenceEntityType,
 //        OwnerId = dmsDto.OwnerUserId.ToString(),
-//        ReferenceEntityType = dmsDto.ReferenceEntityType, // e.g., "Crminstitute"
-//        ReferenceEntityId = dmsDto.ReferenceEntityId // e.g., "1" (for Crminstitute)
+//        ReferenceEntityType = dmsDto.ReferenceEntityType, // e.g., "CrmInstitute"
+//        ReferenceEntityId = dmsDto.ReferenceEntityId // e.g., "1" (for CrmInstitute)
 //      };
 //      dmsDocumentFolder.FolderId = await _repository.DmsDocumentFolders.CreateAndIdAsync(dmsDocumentFolder);
 //    }
 
 //    2.1.Find or create parent folder(e.g., "Institute")
 //    string rootPath = Path.Combine(Directory.CurrentDirectory(), "wwwroot");
-//    folderPath = "wwwroot/Uploads/students/CRMInstitute/1/passport/"
-//     wwwroot / Uploads / EntityName(CRMInstitute, CRMCourse, Student, Agent, like controller / entity) / 1(record or data: like studentIdentity, crnIntituteIdency, CrmCourseIdentity) / DocumentType(like: student(passport, nid, accademic certificate || institute: logo, photo, procpectus etc))
+//    folderPath = "wwwroot/Uploads/students/CrmInstitute/1/passport/"
+//     wwwroot / Uploads / EntityName(CrmInstitute, CrmCourse, Student, Agent, like controller / entity) / 1(record or data: like studentIdentity, crnIntituteIdency, CrmCourseIdentity) / DocumentType(like: student(passport, nid, accademic certificate || institute: logo, photo, procpectus etc))
 //    string folderPath = Path.Combine(rootPath, "Uploads", dmsDto.ReferenceEntityType, dmsDto.ReferenceEntityId, dmsDto.DocumentType);
 //    if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
 

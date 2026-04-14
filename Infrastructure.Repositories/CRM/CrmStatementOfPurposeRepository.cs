@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmStatementOfPurposeRepository : RepositoryBase<CrmStatementOfPurpose>, ICrmStatementOfPurposeRepository
 {
-	public CrmStatementOfPurposeRepository(CRMContext context) : base(context) { }
+	public CrmStatementOfPurposeRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmStatementOfPurpose records asynchronously.

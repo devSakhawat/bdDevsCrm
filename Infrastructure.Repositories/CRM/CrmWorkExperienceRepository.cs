@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmWorkExperienceRepository : RepositoryBase<CrmWorkExperience>, ICrmWorkExperienceRepository
 {
-    public CrmWorkExperienceRepository(CRMContext context) : base(context) { }
+    public CrmWorkExperienceRepository(CrmContext context) : base(context) { }
 
     /// <summary>
     /// Retrieves all CrmWorkExperience records asynchronously.

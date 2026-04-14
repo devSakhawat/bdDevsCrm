@@ -435,10 +435,10 @@ using Domain.Contracts.Repositories;
 //          ieltsDto.CreatedDate = DateTime.UtcNow;
 //          ieltsDto.CreatedBy = currentUser.UserId ?? 0;
 
-//          var ieltsEntity = MyMapper.JsonClone<IELTSInformationDto, CrmIELTSInformation>(ieltsDto);
+//          var ieltsEntity = MyMapper.JsonClone<IeltsInformationDto, CrmIeltsInformation>(ieltsDto);
 
 //          // ✅ Pass CancellationToken
-//          var ieltsEntityId = await _repository.CrmIELTSInformations.CreateAndIdAsync(
+//          var ieltsEntityId = await _repository.CrmIeltsInformations.CreateAndIdAsync(
 //              ieltsEntity,
 //              cancellationToken);
 //        }

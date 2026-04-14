@@ -6,7 +6,7 @@ namespace Infrastructure.Repositories.Core.Authentication;
 
 public class AuthenticationRepository : RepositoryBase<Users>, IAuthenticationRepository
 {
-  public AuthenticationRepository(CRMContext context) : base(context) { }
+  public AuthenticationRepository(CrmContext context) : base(context) { }
 
 
   public async Task<Users> AuthenticateByLoginId(string loginId, CancellationToken cancellationToken)

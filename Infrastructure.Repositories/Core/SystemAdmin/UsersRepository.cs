@@ -12,7 +12,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class UsersRepository : RepositoryBase<Users>, IUsersRepository
 {
-	public UsersRepository(CRMContext context) : base(context) { }
+	public UsersRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all users asynchronously.

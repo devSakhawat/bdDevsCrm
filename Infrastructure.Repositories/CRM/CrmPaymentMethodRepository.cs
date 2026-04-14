@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmPaymentMethodRepository : RepositoryBase<CrmPaymentMethod>, ICrmPaymentMethodRepository
 {
-	public CrmPaymentMethodRepository(CRMContext context) : base(context) { }
+	public CrmPaymentMethodRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmPaymentMethod records asynchronously.

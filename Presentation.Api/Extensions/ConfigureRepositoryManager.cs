@@ -26,7 +26,7 @@ public static class ConfigureRepositoryManager
       this IServiceCollection services,
       IConfiguration configuration)
   {
-    services.AddDbContext<CRMContext>((serviceProvider, options) =>
+    services.AddDbContext<CrmContext>((serviceProvider, options) =>
     {
       var connectionString =
           configuration.GetConnectionString("DbLocation")

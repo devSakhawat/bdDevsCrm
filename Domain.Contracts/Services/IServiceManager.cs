@@ -45,10 +45,10 @@ public interface IServiceManager
   
   // New 10 Crm services
   ICrmEducationHistoryService EducationHistories { get; }
-  ICrmIELTSInformationService IELTSInformations { get; }
-  ICrmTOEFLInformationService TOEFLInformations { get; }
-  ICrmPTEInformationService PTEInformations { get; }
-  ICrmGMATInformationService GMATInformations { get; }
+  ICrmIeltsInformationService IELTSInformations { get; }
+  ICrmToeflInformationService TOEFLInformations { get; }
+  ICrmPteInformationService PTEInformations { get; }
+  ICrmGmatInformationService GMATInformations { get; }
   ICrmOthersInformationService OTHERSInformations { get; }
   ICrmWorkExperienceService WorkExperiences { get; }
   ICrmApplicantReferenceService ApplicantReferences { get; }

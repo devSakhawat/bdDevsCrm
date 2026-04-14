@@ -6,7 +6,7 @@ namespace Infrastructure.Repositories.DMS;
 
 public class DmsFileUpdateHistoryRepository : RepositoryBase<DmsFileUpdateHistory>, IDmsFileUpdateHistoryRepository
 {
-  public DmsFileUpdateHistoryRepository(CRMContext context) : base(context) { }
+  public DmsFileUpdateHistoryRepository(CrmContext context) : base(context) { }
 
 
 }

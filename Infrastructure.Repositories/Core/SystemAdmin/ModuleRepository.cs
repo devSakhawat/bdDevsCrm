@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class ModuleRepository : RepositoryBase<Module>, IModuleRepository
 {
-	public ModuleRepository(CRMContext context) : base(context) { }
+	public ModuleRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves modules by module ID using raw SQL asynchronously.

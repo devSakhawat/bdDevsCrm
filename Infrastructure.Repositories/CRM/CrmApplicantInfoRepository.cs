@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmApplicantInfoRepository : RepositoryBase<CrmApplicantInfo>, ICrmApplicantInfoRepository
 {
-	public CrmApplicantInfoRepository(CRMContext context) : base(context) { }
+	public CrmApplicantInfoRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmApplicantInfo records asynchronously.

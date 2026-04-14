@@ -7,7 +7,7 @@ namespace Infrastructure.Repositories.Core.Authentication;
 
 public class RefreshTokenRepository : RepositoryBase<RefreshToken>, IRefreshTokenRepository
 {
-  public RefreshTokenRepository(CRMContext context) : base(context) { }
+  public RefreshTokenRepository(CrmContext context) : base(context) { }
 
   public async Task<IEnumerable<RefreshToken>> ExpiredTokensAsync(CancellationToken cancellationToken = default)
   {

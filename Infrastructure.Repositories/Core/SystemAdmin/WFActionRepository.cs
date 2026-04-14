@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 {
 	public class WFActionRepository : RepositoryBase<WfAction>, IWFActionRepository
 	{
-		public WFActionRepository(CRMContext context) : base(context) { }
+		public WFActionRepository(CrmContext context) : base(context) { }
 
 		/// <summary>
 		/// s all workflow actions.
@@ -63,7 +63,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 
 //public class WFActionRepository : RepositoryBase<WfAction>, IWFActionRepository
 //{
-//  public WFActionRepository(CRMContext context) : base(context) { }
+//  public WFActionRepository(CrmContext context) : base(context) { }
 
 
 //}

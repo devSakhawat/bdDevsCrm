@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmAdditionalDocumentRepository : RepositoryBase<CrmAdditionalDocument>, ICrmAdditionalDocumentRepository
 {
-	public CrmAdditionalDocumentRepository(CRMContext context) : base(context) { }
+	public CrmAdditionalDocumentRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmAdditionalDocument records asynchronously.

@@ -106,13 +106,13 @@ public interface ICrmOthersInformationService
 
 //public interface ICrmOthersInformationService
 //{
-//  Task<IEnumerable<OTHERSInformationDto>> OthersinformationsDDLAsync(bool trackChanges = false);
-//  Task<IEnumerable<OTHERSInformationDto>> ActiveOthersinformationsAsync(bool trackChanges = false);
-//  Task<IEnumerable<OTHERSInformationDto>> OthersinformationsAsync(bool trackChanges = false);
-//  Task<OTHERSInformationDto> OthersinformationAsync(int id, bool trackChanges = false);
-//  Task<OTHERSInformationDto> OthersinformationByApplicantIdAsync(int applicantId, bool trackChanges = false);
-//  Task<OTHERSInformationDto> CreateNewRecordAsync(OTHERSInformationDto dto, UsersDto currentUser);
-//  Task<string> UpdateRecordAsync(int key, OTHERSInformationDto dto, bool trackChanges);
-//  Task<string> DeleteRecordAsync(int key, OTHERSInformationDto dto);
-//  Task<GridEntity<OTHERSInformationDto>> SummaryGrid(GridOptions options);
+//  Task<IEnumerable<OthersInformationDto>> OthersinformationsDDLAsync(bool trackChanges = false);
+//  Task<IEnumerable<OthersInformationDto>> ActiveOthersinformationsAsync(bool trackChanges = false);
+//  Task<IEnumerable<OthersInformationDto>> OthersinformationsAsync(bool trackChanges = false);
+//  Task<OthersInformationDto> OthersinformationAsync(int id, bool trackChanges = false);
+//  Task<OthersInformationDto> OthersinformationByApplicantIdAsync(int applicantId, bool trackChanges = false);
+//  Task<OthersInformationDto> CreateNewRecordAsync(OthersInformationDto dto, UsersDto currentUser);
+//  Task<string> UpdateRecordAsync(int key, OthersInformationDto dto, bool trackChanges);
+//  Task<string> DeleteRecordAsync(int key, OthersInformationDto dto);
+//  Task<GridEntity<OthersInformationDto>> SummaryGrid(GridOptions options);
 //}

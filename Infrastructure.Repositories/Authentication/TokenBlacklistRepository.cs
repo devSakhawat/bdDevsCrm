@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.Authentication;
 public class TokenBlacklistRepository
     : RepositoryBase<TokenBlacklist>, ITokenBlacklistRepository
 {
-  public TokenBlacklistRepository(CRMContext context)
+  public TokenBlacklistRepository(CrmContext context)
       : base(context) { }
 
   public async Task<bool> IsBlacklistedAsync(

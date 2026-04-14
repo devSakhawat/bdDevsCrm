@@ -40,7 +40,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
 	#region Private Fields
 
-	private readonly CRMContext _context;
+	private readonly CrmContext _context;
 	private readonly DbSet<T> _dbSet;
 	private IDbContextTransaction? _currentTransaction;
 
@@ -53,7 +53,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 	/// </summary>
 	/// <param name="context">The database context</param>
 	/// <exception cref="ArgumentNullException">Thrown when context is null</exception>
-	public RepositoryBase(CRMContext context)
+	public RepositoryBase(CrmContext context)
 	{
 		_context = context ?? throw new ArgumentNullException(nameof(context));
 		_dbSet = _context.Set<T>();
@@ -1783,11 +1783,11 @@ public static class DbDataReaderExtensions
 
 //public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 //{
-//  private readonly CRMContext _context;
+//  private readonly CrmContext _context;
 //  private readonly DbSet<T> _dbSet;
 //  private IDbContextTransaction _currentTransaction;
 
-//  public RepositoryBase(CRMContext context)
+//  public RepositoryBase(CrmContext context)
 //  {
 //    _context = context;
 //    _dbSet = _context.Set<T>();

@@ -9,7 +9,7 @@
 
 //public class WorkFlowSettingsRepository : RepositoryBase<WfState>, IWorkFlowSettingsRepository
 //{
-//  public WorkFlowSettingsRepository(CRMContext context) : base(context) { }
+//  public WorkFlowSettingsRepository(CrmContext context) : base(context) { }
 
 
 //}
@@ -23,7 +23,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 {
 	public class WorkFlowSettingsRepository : RepositoryBase<WfState>, IWorkFlowSettingsRepository
 	{
-		public WorkFlowSettingsRepository(CRMContext context) : base(context) { }
+		public WorkFlowSettingsRepository(CrmContext context) : base(context) { }
 
 		/// <summary>
 		/// All workflow states.

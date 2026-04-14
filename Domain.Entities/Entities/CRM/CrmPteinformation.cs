@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Domain.Entities.Entities.CRM;
 
-public partial class CrmPTEInformation
+public partial class CrmPteInformation
 {
     public int PTEInformationId { get; set; }
 

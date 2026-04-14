@@ -109,7 +109,7 @@ public interface ICrmInstituteService
 }
 
 
-//public interface ICRMInstituteService
+//public interface ICrmInstituteService
 //{
 //  Task<IEnumerable<DDLInstituteDto>> CRMInstituteDLLByCountry(int countryId, bool trackChanges);
 

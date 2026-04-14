@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories.DMS;
 /// </summary>
 public class DmsDocumentRepository : RepositoryBase<DmsDocument>, IDmsDocumentRepository
 {
-	public DmsDocumentRepository(CRMContext context) : base(context) { }
+	public DmsDocumentRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// s all documents ordered by DocumentId.
@@ -61,7 +61,7 @@ public class DmsDocumentRepository : RepositoryBase<DmsDocument>, IDmsDocumentRe
 
 //public class DmsDocumentRepository : RepositoryBase<DmsDocument>, IDmsDocumentRepository
 //{
-//  public DmsDocumentRepository(CRMContext context) : base(context) { }
+//  public DmsDocumentRepository(CrmContext context) : base(context) { }
 
 //  //  all documents ordered by DocumentId
 //  public async Task<IEnumerable<DmsDocument>> AllDocumentsAsync(bool trackChanges) =>

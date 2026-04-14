@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class StatusRepository : RepositoryBase<WfState>, IStatusRepository
 {
-	public StatusRepository(CRMContext context) : base(context) { }
+	public StatusRepository(CrmContext context) : base(context) { }
 
 	public async Task<IEnumerable<WfState>> StatusesAsync(bool trackChanges, CancellationToken cancellationToken = default)
 	{

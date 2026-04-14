@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 public class GroupMemberRepository : RepositoryBase<GroupMember>, IGroupMemberRepository
 {
-	public GroupMemberRepository(CRMContext context) : base(context) { }
+	public GroupMemberRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves group members by user ID using raw SQL.
@@ -37,7 +37,7 @@ public class GroupMemberRepository : RepositoryBase<GroupMember>, IGroupMemberRe
 //{
 //  private const string SELECT_GROUPMEMBER_BY_USERID = "Select * from GroupMember where UserId = {0}";
 
-//  public GroupMemberRepository(CRMContext context) : base(context) { }
+//  public GroupMemberRepository(CrmContext context) : base(context) { }
 
 //  // Group Member by UserId for user settings.
 //  public async Task<IEnumerable<GroupMember>> GroupMemberByUserId(int userId, bool trackChanges)

@@ -11,7 +11,7 @@
 ///// </summary>
 //public class CrmStudentRepository : RepositoryBase<stud>, ICrmStudentRepository
 //{
-//    public CrmStudentRepository(CRMContext context) : base(context) { }
+//    public CrmStudentRepository(CrmContext context) : base(context) { }
 
 //    /// <summary>
 //    /// Retrieves all CrmStudent records asynchronously.

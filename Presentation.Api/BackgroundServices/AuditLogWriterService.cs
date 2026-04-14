@@ -80,7 +80,7 @@ public class AuditLogWriterService : BackgroundService
     try
     {
       using var scope = _scopeFactory.CreateScope();
-      var dbContext = scope.ServiceProvider.GetRequiredService<CRMContext>();
+      var dbContext = scope.ServiceProvider.GetRequiredService<CrmContext>();
 
       dbContext.AuditLogs.AddRange(batch);
       await dbContext.SaveChangesAsync(ct);

@@ -71,10 +71,10 @@ public sealed class ServiceManager : IServiceManager
 
   // New 10 CRM services
   private readonly Lazy<ICrmEducationHistoryService> _educationHistoryService;
-  private readonly Lazy<ICrmIELTSInformationService> _ieltsinformationService;
-  private readonly Lazy<ICrmTOEFLInformationService> _toeflinformationService;
-  private readonly Lazy<ICrmPTEInformationService> _PTEInformationService;
-  private readonly Lazy<ICrmGMATInformationService> _gmatinformationService;
+  private readonly Lazy<ICrmIeltsInformationService> _ieltsinformationService;
+  private readonly Lazy<ICrmToeflInformationService> _toeflinformationService;
+  private readonly Lazy<ICrmPteInformationService> _PTEInformationService;
+  private readonly Lazy<ICrmGmatInformationService> _gmatinformationService;
   private readonly Lazy<ICrmOthersInformationService> _othersinformationService;
   private readonly Lazy<ICrmWorkExperienceService> _workExperienceService;
   private readonly Lazy<ICrmApplicantReferenceService> _applicantReferenceService;
@@ -142,10 +142,10 @@ public sealed class ServiceManager : IServiceManager
 
     // New 10 Crm services initialization
     _educationHistoryService = new Lazy<ICrmEducationHistoryService>(() => new CrmEducationHistoryService(repository, loggerFactory.CreateLogger<CrmEducationHistoryService>(), configuration, httpContextAccessor));
-    _ieltsinformationService = new Lazy<ICrmIELTSInformationService>(() => new CrmIELTSInformationService(repository, loggerFactory.CreateLogger<CrmIELTSInformationService>(), configuration, httpContextAccessor));
-    _toeflinformationService = new Lazy<ICrmTOEFLInformationService>(() => new CrmTOEFLInformationService(repository, loggerFactory.CreateLogger<CrmTOEFLInformationService>(), configuration, httpContextAccessor));
-    _PTEInformationService = new Lazy<ICrmPTEInformationService>(() => new CrmPTEInformationService(repository, loggerFactory.CreateLogger<CrmPTEInformationService>(), configuration, httpContextAccessor));
-    _gmatinformationService = new Lazy<ICrmGMATInformationService>(() => new CrmGMATInformationService(repository, loggerFactory.CreateLogger<CrmGMATInformationService>(), configuration, httpContextAccessor));
+    _ieltsinformationService = new Lazy<ICrmIeltsInformationService>(() => new CrmIeltsInformationService(repository, loggerFactory.CreateLogger<CrmIeltsInformationService>(), configuration, httpContextAccessor));
+    _toeflinformationService = new Lazy<ICrmToeflInformationService>(() => new CrmToeflInformationService(repository, loggerFactory.CreateLogger<CrmToeflInformationService>(), configuration, httpContextAccessor));
+    _PTEInformationService = new Lazy<ICrmPteInformationService>(() => new CrmPteInformationService(repository, loggerFactory.CreateLogger<CrmPteInformationService>(), configuration, httpContextAccessor));
+    _gmatinformationService = new Lazy<ICrmGmatInformationService>(() => new CrmGmatInformationService(repository, loggerFactory.CreateLogger<CrmGmatInformationService>(), configuration, httpContextAccessor));
     _othersinformationService = new Lazy<ICrmOthersInformationService>(() => new CrmOthersInformationService(repository, loggerFactory.CreateLogger<CrmOthersInformationService>(), configuration, httpContextAccessor));
     _workExperienceService = new Lazy<ICrmWorkExperienceService>(() => new CrmWorkExperienceService(repository, loggerFactory.CreateLogger<CrmWorkExperienceService>(), configuration, httpContextAccessor));
     _applicantReferenceService = new Lazy<ICrmApplicantReferenceService>(() => new CrmApplicantReferenceService(repository, loggerFactory.CreateLogger<CrmApplicantReferenceService>(), configuration, httpContextAccessor));
@@ -207,10 +207,10 @@ public sealed class ServiceManager : IServiceManager
 
   // New 10 Crm service properties - ALL IMPLEMENTED NOW!
   public ICrmEducationHistoryService EducationHistories => _educationHistoryService.Value;
-  public ICrmIELTSInformationService IELTSInformations => _ieltsinformationService.Value;
-  public ICrmTOEFLInformationService TOEFLInformations => _toeflinformationService.Value;
-  public ICrmPTEInformationService PTEInformations => _PTEInformationService.Value;
-  public ICrmGMATInformationService GMATInformations => _gmatinformationService.Value;
+  public ICrmIeltsInformationService IELTSInformations => _ieltsinformationService.Value;
+  public ICrmToeflInformationService TOEFLInformations => _toeflinformationService.Value;
+  public ICrmPteInformationService PTEInformations => _PTEInformationService.Value;
+  public ICrmGmatInformationService GMATInformations => _gmatinformationService.Value;
   public ICrmOthersInformationService OTHERSInformations => _othersinformationService.Value;
   public ICrmWorkExperienceService WorkExperiences => _workExperienceService.Value;
   public ICrmApplicantReferenceService ApplicantReferences => _applicantReferenceService.Value;

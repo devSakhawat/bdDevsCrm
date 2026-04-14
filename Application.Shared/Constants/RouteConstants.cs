@@ -279,7 +279,7 @@ public static class RouteConstants
 	#endregion PaymentMethod
 
 	// CRM Application related routes
-	#region CRMApplication
+	#region CrmApplication
 	public const string CRMApplicationStatus = "crm-application-status";
 
 	public const string CRMApplicationSummary = "crm-application-summary/{statusId:int}";
@@ -294,7 +294,7 @@ public static class RouteConstants
 	public const string CRMYearDLL = "crm-yearddl";
 	public const string CRMInstituteTypeDDL = "crm-institute-type/";
 	public const string CRMApplicationByApplicationId = "crm-application-by-applicationId/{applicationId:int}";
-	#endregion CRMApplication
+	#endregion CrmApplication
 
 	#region ApplicantCourse
 	public const string ApplicantCourseDDL = "applicant-course-ddl";

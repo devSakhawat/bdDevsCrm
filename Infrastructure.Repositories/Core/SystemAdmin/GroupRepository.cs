@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class GroupRepository : RepositoryBase<Groups>, IGroupRepository
 {
-	public GroupRepository(CRMContext context) : base(context) { }
+	public GroupRepository(CrmContext context) : base(context) { }
 
 
 

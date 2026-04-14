@@ -7,7 +7,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 public class AccessRestrictionRepository : RepositoryBase<AccessRestriction>, IAccessRestrictionRepository
 {
-	public AccessRestrictionRepository(CRMContext context) : base(context) { }
+	public AccessRestrictionRepository(CrmContext context) : base(context) { }
 
 	#region Priority 1: Basic Retrieval (EF Core)
 
@@ -135,7 +135,7 @@ where HRRecordId = {0}", hrRecordId);
 
 //public class AccessRestrictionRepository : RepositoryBase<AccessRestriction>, IAccessRestrictionRepository
 //{
-//  public AccessRestrictionRepository(CRMContext context) : base(context) { }
+//  public AccessRestrictionRepository(CrmContext context) : base(context) { }
 
 //  public async Task<IEnumerable<Groups>> AccessRestrictionGroupsByHrrecordId(int hrRecordId, CancellationToken cancellationToken)
 //  {

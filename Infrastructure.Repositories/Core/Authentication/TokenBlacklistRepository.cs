@@ -6,7 +6,7 @@ namespace Infrastructure.Repositories.Core.Authentication;
 
 public class TokenBlacklistRepository : RepositoryBase<TokenBlacklist>, ITokenBlacklistRepository
 {
-	public TokenBlacklistRepository(CRMContext context) : base(context) { }
+	public TokenBlacklistRepository(CrmContext context) : base(context) { }
 
 	public async Task<TokenBlacklist> AddToBlacklistAsync(TokenBlacklist token, CancellationToken cancellationToken)
 	{

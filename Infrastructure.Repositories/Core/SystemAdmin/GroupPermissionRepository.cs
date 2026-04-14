@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 {
 	public class GroupPermissionRepository : RepositoryBase<GroupPermission>, IGroupPermissionRepository
 	{
-		public GroupPermissionRepository(CRMContext context) : base(context) { }
+		public GroupPermissionRepository(CrmContext context) : base(context) { }
 
 		/// <summary>
 		/// Retrieves access permissions for the current user based on module and delegation logic.
@@ -31,7 +31,7 @@ WHERE gp.PermissionTableName = 'Access'
       FROM GroupMember gm2
       WHERE gm2.UserId IN (
           SELECT DISTINCT u.UserId
-          FROM DeligationInfo di
+          FROM DelegationInfo di
           INNER JOIN Users u ON u.EmployeeId = di.HrRecordId
           INNER JOIN Users dg ON dg.EmployeeId = di.DeligatedHrRecordId
           WHERE dg.UserId = {1}
@@ -64,12 +64,12 @@ WHERE gp.PermissionTableName = 'Access'
 //union
 //Select GroupId 
 //from GroupMember where UserId in (
-//Select distinct Users.UserId from DeligationInfo  
-//inner join Users on Users.EmployeeId = DeligationInfo.HrRecordId  
-//inner join Users Dg on Dg.EmployeeId = DeligationInfo.DeligatedHrRecordId 
-//where Dg.UserId = {1} and '{2}' between FromDate and ToDate and DeligationInfo.IsActive = 1))";
+//Select distinct Users.UserId from DelegationInfo  
+//inner join Users on Users.EmployeeId = DelegationInfo.HrRecordId  
+//inner join Users Dg on Dg.EmployeeId = DelegationInfo.DeligatedHrRecordId 
+//where Dg.UserId = {1} and '{2}' between FromDate and ToDate and DelegationInfo.IsActive = 1))";
 
-//  public GroupPermissionRepository(CRMContext context) : base(context) { }
+//  public GroupPermissionRepository(CrmContext context) : base(context) { }
 
 //  public async Task<IEnumerable<GroupPermission>> AccessPermisionForCurrentUser(int moduleId, int userId)
 //  {

@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class AccessControlRepository : RepositoryBase<AccessControl>, IAccessControlRepository
 {
-	public AccessControlRepository(CRMContext context) : base(context) { }
+	public AccessControlRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all access controls asynchronously.

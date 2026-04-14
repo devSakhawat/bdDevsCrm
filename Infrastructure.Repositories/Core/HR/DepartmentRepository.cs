@@ -10,5 +10,5 @@ namespace Infrastructure.Repositories.Core.HR;
 
 public class DepartmentRepository : RepositoryBase<Department>, IDepartmentRepository
 {
-  public DepartmentRepository(CRMContext context) : base(context) { }
+  public DepartmentRepository(CrmContext context) : base(context) { }
 }

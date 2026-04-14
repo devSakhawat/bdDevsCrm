@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmEducationHistoryRepository : RepositoryBase<CrmEducationHistory>, ICrmEducationHistoryRepository
 {
-	public CrmEducationHistoryRepository(CRMContext context) : base(context) { }
+	public CrmEducationHistoryRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmEducationHistory records by ApplicantId asynchronously.

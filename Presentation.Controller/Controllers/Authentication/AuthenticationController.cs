@@ -1,4 +1,4 @@
-﻿using Presentation.ActionFIlters;
+﻿using Presentation.ActionFilters;
 using Presentation.AuthorizeAttributes;
 using Presentation.Extensions;
 using Application.Services.Core.Infrastructure;
@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Presentation.ActionFIlters;
+using Presentation.ActionFilters;
 
 namespace Presentation.Controllers.Authentication;
 

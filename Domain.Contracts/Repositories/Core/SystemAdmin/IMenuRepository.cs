@@ -36,7 +36,7 @@ namespace Domain.Contracts.Core.SystemAdmin
 
 //public class MenuRepository : RepositoryBase<Menu>, IMenuRepository
 //{
-//	public MenuRepository(CRMContext context) : base(context) { }
+//	public MenuRepository(CrmContext context) : base(context) { }
 
 //	private const string SELECT_ALL_MENU_BY_MODULEID_QUERY = "Select * from Menu where ModuleId = {0} order by SorOrder,menuName asc";
 

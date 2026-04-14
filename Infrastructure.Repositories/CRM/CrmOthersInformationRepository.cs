@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmOthersInformationRepository : RepositoryBase<CrmOthersInformation>, ICrmOthersInformationRepository
 {
-	public CrmOthersInformationRepository(CRMContext context) : base(context) { }
+	public CrmOthersInformationRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmOthersInformation records asynchronously.

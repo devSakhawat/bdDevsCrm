@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class CurrencyRepository : RepositoryBase<CrmCurrencyInfo>, ICurrencyRepository
 {
-	public CurrencyRepository(CRMContext context) : base(context) { }
+	public CurrencyRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all currencies asynchronously.

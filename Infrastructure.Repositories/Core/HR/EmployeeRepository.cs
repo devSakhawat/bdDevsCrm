@@ -7,7 +7,7 @@ namespace Infrastructure.Repositories.Core.HR;
 
 public class EmployeeRepository : RepositoryBase<Employee>, IEmployeeRepository
 {
-	public EmployeeRepository(CRMContext context) : base(context) { }
+	public EmployeeRepository(CrmContext context) : base(context) { }
 
 
 	private const string SELECT_EMPLOYEE_BY_HRRECORDID =

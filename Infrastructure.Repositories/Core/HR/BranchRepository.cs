@@ -7,5 +7,5 @@ namespace Infrastructure.Repositories.Core.HR;
 
 public class BranchRepository : RepositoryBase<Branch>, IBranchRepository
 {
-	public BranchRepository(CRMContext context) : base(context) { }
+	public BranchRepository(CrmContext context) : base(context) { }
 }

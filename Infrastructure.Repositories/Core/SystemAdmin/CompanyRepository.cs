@@ -21,7 +21,7 @@ public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
         JOIN hierarchy y ON x.CompanyId = y.MotherId)
         SELECT * FROM hierarchy s where CompanyId <> {0} ORDER BY CompanyName";
 
-	public CompanyRepository(CRMContext context) : base(context) { }
+	public CompanyRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all companies asynchronously.

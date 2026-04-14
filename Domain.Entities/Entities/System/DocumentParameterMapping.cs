@@ -13,7 +13,7 @@ public partial class DocumentParameterMapping
 
     public bool? IsVisible { get; set; }
 
-    public virtual Documanttype? DocumentType { get; set; }
+    public virtual DocumentType? DocumentType { get; set; }
 
     public virtual DocumentParameter? Parameter { get; set; }
 }

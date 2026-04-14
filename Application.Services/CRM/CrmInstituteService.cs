@@ -295,38 +295,38 @@ internal sealed class CrmInstituteService : ICrmInstituteService
 		const string sql =
 						@"SELECT 
                     InstituteId,
-                    CRMInstitute.CountryId,
+                    CrmInstitute.CountryId,
                     InstituteName,
                     Campus,
                     Website,
                     MonthlyLivingCost,
                     FundsRequirementforVisa,
                     ApplicationFee,
-                    CRMInstitute.CurrencyId,
+                    CrmInstitute.CurrencyId,
                     IsLanguageMandatory,
                     LanguagesRequirement,
                     InstitutionalBenefits,
                     PartTimeWorkDetails,
                     ScholarshipsPolicy,
                     InstitutionStatusNotes,
-                    CRMInstitute.InstituteTypeId,
+                    CrmInstitute.InstituteTypeId,
                     InstituteCode,
                     InstituteEmail,
                     InstituteAddress,
                     InstitutePhoneNO,
                     InstituteMobileNo,
-                    CRMInstitute.Status,
+                    CrmInstitute.Status,
                     CrmCountry.CountryName,
                     CrmCurrencyInfo.CurrencyName,
-                    CRMInstituteType.InstituteTypeName,
+                    CrmInstituteType.InstituteTypeName,
                     docLogo.FilePath AS InstitutionLogo,
                     docProspectus.FilePath AS InstitutionProspectus
-                FROM CRMInstitute
-                LEFT JOIN CrmCountry ON CRMInstitute.CountryId = CrmCountry.CountryId
-                LEFT JOIN CrmCurrencyInfo ON CRMInstitute.CurrencyId = CrmCurrencyInfo.CurrencyId
-                LEFT JOIN CRMInstituteType ON CRMInstitute.InstituteTypeId = CRMInstituteType.InstituteTypeId
-                LEFT JOIN DMSDocument docLogo ON CRMInstitute.InstituteId = docLogo.ReferenceEntityId AND docLogo.SystemTag = 'InstitutionLogo'
-                LEFT JOIN DMSDocument docProspectus ON CRMInstitute.InstituteId = docProspectus.ReferenceEntityId AND docProspectus.SystemTag = 'InstitutionProspectus'";
+                FROM CrmInstitute
+                LEFT JOIN CrmCountry ON CrmInstitute.CountryId = CrmCountry.CountryId
+                LEFT JOIN CrmCurrencyInfo ON CrmInstitute.CurrencyId = CrmCurrencyInfo.CurrencyId
+                LEFT JOIN CrmInstituteType ON CrmInstitute.InstituteTypeId = CrmInstituteType.InstituteTypeId
+                LEFT JOIN DMSDocument docLogo ON CrmInstitute.InstituteId = docLogo.ReferenceEntityId AND docLogo.SystemTag = 'InstitutionLogo'
+                LEFT JOIN DMSDocument docProspectus ON CrmInstitute.InstituteId = docProspectus.ReferenceEntityId AND docProspectus.SystemTag = 'InstitutionProspectus'";
 
 		const string orderBy = "InstituteName ASC";
 

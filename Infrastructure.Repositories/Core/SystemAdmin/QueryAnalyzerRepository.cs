@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 {
 	public class QueryAnalyzerRepository : RepositoryBase<ReportBuilder>, IQueryAnalyzerRepository
 	{
-		public QueryAnalyzerRepository(CRMContext context) : base(context) { }
+		public QueryAnalyzerRepository(CrmContext context) : base(context) { }
 
 		/// <summary>
 		/// Retrieves customized report information.
@@ -85,7 +85,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 //{
 //  private const string SELECT_GROUPPERMISSION_BY_GROUPID = "Select * from GROUPPERMISSION where GROUPID = {0}";
 
-//  public QueryAnalyzerRepository(CRMContext context) : base(context) { }
+//  public QueryAnalyzerRepository(CrmContext context) : base(context) { }
 
 //  // summary data must be returned in a specific format like this.
 //  public async Task<IEnumerable<QueryAnalyzer>> CustomizedReportInfo(bool trackChanges)

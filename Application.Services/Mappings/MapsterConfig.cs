@@ -9,11 +9,8 @@ public static class MappingConfig
 {
   public static void RegisterMappings()
   {
-    // TODO: Add mapping configurations when projection types are created.
-    // Example:
-    // TypeAdapterConfig<MenuProjection, MenuDto>
-    //     .NewConfig()
-    //     .Map(dest => dest.MenuId, src => src.MenuId)
-    //     .Map(dest => dest.MenuName, src => src.MenuName);
+    // No custom mappings needed currently.
+    // The codebase uses MyMapper.JsonClone for DTO mapping.
+    // Add Mapster TypeAdapterConfig mappings here when needed for performance.
   }
 }

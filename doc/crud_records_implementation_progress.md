@@ -61,7 +61,7 @@ This document tracks the implementation of the CRUD Records pattern across all e
 
 ## 📊 System Module Entities (54 Total)
 
-### ✅ Already Completed (31/54 - 57.4%)
+### ✅ Already Completed (37/54 - 68.5%)
 1. ✅ **Company** - CompanyRecords.cs
 2. ✅ **Branch** - BranchRecords.cs
 3. ✅ **Department** - DepartmentRecords.cs
@@ -87,48 +87,48 @@ This document tracks the implementation of the CRUD Records pattern across all e
 23. ✅ **ApproverDetails** - ApproverDetailsRecords.cs
 24. ✅ **ApproverHistory** - ApproverHistoryRecords.cs
 25. ✅ **ApproverOrder** - ApproverOrderRecords.cs
-26. ✅ **ApproverType** - ApproverTypeRecords.cs (NEW - Batch 4)
-27. ✅ **ApproverTypeToGroupMapping** - ApproverTypeToGroupMappingRecords.cs (NEW - Batch 4)
-28. ✅ **AppsTokenInfo** - AppsTokenInfoRecords.cs (NEW - Batch 4)
-29. ✅ **AppsTransactionLog** - AppsTransactionLogRecords.cs (NEW - Batch 4)
-30. ✅ **AssemblyInfo** - AssemblyInfoRecords.cs (NEW - Batch 4)
-31. ✅ **AssignApprover** - AssignApproverRecords.cs (NEW - Batch 4)
+26. ✅ **ApproverType** - ApproverTypeRecords.cs
+27. ✅ **ApproverTypeToGroupMapping** - ApproverTypeToGroupMappingRecords.cs
+28. ✅ **AppsTokenInfo** - AppsTokenInfoRecords.cs
+29. ✅ **AppsTransactionLog** - AppsTransactionLogRecords.cs
+30. ✅ **AssemblyInfo** - AssemblyInfoRecords.cs
+31. ✅ **AssignApprover** - AssignApproverRecords.cs
+32. ✅ **AuditLog** - AuditLogRecords.cs (NEW - Batch 5)
+33. ✅ **AuditTrail** - AuditTrailRecords.cs (NEW - Batch 5)
+34. ✅ **AuditType** - AuditTypeRecords.cs (NEW - Batch 5)
+35. ✅ **CompanyDepartmentMap** - CompanyDepartmentMapRecords.cs (NEW - Batch 5)
+36. ✅ **CompanyLocationMap** - CompanyLocationMapRecords.cs (NEW - Batch 5)
+37. ✅ **DelegationInfo** - DelegationInfoRecords.cs (NEW - Batch 5)
 
 ### 🚧 In Progress (0/54)
 *None currently in progress*
 
-### ⏳ Pending (23/54 - 42.6%)
-1. ⏳ AuditLog
-2. ⏳ AuditTrail
-3. ⏳ AuditType
-4. ⏳ CompanyDepartmentMap
-5. ⏳ CompanyLocationMap
-6. ⏳ DelegationInfo
-7. ⏳ Docmdetails
-8. ⏳ Docmdetailshistory
-9. ⏳ Document
-10. ⏳ DocumentParameter
-11. ⏳ DocumentParameterMapping
-12. ⏳ DocumentQueryMapping
-13. ⏳ DocumentTemplate
-14. ⏳ DocumentType
-15. ⏳ Employee
-16. ⏳ GroupMember
-17. ⏳ GroupPermission
-18. ⏳ PasswordHistory
-19. ⏳ QueryAnalyzer
-20. ⏳ ReportBuilder
-21. ⏳ Timesheet
-22. ⏳ TokenBlacklist
-23. ⏳ WfAction
-24. ⏳ WfState
+### ⏳ Pending (17/54 - 31.5%)
+1. ⏳ Docmdetails
+2. ⏳ Docmdetailshistory
+3. ⏳ Document
+4. ⏳ DocumentParameter
+5. ⏳ DocumentParameterMapping
+6. ⏳ DocumentQueryMapping
+7. ⏳ DocumentTemplate
+8. ⏳ DocumentType
+9. ⏳ Employee
+10. ⏳ GroupMember
+11. ⏳ GroupPermission
+12. ⏳ PasswordHistory
+13. ⏳ QueryAnalyzer
+14. ⏳ ReportBuilder
+15. ⏳ Timesheet
+16. ⏳ TokenBlacklist
+17. ⏳ WfAction
+18. ⏳ WfState
 
 ---
 
 ## 📝 Progress by Task Type
 
 ### Records Generation
-- **Completed**: 81/267 (30.3%)
+- **Completed**: 99/267 (37.1%)
   - CountryRecords.cs ✅
   - MenuRecords.cs ✅
   - GroupRecords.cs ✅
@@ -154,13 +154,19 @@ This document tracks the implementation of the CRUD Records pattern across all e
   - ApproverDetailsRecords.cs ✅
   - ApproverHistoryRecords.cs ✅
   - ApproverOrderRecords.cs ✅
-  - ApproverTypeRecords.cs ✅ (Batch 4)
-  - ApproverTypeToGroupMappingRecords.cs ✅ (Batch 4)
-  - AppsTokenInfoRecords.cs ✅ (Batch 4)
-  - AppsTransactionLogRecords.cs ✅ (Batch 4)
-  - AssemblyInfoRecords.cs ✅ (Batch 4)
-  - AssignApproverRecords.cs ✅ (Batch 4)
-- **Pending**: 186/267 (69.7%)
+  - ApproverTypeRecords.cs ✅
+  - ApproverTypeToGroupMappingRecords.cs ✅
+  - AppsTokenInfoRecords.cs ✅
+  - AppsTransactionLogRecords.cs ✅
+  - AssemblyInfoRecords.cs ✅
+  - AssignApproverRecords.cs ✅
+  - AuditLogRecords.cs ✅ (Batch 5)
+  - AuditTrailRecords.cs ✅ (Batch 5)
+  - AuditTypeRecords.cs ✅ (Batch 5)
+  - CompanyDepartmentMapRecords.cs ✅ (Batch 5)
+  - CompanyLocationMapRecords.cs ✅ (Batch 5)
+  - DelegationInfoRecords.cs ✅ (Batch 5)
+- **Pending**: 168/267 (62.9%)
 
 ### FluentValidation Setup
 - **Completed**: 0/89 (0%)

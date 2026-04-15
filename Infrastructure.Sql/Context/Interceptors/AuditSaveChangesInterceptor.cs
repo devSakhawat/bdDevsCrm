@@ -1,4 +1,4 @@
-﻿using bdDevCRM.Entities.Common;
+﻿using Domain.Entities.Entities.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;

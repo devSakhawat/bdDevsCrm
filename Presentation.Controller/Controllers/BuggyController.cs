@@ -1,6 +1,6 @@
-﻿using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
+﻿using Domain.Contracts.Services;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 

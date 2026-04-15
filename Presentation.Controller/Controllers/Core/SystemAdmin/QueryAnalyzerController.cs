@@ -1,9 +1,9 @@
-﻿using bdDevCRM.Presentation.AuthorizeAttributes;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Utilities.Constants;
+﻿using Presentation.AuthorizeAttributes;
+using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
+using bdDevs.Shared.Constants;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -20,7 +20,7 @@ public class QueryAnalyzerController : BaseApiController
 	}
 
 	//[HttpPost(RouteConstants.GroupSummary)]
-	//public async Task<IActionResult> GroupSummary([FromBody] CRMGridOptions options)
+	//public async Task<IActionResult> GroupSummary([FromBody] GridOptions options)
 	//{
 	//  var groupSummary = await _serviceManager.Groups.GroupSummary(trackChanges: false, options);
 	//  return (groupSummary != null) ? Ok(groupSummary) : NoContent();

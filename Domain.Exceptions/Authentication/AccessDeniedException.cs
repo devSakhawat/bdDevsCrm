@@ -1,4 +1,4 @@
-﻿using Domain.Exceptions.Forbidden_403;
+﻿using Domain.Exceptions.Forbidden;
 
 namespace Domain.Exceptions.Authentication;
 

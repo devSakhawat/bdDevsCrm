@@ -1,8 +1,8 @@
-﻿using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.HR;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Utilities.Constants;
+﻿using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.HR;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;

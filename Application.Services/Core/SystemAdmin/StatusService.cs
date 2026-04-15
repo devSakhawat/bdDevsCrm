@@ -1,14 +1,15 @@
-using bdDevCRM.Entities.Entities.CRM;
+using bdDevs.Shared.Constants;
+using Domain.Entities.Entities.CRM;
 using Domain.Entities.Entities.System;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Application.Services.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
-using bdDevCRM.Shared.Exceptions;
+using Domain.Exceptions;
 using Domain.Contracts.Repositories;
 using Application.Shared.Grid;
-using bdDevCRM.Utilities.OthersLibrary;
+using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 

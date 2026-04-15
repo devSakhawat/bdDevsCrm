@@ -1,4 +1,5 @@
-﻿using bdDevCRM.ServiceContract.Core.Infrastructure;
+using Domain.Contracts.Services.Core.Infrastructure;
+﻿using Application.Services.Core.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;

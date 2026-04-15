@@ -1,13 +1,13 @@
-using bdDevCRM.Presentation.AuthorizeAttributes;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Utilities.Constants;
-using bdDevCRM.Utilities.CRMGrid.GRID;
+using Presentation.AuthorizeAttributes;
+using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
+using bdDevs.Shared.Constants;
+using Application.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Presentation.ActionFIlters;
+using Presentation.ActionFilters;
 
 namespace Presentation.Controllers.Core.SystemAdmin;
 
@@ -92,10 +92,10 @@ public class GroupController : BaseApiController
 	/// [Largest Data Volume] POST: /bdDevs-crm/group-summary
 	/// </summary>
 	[HttpPost(RouteConstants.GroupSummary)]
-	public async Task<IActionResult> GroupSummaryAsync( [FromBody] CRMGridOptions options, CancellationToken cancellationToken = default)
+	public async Task<IActionResult> GroupSummaryAsync( [FromBody] GridOptions options, CancellationToken cancellationToken = default)
 	{
 		if (options == null)
-			throw new NullModelBadRequestException(nameof(CRMGridOptions));
+			throw new NullModelBadRequestException(nameof(GridOptions));
 
 		var groupSummary = await _serviceManager.Groups.GroupSummaryAsync( trackChanges: false, options, cancellationToken: cancellationToken);
 
@@ -178,19 +178,19 @@ public class GroupController : BaseApiController
 	#endregion ── Read Operations End ─────────────────────────────
 }
 
-//using bdDevCRM.Presentation.ActionFilters;
-//using bdDevCRM.Presentation.AuthorizeAttributes;
-//using bdDevCRM.Presentation.LinkFactories;
-//using bdDevCRM.ServicesContract;
-//using bdDevCRM.Shared.ApiResponse;
-//using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Shared.Exceptions;
-//using bdDevCRM.Utilities.Constants;
-//using bdDevCRM.Utilities.CRMGrid.GRID;
+//using Presentation.ActionFilters;
+//using Presentation.AuthorizeAttributes;
+//using Presentation.LinkFactories;
+//using Domain.Contracts.Services;
+//using bdDevs.Shared;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+//using Domain.Exceptions;
+//using bdDevs.Shared.Constants;
+//using Application.Shared.Grid;
 //using Microsoft.AspNetCore.Mvc;
 //using Microsoft.Extensions.Caching.Memory;
 
-//namespace bdDevCRM.Presentation.Controllers.Core.SystemAdmin;
+//namespace Presentation.Controllers.Core.SystemAdmin;
 
 ///// <summary>
 ///// Group management endpoints.
@@ -217,10 +217,10 @@ public class GroupController : BaseApiController
 //    /// Retrieves paginated summary grid of groups.
 //    /// </summary>
 //    [HttpPost(RouteConstants.GroupSummary)]
-//    public async Task<IActionResult> GroupSummaryAsync([FromBody] CRMGridOptions options)
+//    public async Task<IActionResult> GroupSummaryAsync([FromBody] GridOptions options)
 //    {
 //        if (options == null)
-//            throw new NullModelBadRequestException(nameof(CRMGridOptions));
+//            throw new NullModelBadRequestException(nameof(GridOptions));
 
 //        var groupSummary = await _serviceManager.Groups.GroupSummaryAsync(trackChanges: false, options);
 

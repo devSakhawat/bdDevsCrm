@@ -1,4 +1,4 @@
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Microsoft.AspNetCore.Http;
 
 namespace Presentation.Extensions
@@ -32,11 +32,11 @@ namespace Presentation.Extensions
 
 
 
-//using bdDevCRM.ServicesContract;
-//using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
+//using Domain.Contracts.Services;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 //using System.Security.Claims;
 
-//namespace bdDevCRM.Api.Extensions;
+//namespace Presentation.Api.Extensions;
 
 //public static class HttpContextExtensions
 //{

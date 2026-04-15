@@ -1,5 +1,5 @@
 ﻿// IDmsDocumentAccessLogService.cs
-using bdDevCRM.Shared.DataTransferObjects.DMS;
+using bdDevs.Shared.DataTransferObjects.DMS;
 using Application.Shared.Grid;
 
 namespace Domain.Contracts.Services.DMS;
@@ -80,14 +80,14 @@ public interface IDmsDocumentAccessLogService
 }
 
 //using Application.Shared.Grid;
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
+//using bdDevs.Shared.DataTransferObjects.DMS;
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.ServiceContract.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 //public interface IDmsDocumentAccessLogService
 //{

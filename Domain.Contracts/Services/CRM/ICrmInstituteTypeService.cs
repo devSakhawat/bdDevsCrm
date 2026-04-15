@@ -17,11 +17,11 @@ public interface ICrmInstituteTypeService
 	/// <param name="entityForCreate">The DTO containing data for the new institute type.</param>
 	/// <param name="currentUser">The DTO containing current user information.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The created <see cref="CRMInstituteTypeDto"/> with the newly assigned ID.</returns>
+	/// <returns>The created <see cref="CrmInstituteTypeDto"/> with the newly assigned ID.</returns>
 	/// <exception cref="BadRequestException">Thrown when <paramref name="entityForCreate"/> is null.</exception>
 	/// <exception cref="InvalidCreateOperationException">Thrown when InstituteTypeId is not 0 for new creation.</exception>
 	/// <exception cref="DuplicateRecordException">Thrown when an institute type with the same name already exists.</exception>
-	Task<CRMInstituteTypeDto> CreateInstituteTypeAsync(CRMInstituteTypeDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default);
+	Task<CrmInstituteTypeDto> CreateInstituteTypeAsync(CrmInstituteTypeDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Updates an existing institute type record.
@@ -30,11 +30,11 @@ public interface ICrmInstituteTypeService
 	/// <param name="modelDto">The DTO containing updated field values.</param>
 	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The updated <see cref="CRMInstituteTypeDto"/> reflecting the saved state.</returns>
+	/// <returns>The updated <see cref="CrmInstituteTypeDto"/> reflecting the saved state.</returns>
 	/// <exception cref="BadRequestException">Thrown when <paramref name="modelDto"/> is null.</exception>
 	/// <exception cref="BadRequestException">Thrown when route ID does not match DTO ID.</exception>
 	/// <exception cref="NotFoundException">Thrown when no institute type is found for the given ID.</exception>
-	Task<CRMInstituteTypeDto> UpdateInstituteTypeAsync(int instituteTypeId, CRMInstituteTypeDto modelDto, bool trackChanges, CancellationToken cancellationToken = default);
+	Task<CrmInstituteTypeDto> UpdateInstituteTypeAsync(int instituteTypeId, CrmInstituteTypeDto modelDto, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Deletes an institute type record identified by the given ID.
@@ -52,23 +52,23 @@ public interface ICrmInstituteTypeService
 	/// </summary>
 	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>A collection of all <see cref="CRMInstituteTypeDto"/> records.</returns>
-	Task<IEnumerable<CRMInstituteTypeDto>> InstituteTypesAsync(bool trackChanges, CancellationToken cancellationToken = default);
+	/// <returns>A collection of all <see cref="CrmInstituteTypeDto"/> records.</returns>
+	Task<IEnumerable<CrmInstituteTypeDto>> InstituteTypesAsync(bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Retrieves a lightweight list of all institute types suitable for use in dropdown lists.
 	/// </summary>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>A collection of <see cref="CRMInstituteTypeDto"/> for dropdown binding.</returns>
-	Task<IEnumerable<CRMInstituteTypeDto>> InstituteTypeForDDLAsync(CancellationToken cancellationToken = default);
+	/// <returns>A collection of <see cref="CrmInstituteTypeDto"/> for dropdown binding.</returns>
+	Task<IEnumerable<CrmInstituteTypeDto>> InstituteTypeForDDLAsync(CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Retrieves a paginated summary grid of all institute types.
 	/// </summary>
 	/// <param name="options">The grid options including pagination, filtering, and sorting parameters.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>A <see cref="GridEntity{CRMInstituteTypeDto}"/> containing the paged institute type data.</returns>
-	Task<GridEntity<CRMInstituteTypeDto>> InstituteTypesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default);
+	/// <returns>A <see cref="GridEntity{CrmInstituteTypeDto}"/> containing the paged institute type data.</returns>
+	Task<GridEntity<CrmInstituteTypeDto>> InstituteTypesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Saves an institute type record (create or update).
@@ -77,21 +77,21 @@ public interface ICrmInstituteTypeService
 	/// <param name="modelDto">The DTO containing institute type data.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
 	/// <returns>A message indicating the result of the operation.</returns>
-	Task<string> SaveOrUpdateInstituteTypeAsync(int instituteTypeId, CRMInstituteTypeDto modelDto, CancellationToken cancellationToken = default);
+	Task<string> SaveOrUpdateInstituteTypeAsync(int instituteTypeId, CrmInstituteTypeDto modelDto, CancellationToken cancellationToken = default);
 }
 
 
 //using bdDevs.Shared.DataTransferObjects.CRM;
 //using Application.Shared.Grid;
 
-//namespace bdDevCRM.ServiceContract.CRM;
+//namespace Domain.Contracts.Services.CRM;
 
 //public interface ICrmInstituteTypeService
 //{
-//	Task<IEnumerable<CRMInstituteTypeDto>> InstituteTypesDDLAsync(bool trackChanges = false);
-//	Task<GridEntity<CRMInstituteTypeDto>> SummaryGrid(GridOptions options);
-//	Task<string> CreateNewRecordAsync(CRMInstituteTypeDto dto);
-//	Task<string> UpdateRecordAsync(int key, CRMInstituteTypeDto dto, bool trackChanges);
-//	Task<string> DeleteRecordAsync(int key, CRMInstituteTypeDto dto);
-//	Task<string> SaveOrUpdateAsync(int key, CRMInstituteTypeDto dto);
+//	Task<IEnumerable<CrmInstituteTypeDto>> InstituteTypesDDLAsync(bool trackChanges = false);
+//	Task<GridEntity<CrmInstituteTypeDto>> SummaryGrid(GridOptions options);
+//	Task<string> CreateNewRecordAsync(CrmInstituteTypeDto dto);
+//	Task<string> UpdateRecordAsync(int key, CrmInstituteTypeDto dto, bool trackChanges);
+//	Task<string> DeleteRecordAsync(int key, CrmInstituteTypeDto dto);
+//	Task<string> SaveOrUpdateAsync(int key, CrmInstituteTypeDto dto);
 //}

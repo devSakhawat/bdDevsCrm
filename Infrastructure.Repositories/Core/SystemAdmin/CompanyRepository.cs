@@ -1,7 +1,7 @@
 using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin;
 
@@ -21,7 +21,7 @@ public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
         JOIN hierarchy y ON x.CompanyId = y.MotherId)
         SELECT * FROM hierarchy s where CompanyId <> {0} ORDER BY CompanyName";
 
-	public CompanyRepository(CRMContext context) : base(context) { }
+	public CompanyRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all companies asynchronously.

@@ -1,8 +1,8 @@
-﻿using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Shared.Exceptions.BaseException;
-using bdDevCRM.Utilities.Constants;
+﻿using Domain.Contracts.Services;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
+using Domain.Exceptions;
+using bdDevs.Shared.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;

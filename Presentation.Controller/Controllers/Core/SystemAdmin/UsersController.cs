@@ -1,13 +1,13 @@
-using bdDevCRM.Presentation.AuthorizeAttributes;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Utilities.Constants;
-using bdDevCRM.Utilities.CRMGrid.GRID;
+using Presentation.AuthorizeAttributes;
+using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
+using bdDevs.Shared.Constants;
+using Application.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Presentation.ActionFIlters;
+using Presentation.ActionFilters;
 
 namespace Presentation.Controllers.Core.SystemAdmin;
 
@@ -97,7 +97,7 @@ public class UsersController : BaseApiController
 	/// </summary>
 	[HttpPost(RouteConstants.UserSummary)]
 	public async Task<IActionResult> UserSummaryAsync(
-			[FromBody] CRMGridOptions options,
+			[FromBody] GridOptions options,
 			[FromQuery] int companyId,
 			CancellationToken cancellationToken = default)
 	{
@@ -158,19 +158,19 @@ public class UsersController : BaseApiController
 }
 
 
-//using bdDevCRM.Presentation.ActionFilters;
-//using bdDevCRM.Presentation.AuthorizeAttributes;
-//using bdDevCRM.Presentation.LinkFactories;
-//using bdDevCRM.ServicesContract;
-//using bdDevCRM.Shared.ApiResponse;
-//using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Shared.Exceptions;
-//using bdDevCRM.Utilities.Constants;
-//using bdDevCRM.Utilities.CRMGrid.GRID;
+//using Presentation.ActionFilters;
+//using Presentation.AuthorizeAttributes;
+//using Presentation.LinkFactories;
+//using Domain.Contracts.Services;
+//using bdDevs.Shared;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+//using Domain.Exceptions;
+//using bdDevs.Shared.Constants;
+//using Application.Shared.Grid;
 //using Microsoft.AspNetCore.Mvc;
 //using Microsoft.Extensions.Caching.Memory;
 
-//namespace bdDevCRM.Presentation.Controllers.Core.SystemAdmin;
+//namespace Presentation.Controllers.Core.SystemAdmin;
 
 ///// <summary>
 ///// User management endpoints.
@@ -197,7 +197,7 @@ public class UsersController : BaseApiController
 //    /// Retrieves paginated summary grid of users.
 //    /// </summary>
 //    [HttpPost(RouteConstants.UserSummary)]
-//    public async Task<IActionResult> UserSummaryAsync([FromBody] CRMGridOptions options, [FromQuery] int companyId)
+//    public async Task<IActionResult> UserSummaryAsync([FromBody] GridOptions options, [FromQuery] int companyId)
 //    {
 //        var summaryGrid = await _serviceManager.Users.UserSummaryAsync(companyId, trackChanges: false, options);
 

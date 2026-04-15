@@ -1,13 +1,13 @@
-﻿using bdDevCRM.Presentation.AuthorizeAttributes;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Utilities.Constants;
-using bdDevCRM.Utilities.CRMGrid.GRID;
+﻿using Presentation.AuthorizeAttributes;
+using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
+using bdDevs.Shared.Constants;
+using Application.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Presentation.ActionFIlters;
+using Presentation.ActionFilters;
 using Presentation.LinkFactories;
 
 namespace Presentation.Controllers.Core.SystemAdmin;
@@ -42,9 +42,7 @@ public class MenuController : BaseApiController
 		if (model.MenuId <= 0)
 			throw new InvalidCreateOperationException("Failed to create menu record.");
 
-		//return Ok(ApiResponseHelper.Created(model, "Menu created successfully."));
-		//return CreatedResponse(data:model, "Menu created successfully.");
-		return CreatedResponse();
+		return CreatedResponse(model, "Menu created successfully.");
   }
 
 	[HttpPut(RouteConstants.UpdateMenu)]
@@ -70,7 +68,7 @@ public class MenuController : BaseApiController
 	///  menu summary with pagination + HATEOAS
 	/// </summary>
 	[HttpPost(RouteConstants.MenuSummary)]
-	public async Task<IActionResult> MenuSummary([FromBody] CRMGridOptions options, CancellationToken cancellationToken = default)
+	public async Task<IActionResult> MenuSummary([FromBody] GridOptions options, CancellationToken cancellationToken = default)
 	{
 		//var res = await _serviceManager.Menus.MenuSummary(trackChanges: false, options);
 
@@ -209,21 +207,21 @@ public class MenuController : BaseApiController
 
 
 
-//using bdDevCRM.Presentation.AuthorizeAttributes;
-//using bdDevCRM.Presentation.Extensions;
-//using bdDevCRM.ServicesContract;
-//using bdDevCRM.Shared.ApiResponse;
-//using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Shared.Exceptions;
-//using bdDevCRM.Utilities.Constants;
-//using bdDevCRM.Utilities.CRMGrid.GRID;
+//using Presentation.AuthorizeAttributes;
+//using Presentation.Extensions;
+//using Domain.Contracts.Services;
+//using bdDevs.Shared;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+//using Domain.Exceptions;
+//using bdDevs.Shared.Constants;
+//using Application.Shared.Grid;
 //using Microsoft.AspNetCore.Authentication.JwtBearer;
 //using Microsoft.AspNetCore.Authorization;
 //using Microsoft.AspNetCore.Mvc;
 //using Microsoft.Extensions.Caching.Memory;
 //using Microsoft.IdentityModel.Tokens;
 
-//namespace bdDevCRM.Presentation.Controllers.Core.SystemAdmin;
+//namespace Presentation.Controllers.Core.SystemAdmin;
 
 
 ///// <summary>
@@ -331,7 +329,7 @@ public class MenuController : BaseApiController
 //	/// <param name="options"></param>
 //	/// <returns></returns>
 //	[HttpPost(RouteConstants.MenuSummary)]
-//	public async Task<IActionResult> MenuSummary([FromBody] CRMGridOptions options)
+//	public async Task<IActionResult> MenuSummary([FromBody] GridOptions options)
 //	{
 //		//var currentUser = HttpContext.CurrentUser();
 //		//var userId = HttpContext.UserId();

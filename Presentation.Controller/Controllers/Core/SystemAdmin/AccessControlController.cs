@@ -1,13 +1,13 @@
-using bdDevCRM.Presentation.AuthorizeAttributes;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Utilities.Constants;
-using bdDevCRM.Utilities.CRMGrid.GRID;
+using Presentation.AuthorizeAttributes;
+using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
+using bdDevs.Shared.Constants;
+using Application.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Presentation.ActionFIlters;
+using Presentation.ActionFilters;
 using Presentation.LinkFactories;
 
 namespace Presentation.Controllers.Core.SystemAdmin;
@@ -37,10 +37,10 @@ public class AccessControlController : BaseApiController
     /// Retrieves paginated summary grid of access controls.
     /// </summary>
     [HttpPost(RouteConstants.AccessControlSummary)]
-    public async Task<IActionResult> AccessControlSummaryAsync([FromBody] CRMGridOptions options)
+    public async Task<IActionResult> AccessControlSummaryAsync([FromBody] GridOptions options)
     {
         if (options == null)
-            throw new NullModelBadRequestException(nameof(CRMGridOptions));
+            throw new NullModelBadRequestException(nameof(GridOptions));
 
         var summaryGrid = await _serviceManager.AccessControls.SummaryAsync(trackChanges: false, options);
 

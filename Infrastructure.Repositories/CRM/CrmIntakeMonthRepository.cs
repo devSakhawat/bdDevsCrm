@@ -1,6 +1,6 @@
-using bdDevCRM.Entities.Entities.CRM;
-using bdDevCRM.RepositoriesContracts.CRM;
-using bdDevCRM.Sql.Context;
+using Domain.Entities.Entities.CRM;
+using Domain.Contracts.CRM;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.CRM;
 
@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmIntakeMonthRepository : RepositoryBase<CrmIntakeMonth>, ICrmIntakeMonthRepository
 {
-	public CrmIntakeMonthRepository(CRMContext context) : base(context) { }
+	public CrmIntakeMonthRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmIntakeMonth records asynchronously.

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Reflection;
 
-namespace bdDevCRM.Utilities.OthersLibrary;
+namespace Application.Services.Mappings;
 
 /// <summary>
 /// Provides object mapping, cloning, and partial update utilities using reflection and JSON serialization.

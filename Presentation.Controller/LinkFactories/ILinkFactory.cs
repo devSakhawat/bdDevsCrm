@@ -1,4 +1,4 @@
-﻿using bdDevCRM.Shared.ApiResponse;
+﻿using bdDevs.Shared;
 
 namespace Presentation.LinkFactories;
 

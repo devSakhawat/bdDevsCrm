@@ -6,7 +6,7 @@ using Domain.Contracts.Repositories;
 using Domain.Contracts.Services.Core.SystemAdmin;
 using Domain.Entities.Entities.CRM;
 using Domain.Exceptions;
-using Domain.Exceptions.Domain_Specific_Exceptions;
+using Domain.Exceptions.DomainSpecific;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 

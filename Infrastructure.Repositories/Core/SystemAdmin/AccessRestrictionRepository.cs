@@ -1,13 +1,13 @@
 ﻿using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 public class AccessRestrictionRepository : RepositoryBase<AccessRestriction>, IAccessRestrictionRepository
 {
-	public AccessRestrictionRepository(CRMContext context) : base(context) { }
+	public AccessRestrictionRepository(CrmContext context) : base(context) { }
 
 	#region Priority 1: Basic Retrieval (EF Core)
 
@@ -121,21 +121,21 @@ where HRRecordId = {0}", hrRecordId);
 
 
 
-//using bdDevCRM.Entities.Entities;
+//using Domain.Entities.Entities;
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-//using bdDevCRM.s.Core.SystemAdmin;
-//using bdDevCRM.Sql.Context;
+//using Domain.Contracts.Core.SystemAdmin;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+//using Infrastructure.Sql.Context;
 //using System.Data;
 //using System.Text.RegularExpressions;
 //using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-//namespace bdDevCRM.Repositories.Core.SystemAdmin;
+//namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 
 //public class AccessRestrictionRepository : RepositoryBase<AccessRestriction>, IAccessRestrictionRepository
 //{
-//  public AccessRestrictionRepository(CRMContext context) : base(context) { }
+//  public AccessRestrictionRepository(CrmContext context) : base(context) { }
 
 //  public async Task<IEnumerable<Groups>> AccessRestrictionGroupsByHrrecordId(int hrRecordId, CancellationToken cancellationToken)
 //  {

@@ -113,7 +113,7 @@ public interface ICrmCourseService
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 //using bdDevs.Shared.DataTransferObjects.CRM;
 //using Application.Shared.Grid;
-//namespace bdDevCRM.ServiceContract.CRM;
+//namespace Domain.Contracts.Services.CRM;
 
 //public interface ICrmCourseService
 //{

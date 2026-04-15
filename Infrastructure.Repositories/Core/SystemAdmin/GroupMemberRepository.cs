@@ -1,15 +1,15 @@
 ﻿
 // Class: GroupMemberRepository
 using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 public class GroupMemberRepository : RepositoryBase<GroupMember>, IGroupMemberRepository
 {
-	public GroupMemberRepository(CRMContext context) : base(context) { }
+	public GroupMemberRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves group members by user ID using raw SQL.
@@ -25,19 +25,19 @@ public class GroupMemberRepository : RepositoryBase<GroupMember>, IGroupMemberRe
 
 
 
-//using bdDevCRM.Entities.Entities;
+//using Domain.Entities.Entities;
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-//using bdDevCRM.s.Core.SystemAdmin;
-//using bdDevCRM.Sql.Context;
+//using Domain.Contracts.Core.SystemAdmin;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+//using Infrastructure.Sql.Context;
 
-//namespace bdDevCRM.Repositories.Core.SystemAdmin;
+//namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 //public class GroupMemberRepository : RepositoryBase<GroupMember>, IGroupMemberRepository
 //{
 //  private const string SELECT_GROUPMEMBER_BY_USERID = "Select * from GroupMember where UserId = {0}";
 
-//  public GroupMemberRepository(CRMContext context) : base(context) { }
+//  public GroupMemberRepository(CrmContext context) : base(context) { }
 
 //  // Group Member by UserId for user settings.
 //  public async Task<IEnumerable<GroupMember>> GroupMemberByUserId(int userId, bool trackChanges)

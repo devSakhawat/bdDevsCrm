@@ -54,7 +54,7 @@ public interface ICrmIntakeMonthRepository : IRepositoryBase<CrmIntakeMonth>
 
 //using Domain.Entities.Entities.CRM;
 
-//namespace bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//namespace Domain.Contracts.Core.SystemAdmin;
 
 //public interface ICrmIntakeMonthRepository : IRepositoryBase<CrmIntakeMonth>
 //{

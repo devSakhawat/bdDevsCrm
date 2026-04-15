@@ -1,16 +1,17 @@
+using bdDevs.Shared.Constants;
 ﻿
 
 
 //using Application.Shared.Grid;
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.Entities.Entities.DMS;
+//using Domain.Entities.Entities.DMS;
 //
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.ServiceContract.DMS;
+//using Domain.Contracts.Services.DMS;
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
+//using bdDevs.Shared.DataTransferObjects.DMS;
 //using Domain.Contracts.Repositories;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.Extensions.Configuration;
 //using System;
@@ -20,7 +21,7 @@
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.Service.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 //internal sealed class DmsDocumentService2 : IDmsDocumentService2
 //{
@@ -196,7 +197,7 @@
 //      {
 //        FolderName = dmsDto.ReferenceEntityType,
 //        OwnerId = null, // OwnerId: Folder Owner.
-//        ReferenceEntityType = dmsDto.ReferenceEntityType, // e.g., "Crminstitute"
+//        ReferenceEntityType = dmsDto.ReferenceEntityType, // e.g., "CrmInstitute"
 //        ReferenceEntityId = "0"
 //      };
 //      Parent folder has no ReferenceEntityId ,OwnerId, and ParentFolderId
@@ -214,16 +215,16 @@
 //        ParentFolderId = parentFolder.ParentFolderId,
 //        FolderName = dmsDto.ReferenceEntityType,
 //        OwnerId = dmsDto.OwnerUserId.ToString(),
-//        ReferenceEntityType = dmsDto.ReferenceEntityType, // e.g., "Crminstitute"
-//        ReferenceEntityId = dmsDto.ReferenceEntityId // e.g., "1" (for Crminstitute)
+//        ReferenceEntityType = dmsDto.ReferenceEntityType, // e.g., "CrmInstitute"
+//        ReferenceEntityId = dmsDto.ReferenceEntityId // e.g., "1" (for CrmInstitute)
 //      };
 //      dmsDocumentFolder.FolderId = await _repository.DmsDocumentFolders.CreateAndIdAsync(dmsDocumentFolder);
 //    }
 
 //    2.1.Find or create parent folder(e.g., "Institute")
 //    string rootPath = Path.Combine(Directory.CurrentDirectory(), "wwwroot");
-//    folderPath = "wwwroot/Uploads/students/CRMInstitute/1/passport/"
-//     wwwroot / Uploads / EntityName(CRMInstitute, CRMCourse, Student, Agent, like controller / entity) / 1(record or data: like studentIdentity, crnIntituteIdency, CrmCourseIdentity) / DocumentType(like: student(passport, nid, accademic certificate || institute: logo, photo, procpectus etc))
+//    folderPath = "wwwroot/Uploads/students/CrmInstitute/1/passport/"
+//     wwwroot / Uploads / EntityName(CrmInstitute, CrmCourse, Student, Agent, like controller / entity) / 1(record or data: like studentIdentity, crnIntituteIdency, CrmCourseIdentity) / DocumentType(like: student(passport, nid, accademic certificate || institute: logo, photo, procpectus etc))
 //    string folderPath = Path.Combine(rootPath, "Uploads", dmsDto.ReferenceEntityType, dmsDto.ReferenceEntityId, dmsDto.DocumentType);
 //    if (!Directory.Exists(folderPath)) Directory.CreateDirectory(folderPath);
 
@@ -358,13 +359,13 @@
 
 
 //using Application.Shared.Grid;
-//using bdDevCRM.Entities.Entities.DMS;
+//using Domain.Entities.Entities.DMS;
 //
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.ServiceContract.DMS;
-//using bdDevCRM.Shared.DataTransferObjects.DMS;
+//using Domain.Contracts.Services.DMS;
+//using bdDevs.Shared.DataTransferObjects.DMS;
 //using Domain.Contracts.Repositories;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.Extensions.Configuration;
 //using System;
 //using System.Collections.Generic;
@@ -372,7 +373,7 @@
 //using System.Text;
 //using System.Threading.Tasks;
 
-//namespace bdDevCRM.Service.DMS;
+//namespace Domain.Contracts.Services.DMS;
 
 //internal sealed class DmsDocumentService2 : IDmsDocumentService2
 //{

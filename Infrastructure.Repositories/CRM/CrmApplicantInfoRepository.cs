@@ -1,6 +1,6 @@
-using bdDevCRM.Entities.Entities.CRM;
-using bdDevCRM.RepositoriesContracts.CRM;
-using bdDevCRM.Sql.Context;
+using Domain.Entities.Entities.CRM;
+using Domain.Contracts.CRM;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.CRM;
 
@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmApplicantInfoRepository : RepositoryBase<CrmApplicantInfo>, ICrmApplicantInfoRepository
 {
-	public CrmApplicantInfoRepository(CRMContext context) : base(context) { }
+	public CrmApplicantInfoRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmApplicantInfo records asynchronously.

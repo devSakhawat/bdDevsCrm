@@ -1,13 +1,14 @@
+using bdDevs.Shared.Constants;
 // CrmInstituteTypeService.cs
-using bdDevCRM.Entities.Entities.CRM;
+using Domain.Entities.Entities.CRM;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.ServicesContract.CRM;
+using Domain.Contracts.Services.CRM;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
+using Domain.Exceptions;
 using Domain.Contracts.Repositories;
 using Application.Shared.Grid;
-using bdDevCRM.Utilities.OthersLibrary;
+using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -36,10 +37,10 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	/// <summary>
 	/// Creates a new institute type record.
 	/// </summary>
-	public async Task<CRMInstituteTypeDto> CreateInstituteTypeAsync(CRMInstituteTypeDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default)
+	public async Task<CrmInstituteTypeDto> CreateInstituteTypeAsync(CrmInstituteTypeDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default)
 	{
 		if (entityForCreate is null)
-			throw new BadRequestException(nameof(CRMInstituteTypeDto));
+			throw new BadRequestException(nameof(CrmInstituteTypeDto));
 
 		if (entityForCreate.InstituteTypeId != 0)
 			throw new InvalidCreateOperationException("InstituteTypeId must be 0 for new record.");
@@ -55,7 +56,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 		_logger.LogInformation("Creating new institute type. Name: {InstituteTypeName}, Time: {Time}",
 						entityForCreate.InstituteTypeName, DateTime.UtcNow);
 
-		var instituteTypeEntity = MyMapper.JsonClone<CRMInstituteTypeDto, CrmInstituteType>(entityForCreate);
+		var instituteTypeEntity = MyMapper.JsonClone<CrmInstituteTypeDto, CrmInstituteType>(entityForCreate);
 		//instituteTypeEntity.CreatedDate = DateTime.UtcNow;
 		//instituteTypeEntity.CreatedBy = currentUser.UserId ?? 0;
 
@@ -68,19 +69,19 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 		_logger.LogInformation("Institute type created successfully. ID: {InstituteTypeId}, Time: {Time}",
 						instituteTypeEntity.InstituteTypeId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmInstituteType, CRMInstituteTypeDto>(instituteTypeEntity);
+		return MyMapper.JsonClone<CrmInstituteType, CrmInstituteTypeDto>(instituteTypeEntity);
 	}
 
 	/// <summary>
 	/// Updates an existing institute type record.
 	/// </summary>
-	public async Task<CRMInstituteTypeDto> UpdateInstituteTypeAsync(int instituteTypeId, CRMInstituteTypeDto modelDto, bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task<CrmInstituteTypeDto> UpdateInstituteTypeAsync(int instituteTypeId, CrmInstituteTypeDto modelDto, bool trackChanges, CancellationToken cancellationToken = default)
 	{
 		if (modelDto is null)
-			throw new BadRequestException(nameof(CRMInstituteTypeDto));
+			throw new BadRequestException(nameof(CrmInstituteTypeDto));
 
 		if (instituteTypeId != modelDto.InstituteTypeId)
-			throw new BadRequestException(instituteTypeId.ToString(), nameof(CRMInstituteTypeDto));
+			throw new BadRequestException(instituteTypeId.ToString(), nameof(CrmInstituteTypeDto));
 
 		_logger.LogInformation("Updating institute type. ID: {InstituteTypeId}, Time: {Time}", instituteTypeId, DateTime.UtcNow);
 
@@ -88,7 +89,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 						.FirstOrDefaultAsync(x => x.InstituteTypeId == instituteTypeId, trackChanges: false, cancellationToken)
 						?? throw new NotFoundException("InstituteType", "InstituteTypeId", instituteTypeId.ToString());
 
-		var updatedEntity = MyMapper.MergeChangedValues<CrmInstituteType, CRMInstituteTypeDto>(instituteTypeEntity, modelDto);
+		var updatedEntity = MyMapper.MergeChangedValues<CrmInstituteType, CrmInstituteTypeDto>(instituteTypeEntity, modelDto);
 		//updatedEntity.UpdatedDate = DateTime.UtcNow;
 
 		_repository.CrmInstituteTypes.UpdateByState(updatedEntity);
@@ -100,7 +101,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 		_logger.LogInformation("Institute type updated successfully. ID: {InstituteTypeId}, Time: {Time}",
 						instituteTypeId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmInstituteType, CRMInstituteTypeDto>(updatedEntity);
+		return MyMapper.JsonClone<CrmInstituteType, CrmInstituteTypeDto>(updatedEntity);
 	}
 
 	/// <summary>
@@ -109,7 +110,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	public async Task<int> DeleteInstituteTypeAsync(int instituteTypeId, bool trackChanges, CancellationToken cancellationToken = default)
 	{
 		if (instituteTypeId <= 0)
-			throw new BadRequestException(instituteTypeId.ToString(), nameof(CRMInstituteTypeDto));
+			throw new BadRequestException(instituteTypeId.ToString(), nameof(CrmInstituteTypeDto));
 
 		_logger.LogInformation("Deleting institute type. ID: {InstituteTypeId}, Time: {Time}", instituteTypeId, DateTime.UtcNow);
 
@@ -132,7 +133,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	/// <summary>
 	/// Retrieves all institute type records from the database.
 	/// </summary>
-	public async Task<IEnumerable<CRMInstituteTypeDto>> InstituteTypesAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<CrmInstituteTypeDto>> InstituteTypesAsync(bool trackChanges, CancellationToken cancellationToken = default)
 	{
 		_logger.LogInformation("Fetching all institute types. Time: {Time}", DateTime.UtcNow);
 
@@ -141,10 +142,10 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 		if (!instituteTypes.Any())
 		{
 			_logger.LogWarning("No institute types found. Time: {Time}", DateTime.UtcNow);
-			return Enumerable.Empty<CRMInstituteTypeDto>();
+			return Enumerable.Empty<CrmInstituteTypeDto>();
 		}
 
-		var instituteTypesDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmInstituteType, CRMInstituteTypeDto>(instituteTypes);
+		var instituteTypesDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmInstituteType, CrmInstituteTypeDto>(instituteTypes);
 
 		_logger.LogInformation("Institute types fetched successfully. Count: {Count}, Time: {Time}",
 						instituteTypesDto.Count(), DateTime.UtcNow);
@@ -155,11 +156,11 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	/// <summary>
 	/// Retrieves a lightweight list of all institute types suitable for use in dropdown lists.
 	/// </summary>
-	public async Task<IEnumerable<CRMInstituteTypeDto>> InstituteTypeForDDLAsync(CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<CrmInstituteTypeDto>> InstituteTypeForDDLAsync(CancellationToken cancellationToken = default)
 	{
 		_logger.LogInformation("Fetching institute types for dropdown list. Time: {Time}", DateTime.UtcNow);
 
-		var instituteTypes = await _repository.CrmInstituteTypes.ListWithSelectAsync(selector: x => new CRMInstituteTypeDto
+		var instituteTypes = await _repository.CrmInstituteTypes.ListWithSelectAsync(selector: x => new CrmInstituteTypeDto
 		{
 			InstituteTypeId = x.InstituteTypeId,
 			InstituteTypeName = x.InstituteTypeName
@@ -170,7 +171,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 		if (!instituteTypes.Any())
 		{
 			_logger.LogWarning("No institute types found for dropdown list. Time: {Time}", DateTime.UtcNow);
-			return Enumerable.Empty<CRMInstituteTypeDto>();
+			return Enumerable.Empty<CrmInstituteTypeDto>();
 		}
 
 		_logger.LogInformation("Institute types fetched successfully for dropdown list. Count: {Count}, Time: {Time}",
@@ -182,23 +183,23 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	/// <summary>
 	/// Retrieves a paginated summary grid of all institute types.
 	/// </summary>
-	public async Task<GridEntity<CRMInstituteTypeDto>> InstituteTypesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
+	public async Task<GridEntity<CrmInstituteTypeDto>> InstituteTypesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
 	{
 		const string sql = "SELECT * FROM CrmInstituteType";
 		const string orderBy = "InstituteTypeName ASC";
 
 		_logger.LogInformation("Fetching institute types summary grid. Time: {Time}", DateTime.UtcNow);
 
-		return await _repository.CrmInstituteTypes.AdoGridDataAsync<CRMInstituteTypeDto>(sql, options, orderBy, "", cancellationToken);
+		return await _repository.CrmInstituteTypes.AdoGridDataAsync<CrmInstituteTypeDto>(sql, options, orderBy, "", cancellationToken);
 	}
 
 	/// <summary>
 	/// Saves an institute type record (create or update).
 	/// </summary>
-	public async Task<string> SaveOrUpdateInstituteTypeAsync(int instituteTypeId, CRMInstituteTypeDto modelDto, CancellationToken cancellationToken = default)
+	public async Task<string> SaveOrUpdateInstituteTypeAsync(int instituteTypeId, CrmInstituteTypeDto modelDto, CancellationToken cancellationToken = default)
 	{
 		if (modelDto is null)
-			throw new BadRequestException(nameof(CRMInstituteTypeDto));
+			throw new BadRequestException(nameof(CrmInstituteTypeDto));
 
 		_logger.LogInformation("Saving institute type. InstituteTypeId: {InstituteTypeId}, Time: {Time}",
 						instituteTypeId, DateTime.UtcNow);
@@ -219,18 +220,18 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 }
 
 
-//using bdDevCRM.Entities.Entities.CRM;
+//using Domain.Entities.Entities.CRM;
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.s.CRM;
-//using bdDevCRM.ServicesContract.CRM;
 //using bdDevs.Shared.DataTransferObjects.CRM;
-//using bdDevCRM.Shared.Exceptions;
+//using Domain.Contracts.Services.CRM;
+//using bdDevs.Shared.DataTransferObjects.CRM;
+//using Domain.Exceptions;
 //using Application.Shared.Grid;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Logging;
 
-//namespace bdDevCRM.Services.CRM;
+//namespace Application.Services.CRM;
 
 ///// <summary>
 ///// CrmInstituteType service implementing business logic for CrmInstituteType management.

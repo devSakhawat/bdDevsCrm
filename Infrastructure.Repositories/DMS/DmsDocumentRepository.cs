@@ -1,6 +1,6 @@
-﻿using bdDevCRM.Entities.Entities.DMS;
-using bdDevCRM.RepositoriesContracts.DMS;
-using bdDevCRM.Sql.Context;
+﻿using Domain.Entities.Entities.DMS;
+using Domain.Contracts.DMS;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.DMS;
 
@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories.DMS;
 /// </summary>
 public class DmsDocumentRepository : RepositoryBase<DmsDocument>, IDmsDocumentRepository
 {
-	public DmsDocumentRepository(CRMContext context) : base(context) { }
+	public DmsDocumentRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// s all documents ordered by DocumentId.
@@ -53,15 +53,15 @@ public class DmsDocumentRepository : RepositoryBase<DmsDocument>, IDmsDocumentRe
 
 
 
-//using bdDevCRM.Entities.Entities.DMS;
-//using bdDevCRM.RepositoriesContracts.DMS;
-//using bdDevCRM.Sql.Context;
+//using Domain.Entities.Entities.DMS;
+//using Domain.Contracts.DMS;
+//using Infrastructure.Sql.Context;
 
-//namespace bdDevCRM.Repositories.DMS;
+//namespace Infrastructure.Repositories.DMS;
 
 //public class DmsDocumentRepository : RepositoryBase<DmsDocument>, IDmsDocumentRepository
 //{
-//  public DmsDocumentRepository(CRMContext context) : base(context) { }
+//  public DmsDocumentRepository(CrmContext context) : base(context) { }
 
 //  //  all documents ordered by DocumentId
 //  public async Task<IEnumerable<DmsDocument>> AllDocumentsAsync(bool trackChanges) =>

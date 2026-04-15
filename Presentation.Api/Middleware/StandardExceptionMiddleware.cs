@@ -1,5 +1,5 @@
 using bdDevs.Shared;
-using bdDevsCrm.Api.Middleware.Shared;
+using Presentation.Api.Middleware.Shared;
 using Domain.Exceptions.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -659,16 +659,16 @@ public class StandardExceptionMiddleware
 
 
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.ServiceContract.CRM;
-//using bdDevCRM.Shared.ApiResponse;
-//using bdDevCRM.Shared.Exceptions;
-//using bdDevCRM.Shared.Exceptions.BaseException;
+//using Domain.Contracts.Services.CRM;
+//using bdDevs.Shared;
+//using Domain.Exceptions;
+//using Domain.Exceptions;
 //using Microsoft.EntityFrameworkCore;
 //using Microsoft.IdentityModel.Tokens;
 //using System.ComponentModel.DataAnnotations;
 //using System.Text.Json;
 
-//namespace bdDevCRM.Api.Middleware;
+//namespace Presentation.Api.Middleware;
 
 ///// <summary>
 ///// Enhanced global exception handling middleware using standardized response format

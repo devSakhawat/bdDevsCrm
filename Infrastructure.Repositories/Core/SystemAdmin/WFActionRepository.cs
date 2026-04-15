@@ -2,14 +2,14 @@
 
 // Class: WFActionRepository
 using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin
 {
 	public class WFActionRepository : RepositoryBase<WfAction>, IWFActionRepository
 	{
-		public WFActionRepository(CRMContext context) : base(context) { }
+		public WFActionRepository(CrmContext context) : base(context) { }
 
 		/// <summary>
 		/// s all workflow actions.
@@ -52,18 +52,18 @@ namespace Infrastructure.Repositories.Core.SystemAdmin
 
 
 
-//using bdDevCRM.Entities.Entities;
+//using Domain.Entities.Entities;
 //using Domain.Entities.Entities.System;
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-//using bdDevCRM.Sql.Context;
+//using Domain.Contracts.Core.SystemAdmin;
+//using Infrastructure.Sql.Context;
 
-//namespace bdDevCRM.Repositories.Core.SystemAdmin;
+//namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 
 //public class WFActionRepository : RepositoryBase<WfAction>, IWFActionRepository
 //{
-//  public WFActionRepository(CRMContext context) : base(context) { }
+//  public WFActionRepository(CrmContext context) : base(context) { }
 
 
 //}

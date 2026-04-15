@@ -1,6 +1,6 @@
 using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin;
 
@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class AccessControlRepository : RepositoryBase<AccessControl>, IAccessControlRepository
 {
-	public AccessControlRepository(CRMContext context) : base(context) { }
+	public AccessControlRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all access controls asynchronously.

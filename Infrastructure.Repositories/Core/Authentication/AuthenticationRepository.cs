@@ -1,12 +1,12 @@
 ﻿using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.Authentication;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.Authentication;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.Authentication;
 
 public class AuthenticationRepository : RepositoryBase<Users>, IAuthenticationRepository
 {
-  public AuthenticationRepository(CRMContext context) : base(context) { }
+  public AuthenticationRepository(CrmContext context) : base(context) { }
 
 
   public async Task<Users> AuthenticateByLoginId(string loginId, CancellationToken cancellationToken)

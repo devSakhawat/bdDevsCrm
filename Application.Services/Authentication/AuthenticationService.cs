@@ -1,14 +1,14 @@
-﻿using Domain.Entities.Entities.System;
-using bdDevCRM.Entities.Entities.Token;
+using Domain.Contracts.Repositories;
+using Domain.Entities.Entities.System;
+using Domain.Entities.Entities.Token;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
-using bdDevCRM.ServiceContract.Authentication;
-using bdDevCRM.ServiceContract.Authentication.Security;
-using bdDevCRM.Shared.DataTransferObjects.Authentication;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions.BaseException;
-using bdDevCRM.Utilities.OthersLibrary;
-using bdDevs.Security;
+using Domain.Contracts.Services.Authentication;
+using Domain.Contracts.Infrastructure.Security;
+using bdDevs.Shared.DataTransferObjects.Authentication;
+using Domain.Exceptions;
+using Application.Services.Mappings;
+using Infrastructure.Security.License;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -463,7 +463,7 @@ public class AuthenticationService : IAuthenticationService
 		}
 		else
 		{
-			lastPasswordChange = passwordHistory.First().PasswordChangeDate;
+			lastPasswordChange = passwordHistory.First().PasswordChangeDate ?? DateTime.UtcNow;
 		}
 
 		var daysSinceChange = (currentDate - lastPasswordChange).Days;

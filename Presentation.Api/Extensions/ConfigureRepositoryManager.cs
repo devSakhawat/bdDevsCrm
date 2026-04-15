@@ -4,7 +4,7 @@ using Infrastructure.Sql.Context;
 using Infrastructure.Sql.Context.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
-namespace bdDevsCrm.Api.Extensions;
+namespace Presentation.Api.Extensions;
 
 public static class ConfigureRepositoryManager
 {
@@ -26,7 +26,7 @@ public static class ConfigureRepositoryManager
       this IServiceCollection services,
       IConfiguration configuration)
   {
-    services.AddDbContext<CRMContext>((serviceProvider, options) =>
+    services.AddDbContext<CrmContext>((serviceProvider, options) =>
     {
       var connectionString =
           configuration.GetConnectionString("DbLocation")

@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class CrmCountryRepository : RepositoryBase<CrmCountry>, ICrmCountryRepository
 {
-  public CrmCountryRepository(CRMContext context) : base(context) { }
+  public CrmCountryRepository(CrmContext context) : base(context) { }
 
   /// <summary>
   /// Retrieves all countries asynchronously.

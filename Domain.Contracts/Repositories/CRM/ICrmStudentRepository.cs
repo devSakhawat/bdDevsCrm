@@ -1,8 +1,8 @@
-﻿//using bdDevCRM.Entities.DTOs; // Assuming DTOs are here
-//using bdDevCRM.Entities.Models;
-//using bdDevCRM.Repositories.Contracts;
+﻿//using bdDevs.Shared.DataTransferObjects; // Assuming DTOs are here
+//using Domain.Entities.Models;
+//using Domain.Contracts.Repositories;
 
-//namespace bdDevCRM.Repositories.CRM
+//namespace Infrastructure.Repositories.CRM
 //{
 //  public interface ICrmStudentRepository : IRepositoryBase<CrmStudent>
 //  {

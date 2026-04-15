@@ -6,10 +6,10 @@ namespace bdDevs.Shared.DataTransferObjects.CRM;
 public class EducationInformationDto
 {
   public EducationDetailsDto? EducationDetails { get; set; }
-  public IELTSInformationDto? IELTSInformation { get; set; }
-  public TOEFLInformationDto? TOEFLInformation { get; set; }
-  public PTEInformationDto? PTEInformation { get; set; }
-  public GMATInformationDto? GMATInformation { get; set; }
+  public IeltsInformationDto? IELTSInformation { get; set; }
+  public ToeflInformationDto? TOEFLInformation { get; set; }
+  public PteInformationDto? PTEInformation { get; set; }
+  public GmatInformationDto? GMATInformation { get; set; }
   public OthersInformationDto? OTHERSInformation { get; set; }
   public WorkExperienceDto? WorkExperience { get; set; }
 }

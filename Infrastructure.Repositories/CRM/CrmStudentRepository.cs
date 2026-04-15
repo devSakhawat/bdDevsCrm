@@ -1,9 +1,9 @@
-//using bdDevCRM.Entities.Entities.CRM;
-//using bdDevCRM.RepositoriesContracts.CRM;
-//using bdDevCRM.s.CRM;
-//using bdDevCRM.Sql.Context;
+//using Domain.Entities.Entities.CRM;
+//using Domain.Contracts.CRM;
+//using bdDevs.Shared.DataTransferObjects.CRM;
+//using Infrastructure.Sql.Context;
 
-//namespace bdDevCRM.Repositories.CRM;
+//namespace Infrastructure.Repositories.CRM;
 
 ///// <summary>
 ///// Repository for CrmStudent data access operations.
@@ -11,7 +11,7 @@
 ///// </summary>
 //public class CrmStudentRepository : RepositoryBase<stud>, ICrmStudentRepository
 //{
-//    public CrmStudentRepository(CRMContext context) : base(context) { }
+//    public CrmStudentRepository(CrmContext context) : base(context) { }
 
 //    /// <summary>
 //    /// Retrieves all CrmStudent records asynchronously.

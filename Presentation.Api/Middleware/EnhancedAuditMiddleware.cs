@@ -1,4 +1,4 @@
-using bdDevsCrm.Api.Middleware.Shared;
+using Presentation.Api.Middleware.Shared;
 using Domain.Entities.Entities.System;
 using Presentation.Api.BackgroundServices;
 using System.Security.Claims;
@@ -233,10 +233,10 @@ public class EnhancedAuditMiddleware
 //using System.Text;
 //using System.Text.Json;
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.Sql.Context;
+//using Infrastructure.Sql.Context;
 //using Microsoft.AspNetCore.WebUtilities;
 
-//namespace bdDevCRM.Api.Middleware;
+//namespace Presentation.Api.Middleware;
 
 //public class EnhancedAuditMiddleware
 //{
@@ -259,7 +259,7 @@ public class EnhancedAuditMiddleware
 //		_captureContentTypes = _configuration.Section("AuditLogging:CaptureContentTypes").<string[]>() ?? new[] { "application/json", "text/" };
 //	}
 
-//	public async Task InvokeAsync(HttpContext context, CRMContext dbContext)
+//	public async Task InvokeAsync(HttpContext context, CrmContext dbContext)
 //	{
 //		// Check if audit is enabled
 //		if (!_configuration.Value<bool>("AuditLogging:EnableAuditMiddleware", true))
@@ -331,7 +331,7 @@ public class EnhancedAuditMiddleware
 //					try
 //					{
 //						using var scope = context.RequestServices.CreateScope();
-//						var scopedContext = scope.ServiceProvider.RequiredService<CRMContext>();
+//						var scopedContext = scope.ServiceProvider.RequiredService<CrmContext>();
 //						scopedContext.AuditLogs.Add(auditLog);
 //						await scopedContext.SaveChangesAsync();
 //					}
@@ -359,7 +359,7 @@ public class EnhancedAuditMiddleware
 //					try
 //					{
 //						using var scope = context.RequestServices.CreateScope();
-//						var scopedContext = scope.ServiceProvider.RequiredService<CRMContext>();
+//						var scopedContext = scope.ServiceProvider.RequiredService<CrmContext>();
 //						scopedContext.AuditLogs.Add(auditLog);
 //						await scopedContext.SaveChangesAsync();
 //					}
@@ -381,7 +381,7 @@ public class EnhancedAuditMiddleware
 //				try
 //				{
 //					using var scope = context.RequestServices.CreateScope();
-//					var scopedContext = scope.ServiceProvider.RequiredService<CRMContext>();
+//					var scopedContext = scope.ServiceProvider.RequiredService<CrmContext>();
 //					scopedContext.AuditLogs.Add(errorAuditLog);
 //					await scopedContext.SaveChangesAsync();
 //				}

@@ -2,18 +2,20 @@
 using Domain.Contracts.Core.HR;
 using Domain.Contracts.Core.SystemAdmin;
 using Domain.Contracts.CRM;
+using Domain.Contracts.DMS;
 using Domain.Contracts.Repositories;
 using Infrastructure.Repositories.Core.Authentication;
 using Infrastructure.Repositories.Core.HR;
 using Infrastructure.Repositories.Core.SystemAdmin;
 using Infrastructure.Repositories.CRM;
+using Infrastructure.Repositories.DMS;
 using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories;
 
 public class RepositoryManager : IRepositoryManager
 {
-  private readonly CRMContext _repositoryContext;
+  private readonly CrmContext _repositoryContext;
 
   private readonly Lazy<ITokenBlacklistRepository> _tokenBlacklistRepository;
   private readonly Lazy<IRefreshTokenRepository> _refreshTokenRepository;
@@ -47,7 +49,7 @@ public class RepositoryManager : IRepositoryManager
   #region CRM
   private readonly Lazy<ICrmCourseRepository> _crmcourseRepository;
   private readonly Lazy<ICrmMonthRepository> _crmmonthRepository;
-  private readonly Lazy<ICRMYearRepository> _crmyearRepository;
+  private readonly Lazy<ICrmYearRepository> _crmyearRepository;
   private readonly Lazy<ICrmInstituteTypeRepository> _crminstituteTypeRepository;
 
   // New repositories for Intake and Payment Method
@@ -57,7 +59,7 @@ public class RepositoryManager : IRepositoryManager
 
 
   // Existing CRM repositories
-  private readonly Lazy<ICRMApplicationRepository> _crmApplicationRepository;
+  private readonly Lazy<ICrmApplicationRepository> _crmApplicationRepository;
   private readonly Lazy<ICrmApplicantCourseRepository> _applicantCourseRepository;
   private readonly Lazy<ICrmApplicantInfoRepository> _applicantInfoRepository;
   private readonly Lazy<ICrmPermanentAddressRepository> _permanentAddressRepository;
@@ -65,10 +67,10 @@ public class RepositoryManager : IRepositoryManager
 
   // New 10 CRM repositories
   private readonly Lazy<ICrmEducationHistoryRepository> _educationHistoryRepository;
-  private readonly Lazy<ICrmIELTSInformationRepository> _ieltsinformationRepository;
-  private readonly Lazy<ICrmTOEFLInformationRepository> _toeflinformationRepository;
-  private readonly Lazy<ICrmPTEInformationRepository> _PTEInformationRepository;
-  private readonly Lazy<ICrmGMATInformationRepository> _gmatinformationRepository;
+  private readonly Lazy<ICrmIeltsInformationRepository> _ieltsinformationRepository;
+  private readonly Lazy<ICrmToeflInformationRepository> _toeflinformationRepository;
+  private readonly Lazy<ICrmPteInformationRepository> _PTEInformationRepository;
+  private readonly Lazy<ICrmGmatInformationRepository> _gmatinformationRepository;
   private readonly Lazy<ICrmOthersInformationRepository> _othersinformationRepository;
   private readonly Lazy<ICrmWorkExperienceRepository> _workExperienceRepository;
   private readonly Lazy<ICrmApplicantReferenceRepository> _applicantReferenceRepository;
@@ -88,7 +90,7 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<IDmsFileUpdateHistoryRepository> _dmsFileUpdateHistoryRepository;
   #endregion
 
-  public RepositoryManager(CRMContext repositoryContext)
+  public RepositoryManager(CrmContext repositoryContext)
   {
     _repositoryContext = repositoryContext;
 
@@ -127,11 +129,11 @@ public class RepositoryManager : IRepositoryManager
     // HR area end
 
     #region CRM
-    _crmApplicationRepository = new Lazy<ICRMApplicationRepository>(() => new CrmApplicationRepository(_repositoryContext));
+    _crmApplicationRepository = new Lazy<ICrmApplicationRepository>(() => new CrmApplicationRepository(_repositoryContext));
     _crminstituteTypeRepository = new Lazy<ICrmInstituteTypeRepository>(() => new CrmInstituteTypeRepository(_repositoryContext));
     _crmcourseRepository = new Lazy<ICrmCourseRepository>(() => new CrmCourseRepository(_repositoryContext));
     _crmmonthRepository = new Lazy<ICrmMonthRepository>(() => new CrmMonthRepository(_repositoryContext));
-    _crmyearRepository = new Lazy<ICRMYearRepository>(() => new CrmYearRepository(_repositoryContext));
+    _crmyearRepository = new Lazy<ICrmYearRepository>(() => new CrmYearRepository(_repositoryContext));
 
     // New repositories initialization
     _crmIntakeMonthRepository = new Lazy<ICrmIntakeMonthRepository>(() => new CrmIntakeMonthRepository(_repositoryContext));
@@ -146,10 +148,10 @@ public class RepositoryManager : IRepositoryManager
 
     // Initialize the 10 new CRM repositories(FIX)
     _educationHistoryRepository = new Lazy<ICrmEducationHistoryRepository>(() => new CrmEducationHistoryRepository(_repositoryContext));
-    _ieltsinformationRepository = new Lazy<ICrmIELTSInformationRepository>(() => new CrmIELTSInformationRepository(_repositoryContext));
-    _toeflinformationRepository = new Lazy<ICrmTOEFLInformationRepository>(() => new CrmTOEFLInformationRepository(_repositoryContext));
-    _PTEInformationRepository = new Lazy<ICrmPTEInformationRepository>(() => new CrmPTEInformationRepository(_repositoryContext));
-    _gmatinformationRepository = new Lazy<ICrmGMATInformationRepository>(() => new CrmGMATInformationRepository(_repositoryContext));
+    _ieltsinformationRepository = new Lazy<ICrmIeltsInformationRepository>(() => new CrmIeltsInformationRepository(_repositoryContext));
+    _toeflinformationRepository = new Lazy<ICrmToeflInformationRepository>(() => new CrmToeflInformationRepository(_repositoryContext));
+    _PTEInformationRepository = new Lazy<ICrmPteInformationRepository>(() => new CrmPteInformationRepository(_repositoryContext));
+    _gmatinformationRepository = new Lazy<ICrmGmatInformationRepository>(() => new CrmGmatInformationRepository(_repositoryContext));
     _othersinformationRepository = new Lazy<ICrmOthersInformationRepository>(() => new CrmOthersInformationRepository(_repositoryContext));
     _workExperienceRepository = new Lazy<ICrmWorkExperienceRepository>(() => new CrmWorkExperienceRepository(_repositoryContext));
     _applicantReferenceRepository = new Lazy<ICrmApplicantReferenceRepository>(() => new CrmApplicantReferenceRepository(_repositoryContext));
@@ -204,13 +206,13 @@ public class RepositoryManager : IRepositoryManager
   #region Crm
   public ICrmCourseRepository CrmCourses => _crmcourseRepository.Value;
   public ICrmMonthRepository CrmMonths => _crmmonthRepository.Value;
-  public ICRMYearRepository CrmYears => _crmyearRepository.Value;
+  public ICrmYearRepository CrmYears => _crmyearRepository.Value;
   public ICrmInstituteRepository CrmInstitutes => _crmInstituteRepository.Value;
   public ICrmInstituteTypeRepository CrmInstituteTypes => _crminstituteTypeRepository.Value;
 
 
   // Existing Crm repository properties
-  public ICRMApplicationRepository CrmApplications => _crmApplicationRepository.Value;
+  public ICrmApplicationRepository CrmApplications => _crmApplicationRepository.Value;
   public ICrmApplicantCourseRepository CrmApplicantCourses => _applicantCourseRepository.Value;
   public ICrmApplicantInfoRepository CrmApplicantInfoes => _applicantInfoRepository.Value;
   public ICrmPermanentAddressRepository CrmPermanentAddresses => _permanentAddressRepository.Value;
@@ -218,10 +220,10 @@ public class RepositoryManager : IRepositoryManager
 
   // New 10 Crm repository properties
   public ICrmEducationHistoryRepository CrmEducationHistories => _educationHistoryRepository.Value;
-  public ICrmIELTSInformationRepository CrmIELTSInformations => _ieltsinformationRepository.Value;
-  public ICrmTOEFLInformationRepository CrmTOEFLInformations => _toeflinformationRepository.Value;
-  public ICrmPTEInformationRepository CrmPTEInformations => _PTEInformationRepository.Value;
-  public ICrmGMATInformationRepository CrmGMATInformations => _gmatinformationRepository.Value;
+  public ICrmIeltsInformationRepository CrmIeltsInformations => _ieltsinformationRepository.Value;
+  public ICrmToeflInformationRepository CrmToeflInformations => _toeflinformationRepository.Value;
+  public ICrmPteInformationRepository CrmPteInformations => _PTEInformationRepository.Value;
+  public ICrmGmatInformationRepository CrmGmatInformations => _gmatinformationRepository.Value;
   public ICrmOthersInformationRepository CrmOthersInformations => _othersinformationRepository.Value;
   public ICrmWorkExperienceRepository CrmWorkExperiences => _workExperienceRepository.Value;
   public ICrmApplicantReferenceRepository CrmApplicantReferences => _applicantReferenceRepository.Value;

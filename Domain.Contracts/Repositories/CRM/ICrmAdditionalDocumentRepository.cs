@@ -55,9 +55,9 @@ public interface ICrmAdditionalDocumentRepository : IRepositoryBase<CrmAdditiona
 
 
 //using Domain.Entities.Entities.CRM;
-//using bdDevCRM.s.CRM;
+//using bdDevs.Shared.DataTransferObjects.CRM;
 
-//namespace bdDevCRM.RepositoriesContracts.CRM;
+//namespace Domain.Contracts.CRM;
 
 //public interface ICrmAdditionalDocumentRepository : IRepositoryBase<CrmAdditionalDocument>
 //{

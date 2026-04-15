@@ -1,8 +1,7 @@
-﻿using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+﻿using Infrastructure.Sql.Context;
 using Application.Shared.Grid;
 using Domain.Contracts.Repositories;
-using Infrastructure.Sql.Context;
+using Domain.Exceptions.ServerError;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -40,7 +39,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
 	#region Private Fields
 
-	private readonly CRMContext _context;
+	private readonly CrmContext _context;
 	private readonly DbSet<T> _dbSet;
 	private IDbContextTransaction? _currentTransaction;
 
@@ -53,7 +52,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 	/// </summary>
 	/// <param name="context">The database context</param>
 	/// <exception cref="ArgumentNullException">Thrown when context is null</exception>
-	public RepositoryBase(CRMContext context)
+	public RepositoryBase(CrmContext context)
 	{
 		_context = context ?? throw new ArgumentNullException(nameof(context));
 		_dbSet = _context.Set<T>();
@@ -1112,7 +1111,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
 	//  var connection = _context.Database.DbConnection();
 	//  var sqlCount = $"SELECT COUNT(*) FROM ({query}) As tbl";
-	//  query = CRMGridDataSource<TGrid>.DataSourceQuery(options, query, orderBy, condition ?? "");
+	//  query = GridDataSource<TGrid>.DataSourceQuery(options, query, orderBy, condition ?? "");
 
 	//  var dataList = new List<TGrid>();
 	//  int totalCount = 0;
@@ -1183,7 +1182,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
 		var connection = _context.Database.GetDbConnection();
 		var sqlCount = $"SELECT COUNT(*) FROM ({query}) As tbl";
-		query = CRMGridDataSource<TGrid>.DataSourceQuery(options, query, orderBy, condition ?? "");
+		query = GridDataSource<TGrid>.DataSourceQuery(options, query, orderBy, condition ?? "");
 
 		var dataList = new List<TGrid>();
 		int totalCount = 0;
@@ -1251,7 +1250,7 @@ public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
 		var connection = _context.Database.GetDbConnection();
 		var sqlCount = $"SELECT COUNT(*) FROM ({query}) As tbl";
-		query = CRMGridDataSource<TGrid>.DataSourceQuery(options, query, orderBy, condition ?? "");
+		query = GridDataSource<TGrid>.DataSourceQuery(options, query, orderBy, condition ?? "");
 
 		var dataList = new List<TGrid>();
 		int totalCount = 0;
@@ -1783,11 +1782,11 @@ public static class DbDataReaderExtensions
 
 //public class RepositoryBase<T> : IRepositoryBase<T> where T : class
 //{
-//  private readonly CRMContext _context;
+//  private readonly CrmContext _context;
 //  private readonly DbSet<T> _dbSet;
 //  private IDbContextTransaction _currentTransaction;
 
-//  public RepositoryBase(CRMContext context)
+//  public RepositoryBase(CrmContext context)
 //  {
 //    _context = context;
 //    _dbSet = _context.Set<T>();

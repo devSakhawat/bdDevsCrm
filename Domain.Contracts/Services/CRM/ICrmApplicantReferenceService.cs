@@ -1,5 +1,5 @@
 // ICrmApplicantReferenceService.cs
-using bdDevCRM.ServiceContract.CRM;
+using Domain.Contracts.Services.CRM;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using Application.Shared.Grid;
@@ -102,7 +102,7 @@ public interface ICrmApplicantReferenceService
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 //using bdDevs.Shared.DataTransferObjects.CRM;
 
-//namespace bdDevCRM.ServiceContract.CRM;
+//namespace Domain.Contracts.Services.CRM;
 
 //public interface ICrmApplicantReferenceService
 //{

@@ -19,7 +19,6 @@
   <Folder Name="/src/Presentation/">
     <Project Path="Presentation.Api/Presentation.Api.csproj" />
     <Project Path="Presentation.Controller/Presentation.csproj" />
-    <Project Path="Presentation.Logger/Presentation.Logger.csproj" />
     <Project Path="Presentation.Mvc/Presentation.Mvc.csproj" />
   </Folder>
   <Folder Name="/src/SharedKernel/">

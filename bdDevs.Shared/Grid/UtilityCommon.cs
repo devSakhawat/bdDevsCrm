@@ -3,7 +3,7 @@
 public class UtilityCommon
 {
 	public static string BuildWhereClause<T>(int index, string logic,
-			GridFilter.GridFilter filter, List<object> parameters)
+			GridFilterModels.GridFilter filter, List<object> parameters)
 	{
 		var entityType = (typeof(T));
 
@@ -163,7 +163,7 @@ public class UtilityCommon
 	}
 
 	public static string BuildWhereClause<T>(int index, string logic,
-			GridFilter.AutoCompFilter filter, List<object> parameters)
+			GridFilterModels.AutoCompFilter filter, List<object> parameters)
 	{
 		var entityType = (typeof(T));
 

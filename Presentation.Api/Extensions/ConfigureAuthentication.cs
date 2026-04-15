@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace bdDevsCrm.Api.Extensions;
+namespace Presentation.Api.Extensions;
 
 public static class ConfigureAuthentication
 {

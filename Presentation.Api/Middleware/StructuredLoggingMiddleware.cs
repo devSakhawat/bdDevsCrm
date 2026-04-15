@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Controllers;
+using Presentation.Api.Middleware.Shared;
 
 namespace Presentation.Api.Middleware;
 
@@ -131,7 +132,7 @@ public class StructuredLoggingMiddleware
 //using System.Text.Json;
 //using Microsoft.AspNetCore.WebUtilities;
 
-//namespace bdDevCRM.Api.Middleware;
+//namespace Presentation.Api.Middleware;
 
 ///// <summary>
 ///// Enhanced middleware for structured request/response logging

@@ -1,14 +1,14 @@
-using bdDevCRM.Presentation.AuthorizeAttributes;
-using bdDevCRM.Presentation.Extensions;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Utilities.Constants;
-using bdDevCRM.Utilities.CRMGrid.GRID;
+using Presentation.AuthorizeAttributes;
+using Presentation.Extensions;
+using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
+using bdDevs.Shared.Constants;
+using Application.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Presentation.ActionFIlters;
+using Presentation.ActionFilters;
 using Presentation.LinkFactories;
 
 namespace Presentation.Controllers.Core.SystemAdmin;
@@ -97,10 +97,10 @@ public class WorkFlowController : BaseApiController
 	/// Retrieves paginated summary grid of workflows.
 	/// </summary>
 	[HttpPost(RouteConstants.WorkflowSummary)]
-	public async Task<IActionResult> WorkflowSummaryAsync([FromBody] CRMGridOptions options, CancellationToken cancellationToken = default)
+	public async Task<IActionResult> WorkflowSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken = default)
 	{
 		if (options == null)
-			throw new NullModelBadRequestException(nameof(CRMGridOptions));
+			throw new NullModelBadRequestException(nameof(GridOptions));
 
 		var workflows = await _serviceManager.WfState.WorkflowSummaryAsync(trackChanges: false, options, cancellationToken: cancellationToken);
 

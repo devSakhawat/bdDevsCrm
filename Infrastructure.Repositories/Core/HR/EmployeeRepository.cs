@@ -1,13 +1,13 @@
 ﻿using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.HR;
-using bdDevCRM.s.Core.HR;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.HR;
+using bdDevs.Shared.DataTransferObjects.Core.HR;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.HR;
 
 public class EmployeeRepository : RepositoryBase<Employee>, IEmployeeRepository
 {
-	public EmployeeRepository(CRMContext context) : base(context) { }
+	public EmployeeRepository(CrmContext context) : base(context) { }
 
 
 	private const string SELECT_EMPLOYEE_BY_HRRECORDID =
@@ -59,10 +59,10 @@ left outer join WFState on WFState.WfStateId=Employee.StateId where Employment.H
 		return data;
 	}
 
-	public async Task<IEnumerable<EmployeesByCompanyBranchDepartmentRepositoroyDto>> EmployeeByCompanyIdAndBranchIdAndDepartmentId(string condition, CancellationToken cancellationToken)
+	public async Task<IEnumerable<EmployeesByCompanyBranchDepartmentDto>> EmployeeByCompanyIdAndBranchIdAndDepartmentId(string condition, CancellationToken cancellationToken)
 	{
 		string sql = string.Format(SELECT_EMPLOYEE_BY_CompanyBranchDepartment_SQL, condition);
-		IEnumerable<EmployeesByCompanyBranchDepartmentRepositoroyDto> returnList = await AdoExecuteListQueryAsync<EmployeesByCompanyBranchDepartmentRepositoroyDto>(sql, cancellationToken: cancellationToken);
+		IEnumerable<EmployeesByCompanyBranchDepartmentDto> returnList = await AdoExecuteListQueryAsync<EmployeesByCompanyBranchDepartmentDto>(sql, cancellationToken: cancellationToken);
 		return returnList;
 	}
 

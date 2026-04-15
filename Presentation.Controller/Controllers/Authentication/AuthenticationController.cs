@@ -1,20 +1,19 @@
-﻿using bdDevCRM.Presentation.ActionFilters;
-using bdDevCRM.Presentation.AuthorizeAttributes;
-using bdDevCRM.Presentation.Extensions;
-using bdDevCRM.ServiceContract.Core.Infrastructure;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.ApiResponse;
-using bdDevCRM.Shared.DataTransferObjects.Authentication;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions.BaseException;
-using bdDevCRM.Utilities.Constants;
+﻿using Presentation.ActionFilters;
+using Presentation.AuthorizeAttributes;
+using Presentation.Extensions;
+using Domain.Contracts.Services.Core.Infrastructure;
+using Domain.Contracts.Services;
+using bdDevs.Shared;
+using bdDevs.Shared.DataTransferObjects.Authentication;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Domain.Exceptions;
+using bdDevs.Shared.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Presentation.ActionFIlters;
 
 namespace Presentation.Controllers.Authentication;
 

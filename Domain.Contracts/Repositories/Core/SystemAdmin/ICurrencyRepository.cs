@@ -40,7 +40,7 @@ public interface ICurrencyRepository : IRepositoryBase<CrmCurrencyInfo>
 
 //using Domain.Entities.Entities.CRM;
 
-//namespace bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//namespace Domain.Contracts.Core.SystemAdmin;
 
 //public interface ICurrencyRepository : IRepositoryBase<CrmCurrencyInfo>
 //{

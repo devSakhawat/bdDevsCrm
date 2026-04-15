@@ -1,7 +1,7 @@
-using bdDevCRM.Entities.Entities.CRM;
-using bdDevCRM.RepositoriesContracts.CRM;
-using bdDevCRM.s.CRM;
-using bdDevCRM.Sql.Context;
+using Domain.Entities.Entities.CRM;
+using Domain.Contracts.CRM;
+using bdDevs.Shared.DataTransferObjects.CRM;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.CRM;
 
@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmWorkExperienceRepository : RepositoryBase<CrmWorkExperience>, ICrmWorkExperienceRepository
 {
-    public CrmWorkExperienceRepository(CRMContext context) : base(context) { }
+    public CrmWorkExperienceRepository(CrmContext context) : base(context) { }
 
     /// <summary>
     /// Retrieves all CrmWorkExperience records asynchronously.

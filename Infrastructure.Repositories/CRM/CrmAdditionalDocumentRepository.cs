@@ -1,7 +1,7 @@
-using bdDevCRM.Entities.Entities.CRM;
-using bdDevCRM.RepositoriesContracts.CRM;
-using bdDevCRM.s.CRM;
-using bdDevCRM.Sql.Context;
+using Domain.Entities.Entities.CRM;
+using Domain.Contracts.CRM;
+using bdDevs.Shared.DataTransferObjects.CRM;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.CRM;
 
@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.CRM;
 /// </summary>
 public class CrmAdditionalDocumentRepository : RepositoryBase<CrmAdditionalDocument>, ICrmAdditionalDocumentRepository
 {
-	public CrmAdditionalDocumentRepository(CRMContext context) : base(context) { }
+	public CrmAdditionalDocumentRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all CrmAdditionalDocument records asynchronously.
@@ -51,10 +51,10 @@ public class CrmAdditionalDocumentRepository : RepositoryBase<CrmAdditionalDocum
 	/// <summary>
 	/// Retrieves CrmAdditionalDocument records by parent ID asynchronously.
 	/// </summary>
-	public async Task<IEnumerable<AdditionalDocument>> CrmAdditionalDocumentsByParentIdAsync(int parentId, CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<AdditionalDocumentDto>> CrmAdditionalDocumentsByParentIdAsync(int parentId, CancellationToken cancellationToken = default)
 	{
-		string query = $"SELECT * FROM CrmAdditionalDocument WHERE ParentId = {parentId} ORDER BY CrmAdditionalDocumentId";
-		return await AdoExecuteListQueryAsync<AdditionalDocument>(query, null, cancellationToken);
+		string query = $"SELECT * FROM CrmAdditionalDocument WHERE ParentId = {parentId} ORDER BY AdditionalDocumentId";
+		return await AdoExecuteListQueryAsync<AdditionalDocumentDto>(query, null, cancellationToken);
 	}
 
 	/// <summary>

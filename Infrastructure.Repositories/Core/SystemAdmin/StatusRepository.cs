@@ -1,7 +1,7 @@
 using Domain.Entities.Entities.System;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Contracts.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin;
 
@@ -11,7 +11,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class StatusRepository : RepositoryBase<WfState>, IStatusRepository
 {
-	public StatusRepository(CRMContext context) : base(context) { }
+	public StatusRepository(CrmContext context) : base(context) { }
 
 	public async Task<IEnumerable<WfState>> StatusesAsync(bool trackChanges, CancellationToken cancellationToken = default)
 	{

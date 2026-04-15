@@ -32,7 +32,7 @@
 
 //  // --------- 2. Summary Grid ----------------------------------------
 //  [HttpPost(RouteConstants.InstituteSummary)]
-//  public async Task<IActionResult> SummaryGrid([FromBody] CRMGridOptions options)
+//  public async Task<IActionResult> SummaryGrid([FromBody] GridOptions options)
 //  {
 //    var userIdClaim = User.FindFirst("UserId")?.Value;
 //    if (string.IsNullOrEmpty(userIdClaim))
@@ -44,7 +44,7 @@
 //      return Unauthorized(ApiResponseHelper.Unauthorized("User not found in cache"));
 
 //    if (options == null)
-//      return BadRequest(ApiResponseHelper.BadRequest("CRMGridOptions cannot be null"));
+//      return BadRequest(ApiResponseHelper.BadRequest("GridOptions cannot be null"));
 
 
 //    var summaryGrid = await _serviceManager.CrmInstitutes.SummaryGrid(options);

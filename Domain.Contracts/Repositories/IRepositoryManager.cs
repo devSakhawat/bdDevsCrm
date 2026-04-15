@@ -40,13 +40,13 @@ public interface IRepositoryManager : IDisposable
   #region CRM
   ICrmCourseRepository CrmCourses { get; }
   ICrmMonthRepository CrmMonths { get; }
-  ICRMYearRepository CrmYears { get; }
+  ICrmYearRepository CrmYears { get; }
   ICrmInstituteRepository CrmInstitutes { get; }
   ICrmInstituteTypeRepository CrmInstituteTypes { get; }
 
 
   // Existing CRM repositories
-  ICRMApplicationRepository CrmApplications { get; }
+  ICrmApplicationRepository CrmApplications { get; }
   ICrmApplicantCourseRepository CrmApplicantCourses { get; }
   ICrmApplicantInfoRepository CrmApplicantInfoes { get; }
   ICrmPermanentAddressRepository CrmPermanentAddresses { get; }
@@ -54,10 +54,10 @@ public interface IRepositoryManager : IDisposable
   
   // New CRM repositories for 10 entities
   ICrmEducationHistoryRepository CrmEducationHistories { get; }
-  ICrmIELTSInformationRepository CrmIELTSInformations { get; }
-  ICrmTOEFLInformationRepository CrmTOEFLInformations { get; }
-  ICrmPTEInformationRepository CrmPTEInformations { get; }
-  ICrmGMATInformationRepository CrmGMATInformations { get; }
+  ICrmIeltsInformationRepository CrmIeltsInformations { get; }
+  ICrmToeflInformationRepository CrmToeflInformations { get; }
+  ICrmPteInformationRepository CrmPteInformations { get; }
+  ICrmGmatInformationRepository CrmGmatInformations { get; }
   ICrmOthersInformationRepository CrmOthersInformations { get; }
   ICrmWorkExperienceRepository CrmWorkExperiences { get; }
   ICrmApplicantReferenceRepository CrmApplicantReferences { get; }

@@ -118,7 +118,7 @@ public class ApplicationDto
   public IEnumerable<EducationHistoryDto>? EducationHistories { get; set; }
 
   // ================================
-  // IELTSInformationDto
+  // IeltsInformationDto
   // ================================
   public int IELTSInformationId { get; set; }
   public int IELTS_ApplicantId { get; set; }
@@ -137,7 +137,7 @@ public class ApplicationDto
   public int? IELTS_UpdatedBy { get; set; }
 
   // ================================
-  // TOEFLInformationDto
+  // ToeflInformationDto
   // ================================
   public int TOEFLInformationId { get; set; }
   public int TOEFL_ApplicantId { get; set; }
@@ -157,7 +157,7 @@ public class ApplicationDto
   public int? TOEFL_UpdatedBy { get; set; }
 
   // ================================
-  // PTEInformationDto
+  // PteInformationDto
   // ================================
   public int PTEInformationId { get; set; }
   public int PTE_ApplicantId { get; set; }
@@ -177,7 +177,7 @@ public class ApplicationDto
   public int? PTE_UpdatedBy { get; set; }
 
   // ================================
-  // GMATInformationDto
+  // GmatInformationDto
   // ================================
   public int GMATInformationId { get; set; }
   public int GMAT_ApplicantId { get; set; }
@@ -197,7 +197,7 @@ public class ApplicationDto
   public int? GMAT_UpdatedBy { get; set; }
 
   // ================================
-  // OTHERSInformationDto
+  // OthersInformationDto
   // ================================
   public int OthersInformationId { get; set; }
   public int OTHERS_ApplicantId { get; set; }

@@ -27,16 +27,16 @@ namespace Domain.Contracts.Core.SystemAdmin
 
 
 //using Domain.Entities.Entities.System;
-//using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
+//using Domain.Contracts.Core.SystemAdmin;
 //using Domain.Contracts.Repositories;
-//using bdDevCRM.Sql.Context;
+//using Infrastructure.Sql.Context;
 //using Microsoft.EntityFrameworkCore;
 
-//namespace bdDevCRM.Repositories.Core.SystemAdmin;
+//namespace Infrastructure.Repositories.Core.SystemAdmin;
 
 //public class MenuRepository : RepositoryBase<Menu>, IMenuRepository
 //{
-//	public MenuRepository(CRMContext context) : base(context) { }
+//	public MenuRepository(CrmContext context) : base(context) { }
 
 //	private const string SELECT_ALL_MENU_BY_MODULEID_QUERY = "Select * from Menu where ModuleId = {0} order by SorOrder,menuName asc";
 

@@ -13,8 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application.Shared\Application.Shared.csproj" />
+    <ProjectReference Include="..\bdDevs.Shared\bdDevs.Shared.csproj" />
     <ProjectReference Include="..\Domain.Contracts\Domain.Contracts.csproj" />
+    <ProjectReference Include="..\Domain.Exceptions\Domain.Exceptions.csproj" />
     <ProjectReference Include="..\Infrastructure.Sql\Infrastructure.Sql.csproj" />
   </ItemGroup>
 

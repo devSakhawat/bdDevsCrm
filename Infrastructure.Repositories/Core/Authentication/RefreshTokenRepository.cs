@@ -1,13 +1,13 @@
 ﻿using Domain.Entities.Entities.System;
-using bdDevCRM.Entities.Entities.Token;
-using bdDevCRM.RepositoriesContracts.Core.Authentication;
-using bdDevCRM.Sql.Context;
+using Domain.Entities.Entities.Token;
+using Domain.Contracts.Core.Authentication;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.Authentication;
 
 public class RefreshTokenRepository : RepositoryBase<RefreshToken>, IRefreshTokenRepository
 {
-  public RefreshTokenRepository(CRMContext context) : base(context) { }
+  public RefreshTokenRepository(CrmContext context) : base(context) { }
 
   public async Task<IEnumerable<RefreshToken>> ExpiredTokensAsync(CancellationToken cancellationToken = default)
   {

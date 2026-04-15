@@ -1,4 +1,4 @@
-using bdDevCRM.Api.Middleware.Shared;
+using Presentation.Api.Middleware.Shared;
 
 namespace Presentation.Api.Middleware;
 

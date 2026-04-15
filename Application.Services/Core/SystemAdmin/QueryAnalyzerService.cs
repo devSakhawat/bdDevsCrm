@@ -1,10 +1,8 @@
-﻿using Domain.Entities.Entities.System;
+using Domain.Contracts.Repositories;
+using Domain.Entities.Entities.System;
 using Domain.Contracts.Services.Core.SystemAdmin;
-using bdDevCRM.s.Core.SystemAdmin;
-using Application.Services.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-using bdDevCRM.Shared.Exceptions;
-using bdDevCRM.Utilities.OthersLibrary;
+using Domain.Exceptions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -23,9 +21,6 @@ internal sealed class QueryAnalyzerService : IQueryAnalyzerService
 	/// <summary>
 	/// Initializes a new instance of <see cref="QueryAnalyzerService"/> with required dependencies.
 	/// </summary>
-	/// <param name="repository">The repository manager for data access operations.</param>
-	/// <param name="logger">The logger for capturing service-level events.</param>
-	/// <param name="configuration">The application configuration accessor.</param>
 	public QueryAnalyzerService(IRepositoryManager repository, ILogger<QueryAnalyzerService> logger, IConfiguration configuration)
 	{
 		_repository = repository;
@@ -40,7 +35,7 @@ internal sealed class QueryAnalyzerService : IQueryAnalyzerService
 	{
 		_logger.LogInformation("Fetching customized report information. Time: {Time}", DateTime.UtcNow);
 
-		IEnumerable<QueryAnalyzer> queryAnalyzers = await _repository.QueryAnalyzers
+		IEnumerable<QueryAnalyzerDto> queryAnalyzers = await _repository.QueryAnalyzers
 						.CustomizedReportsInfoAsync(trackChanges, cancellationToken);
 
 		if (!queryAnalyzers.Any())
@@ -49,13 +44,11 @@ internal sealed class QueryAnalyzerService : IQueryAnalyzerService
 			return Enumerable.Empty<QueryAnalyzerDto>();
 		}
 
-		IEnumerable<QueryAnalyzerDto> queryAnalyzersDto = MyMapper.JsonCloneIEnumerableToList<QueryAnalyzer, QueryAnalyzerDto>(queryAnalyzers);
-
 		_logger.LogInformation("Customized reports fetched successfully. Count: {Count}, Time: {Time}",
-						queryAnalyzersDto.Count(),
+						queryAnalyzers.Count(),
 						DateTime.UtcNow);
 
-		return queryAnalyzersDto;
+		return queryAnalyzers;
 	}
 
 	/// <summary>
@@ -100,7 +93,7 @@ internal sealed class QueryAnalyzerService : IQueryAnalyzerService
 							groupPermissionList.Count());
 		}
 
-		IEnumerable<QueryAnalyzer> queryAnalyzers = await _repository.QueryAnalyzers
+		IEnumerable<QueryAnalyzerDto> queryAnalyzers = await _repository.QueryAnalyzers
 						.CustomizedReportsByPermissionAsync(usersEntity, condition, trackChanges, cancellationToken);
 
 		if (!queryAnalyzers.Any())
@@ -111,26 +104,15 @@ internal sealed class QueryAnalyzerService : IQueryAnalyzerService
 			return Enumerable.Empty<QueryAnalyzerDto>();
 		}
 
-		IEnumerable<QueryAnalyzerDto> queryAnalyzersDto = MyMapper.JsonCloneIEnumerableToList<QueryAnalyzer, QueryAnalyzerDto>(queryAnalyzers);
-
 		_logger.LogInformation("Customized reports fetched successfully for userId: {UserId}, Count: {Count}, Time: {Time}",
 						currentUser.UserId,
-						queryAnalyzersDto.Count(),
+						queryAnalyzers.Count(),
 						DateTime.UtcNow);
 
-		return queryAnalyzersDto;
+		return queryAnalyzers;
 	}
 }
-
-
-
-
-
-
-
-
-
-//namespace bdDevCRM.Services.Core.SystemAdmin;
+//namespace Application.Services.Core.SystemAdmin;
 
 
 //internal sealed class QueryAnalyzerService : IQueryAnalyzerService

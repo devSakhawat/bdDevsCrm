@@ -1,20 +1,21 @@
+using Domain.Contracts.Repositories;
 ﻿//using Domain.Entities.Entities.CRM;
 //using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevCRM.s.Core.SystemAdmin;
-//using bdDevCRM.s.CRM;
-//using bdDevCRM.ServiceContract;
 //using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 //using bdDevs.Shared.DataTransferObjects.CRM;
-//using bdDevCRM.Shared.Exceptions;
-//using bdDevCRM.Shared.Exceptions.BaseException;
+//using Domain.Contracts.Services;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+//using bdDevs.Shared.DataTransferObjects.CRM;
+//using Domain.Exceptions;
+//using Domain.Exceptions;
 //using Application.Shared.Grid;
-//using bdDevCRM.Utilities.OthersLibrary;
+//using Application.Services.Mappings;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.Data.SqlClient;
 //using Microsoft.Extensions.Configuration;
 //using Microsoft.Extensions.Logging;
 
-//namespace bdDevCRM.Service;
+//namespace Domain.Contracts.Services;
 
 
 ///// <summary>
@@ -434,10 +435,10 @@
 //          ieltsDto.CreatedDate = DateTime.UtcNow;
 //          ieltsDto.CreatedBy = currentUser.UserId ?? 0;
 
-//          var ieltsEntity = MyMapper.JsonClone<IELTSInformationDto, CrmIELTSInformation>(ieltsDto);
+//          var ieltsEntity = MyMapper.JsonClone<IeltsInformationDto, CrmIeltsInformation>(ieltsDto);
 
 //          // ✅ Pass CancellationToken
-//          var ieltsEntityId = await _repository.CrmIELTSInformations.CreateAndIdAsync(
+//          var ieltsEntityId = await _repository.CrmIeltsInformations.CreateAndIdAsync(
 //              ieltsEntity,
 //              cancellationToken);
 //        }

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace bdDevsCrm.Api.Middleware.Shared;
+namespace Presentation.Api.Middleware.Shared;
 
 public class RequestPipelineContext
 {
@@ -42,7 +42,7 @@ public class RequestPipelineContext
 
 //using System.Diagnostics;
 
-//namespace bdDevCRM.Api.Middleware.Shared;
+//namespace Presentation.Api.Middleware.Shared;
 
 ///// <summary>
 ///// For storing shared data across all middleware.

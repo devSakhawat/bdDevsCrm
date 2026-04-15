@@ -1,6 +1,6 @@
-﻿using bdDevCRM.Presentation.Extensions;
-using bdDevCRM.ServicesContract;
-using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
+﻿using Presentation.Extensions;
+using Domain.Contracts.Services;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -124,9 +124,9 @@ public class AuthorizeUserAttribute : Attribute, IAsyncAuthorizationFilter
 
 
 
-//using bdDevCRM.Presentation.Extensions;
-//using bdDevCRM.ServicesContract;
-//using bdDevCRM.Shared.DataTransferObjects.Core.SystemAdmin;
+//using Presentation.Extensions;
+//using Domain.Contracts.Services;
+//using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 //using Microsoft.AspNetCore.Http;
 //using Microsoft.AspNetCore.Mvc;
 //using Microsoft.AspNetCore.Mvc.Filters;
@@ -136,7 +136,7 @@ public class AuthorizeUserAttribute : Attribute, IAsyncAuthorizationFilter
 //using Microsoft.Extensions.Logging;
 //using System.Diagnostics;
 
-//namespace bdDevCRM.Presentation.AuthorizeAttributes;
+//namespace Presentation.AuthorizeAttributes;
 
 ///// <summary>
 ///// Optimized authorization filter with cache-first strategy and DB fallback

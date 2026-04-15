@@ -1,4 +1,4 @@
-using bdDevCRM.ServiceContract.Authentication;
+using Domain.Contracts.Services.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

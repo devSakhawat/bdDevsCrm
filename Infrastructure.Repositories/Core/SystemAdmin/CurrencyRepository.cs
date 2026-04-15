@@ -1,6 +1,6 @@
-using bdDevCRM.Entities.Entities.CRM;
-using bdDevCRM.RepositoriesContracts.Core.SystemAdmin;
-using bdDevCRM.Sql.Context;
+using Domain.Entities.Entities.CRM;
+using Domain.Contracts.Core.SystemAdmin;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Core.SystemAdmin;
 
@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories.Core.SystemAdmin;
 /// </summary>
 public class CurrencyRepository : RepositoryBase<CrmCurrencyInfo>, ICurrencyRepository
 {
-	public CurrencyRepository(CRMContext context) : base(context) { }
+	public CurrencyRepository(CrmContext context) : base(context) { }
 
 	/// <summary>
 	/// Retrieves all currencies asynchronously.

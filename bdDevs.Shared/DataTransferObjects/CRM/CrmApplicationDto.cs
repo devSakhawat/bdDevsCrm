@@ -46,10 +46,10 @@ public class CrmApplicationDto
     EducationInformation = new EducationInformationDto
     {
       EducationDetails = new EducationDetailsDto(),
-      IELTSInformation = new IELTSInformationDto(),
-      TOEFLInformation = new TOEFLInformationDto(),
-      PTEInformation = new PTEInformationDto(),
-      GMATInformation = new GMATInformationDto(),
+      IELTSInformation = new IeltsInformationDto(),
+      TOEFLInformation = new ToeflInformationDto(),
+      PTEInformation = new PteInformationDto(),
+      GMATInformation = new GmatInformationDto(),
       OTHERSInformation = new OthersInformationDto(),
       WorkExperience = new WorkExperienceDto()
     };

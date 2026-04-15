@@ -12,23 +12,24 @@
 This document tracks the implementation of the CRUD Records pattern across all entities in the bdDevsCrm project. The goal is to replace DTOs with C# record types for all HTTP requests and implement proper validation using FluentValidation.
 
 ### Key Requirements
-1. ✅ Use **Mapster** for mapping (NOT AutoMapper)
-2. ✅ Use **FluentValidation** for validation
-3. ✅ Create **CreateXxxRecord**, **UpdateXxxRecord**, **DeleteXxxRecord** for each entity
-4. ✅ Update Controllers to use Records instead of DTOs
-5. ✅ Update Services to use Mapster instead of MyMapper.JsonClone
-6. ✅ Install Mapster in bdDevs.Shared for shared mapping utilities
+1. ✅ Use **Mapster** for mapping (NOT AutoMapper) - **INSTALLED**
+2. ✅ Use **FluentValidation** for validation - **INSTALLED**
+3. 🚧 Create **CreateXxxRecord**, **UpdateXxxRecord**, **DeleteXxxRecord** for each entity - **IN PROGRESS**
+4. ⏳ Update Controllers to use Records instead of DTOs - **PENDING**
+5. ⏳ Update Services to use Mapster instead of MyMapper.JsonClone - **PENDING**
+6. ✅ Install Mapster in bdDevs.Shared for shared mapping utilities - **DONE**
 
 ---
 
 ## 🎯 Implementation Strategy
 
-### Phase 1: Infrastructure Setup
-- [ ] Install Mapster in bdDevs.Shared project
-- [ ] Install FluentValidation in Application.Services project
-- [ ] Create base validator classes
-- [ ] Configure Mapster mappings
-- [ ] Create reusable mapping extensions
+### Phase 1: Infrastructure Setup ✅ COMPLETED
+- [x] Install Mapster 10.0.7 in bdDevs.Shared project
+- [x] Install FluentValidation 11.12.0 in Application.Services project
+- [x] Install FluentValidation.DependencyInjectionExtensions 11.12.0
+- [x] Create base validator classes (BaseRecordValidator<T>)
+- [x] Configure Mapster mappings (MapsterConfig.cs)
+- [x] Create reusable mapping extensions (MapsterExtensions.cs)
 
 ### Phase 2: System Module (54 entities) - **CURRENT**
 - [ ] Create CRUD Records for all System entities
@@ -60,18 +61,28 @@ This document tracks the implementation of the CRUD Records pattern across all e
 
 ## 📊 System Module Entities (54 Total)
 
-### ✅ Already Completed (3/54)
-1. ✅ **Company** - CompanyRecords.cs exists
-2. ✅ **Branch** - BranchRecords.cs exists
-3. ✅ **Department** - DepartmentRecords.cs exists
+### ✅ Already Completed (13/54 - 24.1%)
+1. ✅ **Company** - CompanyRecords.cs
+2. ✅ **Branch** - BranchRecords.cs
+3. ✅ **Department** - DepartmentRecords.cs
+4. ✅ **Currency** - CurrencyRecords.cs
+5. ✅ **Menu** - MenuRecords.cs
+6. ✅ **Group** - GroupRecords.cs
+7. ✅ **Module** - ModuleRecords.cs
+8. ✅ **Users** - UsersRecords.cs
+9. ✅ **Holiday** - HolidayRecords.cs (NEW)
+10. ✅ **MaritalStatus** - MaritalStatusRecords.cs (NEW)
+11. ✅ **Employeetype** - EmployeetypeRecords.cs (NEW)
+12. ✅ **Employment** - EmploymentRecords.cs (NEW)
+13. ✅ **Groups** - GroupsRecords.cs (via GroupRecords.cs)
 
 ### 🚧 In Progress (0/54)
 *None currently in progress*
 
-### ⏳ Pending (51/54)
+### ⏳ Pending (41/54 - 75.9%)
 1. ⏳ AboutUsLicense
 2. ⏳ AccessRestriction
-3. ⏳ Accesscontrol
+3. ⏳ Accesscontrol (AccessControl)
 4. ⏳ ApproverDetails
 5. ⏳ ApproverHistory
 6. ⏳ ApproverOrder
@@ -101,13 +112,13 @@ This document tracks the implementation of the CRUD Records pattern across all e
 30. ⏳ DocumentTemplate
 31. ⏳ DocumentType
 32. ⏳ Employee
-33. ⏳ Employeetype
-34. ⏳ Employment
+33. ✅ Employeetype (DONE)
+34. ✅ Employment (DONE)
 35. ⏳ GroupMember
 36. ⏳ GroupPermission
-37. ⏳ Groups
-38. ⏳ Holiday
-39. ⏳ MaritalStatus
+37. ✅ Groups (via GroupRecords.cs)
+38. ✅ Holiday (DONE)
+39. ✅ MaritalStatus (DONE)
 40. ⏳ Menu
 41. ⏳ Module
 42. ⏳ PasswordHistory
@@ -126,7 +137,7 @@ This document tracks the implementation of the CRUD Records pattern across all e
 ## 📝 Progress by Task Type
 
 ### Records Generation
-- **Completed**: 9/267 (3.4%)
+- **Completed**: 39/267 (14.6%)
   - CountryRecords.cs ✅
   - MenuRecords.cs ✅
   - GroupRecords.cs ✅
@@ -136,7 +147,11 @@ This document tracks the implementation of the CRUD Records pattern across all e
   - CompanyRecords.cs ✅
   - BranchRecords.cs ✅
   - DepartmentRecords.cs ✅
-- **Pending**: 258/267 (96.6%)
+  - HolidayRecords.cs ✅ (NEW)
+  - MaritalStatusRecords.cs ✅ (NEW)
+  - EmployeetypeRecords.cs ✅ (NEW)
+  - EmploymentRecords.cs ✅ (NEW)
+- **Pending**: 228/267 (85.4%)
 
 ### FluentValidation Setup
 - **Completed**: 0/89 (0%)
@@ -217,14 +232,14 @@ public class Create{Entity}RecordValidator : AbstractValidator<Create{Entity}Rec
 
 ## 📈 Completion Metrics
 
-### Overall Progress: 3.7% (10/267 records created)
+### Overall Progress: 14.6% (39/267 records created)
 
 | Module | Entities | Records Created | Validators | Services Updated | Controllers Updated |
 |--------|----------|-----------------|------------|------------------|---------------------|
-| System | 54 | 9/162 (5.6%) | 0/54 (0%) | 0/15 (0%) | 0/15 (0%) |
-| CRM | ~30 | 1/90 (1.1%) | 0/30 (0%) | 1/10 (10%) | 0/10 (0%) |
+| System | 54 | 39/162 (24.1%) | 0/54 (0%) | 0/15 (0%) | 0/15 (0%) |
+| CRM | ~30 | 0/90 (0%) | 0/30 (0%) | 1/10 (10%) | 0/10 (0%) |
 | DMS | ~8 | 0/24 (0%) | 0/8 (0%) | 0/3 (0%) | 0/3 (0%) |
-| **Total** | **~92** | **10/276** | **0/92** | **1/28** | **0/28** |
+| **Total** | **~92** | **39/276** | **0/92** | **1/28** | **0/28** |
 
 ---
 
@@ -232,10 +247,12 @@ public class Create{Entity}RecordValidator : AbstractValidator<Create{Entity}Rec
 
 ### Immediate Tasks (Today)
 1. ✅ Create tracking document (this file)
-2. ⏳ Install Mapster in bdDevs.Shared
-3. ⏳ Install FluentValidation in Application.Services
-4. ⏳ Create base validator class
-5. ⏳ Generate Records for first 10 System entities
+2. ✅ Install Mapster 10.0.7 in bdDevs.Shared
+3. ✅ Install FluentValidation 11.12.0 in Application.Services
+4. ✅ Create base validator class (BaseRecordValidator<T>)
+5. 🚧 Generate Records for System entities (13/54 completed - 24.1%)
+6. ⏳ Create validators for generated Records
+7. ⏳ Generate next batch of Records (6 more entities)
 
 ### This Week
 - Complete all System module Records (51 remaining)
@@ -284,6 +301,7 @@ Before marking an entity as complete, verify:
 
 ---
 
-**Last Updated**: 2026-04-15 04:28 UTC
+**Last Updated**: 2026-04-15 04:35 UTC
 **Updated By**: Claude Agent
-**Next Review**: After completing first 10 System entities
+**Next Review**: After completing 20 System entities (target: 37% completion)
+**Current Progress**: 13/54 System entities (24.1%) | 39/267 total records (14.6%)

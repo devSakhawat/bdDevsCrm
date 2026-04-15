@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -380,7 +382,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 //            return Enumerable.Empty<CrmApplicantInfoDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmApplicantInfo, CrmApplicantInfoDto>(records);
+//        var recordDtos = records.MapToList<CrmApplicantInfoDto>();
 //        return recordDtos;
 //    }
 
@@ -405,7 +407,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 //            throw new NotFoundException("CrmApplicantInfo", "CrmApplicantInfoId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmApplicantInfo, CrmApplicantInfoDto>(record);
+//        var recordDto = record.MapTo<CrmApplicantInfoDto>();
 //        return recordDto;
 //    }
 
@@ -427,7 +429,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 //            throw new DuplicateRecordException("CrmApplicantInfo", "Title");
 
 //        // Map and create
-//        CrmApplicantInfo entity = MyMapper.JsonClone<CrmApplicantInfoDto, CrmApplicantInfo>(modelDto);
+//        CrmApplicantInfo entity = modelDto.MapTo<CrmApplicantInfo>();
 //        modelDto.CrmApplicantInfoId = await _repository.CrmApplicantInfos.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -465,7 +467,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 //            throw new DuplicateRecordException("CrmApplicantInfo", "Title");
 
 //        // Map and update
-//        CrmApplicantInfo entity = MyMapper.JsonClone<CrmApplicantInfoDto, CrmApplicantInfo>(modelDto);
+//        CrmApplicantInfo entity = modelDto.MapTo<CrmApplicantInfo>();
 //        _repository.CrmApplicantInfos.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

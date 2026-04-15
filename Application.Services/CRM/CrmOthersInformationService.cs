@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -329,7 +331,7 @@ internal sealed class CrmOthersInformationService : ICrmOthersInformationService
 //            return Enumerable.Empty<CrmOthersInformationDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmOthersInformation, CrmOthersInformationDto>(records);
+//        var recordDtos = records.MapToList<CrmOthersInformationDto>();
 //        return recordDtos;
 //    }
 
@@ -354,7 +356,7 @@ internal sealed class CrmOthersInformationService : ICrmOthersInformationService
 //            throw new NotFoundException("CrmOthersInformation", "CrmOthersInformationId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmOthersInformation, CrmOthersInformationDto>(record);
+//        var recordDto = record.MapTo<CrmOthersInformationDto>();
 //        return recordDto;
 //    }
 
@@ -376,7 +378,7 @@ internal sealed class CrmOthersInformationService : ICrmOthersInformationService
 //            throw new DuplicateRecordException("CrmOthersInformation", "Name");
 
 //        // Map and create
-//        CrmOthersInformation entity = MyMapper.JsonClone<CrmOthersInformationDto, CrmOthersInformation>(modelDto);
+//        CrmOthersInformation entity = modelDto.MapTo<CrmOthersInformation>();
 //        modelDto.CrmOthersInformationId = await _repository.CrmOthersInformations.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -414,7 +416,7 @@ internal sealed class CrmOthersInformationService : ICrmOthersInformationService
 //            throw new DuplicateRecordException("CrmOthersInformation", "Name");
 
 //        // Map and update
-//        CrmOthersInformation entity = MyMapper.JsonClone<CrmOthersInformationDto, CrmOthersInformation>(modelDto);
+//        CrmOthersInformation entity = modelDto.MapTo<CrmOthersInformation>();
 //        _repository.CrmOthersInformations.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

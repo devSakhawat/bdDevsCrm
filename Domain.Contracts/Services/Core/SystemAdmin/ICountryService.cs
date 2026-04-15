@@ -1,6 +1,7 @@
 ﻿using Application.Shared.Grid;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
+using bdDevs.Shared.Records.Core.SystemAdmin;
 
 namespace Domain.Contracts.Services.Core.SystemAdmin;
 
@@ -17,19 +18,19 @@ public interface ICrmCountryService
   Task<GridEntity<CrmCountryDto>> CountrySummaryAsync(GridOptions options, CancellationToken cancellationToken = default);
 
   /// <summary>
-  /// Creates a new country asynchronously.
+  /// Creates a new country asynchronously using CRUD Record pattern.
   /// </summary>
-  Task<CrmCountryDto> CreateAsync(CrmCountryDto modelDto, CancellationToken cancellationToken = default);
+  Task<CrmCountryDto> CreateAsync(CreateCountryRecord record, CancellationToken cancellationToken = default);
 
   /// <summary>
-  /// Updates an existing country asynchronously.
+  /// Updates an existing country asynchronously using CRUD Record pattern.
   /// </summary>
-  Task<CrmCountryDto> UpdateAsync(int key, CrmCountryDto modelDto, bool trackChanges, CancellationToken cancellationToken = default);
+  Task<CrmCountryDto> UpdateAsync(UpdateCountryRecord record, bool trackChanges, CancellationToken cancellationToken = default);
 
   /// <summary>
-  /// Deletes a country by ID asynchronously.
+  /// Deletes a country by ID asynchronously using CRUD Record pattern.
   /// </summary>
-  Task DeleteAsync(int key, bool trackChanges, CancellationToken cancellationToken = default);
+  Task DeleteAsync(DeleteCountryRecord record, bool trackChanges, CancellationToken cancellationToken = default);
 
   /// <summary>
   /// Retrieves a country by ID asynchronously.

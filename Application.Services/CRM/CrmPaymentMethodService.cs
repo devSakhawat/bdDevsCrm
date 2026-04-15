@@ -5,9 +5,10 @@ using Domain.Contracts.Services.CRM;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using Domain.Exceptions;
 using Application.Shared.Grid;
-using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -19,181 +20,247 @@ internal sealed class CrmPaymentMethodService : ICrmPaymentMethodService
 {
 	private readonly IRepositoryManager _repository;
 	private readonly ILogger<CrmPaymentMethodService> _logger;
-	private readonly IConfiguration _configuration;
+	private readonly IConfiguration _config;
 
+	/// <summary>
+	/// Initializes a new instance of <see cref="CrmPaymentMethodService"/> with required dependencies.
+	/// </summary>
 	public CrmPaymentMethodService(IRepositoryManager repository, ILogger<CrmPaymentMethodService> logger, IConfiguration configuration)
 	{
 		_repository = repository;
 		_logger = logger;
-		_configuration = configuration;
+		_config = configuration;
 	}
 
-	///// <summary>
-	///// Retrieves paginated summary grid of CrmPaymentMethod records asynchronously.
-	///// </summary>
-	//public async Task<GridEntity<CrmPaymentMethodDto>> CrmPaymentMethodSummaryAsync(bool trackChanges, GridOptions options, CancellationToken cancellationToken = default)
-	//{
-	//	_logger.LogInformation("Fetching CrmPaymentMethod summary grid");
+	/// <summary>
+	/// Creates a new payment method record using CRUD Record pattern.
+	/// </summary>
+	public async Task<CrmPaymentMethodDto> CreateAsync(CreateCrmPaymentMethodRecord record, CancellationToken cancellationToken = default)
+	{
+		if (record == null)
+			throw new BadRequestException(nameof(CreateCrmPaymentMethodRecord));
 
-	//	string query = "SELECT * FROM CrmPaymentMethod";
-	//	string orderBy = "Name ASC";
+		_logger.LogInformation("Creating new payment method. PaymentMethodName: {PaymentMethodName}, Time: {Time}",
+						record.PaymentMethodName, DateTime.UtcNow);
 
-	//	var gridEntity = await _repository.CrmPaymentMethods.AdoGridDataAsync<CrmPaymentMethodDto>(query, options, orderBy, "", cancellationToken);
-	//	return gridEntity;
-	//}
+		// Map Record to Entity using Mapster
+		CrmPaymentMethod paymentMethod = record.MapTo<CrmPaymentMethod>();
+		int paymentMethodId = await _repository.CrmPaymentMethods.CreateAndIdAsync(paymentMethod, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
-	///// <summary>
-	///// Retrieves all CrmPaymentMethod records asynchronously.
-	///// </summary>
-	//public async Task<IEnumerable<CrmPaymentMethodDto>> CrmPaymentMethodsAsync(bool trackChanges, CancellationToken cancellationToken = default)
-	//{
-	//	_logger.LogInformation("Fetching all CrmPaymentMethod records");
+		_logger.LogInformation("Payment method created successfully. ID: {PaymentMethodId}, Time: {Time}",
+						paymentMethodId, DateTime.UtcNow);
 
-	//	var records = await _repository.CrmPaymentMethods.CrmPaymentMethodsAsync(trackChanges, cancellationToken);
+		// Return as DTO
+		var resultDto = paymentMethod.MapTo<CrmPaymentMethodDto>();
+		resultDto.PaymentMethodId = paymentMethodId;
+		return resultDto;
+	}
 
-	//	if (!records.Any())
-	//	{
-	//		_logger.LogWarning("No CrmPaymentMethod records found");
-	//		return Enumerable.Empty<CrmPaymentMethodDto>();
-	//	}
+	/// <summary>
+	/// Updates an existing payment method record using CRUD Record pattern.
+	/// </summary>
+	public async Task<CrmPaymentMethodDto> UpdateAsync(UpdateCrmPaymentMethodRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		if (record == null)
+			throw new BadRequestException(nameof(UpdateCrmPaymentMethodRecord));
 
-	//	var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmPaymentMethod, CrmPaymentMethodDto>(records);
-	//	return recordDtos;
-	//}
+		_logger.LogInformation("Updating payment method. ID: {PaymentMethodId}, Time: {Time}", record.PaymentMethodId, DateTime.UtcNow);
 
-	///// <summary>
-	///// Retrieves a CrmPaymentMethod record by ID asynchronously.
-	///// </summary>
-	//public async Task<CrmPaymentMethodDto> CrmPaymentMethodAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
-	//{
-	//	if (id <= 0)
-	//	{
-	//		_logger.LogWarning("CrmPaymentMethodAsync called with invalid id: {CrmPaymentMethodId}", id);
-	//		throw new BadRequestException("Invalid request!");
-	//	}
+		// Check if payment method exists
+		var existingPaymentMethod = await _repository.CrmPaymentMethods
+						.FirstOrDefaultAsync(x => x.PaymentMethodId == record.PaymentMethodId, trackChanges: false, cancellationToken)
+						?? throw new NotFoundException("PaymentMethod", "PaymentMethodId", record.PaymentMethodId.ToString());
 
-	//	_logger.LogInformation("Fetching CrmPaymentMethod record with ID: {CrmPaymentMethodId}", id);
+		// Map Record to Entity using Mapster
+		CrmPaymentMethod paymentMethod = record.MapTo<CrmPaymentMethod>();
+		_repository.CrmPaymentMethods.UpdateByState(paymentMethod);
+		await _repository.SaveAsync(cancellationToken);
 
-	//	var record = await _repository.CrmPaymentMethods.CrmPaymentMethodAsync(id, trackChanges, cancellationToken);
+		_logger.LogInformation("Payment method updated successfully. ID: {PaymentMethodId}, Time: {Time}",
+						record.PaymentMethodId, DateTime.UtcNow);
 
-	//	if (record == null)
-	//	{
-	//		_logger.LogWarning("CrmPaymentMethod record not found with ID: {CrmPaymentMethodId}", id);
-	//		throw new NotFoundException("CrmPaymentMethod", "CrmPaymentMethodId", id.ToString());
-	//	}
+		return paymentMethod.MapTo<CrmPaymentMethodDto>();
+	}
 
-	//	var recordDto = MyMapper.JsonClone<CrmPaymentMethod, CrmPaymentMethodDto>(record);
-	//	return recordDto;
-	//}
+	/// <summary>
+	/// Deletes a payment method record using CRUD Record pattern.
+	/// </summary>
+	public async Task DeleteAsync(DeleteCrmPaymentMethodRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		if (record == null || record.PaymentMethodId <= 0)
+			throw new BadRequestException("Invalid delete request!");
 
-	///// <summary>
-	///// Creates a new CrmPaymentMethod record asynchronously.
-	///// </summary>
-	//public async Task<CrmPaymentMethodDto> CreateAsync(CrmPaymentMethodDto modelDto)
-	//{
-	//	if (modelDto == null)
-	//		throw new BadRequestException(nameof(CrmPaymentMethodDto));
+		_logger.LogInformation("Deleting payment method. ID: {PaymentMethodId}, Time: {Time}", record.PaymentMethodId, DateTime.UtcNow);
 
-	//	_logger.LogInformation("Creating new CrmPaymentMethod record");
+		var paymentMethodEntity = await _repository.CrmPaymentMethods
+						.FirstOrDefaultAsync(x => x.PaymentMethodId == record.PaymentMethodId, trackChanges, cancellationToken)
+						?? throw new NotFoundException("PaymentMethod", "PaymentMethodId", record.PaymentMethodId.ToString());
 
-	//	// Check for duplicate record
-	//	bool recordExists = await _repository.CrmPaymentMethods.ExistsAsync(
-	//			x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower());
+		await _repository.CrmPaymentMethods.DeleteAsync(x => x.PaymentMethodId == record.PaymentMethodId, trackChanges: false, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
-	//	if (recordExists)
-	//		throw new DuplicateRecordException("CrmPaymentMethod", "Name");
+		_logger.LogWarning("Payment method deleted successfully. ID: {PaymentMethodId}, Time: {Time}",
+						record.PaymentMethodId, DateTime.UtcNow);
+	}
 
-	//	// Map and create
-	//	CrmPaymentMethod entity = MyMapper.JsonClone<CrmPaymentMethodDto, CrmPaymentMethod>(modelDto);
-	//	modelDto.CrmPaymentMethodId = await _repository.CrmPaymentMethods.CreateAndIdAsync(entity);
-	//	await _repository.SaveAsync();
+	/// <summary>
+	/// Retrieves a single payment method record by its ID.
+	/// </summary>
+	public async Task<CrmPaymentMethodDto> PaymentMethodAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching payment method. ID: {PaymentMethodId}, Time: {Time}", id, DateTime.UtcNow);
 
-	//	_logger.LogInformation("CrmPaymentMethod record created successfully with ID: {CrmPaymentMethodId}", modelDto.CrmPaymentMethodId);
+		var paymentMethod = await _repository.CrmPaymentMethods
+						.FirstOrDefaultAsync(x => x.PaymentMethodId == id, trackChanges, cancellationToken)
+						?? throw new NotFoundException("PaymentMethod", "PaymentMethodId", id.ToString());
 
-	//	return modelDto;
-	//}
+		_logger.LogInformation("Payment method fetched successfully. ID: {PaymentMethodId}, Time: {Time}",
+						id, DateTime.UtcNow);
 
-	///// <summary>
-	///// Updates an existing CrmPaymentMethod record asynchronously.
-	///// </summary>
-	//public async Task<CrmPaymentMethodDto> UpdateAsync(int key, CrmPaymentMethodDto modelDto)
-	//{
-	//	if (modelDto == null)
-	//		throw new BadRequestException(nameof(CrmPaymentMethodDto));
+		return paymentMethod.MapTo<CrmPaymentMethodDto>();
+	}
 
-	//	if (key != modelDto.CrmPaymentMethodId)
-	//		throw new BadRequestException(key.ToString(), nameof(CrmPaymentMethodDto));
+	/// <summary>
+	/// Retrieves all payment method records from the database.
+	/// </summary>
+	public async Task<IEnumerable<CrmPaymentMethodDto>> PaymentMethodsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching all payment methods. Time: {Time}", DateTime.UtcNow);
 
-	//	_logger.LogInformation("Updating CrmPaymentMethod record with ID: {CrmPaymentMethodId}", key);
+		var paymentMethods = await _repository.CrmPaymentMethods.ListAsync(x => x.PaymentMethodId, trackChanges, cancellationToken);
 
-	//	// Check if record exists
-	//	var existingRecord = await _repository.CrmPaymentMethods.ByIdAsync(
-	//			x => x.CrmPaymentMethodId == key, trackChanges: false);
+		if (!paymentMethods.Any())
+		{
+			_logger.LogWarning("No payment methods found. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmPaymentMethodDto>();
+		}
 
-	//	if (existingRecord == null)
-	//		throw new NotFoundException("CrmPaymentMethod", "CrmPaymentMethodId", key.ToString());
+		var paymentMethodsDto = paymentMethods.MapToList<CrmPaymentMethodDto>();
 
-	//	// Check for duplicate name (excluding current record)
-	//	bool duplicateExists = await _repository.CrmPaymentMethods.ExistsAsync(
-	//			x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower()
-	//					 && x.CrmPaymentMethodId != key);
+		_logger.LogInformation("Payment methods fetched successfully. Count: {Count}, Time: {Time}",
+						paymentMethodsDto.Count(), DateTime.UtcNow);
 
-	//	if (duplicateExists)
-	//		throw new DuplicateRecordException("CrmPaymentMethod", "Name");
+		return paymentMethodsDto;
+	}
 
-	//	// Map and update
-	//	CrmPaymentMethod entity = MyMapper.JsonClone<CrmPaymentMethodDto, CrmPaymentMethod>(modelDto);
-	//	_repository.CrmPaymentMethods.UpdateByState(entity);
-	//	await _repository.SaveAsync();
+	/// <summary>
+	/// Retrieves active payment method records from the database.
+	/// </summary>
+	public async Task<IEnumerable<CrmPaymentMethodDto>> ActivePaymentMethodsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching active payment methods. Time: {Time}", DateTime.UtcNow);
 
-	//	_logger.LogInformation("CrmPaymentMethod record updated successfully: {CrmPaymentMethodId}", key);
+		var paymentMethods = await _repository.CrmPaymentMethods.CrmPaymentMethodsAsync(trackChanges, cancellationToken);
 
-	//	return modelDto;
-	//}
+		if (!paymentMethods.Any())
+		{
+			_logger.LogWarning("No active payment methods found. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmPaymentMethodDto>();
+		}
 
-	///// <summary>
-	///// Deletes a CrmPaymentMethod record by ID asynchronously.
-	///// </summary>
-	//public async Task DeleteAsync(int key)
-	//{
-	//	if (key <= 0)
-	//		throw new BadRequestException("Invalid request!");
+		var paymentMethodsDto = paymentMethods.MapToList<CrmPaymentMethodDto>();
 
-	//	_logger.LogInformation("Deleting CrmPaymentMethod record with ID: {CrmPaymentMethodId}", key);
+		_logger.LogInformation("Active payment methods fetched successfully. Count: {Count}, Time: {Time}",
+						paymentMethodsDto.Count(), DateTime.UtcNow);
 
-	//	var record = await _repository.CrmPaymentMethods.ByIdAsync(
-	//			x => x.CrmPaymentMethodId == key, trackChanges: false);
+		return paymentMethodsDto;
+	}
 
-	//	if (record == null)
-	//		throw new NotFoundException("CrmPaymentMethod", "CrmPaymentMethodId", key.ToString());
+	/// <summary>
+	/// Retrieves active online payment method records from the database.
+	/// </summary>
+	public async Task<IEnumerable<CrmPaymentMethodDto>> OnlinePaymentMethodsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching online payment methods. Time: {Time}", DateTime.UtcNow);
 
-	//	await _repository.CrmPaymentMethods.DeleteAsync(x => x.CrmPaymentMethodId == key, trackChanges: false);
-	//	await _repository.SaveAsync();
+		var paymentMethods = await _repository.CrmPaymentMethods
+						.ListByConditionAsync(
+							x => x.IsActive && x.IsOnlinePayment,
+							x => x.PaymentMethodName,
+							trackChanges: trackChanges,
+							descending: false,
+							cancellationToken: cancellationToken);
 
-	//	_logger.LogInformation("CrmPaymentMethod record deleted successfully: {CrmPaymentMethodId}", key);
-	//}
+		if (!paymentMethods.Any())
+		{
+			_logger.LogWarning("No online payment methods found. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmPaymentMethodDto>();
+		}
 
-	///// <summary>
-	///// Retrieves CrmPaymentMethod records for dropdown list asynchronously.
-	///// </summary>
-	//public async Task<IEnumerable<CrmPaymentMethodForDDLDto>> CrmPaymentMethodsForDDLAsync()
-	//{
-	//	_logger.LogInformation("Fetching CrmPaymentMethod records for dropdown list");
+		var paymentMethodsDto = paymentMethods.MapToList<CrmPaymentMethodDto>();
 
-	//	var records = await _repository.CrmPaymentMethods.ListWithSelectAsync(
-	//			x => new CrmPaymentMethod
-	//			{
-	//				CrmPaymentMethodId = x.CrmPaymentMethodId,
-	//				Name = x.Name
-	//			},
-	//			orderBy: x => x.Name,
-	//			trackChanges: false
-	//	);
+		_logger.LogInformation("Online payment methods fetched successfully. Count: {Count}, Time: {Time}",
+						paymentMethodsDto.Count(), DateTime.UtcNow);
 
-	//	if (!records.Any())
-	//		return new List<CrmPaymentMethodForDDLDto>();
+		return paymentMethodsDto;
+	}
 
-	//	var recordsForDDLDto = MyMapper.JsonCloneIEnumerableToList<CrmPaymentMethod, CrmPaymentMethodForDDLDto>(records);
-	//	return recordsForDDLDto;
-	//}
+	/// <summary>
+	/// Retrieves a lightweight list of all payment methods suitable for use in dropdown lists.
+	/// </summary>
+	public async Task<IEnumerable<CrmPaymentMethodDto>> PaymentMethodForDDLAsync(CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching payment methods for dropdown list. Time: {Time}", DateTime.UtcNow);
+
+		var paymentMethods = await _repository.CrmPaymentMethods.CrmPaymentMethodsAsync(false, cancellationToken);
+
+		if (!paymentMethods.Any())
+		{
+			_logger.LogWarning("No payment methods found for dropdown list. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmPaymentMethodDto>();
+		}
+
+		var paymentMethodsDto = paymentMethods.MapToList<CrmPaymentMethodDto>();
+
+		_logger.LogInformation("Payment methods fetched successfully for dropdown list. Count: {Count}, Time: {Time}",
+						paymentMethodsDto.Count(), DateTime.UtcNow);
+
+		return paymentMethodsDto;
+	}
+
+	/// <summary>
+	/// Retrieves a lightweight list of online payment methods suitable for use in dropdown lists.
+	/// </summary>
+	public async Task<IEnumerable<CrmPaymentMethodDto>> OnlinePaymentMethodForDDLAsync(CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching online payment methods for dropdown list. Time: {Time}", DateTime.UtcNow);
+
+		var paymentMethods = await _repository.CrmPaymentMethods
+						.ListByConditionAsync(
+							x => x.IsActive && x.IsOnlinePayment,
+							x => x.PaymentMethodName,
+							trackChanges: false,
+							descending: false,
+							cancellationToken: cancellationToken);
+
+		if (!paymentMethods.Any())
+		{
+			_logger.LogWarning("No online payment methods found for dropdown list. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmPaymentMethodDto>();
+		}
+
+		var paymentMethodsDto = paymentMethods.MapToList<CrmPaymentMethodDto>();
+
+		_logger.LogInformation("Online payment methods fetched successfully for dropdown list. Count: {Count}, Time: {Time}",
+						paymentMethodsDto.Count(), DateTime.UtcNow);
+
+		return paymentMethodsDto;
+	}
+
+	/// <summary>
+	/// Retrieves a paginated summary grid of all payment methods.
+	/// </summary>
+	public async Task<GridEntity<CrmPaymentMethodDto>> PaymentMethodsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching payment methods summary grid. Time: {Time}", DateTime.UtcNow);
+
+		const string sql = @"
+SELECT PaymentMethodId, PaymentMethodName, PaymentMethodCode, Description, ProcessingFee, ProcessingFeeType, IsOnlinePayment, IsActive, CreatedDate, CreatedBy, UpdatedDate, UpdatedBy
+FROM CrmPaymentMethod";
+
+		const string orderBy = "PaymentMethodName ASC";
+
+		return await _repository.CrmPaymentMethods.AdoGridDataAsync<CrmPaymentMethodDto>(sql, options, orderBy, string.Empty, cancellationToken);
+	}
 }

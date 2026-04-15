@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -54,7 +56,7 @@ internal sealed class CrmApplicationService : ICrmApplicationService
 		entityForCreate.CreatedDate = DateTime.UtcNow;
 		entityForCreate.CreatedBy = currentUser.UserId ?? 0;
 
-		var crmApplicationEntity = MyMapper.JsonClone<CrmApplicationDto, CrmApplication>(entityForCreate);
+		var crmApplicationEntity = entityForCreate.MapTo<CrmApplication>();
 
 		var applicatinEntity = await _repository.CrmApplications.CreateCrmApplicationAsync(crmApplicationEntity, cancellationToken);
 		entityForCreate.ApplicationId = applicatinEntity.ApplicationId;
@@ -98,7 +100,7 @@ internal sealed class CrmApplicationService : ICrmApplicationService
 		_logger.LogInformation("CRM application updated successfully. ID: {ApplicationId}, Time: {Time}",
 						applicationId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmApplication, CrmApplicationDto>(crmApplicationDB);
+		return crmApplicationDB.MapTo<CrmApplicationDto>();
 	}
 
 	/// <summary>
@@ -188,7 +190,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 				modelDto.CreatedDate = DateTime.UtcNow;
 				modelDto.CreatedBy = currentUser.UserId ?? 0;
 
-				var crmApplicationEntity = MyMapper.JsonClone<CrmApplicationDto, CrmApplication>(modelDto);
+				var crmApplicationEntity = modelDto.MapTo<CrmApplication>();
 				var applicationEntity = await _repository.CrmApplications.CreateCrmApplicationAsync(crmApplicationEntity, cancellationToken);
 				modelDto.ApplicationId = applicationEntity.ApplicationId;
 
@@ -362,7 +364,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 //		entityForCreate.CreatedDate = DateTime.UtcNow;
 //		entityForCreate.CreatedBy = currentUser.UserId ?? 0;
 
-//		var crmApplicationEntity = MyMapper.JsonClone<CrmApplicationDto, CrmApplication>(entityForCreate);
+//		var crmApplicationEntity = entityForCreate.MapTo<CrmApplication>();
 
 //		//int applicationId = await _repository.CrmApplications.CreateAndGetIdAsync(crmApplicationEntity, cancellationToken);
 //		crmApplicationEntity = await _repository.CrmApplications.CreateCrmApplicationAsync(crmApplicationEntity, cancellationToken);
@@ -407,7 +409,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 //		_logger.LogInformation("CRM application updated successfully. ID: {ApplicationId}, Time: {Time}",
 //						applicationId, DateTime.UtcNow);
 
-//		return MyMapper.JsonClone<CrmApplication, CrmApplicationDto>(crmApplicationDB);
+//		return crmApplicationDB.MapTo<CrmApplicationDto>();
 //	}
 
 //	/// <summary>
@@ -502,7 +504,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 //				modelDto.CreatedDate = DateTime.UtcNow;
 //				modelDto.CreatedBy = currentUser.UserId ?? 0;
 
-//				var crmApplicationEntity = MyMapper.JsonClone<CrmApplicationDto, CrmApplication>(modelDto);
+//				var crmApplicationEntity = modelDto.MapTo<CrmApplication>();
 //				int applicationId = await _repository.CrmApplications.CreateAndGetIdAsync(crmApplicationEntity, cancellationToken);
 //				modelDto.ApplicationId = applicationId;
 
@@ -679,7 +681,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 ////            return Enumerable.Empty<CrmApplicationDto>();
 ////        }
 
-////        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmApplication, CrmApplicationDto>(records);
+////        var recordDtos = records.MapToList<CrmApplicationDto>();
 ////        return recordDtos;
 ////    }
 
@@ -704,7 +706,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 ////            throw new NotFoundException("CrmApplication", "ApplicationId", id.ToString());
 ////        }
 
-////        var recordDto = MyMapper.JsonClone<CrmApplication, CrmApplicationDto>(record);
+////        var recordDto = record.MapTo<CrmApplicationDto>();
 ////        return recordDto;
 ////    }
 
@@ -726,7 +728,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 ////            throw new DuplicateRecordException("CrmApplication", "Title");
 
 ////        // Map and create
-////        CrmApplication entity = MyMapper.JsonClone<CrmApplicationDto, CrmApplication>(modelDto);
+////        CrmApplication entity = modelDto.MapTo<CrmApplication>();
 ////        modelDto.ApplicationId = await _repository.CrmApplications.CreateAndIdAsync(entity);
 ////        await _repository.SaveAsync();
 
@@ -764,7 +766,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 ////            throw new DuplicateRecordException("CrmApplication", "Title");
 
 ////        // Map and update
-////        CrmApplication entity = MyMapper.JsonClone<CrmApplicationDto, CrmApplication>(modelDto);
+////        CrmApplication entity = modelDto.MapTo<CrmApplication>();
 ////        _repository.CrmApplications.UpdateByState(entity);
 ////        await _repository.SaveAsync();
 

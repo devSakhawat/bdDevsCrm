@@ -1,7 +1,8 @@
-using Application.Services.Mappings;
 using Application.Shared.Grid;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
+using bdDevs.Shared.Extensions;
+using bdDevs.Shared.Records.Core.SystemAdmin;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services.Core.SystemAdmin;
 using Domain.Entities.Entities.CRM;
@@ -44,7 +45,7 @@ internal sealed class CrmCountryService : ICrmCountryService
       return Enumerable.Empty<CrmCountryDDL>();
     }
 
-    var countryDtos = MyMapper.JsonCloneIEnumerableToList<CrmCountry, CrmCountryDDL>(countries);
+    var countryDtos = countries.MapToList<CrmCountryDDL>();
     return countryDtos;
   }
 
@@ -64,93 +65,91 @@ internal sealed class CrmCountryService : ICrmCountryService
   }
 
   /// <summary>
-  /// Creates a new country asynchronously.
+  /// Creates a new country asynchronously using CRUD Record pattern.
   /// </summary>
-  public async Task<CrmCountryDto> CreateAsync(CrmCountryDto modelDto, CancellationToken cancellationToken = default)
+  public async Task<CrmCountryDto> CreateAsync(CreateCountryRecord record, CancellationToken cancellationToken = default)
   {
-    if (modelDto == null)
-      throw new BadRequestException(nameof(CrmCountryDto));
+    if (record == null)
+      throw new BadRequestException(nameof(CreateCountryRecord));
 
-    if (modelDto.CountryId != 0)
-      throw new InvalidOperationExceptionEx("CountryId must be 0 for creating a new country.");
-
-    _logger.LogInformation("Creating new country: {CountryName}", modelDto.CountryName);
+    _logger.LogInformation("Creating new country: {CountryName}", record.CountryName);
 
     // Check for duplicate country name
     bool countryExists = await _repository.Countries.ExistsAsync(
-        x => x.CountryName.Trim().ToLower() == modelDto.CountryName.Trim().ToLower());
+        x => x.CountryName.Trim().ToLower() == record.CountryName.Trim().ToLower());
 
     if (countryExists)
-      throw new ConflictException("Data not found!");
+      throw new ConflictException("Country with this name already exists!");
 
-    // Map and create
-    CrmCountry country = MyMapper.JsonClone<CrmCountryDto, CrmCountry>(modelDto);
-    modelDto.CountryId = await _repository.Countries.CreateAndIdAsync(country, cancellationToken);
+    // Map Record to Entity using Mapster
+    CrmCountry country = record.MapTo<CrmCountry>();
+    int countryId = await _repository.Countries.CreateAndIdAsync(country, cancellationToken);
     await _repository.SaveAsync(cancellationToken);
 
-    _logger.LogInformation("Country created successfully with ID: {CountryId}", modelDto.CountryId);
+    _logger.LogInformation("Country created successfully with ID: {CountryId}", countryId);
 
-    return modelDto;
+    // Return as DTO
+    var resultDto = country.MapTo<CrmCountryDto>();
+    resultDto.CountryId = countryId;
+    return resultDto;
   }
 
   /// <summary>
-  /// Updates an existing country asynchronously.
+  /// Updates an existing country asynchronously using CRUD Record pattern.
   /// </summary>
-  public async Task<CrmCountryDto> UpdateAsync(int key, CrmCountryDto modelDto, bool trackChanges, CancellationToken cancellationToken = default)
+  public async Task<CrmCountryDto> UpdateAsync(UpdateCountryRecord record, bool trackChanges, CancellationToken cancellationToken = default)
   {
-    if (modelDto == null)
-      throw new BadRequestException(nameof(CrmCountryDto));
+    if (record == null)
+      throw new BadRequestException(nameof(UpdateCountryRecord));
 
-    if (key != modelDto.CountryId)
-      throw new BadRequestException(key.ToString(), nameof(CrmCountryDto));
-
-    _logger.LogInformation("Updating country with ID: {CountryId}", key);
+    _logger.LogInformation("Updating country with ID: {CountryId}", record.CountryId);
 
     // Check if country exists
     var existingCountry = await _repository.Countries.ByIdAsync(
-        x => x.CountryId == key, trackChanges: false, cancellationToken: cancellationToken);
+        x => x.CountryId == record.CountryId, trackChanges: false, cancellationToken: cancellationToken);
 
     if (existingCountry == null)
-      throw new NotFoundException("Data not found!");
+      throw new NotFoundException("Country not found!");
 
     // Check for duplicate name (excluding current record)
     bool duplicateExists = await _repository.Countries.ExistsAsync(
-        x => x.CountryName.Trim().ToLower() == modelDto.CountryName.Trim().ToLower()
-             && x.CountryId != key, cancellationToken: cancellationToken);
+        x => x.CountryName.Trim().ToLower() == record.CountryName.Trim().ToLower()
+             && x.CountryId != record.CountryId, cancellationToken: cancellationToken);
 
     if (duplicateExists)
-      throw new ConflictException("Duplicate data found!");
+      throw new ConflictException("Country with this name already exists!");
 
-    // Map and update
-    CrmCountry country = MyMapper.JsonClone<CrmCountryDto, CrmCountry>(modelDto);
+    // Map Record to Entity using Mapster
+    CrmCountry country = record.MapTo<CrmCountry>();
     _repository.Countries.UpdateByState(country);
     await _repository.SaveAsync(cancellationToken);
 
-    _logger.LogInformation("Country updated successfully: {CountryId}", key);
+    _logger.LogInformation("Country updated successfully: {CountryId}", record.CountryId);
 
-    return modelDto;
+    // Return as DTO
+    return country.MapTo<CrmCountryDto>();
   }
 
   /// <summary>
-  /// Deletes a country by ID asynchronously.
+  /// Deletes a country by ID asynchronously using CRUD Record pattern.
   /// </summary>
-  public async Task DeleteAsync(int key, bool trackChanges, CancellationToken cancellationToken = default)
+  public async Task DeleteAsync(DeleteCountryRecord record, bool trackChanges, CancellationToken cancellationToken = default)
   {
-    if (key <= 0)
-      throw new BadRequestException("Invalid request!");
+    if (record == null || record.CountryId <= 0)
+      throw new BadRequestException("Invalid delete request!");
 
-    _logger.LogInformation("Deleting country with ID: {CountryId}", key);
+    _logger.LogInformation("Deleting country with ID: {CountryId}", record.CountryId);
 
     var country = await _repository.Countries.ByIdAsync(
-        x => x.CountryId == key, trackChanges: false);
+        x => x.CountryId == record.CountryId, trackChanges: false);
 
     if (country == null)
-      throw new NotFoundException("Data not found!");
+      throw new NotFoundException("Country not found!");
 
-    await _repository.Countries.DeleteAsync(x => x.CountryId == key, trackChanges: false, cancellationToken: cancellationToken);
+    await _repository.Countries.DeleteAsync(x => x.CountryId == record.CountryId, trackChanges: false, cancellationToken: cancellationToken);
     await _repository.SaveAsync(cancellationToken);
 
-    _logger.LogInformation("Country deleted successfully: {CountryId}", key);
+    _logger.LogInformation("Country deleted successfully: {CountryId}", record.CountryId);
   }
 
   /// <summary>
@@ -171,10 +170,10 @@ internal sealed class CrmCountryService : ICrmCountryService
     if (country == null)
     {
       _logger.LogWarning("Country not found with ID: {CountryId}", countryId);
-      throw new NotFoundException("Data not found!");
+      throw new NotFoundException("Country not found!");
     }
 
-    CrmCountryDto countryDto = MyMapper.JsonClone<CrmCountry, CrmCountryDto>(country);
+    CrmCountryDto countryDto = country.MapTo<CrmCountryDto>();
     return countryDto;
   }
 
@@ -193,6 +192,6 @@ internal sealed class CrmCountryService : ICrmCountryService
       return Enumerable.Empty<CrmCountryDto>();
     }
 
-    return MyMapper.JsonCloneIEnumerableToList<CrmCountry, CrmCountryDto>(countries);
+    return countries.MapToList<CrmCountryDto>();
   }
 }

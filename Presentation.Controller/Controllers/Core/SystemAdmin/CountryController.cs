@@ -4,6 +4,7 @@ using bdDevs.Shared;
 using bdDevs.Shared.DataTransferObjects;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.Records.Core.SystemAdmin;
 using Domain.Exceptions;
 using bdDevs.Shared.Constants;
 using Application.Shared.Grid;
@@ -68,13 +69,13 @@ public class CountryController : BaseApiController
     }
 
     /// <summary>
-    /// Creates a new country record.
+    /// Creates a new country record using CRUD Record pattern.
     /// </summary>
     [HttpPost(RouteConstants.CreateCountry)]
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
-    public async Task<IActionResult> CreateCountryAsync([FromBody] CrmCountryDto modelDto, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateCountryAsync([FromBody] CreateCountryRecord record, CancellationToken cancellationToken = default)
     {
-        var createdCountry = await _serviceManager.CrmCountries.CreateAsync(modelDto, cancellationToken);
+        var createdCountry = await _serviceManager.CrmCountries.CreateAsync(record, cancellationToken);
 
         if (createdCountry.CountryId <= 0)
             throw new InvalidCreateOperationException("Failed to create country record.");
@@ -83,27 +84,28 @@ public class CountryController : BaseApiController
     }
 
     /// <summary>
-    /// Updates an existing country record.
+    /// Updates an existing country record using CRUD Record pattern.
     /// </summary>
     [HttpPut(RouteConstants.UpdateCountry)]
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
-    public async Task<IActionResult> UpdateCountryAsync([FromRoute] int key, [FromBody] CrmCountryDto modelDto, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> UpdateCountryAsync([FromRoute] int key, [FromBody] UpdateCountryRecord record, CancellationToken cancellationToken = default)
     {
-        if (key != modelDto.CountryId)
-            throw new IdMismatchBadRequestException(key.ToString(), nameof(CrmCountryDto));
+        if (key != record.CountryId)
+            throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCountryRecord));
 
-        var updatedCountry = await _serviceManager.CrmCountries.UpdateAsync(key, modelDto, trackChanges: false,cancellationToken: cancellationToken);
+        var updatedCountry = await _serviceManager.CrmCountries.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updatedCountry, "Country updated successfully."));
     }
 
     /// <summary>
-    /// Deletes a country record.
+    /// Deletes a country record using CRUD Record pattern.
     /// </summary>
     [HttpDelete(RouteConstants.DeleteCountry)]
     public async Task<IActionResult> DeleteCountryAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
-        await _serviceManager.CrmCountries.DeleteAsync(key, trackChanges: false, cancellationToken: cancellationToken);
+        var deleteRecord = new DeleteCountryRecord(key);
+        await _serviceManager.CrmCountries.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Country deleted successfully"));
     }
 

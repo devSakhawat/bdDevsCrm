@@ -3,13 +3,12 @@ using Domain.Entities.Entities.CRM;
 using Domain.Contracts.Services.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using Domain.Contracts.Services.CRM;
-using Domain.Contracts.Services.CRM;
-using bdDevs.Shared.DataTransferObjects.CRM;
 using Domain.Exceptions;
 using Application.Shared.Grid;
-using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -19,183 +18,191 @@ namespace Application.Services.CRM;
 /// </summary>
 internal sealed class CrmIntakeYearService : ICrmIntakeYearService
 {
-  private readonly IRepositoryManager _repository;
-  private readonly ILogger<CrmIntakeYearService> _logger;
-  private readonly IConfiguration _configuration;
+	private readonly IRepositoryManager _repository;
+	private readonly ILogger<CrmIntakeYearService> _logger;
+	private readonly IConfiguration _config;
 
-  public CrmIntakeYearService(IRepositoryManager repository, ILogger<CrmIntakeYearService> logger, IConfiguration configuration)
-  {
-    _repository = repository;
-    _logger = logger;
-    _configuration = configuration;
-  }
+	/// <summary>
+	/// Initializes a new instance of <see cref="CrmIntakeYearService"/> with required dependencies.
+	/// </summary>
+	public CrmIntakeYearService(IRepositoryManager repository, ILogger<CrmIntakeYearService> logger, IConfiguration configuration)
+	{
+		_repository = repository;
+		_logger = logger;
+		_config = configuration;
+	}
 
-  ///// <summary>
-  ///// Retrieves paginated summary grid of CrmIntakeYear records asynchronously.
-  ///// </summary>
-  //public async Task<GridEntity<CrmIntakeYearDto>> CrmIntakeYearSummaryAsync(bool trackChanges, GridOptions options, CancellationToken cancellationToken = default)
-  //{
-  //  _logger.LogInformation("Fetching CrmIntakeYear summary grid");
+	/// <summary>
+	/// Creates a new intake year record using CRUD Record pattern.
+	/// </summary>
+	public async Task<CrmIntakeYearDto> CreateAsync(CreateCrmIntakeYearRecord record, CancellationToken cancellationToken = default)
+	{
+		if (record == null)
+			throw new BadRequestException(nameof(CreateCrmIntakeYearRecord));
 
-  //  string query = "SELECT * FROM CrmIntakeYear";
-  //  string orderBy = "Name ASC";
+		_logger.LogInformation("Creating new intake year. YearName: {YearName}, Time: {Time}",
+						record.YearName, DateTime.UtcNow);
 
-  //  var gridEntity = await _repository.CrmIntakeYears.AdoGridDataAsync<CrmIntakeYearDto>(query, options, orderBy, "", cancellationToken);
-  //  return gridEntity;
-  //}
+		// Map Record to Entity using Mapster
+		CrmIntakeYear intakeYear = record.MapTo<CrmIntakeYear>();
+		int intakeYearId = await _repository.CrmIntakeYears.CreateAndIdAsync(intakeYear, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
-  ///// <summary>
-  ///// Retrieves all CrmIntakeYear records asynchronously.
-  ///// </summary>
-  //public async Task<IEnumerable<CrmIntakeYearDto>> CrmIntakeYearsAsync(bool trackChanges, CancellationToken cancellationToken = default)
-  //{
-  //  _logger.LogInformation("Fetching all CrmIntakeYear records");
+		_logger.LogInformation("Intake year created successfully. ID: {IntakeYearId}, Time: {Time}",
+						intakeYearId, DateTime.UtcNow);
 
-  //  var records = await _repository.CrmIntakeYears.CrmIntakeYearsAsync(trackChanges, cancellationToken);
+		// Return as DTO
+		var resultDto = intakeYear.MapTo<CrmIntakeYearDto>();
+		resultDto.IntakeYearId = intakeYearId;
+		return resultDto;
+	}
 
-  //  if (!records.Any())
-  //  {
-  //    _logger.LogWarning("No CrmIntakeYear records found");
-  //    return Enumerable.Empty<CrmIntakeYearDto>();
-  //  }
+	/// <summary>
+	/// Updates an existing intake year record using CRUD Record pattern.
+	/// </summary>
+	public async Task<CrmIntakeYearDto> UpdateAsync(UpdateCrmIntakeYearRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		if (record == null)
+			throw new BadRequestException(nameof(UpdateCrmIntakeYearRecord));
 
-  //  var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmIntakeYear, CrmIntakeYearDto>(records);
-  //  return recordDtos;
-  //}
+		_logger.LogInformation("Updating intake year. ID: {IntakeYearId}, Time: {Time}", record.IntakeYearId, DateTime.UtcNow);
 
-  ///// <summary>
-  ///// Retrieves a CrmIntakeYear record by ID asynchronously.
-  ///// </summary>
-  //public async Task<CrmIntakeYearDto> CrmIntakeYearAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
-  //{
-  //  if (id <= 0)
-  //  {
-  //    _logger.LogWarning("CrmIntakeYearAsync called with invalid id: {CrmIntakeYearId}", id);
-  //    throw new BadRequestException("Invalid request!");
-  //  }
+		// Check if intake year exists
+		var existingIntakeYear = await _repository.CrmIntakeYears
+						.FirstOrDefaultAsync(x => x.IntakeYearId == record.IntakeYearId, trackChanges: false, cancellationToken)
+						?? throw new NotFoundException("IntakeYear", "IntakeYearId", record.IntakeYearId.ToString());
 
-  //  _logger.LogInformation("Fetching CrmIntakeYear record with ID: {CrmIntakeYearId}", id);
+		// Map Record to Entity using Mapster
+		CrmIntakeYear intakeYear = record.MapTo<CrmIntakeYear>();
+		_repository.CrmIntakeYears.UpdateByState(intakeYear);
+		await _repository.SaveAsync(cancellationToken);
 
-  //  var record = await _repository.CrmIntakeYears.CrmIntakeYearAsync(id, trackChanges, cancellationToken);
+		_logger.LogInformation("Intake year updated successfully. ID: {IntakeYearId}, Time: {Time}",
+						record.IntakeYearId, DateTime.UtcNow);
 
-  //  if (record == null)
-  //  {
-  //    _logger.LogWarning("CrmIntakeYear record not found with ID: {CrmIntakeYearId}", id);
-  //    throw new NotFoundException("CrmIntakeYear", "CrmIntakeYearId", id.ToString());
-  //  }
+		return intakeYear.MapTo<CrmIntakeYearDto>();
+	}
 
-  //  var recordDto = MyMapper.JsonClone<CrmIntakeYear, CrmIntakeYearDto>(record);
-  //  return recordDto;
-  //}
+	/// <summary>
+	/// Deletes an intake year record using CRUD Record pattern.
+	/// </summary>
+	public async Task DeleteAsync(DeleteCrmIntakeYearRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		if (record == null || record.IntakeYearId <= 0)
+			throw new BadRequestException("Invalid delete request!");
 
-  ///// <summary>
-  ///// Creates a new CrmIntakeYear record asynchronously.
-  ///// </summary>
-  //public async Task<CrmIntakeYearDto> CreateAsync(CrmIntakeYearDto modelDto)
-  //{
-  //  if (modelDto == null)
-  //    throw new BadRequestException(nameof(CrmIntakeYearDto));
+		_logger.LogInformation("Deleting intake year. ID: {IntakeYearId}, Time: {Time}", record.IntakeYearId, DateTime.UtcNow);
 
-  //  _logger.LogInformation("Creating new CrmIntakeYear record");
+		var intakeYearEntity = await _repository.CrmIntakeYears
+						.FirstOrDefaultAsync(x => x.IntakeYearId == record.IntakeYearId, trackChanges, cancellationToken)
+						?? throw new NotFoundException("IntakeYear", "IntakeYearId", record.IntakeYearId.ToString());
 
-  //  // Check for duplicate record
-  //  bool recordExists = await _repository.CrmIntakeYears.ExistsAsync(
-  //      x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower());
+		await _repository.CrmIntakeYears.DeleteAsync(x => x.IntakeYearId == record.IntakeYearId, trackChanges: false, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
-  //  if (recordExists)
-  //    throw new DuplicateRecordException("CrmIntakeYear", "Name");
+		_logger.LogWarning("Intake year deleted successfully. ID: {IntakeYearId}, Time: {Time}",
+						record.IntakeYearId, DateTime.UtcNow);
+	}
 
-  //  // Map and create
-  //  CrmIntakeYear entity = MyMapper.JsonClone<CrmIntakeYearDto, CrmIntakeYear>(modelDto);
-  //  modelDto.CrmIntakeYearId = await _repository.CrmIntakeYears.CreateAndIdAsync(entity);
-  //  await _repository.SaveAsync();
+	/// <summary>
+	/// Retrieves a single intake year record by its ID.
+	/// </summary>
+	public async Task<CrmIntakeYearDto> IntakeYearAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching intake year. ID: {IntakeYearId}, Time: {Time}", id, DateTime.UtcNow);
 
-  //  _logger.LogInformation("CrmIntakeYear record created successfully with ID: {CrmIntakeYearId}", modelDto.CrmIntakeYearId);
+		var intakeYear = await _repository.CrmIntakeYears
+						.FirstOrDefaultAsync(x => x.IntakeYearId == id, trackChanges, cancellationToken)
+						?? throw new NotFoundException("IntakeYear", "IntakeYearId", id.ToString());
 
-  //  return modelDto;
-  //}
+		_logger.LogInformation("Intake year fetched successfully. ID: {IntakeYearId}, Time: {Time}",
+						id, DateTime.UtcNow);
 
-  ///// <summary>
-  ///// Updates an existing CrmIntakeYear record asynchronously.
-  ///// </summary>
-  //public async Task<CrmIntakeYearDto> UpdateAsync(int key, CrmIntakeYearDto modelDto)
-  //{
-  //  if (modelDto == null)
-  //    throw new BadRequestException(nameof(CrmIntakeYearDto));
+		return intakeYear.MapTo<CrmIntakeYearDto>();
+	}
 
-  //  if (key != modelDto.CrmIntakeYearId)
-  //    throw new BadRequestException(key.ToString(), nameof(CrmIntakeYearDto));
+	/// <summary>
+	/// Retrieves all intake year records from the database.
+	/// </summary>
+	public async Task<IEnumerable<CrmIntakeYearDto>> IntakeYearsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching all intake years. Time: {Time}", DateTime.UtcNow);
 
-  //  _logger.LogInformation("Updating CrmIntakeYear record with ID: {CrmIntakeYearId}", key);
+		var intakeYears = await _repository.CrmIntakeYears.ListAsync(x => x.IntakeYearId, trackChanges, cancellationToken);
 
-  //  // Check if record exists
-  //  var existingRecord = await _repository.CrmIntakeYears.ByIdAsync(
-  //      x => x.CrmIntakeYearId == key, trackChanges: false);
+		if (!intakeYears.Any())
+		{
+			_logger.LogWarning("No intake years found. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmIntakeYearDto>();
+		}
 
-  //  if (existingRecord == null)
-  //    throw new NotFoundException("CrmIntakeYear", "CrmIntakeYearId", key.ToString());
+		var intakeYearsDto = intakeYears.MapToList<CrmIntakeYearDto>();
 
-  //  // Check for duplicate name (excluding current record)
-  //  bool duplicateExists = await _repository.CrmIntakeYears.ExistsAsync(
-  //      x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower()
-  //           && x.CrmIntakeYearId != key);
+		_logger.LogInformation("Intake years fetched successfully. Count: {Count}, Time: {Time}",
+						intakeYearsDto.Count(), DateTime.UtcNow);
 
-  //  if (duplicateExists)
-  //    throw new DuplicateRecordException("CrmIntakeYear", "Name");
+		return intakeYearsDto;
+	}
 
-  //  // Map and update
-  //  CrmIntakeYear entity = MyMapper.JsonClone<CrmIntakeYearDto, CrmIntakeYear>(modelDto);
-  //  _repository.CrmIntakeYears.UpdateByState(entity);
-  //  await _repository.SaveAsync();
+	/// <summary>
+	/// Retrieves active intake year records from the database.
+	/// </summary>
+	public async Task<IEnumerable<CrmIntakeYearDto>> ActiveIntakeYearsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching active intake years. Time: {Time}", DateTime.UtcNow);
 
-  //  _logger.LogInformation("CrmIntakeYear record updated successfully: {CrmIntakeYearId}", key);
+		var intakeYears = await _repository.CrmIntakeYears.CrmIntakeYearsAsync(trackChanges, cancellationToken);
 
-  //  return modelDto;
-  //}
+		if (!intakeYears.Any())
+		{
+			_logger.LogWarning("No active intake years found. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmIntakeYearDto>();
+		}
 
-  ///// <summary>
-  ///// Deletes a CrmIntakeYear record by ID asynchronously.
-  ///// </summary>
-  //public async Task DeleteAsync(int key)
-  //{
-  //  if (key <= 0)
-  //    throw new BadRequestException("Invalid request!");
+		var intakeYearsDto = intakeYears.MapToList<CrmIntakeYearDto>();
 
-  //  _logger.LogInformation("Deleting CrmIntakeYear record with ID: {CrmIntakeYearId}", key);
+		_logger.LogInformation("Active intake years fetched successfully. Count: {Count}, Time: {Time}",
+						intakeYearsDto.Count(), DateTime.UtcNow);
 
-  //  var record = await _repository.CrmIntakeYears.ByIdAsync(
-  //      x => x.CrmIntakeYearId == key, trackChanges: false);
+		return intakeYearsDto;
+	}
 
-  //  if (record == null)
-  //    throw new NotFoundException("CrmIntakeYear", "CrmIntakeYearId", key.ToString());
+	/// <summary>
+	/// Retrieves a lightweight list of all intake years suitable for use in dropdown lists.
+	/// </summary>
+	public async Task<IEnumerable<CrmIntakeYearDto>> IntakeYearForDDLAsync(CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching intake years for dropdown list. Time: {Time}", DateTime.UtcNow);
 
-  //  await _repository.CrmIntakeYears.DeleteAsync(x => x.CrmIntakeYearId == key, trackChanges: false);
-  //  await _repository.SaveAsync();
+		var intakeYears = await _repository.CrmIntakeYears.CrmIntakeYearsAsync(false, cancellationToken);
 
-  //  _logger.LogInformation("CrmIntakeYear record deleted successfully: {CrmIntakeYearId}", key);
-  //}
+		if (!intakeYears.Any())
+		{
+			_logger.LogWarning("No intake years found for dropdown list. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmIntakeYearDto>();
+		}
 
-  ///// <summary>
-  ///// Retrieves CrmIntakeYear records for dropdown list asynchronously.
-  ///// </summary>
-  //public async Task<IEnumerable<CrmIntakeYearForDDLDto>> CrmIntakeYearsForDDLAsync()
-  //{
-  //  _logger.LogInformation("Fetching CrmIntakeYear records for dropdown list");
+		var intakeYearsDto = intakeYears.MapToList<CrmIntakeYearDto>();
 
-  //  var records = await _repository.CrmIntakeYears.ListWithSelectAsync(
-  //      x => new CrmIntakeYear
-  //      {
-  //        CrmIntakeYearId = x.CrmIntakeYearId,
-  //        Name = x.Name
-  //      },
-  //      orderBy: x => x.Name,
-  //      trackChanges: false
-  //  );
+		_logger.LogInformation("Intake years fetched successfully for dropdown list. Count: {Count}, Time: {Time}",
+						intakeYearsDto.Count(), DateTime.UtcNow);
 
-  //  if (!records.Any())
-  //    return new List<CrmIntakeYearForDDLDto>();
+		return intakeYearsDto;
+	}
 
-  //  var recordsForDDLDto = MyMapper.JsonCloneIEnumerableToList<CrmIntakeYear, CrmIntakeYearForDDLDto>(records);
-  //  return recordsForDDLDto;
-  //}
+	/// <summary>
+	/// Retrieves a paginated summary grid of all intake years.
+	/// </summary>
+	public async Task<GridEntity<CrmIntakeYearDto>> IntakeYearsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching intake years summary grid. Time: {Time}", DateTime.UtcNow);
+
+		const string sql = @"
+SELECT IntakeYearId, YearName, YearCode, YearValue, Description, IsActive, CreatedDate, CreatedBy, UpdatedDate, UpdatedBy
+FROM CrmIntakeYear";
+
+		const string orderBy = "YearValue DESC";
+
+		return await _repository.CrmIntakeYears.AdoGridDataAsync<CrmIntakeYearDto>(sql, options, orderBy, string.Empty, cancellationToken);
+	}
 }

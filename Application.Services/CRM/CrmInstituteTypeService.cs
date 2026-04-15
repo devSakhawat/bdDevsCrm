@@ -11,6 +11,8 @@ using Application.Shared.Grid;
 using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -35,99 +37,93 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	}
 
 	/// <summary>
-	/// Creates a new institute type record.
+	/// Creates a new institute type record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmInstituteTypeDto> CreateInstituteTypeAsync(CrmInstituteTypeDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default)
+	public async Task<CrmInstituteTypeDto> CreateAsync(CreateCrmInstituteTypeRecord record, CancellationToken cancellationToken = default)
 	{
-		if (entityForCreate is null)
-			throw new BadRequestException(nameof(CrmInstituteTypeDto));
+		if (record == null)
+			throw new BadRequestException(nameof(CreateCrmInstituteTypeRecord));
 
-		if (entityForCreate.InstituteTypeId != 0)
-			throw new InvalidCreateOperationException("InstituteTypeId must be 0 for new record.");
+		_logger.LogInformation("Creating new institute type. Name: {InstituteTypeName}, Time: {Time}",
+						record.InstituteTypeName, DateTime.UtcNow);
 
 		bool instituteTypeExists = await _repository.CrmInstituteTypes.ExistsAsync(
 						x => x.InstituteTypeName != null
-								&& x.InstituteTypeName.Trim().ToLower() == entityForCreate.InstituteTypeName.Trim().ToLower(),
+								&& x.InstituteTypeName.Trim().ToLower() == record.InstituteTypeName.Trim().ToLower(),
 						cancellationToken: cancellationToken);
 
 		if (instituteTypeExists)
 			throw new DuplicateRecordException("InstituteType", "InstituteTypeName");
 
-		_logger.LogInformation("Creating new institute type. Name: {InstituteTypeName}, Time: {Time}",
-						entityForCreate.InstituteTypeName, DateTime.UtcNow);
-
-		var instituteTypeEntity = MyMapper.JsonClone<CrmInstituteTypeDto, CrmInstituteType>(entityForCreate);
-		//instituteTypeEntity.CreatedDate = DateTime.UtcNow;
-		//instituteTypeEntity.CreatedBy = currentUser.UserId ?? 0;
-
-		await _repository.CrmInstituteTypes.CreateAsync(instituteTypeEntity, cancellationToken);
-		int affected = await _repository.SaveChangesAsync(cancellationToken);
-
-		if (affected <= 0)
-			throw new InvalidOperationException("Institute type could not be saved to the database.");
+		// Map Record to Entity using Mapster
+		CrmInstituteType instituteType = record.MapTo<CrmInstituteType>();
+		int instituteTypeId = await _repository.CrmInstituteTypes.CreateAndIdAsync(instituteType, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
 		_logger.LogInformation("Institute type created successfully. ID: {InstituteTypeId}, Time: {Time}",
-						instituteTypeEntity.InstituteTypeId, DateTime.UtcNow);
+						instituteTypeId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmInstituteType, CrmInstituteTypeDto>(instituteTypeEntity);
+		// Return as DTO
+		var resultDto = instituteType.MapTo<CrmInstituteTypeDto>();
+		resultDto.InstituteTypeId = instituteTypeId;
+		return resultDto;
 	}
 
 	/// <summary>
-	/// Updates an existing institute type record.
+	/// Updates an existing institute type record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmInstituteTypeDto> UpdateInstituteTypeAsync(int instituteTypeId, CrmInstituteTypeDto modelDto, bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task<CrmInstituteTypeDto> UpdateAsync(UpdateCrmInstituteTypeRecord record, bool trackChanges, CancellationToken cancellationToken = default)
 	{
-		if (modelDto is null)
-			throw new BadRequestException(nameof(CrmInstituteTypeDto));
+		if (record == null)
+			throw new BadRequestException(nameof(UpdateCrmInstituteTypeRecord));
 
-		if (instituteTypeId != modelDto.InstituteTypeId)
-			throw new BadRequestException(instituteTypeId.ToString(), nameof(CrmInstituteTypeDto));
+		_logger.LogInformation("Updating institute type. ID: {InstituteTypeId}, Time: {Time}", record.InstituteTypeId, DateTime.UtcNow);
 
-		_logger.LogInformation("Updating institute type. ID: {InstituteTypeId}, Time: {Time}", instituteTypeId, DateTime.UtcNow);
+		// Check if institute type exists
+		var existingInstituteType = await _repository.CrmInstituteTypes
+						.FirstOrDefaultAsync(x => x.InstituteTypeId == record.InstituteTypeId, trackChanges: false, cancellationToken)
+						?? throw new NotFoundException("InstituteType", "InstituteTypeId", record.InstituteTypeId.ToString());
 
-		var instituteTypeEntity = await _repository.CrmInstituteTypes
-						.FirstOrDefaultAsync(x => x.InstituteTypeId == instituteTypeId, trackChanges: false, cancellationToken)
-						?? throw new NotFoundException("InstituteType", "InstituteTypeId", instituteTypeId.ToString());
+		// Check for duplicate name (excluding current record)
+		bool duplicateExists = await _repository.CrmInstituteTypes.ExistsAsync(
+						x => x.InstituteTypeName != null
+								&& x.InstituteTypeName.Trim().ToLower() == record.InstituteTypeName.Trim().ToLower()
+								&& x.InstituteTypeId != record.InstituteTypeId,
+						cancellationToken: cancellationToken);
 
-		var updatedEntity = MyMapper.MergeChangedValues<CrmInstituteType, CrmInstituteTypeDto>(instituteTypeEntity, modelDto);
-		//updatedEntity.UpdatedDate = DateTime.UtcNow;
+		if (duplicateExists)
+			throw new DuplicateRecordException("InstituteType", "InstituteTypeName");
 
-		_repository.CrmInstituteTypes.UpdateByState(updatedEntity);
-
-		int affected = await _repository.SaveChangesAsync(cancellationToken);
-		if (affected <= 0)
-			throw new NotFoundException("InstituteType", "InstituteTypeId", instituteTypeId.ToString());
+		// Map Record to Entity using Mapster
+		CrmInstituteType instituteType = record.MapTo<CrmInstituteType>();
+		_repository.CrmInstituteTypes.UpdateByState(instituteType);
+		await _repository.SaveAsync(cancellationToken);
 
 		_logger.LogInformation("Institute type updated successfully. ID: {InstituteTypeId}, Time: {Time}",
-						instituteTypeId, DateTime.UtcNow);
+						record.InstituteTypeId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmInstituteType, CrmInstituteTypeDto>(updatedEntity);
+		return instituteType.MapTo<CrmInstituteTypeDto>();
 	}
 
 	/// <summary>
-	/// Deletes an institute type record identified by the given ID.
+	/// Deletes an institute type record using CRUD Record pattern.
 	/// </summary>
-	public async Task<int> DeleteInstituteTypeAsync(int instituteTypeId, bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task DeleteAsync(DeleteCrmInstituteTypeRecord record, bool trackChanges, CancellationToken cancellationToken = default)
 	{
-		if (instituteTypeId <= 0)
-			throw new BadRequestException(instituteTypeId.ToString(), nameof(CrmInstituteTypeDto));
+		if (record == null || record.InstituteTypeId <= 0)
+			throw new BadRequestException("Invalid delete request!");
 
-		_logger.LogInformation("Deleting institute type. ID: {InstituteTypeId}, Time: {Time}", instituteTypeId, DateTime.UtcNow);
+		_logger.LogInformation("Deleting institute type. ID: {InstituteTypeId}, Time: {Time}", record.InstituteTypeId, DateTime.UtcNow);
 
 		var instituteTypeEntity = await _repository.CrmInstituteTypes
-						.FirstOrDefaultAsync(x => x.InstituteTypeId == instituteTypeId, trackChanges, cancellationToken)
-						?? throw new NotFoundException("InstituteType", "InstituteTypeId", instituteTypeId.ToString());
+						.FirstOrDefaultAsync(x => x.InstituteTypeId == record.InstituteTypeId, trackChanges, cancellationToken)
+						?? throw new NotFoundException("InstituteType", "InstituteTypeId", record.InstituteTypeId.ToString());
 
-		await _repository.CrmInstituteTypes.DeleteAsync(x => x.InstituteTypeId == instituteTypeId, trackChanges, cancellationToken);
-		int affected = await _repository.SaveChangesAsync(cancellationToken);
-
-		if (affected <= 0)
-			throw new NotFoundException("InstituteType", "InstituteTypeId", instituteTypeId.ToString());
+		await _repository.CrmInstituteTypes.DeleteAsync(x => x.InstituteTypeId == record.InstituteTypeId, trackChanges: false, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
 		_logger.LogInformation("Institute type deleted successfully. ID: {InstituteTypeId}, Time: {Time}",
-						instituteTypeId, DateTime.UtcNow);
-
-		return affected;
+						record.InstituteTypeId, DateTime.UtcNow);
 	}
 
 	/// <summary>
@@ -145,7 +141,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 			return Enumerable.Empty<CrmInstituteTypeDto>();
 		}
 
-		var instituteTypesDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmInstituteType, CrmInstituteTypeDto>(instituteTypes);
+		var instituteTypesDto = instituteTypes.MapToList<CrmInstituteTypeDto>();
 
 		_logger.LogInformation("Institute types fetched successfully. Count: {Count}, Time: {Time}",
 						instituteTypesDto.Count(), DateTime.UtcNow);
@@ -206,216 +202,17 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 
 		if (instituteTypeId == 0)
 		{
-			var created = await CreateInstituteTypeAsync(modelDto, new UsersDto(), cancellationToken);
+			var record = new CreateCrmInstituteTypeRecord { InstituteTypeName = modelDto.InstituteTypeName };
+			var created = await CreateAsync(record, cancellationToken);
 			return created.InstituteTypeId > 0
 					? OperationMessage.Success
 					: "Failed to create institute type.";
 		}
 		else
 		{
-			await UpdateInstituteTypeAsync(instituteTypeId, modelDto, false, cancellationToken);
+			var record = new UpdateCrmInstituteTypeRecord { InstituteTypeId = modelDto.InstituteTypeId, InstituteTypeName = modelDto.InstituteTypeName };
+			await UpdateAsync(record, false, cancellationToken);
 			return OperationMessage.Success;
 		}
 	}
 }
-
-
-//using Domain.Entities.Entities.CRM;
-//using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevs.Shared.DataTransferObjects.CRM;
-//using Domain.Contracts.Services.CRM;
-//using bdDevs.Shared.DataTransferObjects.CRM;
-//using Domain.Exceptions;
-//using Application.Shared.Grid;
-//using Application.Services.Mappings;
-//using Microsoft.Extensions.Configuration;
-//using Microsoft.Extensions.Logging;
-
-//namespace Application.Services.CRM;
-
-///// <summary>
-///// CrmInstituteType service implementing business logic for CrmInstituteType management.
-///// Follows enterprise patterns with structured logging and exception handling.
-///// </summary>
-//internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
-//{
-//    private readonly IRepositoryManager _repository;
-//    private readonly ILogger<CrmInstituteTypeService> _logger;
-//    private readonly IConfiguration _configuration;
-
-//    public CrmInstituteTypeService(IRepositoryManager repository, ILogger<CrmInstituteTypeService> logger, IConfiguration configuration)
-//    {
-//        _repository = repository;
-//        _logger = logger;
-//        _configuration = configuration;
-//    }
-
-//    /// <summary>
-//    /// Retrieves paginated summary grid of CrmInstituteType records asynchronously.
-//    /// </summary>
-//    public async Task<GridEntity<CrmInstituteTypeDto>> CrmInstituteTypeSummaryAsync(bool trackChanges, GridOptions options, CancellationToken cancellationToken = default)
-//    {
-//        _logger.LogInformation("Fetching CrmInstituteType summary grid");
-
-//        string query = "SELECT * FROM CrmInstituteType";
-//        string orderBy = "Name ASC";
-
-//        var gridEntity = await _repository.CrmInstituteTypes.AdoGridDataAsync<CrmInstituteTypeDto>(query, options, orderBy, "", cancellationToken);
-//        return gridEntity;
-//    }
-
-//    /// <summary>
-//    /// Retrieves all CrmInstituteType records asynchronously.
-//    /// </summary>
-//    public async Task<IEnumerable<CrmInstituteTypeDto>> CrmInstituteTypesAsync(bool trackChanges, CancellationToken cancellationToken = default)
-//    {
-//        _logger.LogInformation("Fetching all CrmInstituteType records");
-
-//        var records = await _repository.CrmInstituteTypes.CrmInstituteTypesAsync(trackChanges, cancellationToken);
-
-//        if (!records.Any())
-//        {
-//            _logger.LogWarning("No CrmInstituteType records found");
-//            return Enumerable.Empty<CrmInstituteTypeDto>();
-//        }
-
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmInstituteType, CrmInstituteTypeDto>(records);
-//        return recordDtos;
-//    }
-
-//    /// <summary>
-//    /// Retrieves a CrmInstituteType record by ID asynchronously.
-//    /// </summary>
-//    public async Task<CrmInstituteTypeDto> CrmInstituteTypeAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
-//    {
-//        if (id <= 0)
-//        {
-//            _logger.LogWarning("CrmInstituteTypeAsync called with invalid id: {CrmInstituteTypeId}", id);
-//            throw new BadRequestException("Invalid request!");
-//        }
-
-//        _logger.LogInformation("Fetching CrmInstituteType record with ID: {CrmInstituteTypeId}", id);
-
-//        var record = await _repository.CrmInstituteTypes.CrmInstituteTypeAsync(id, trackChanges, cancellationToken);
-
-//        if (record == null)
-//        {
-//            _logger.LogWarning("CrmInstituteType record not found with ID: {CrmInstituteTypeId}", id);
-//            throw new NotFoundException("CrmInstituteType", "CrmInstituteTypeId", id.ToString());
-//        }
-
-//        var recordDto = MyMapper.JsonClone<CrmInstituteType, CrmInstituteTypeDto>(record);
-//        return recordDto;
-//    }
-
-//    /// <summary>
-//    /// Creates a new CrmInstituteType record asynchronously.
-//    /// </summary>
-//    public async Task<CrmInstituteTypeDto> CreateAsync(CrmInstituteTypeDto modelDto)
-//    {
-//        if (modelDto == null)
-//            throw new BadRequestException(nameof(CrmInstituteTypeDto));
-
-//        _logger.LogInformation("Creating new CrmInstituteType record");
-
-//        // Check for duplicate record
-//        bool recordExists = await _repository.CrmInstituteTypes.ExistsAsync(
-//            x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower());
-
-//        if (recordExists)
-//            throw new DuplicateRecordException("CrmInstituteType", "Name");
-
-//        // Map and create
-//        CrmInstituteType entity = MyMapper.JsonClone<CrmInstituteTypeDto, CrmInstituteType>(modelDto);
-//        modelDto.CrmInstituteTypeId = await _repository.CrmInstituteTypes.CreateAndIdAsync(entity);
-//        await _repository.SaveAsync();
-
-//        _logger.LogInformation("CrmInstituteType record created successfully with ID: {CrmInstituteTypeId}", modelDto.CrmInstituteTypeId);
-
-//        return modelDto;
-//    }
-
-//    /// <summary>
-//    /// Updates an existing CrmInstituteType record asynchronously.
-//    /// </summary>
-//    public async Task<CrmInstituteTypeDto> UpdateAsync(int key, CrmInstituteTypeDto modelDto)
-//    {
-//        if (modelDto == null)
-//            throw new BadRequestException(nameof(CrmInstituteTypeDto));
-
-//        if (key != modelDto.CrmInstituteTypeId)
-//            throw new BadRequestException(key.ToString(), nameof(CrmInstituteTypeDto));
-
-//        _logger.LogInformation("Updating CrmInstituteType record with ID: {CrmInstituteTypeId}", key);
-
-//        // Check if record exists
-//        var existingRecord = await _repository.CrmInstituteTypes.ByIdAsync(
-//            x => x.CrmInstituteTypeId == key, trackChanges: false);
-
-//        if (existingRecord == null)
-//            throw new NotFoundException("CrmInstituteType", "CrmInstituteTypeId", key.ToString());
-
-//        // Check for duplicate name (excluding current record)
-//        bool duplicateExists = await _repository.CrmInstituteTypes.ExistsAsync(
-//            x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower() 
-//                 && x.CrmInstituteTypeId != key);
-
-//        if (duplicateExists)
-//            throw new DuplicateRecordException("CrmInstituteType", "Name");
-
-//        // Map and update
-//        CrmInstituteType entity = MyMapper.JsonClone<CrmInstituteTypeDto, CrmInstituteType>(modelDto);
-//        _repository.CrmInstituteTypes.UpdateByState(entity);
-//        await _repository.SaveAsync();
-
-//        _logger.LogInformation("CrmInstituteType record updated successfully: {CrmInstituteTypeId}", key);
-
-//        return modelDto;
-//    }
-
-//    /// <summary>
-//    /// Deletes a CrmInstituteType record by ID asynchronously.
-//    /// </summary>
-//    public async Task DeleteAsync(int key)
-//    {
-//        if (key <= 0)
-//            throw new BadRequestException("Invalid request!");
-
-//        _logger.LogInformation("Deleting CrmInstituteType record with ID: {CrmInstituteTypeId}", key);
-
-//        var record = await _repository.CrmInstituteTypes.ByIdAsync(
-//            x => x.CrmInstituteTypeId == key, trackChanges: false);
-
-//        if (record == null)
-//            throw new NotFoundException("CrmInstituteType", "CrmInstituteTypeId", key.ToString());
-
-//        await _repository.CrmInstituteTypes.DeleteAsync(x => x.CrmInstituteTypeId == key, trackChanges: false);
-//        await _repository.SaveAsync();
-
-//        _logger.LogInformation("CrmInstituteType record deleted successfully: {CrmInstituteTypeId}", key);
-//    }
-
-//    /// <summary>
-//    /// Retrieves CrmInstituteType records for dropdown list asynchronously.
-//    /// </summary>
-//    public async Task<IEnumerable<CrmInstituteTypeForDDLDto>> CrmInstituteTypesForDDLAsync()
-//    {
-//        _logger.LogInformation("Fetching CrmInstituteType records for dropdown list");
-
-//        var records = await _repository.CrmInstituteTypes.ListWithSelectAsync(
-//            x => new CrmInstituteType
-//            {
-//                CrmInstituteTypeId = x.CrmInstituteTypeId,
-//                Name = x.Name
-//            },
-//            orderBy: x => x.Name,
-//            trackChanges: false
-//        );
-
-//        if (!records.Any())
-//            return new List<CrmInstituteTypeForDDLDto>();
-
-//        var recordsForDDLDto = MyMapper.JsonCloneIEnumerableToList<CrmInstituteType, CrmInstituteTypeForDDLDto>(records);
-//        return recordsForDDLDto;
-//    }
-//}

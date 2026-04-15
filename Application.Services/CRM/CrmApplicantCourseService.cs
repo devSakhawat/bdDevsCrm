@@ -12,6 +12,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -58,7 +60,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 		_logger.LogInformation("Creating new applicant course. ApplicantId: {ApplicantId}, CourseId: {CourseId}, Time: {Time}",
 						entityForCreate.ApplicantId, entityForCreate.CourseId, DateTime.UtcNow);
 
-		var courseEntity = MyMapper.JsonClone<ApplicantCourseDto, CrmApplicantCourse>(entityForCreate);
+		var courseEntity = entityForCreate.MapTo<CrmApplicantCourse>();
 		courseEntity.CreatedDate = DateTime.UtcNow;
 		courseEntity.CreatedBy = currentUser.UserId ?? 0;
 
@@ -71,7 +73,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 		_logger.LogInformation("Applicant course created successfully. ID: {ApplicantCourseId}, Time: {Time}",
 						courseEntity.ApplicantCourseId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmApplicantCourse, ApplicantCourseDto>(courseEntity);
+		return courseEntity.MapTo<ApplicantCourseDto>();
 	}
 
 	/// <summary>
@@ -91,7 +93,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 						.FirstOrDefaultAsync(x => x.ApplicantCourseId == applicantCourseId, trackChanges: false, cancellationToken)
 						?? throw new NotFoundException("ApplicantCourse", "ApplicantCourseId", applicantCourseId.ToString());
 
-		var updatedEntity = MyMapper.MergeChangedValues<CrmApplicantCourse, ApplicantCourseDto>(courseEntity, modelDto);
+		var updatedEntity = courseEntity, modelDto.MapTo<CrmApplicantCourse>();
 		updatedEntity.UpdatedDate = DateTime.UtcNow;
 
 		_repository.CrmApplicantCourses.UpdateByState(updatedEntity);
@@ -103,7 +105,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 		_logger.LogInformation("Applicant course updated successfully. ID: {ApplicantCourseId}, Time: {Time}",
 						applicantCourseId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmApplicantCourse, ApplicantCourseDto>(updatedEntity);
+		return updatedEntity.MapTo<ApplicantCourseDto>();
 	}
 
 	/// <summary>
@@ -149,7 +151,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 		_logger.LogInformation("Applicant course fetched successfully. ID: {ApplicantCourseId}, Time: {Time}",
 						id, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmApplicantCourse, ApplicantCourseDto>(course);
+		return course.MapTo<ApplicantCourseDto>();
 	}
 
 	/// <summary>
@@ -167,7 +169,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 			return Enumerable.Empty<ApplicantCourseDto>();
 		}
 
-		var coursesDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmApplicantCourse, ApplicantCourseDto>(courses);
+		var coursesDto = courses.MapToList<ApplicantCourseDto>();
 
 		_logger.LogInformation("Applicant courses fetched successfully. Count: {Count}, Time: {Time}",
 						coursesDto.Count(), DateTime.UtcNow);
@@ -190,7 +192,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 			return Enumerable.Empty<ApplicantCourseDto>();
 		}
 
-		var coursesDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmApplicantCourse, ApplicantCourseDto>(courses);
+		var coursesDto = courses.MapToList<ApplicantCourseDto>();
 
 		_logger.LogInformation("Active applicant courses fetched successfully. Count: {Count}, Time: {Time}",
 						coursesDto.Count(), DateTime.UtcNow);
@@ -219,7 +221,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 			return Enumerable.Empty<ApplicantCourseDto>();
 		}
 
-		var coursesDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmApplicantCourse, ApplicantCourseDto>(courses);
+		var coursesDto = courses.MapToList<ApplicantCourseDto>();
 
 		_logger.LogInformation("Applicant courses fetched successfully for applicant ID: {ApplicantId}. Count: {Count}, Time: {Time}",
 						applicantId, coursesDto.Count(), DateTime.UtcNow);
@@ -242,7 +244,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 		_logger.LogInformation("Applicant course fetched successfully. ID: {ApplicantCourseId}, Time: {Time}",
 						course.ApplicantCourseId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmApplicantCourse, ApplicantCourseDto>(course);
+		return course.MapTo<ApplicantCourseDto>();
 	}
 
 	/// <summary>
@@ -260,7 +262,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 			return Enumerable.Empty<ApplicantCourseDto>();
 		}
 
-		var coursesDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmApplicantCourse, ApplicantCourseDto>(courses);
+		var coursesDto = courses.MapToList<ApplicantCourseDto>();
 
 		_logger.LogInformation("Applicant courses fetched successfully for dropdown list. Count: {Count}, Time: {Time}",
 						coursesDto.Count(), DateTime.UtcNow);
@@ -375,7 +377,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 //            return Enumerable.Empty<CrmApplicantCourseDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmApplicantCourse, CrmApplicantCourseDto>(records);
+//        var recordDtos = records.MapToList<CrmApplicantCourseDto>();
 //        return recordDtos;
 //    }
 
@@ -400,7 +402,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 //            throw new NotFoundException("CrmApplicantCourse", "CrmApplicantCourseId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmApplicantCourse, CrmApplicantCourseDto>(record);
+//        var recordDto = record.MapTo<CrmApplicantCourseDto>();
 //        return recordDto;
 //    }
 
@@ -422,7 +424,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 //            throw new DuplicateRecordException("CrmApplicantCourse", "Name");
 
 //        // Map and create
-//        CrmApplicantCourse entity = MyMapper.JsonClone<CrmApplicantCourseDto, CrmApplicantCourse>(modelDto);
+//        CrmApplicantCourse entity = modelDto.MapTo<CrmApplicantCourse>();
 //        modelDto.CrmApplicantCourseId = await _repository.CrmApplicantCourses.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -460,7 +462,7 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 //            throw new DuplicateRecordException("CrmApplicantCourse", "Name");
 
 //        // Map and update
-//        CrmApplicantCourse entity = MyMapper.JsonClone<CrmApplicantCourseDto, CrmApplicantCourse>(modelDto);
+//        CrmApplicantCourse entity = modelDto.MapTo<CrmApplicantCourse>();
 //        _repository.CrmApplicantCourses.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

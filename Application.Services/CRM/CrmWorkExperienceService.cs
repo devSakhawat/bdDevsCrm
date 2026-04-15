@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -337,7 +339,7 @@ internal sealed class CrmWorkExperienceService : ICrmWorkExperienceService
 //            return Enumerable.Empty<CrmWorkExperienceDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmWorkExperience, CrmWorkExperienceDto>(records);
+//        var recordDtos = records.MapToList<CrmWorkExperienceDto>();
 //        return recordDtos;
 //    }
 
@@ -362,7 +364,7 @@ internal sealed class CrmWorkExperienceService : ICrmWorkExperienceService
 //            throw new NotFoundException("CrmWorkExperience", "CrmWorkExperienceId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmWorkExperience, CrmWorkExperienceDto>(record);
+//        var recordDto = record.MapTo<CrmWorkExperienceDto>();
 //        return recordDto;
 //    }
 
@@ -384,7 +386,7 @@ internal sealed class CrmWorkExperienceService : ICrmWorkExperienceService
 //            throw new DuplicateRecordException("CrmWorkExperience", "Name");
 
 //        // Map and create
-//        CrmWorkExperience entity = MyMapper.JsonClone<CrmWorkExperienceDto, CrmWorkExperience>(modelDto);
+//        CrmWorkExperience entity = modelDto.MapTo<CrmWorkExperience>();
 //        modelDto.CrmWorkExperienceId = await _repository.CrmWorkExperiences.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -422,7 +424,7 @@ internal sealed class CrmWorkExperienceService : ICrmWorkExperienceService
 //            throw new DuplicateRecordException("CrmWorkExperience", "Name");
 
 //        // Map and update
-//        CrmWorkExperience entity = MyMapper.JsonClone<CrmWorkExperienceDto, CrmWorkExperience>(modelDto);
+//        CrmWorkExperience entity = modelDto.MapTo<CrmWorkExperience>();
 //        _repository.CrmWorkExperiences.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

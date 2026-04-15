@@ -3,13 +3,12 @@ using Domain.Entities.Entities.CRM;
 using Domain.Contracts.Services.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using Domain.Contracts.Services.CRM;
-using Domain.Contracts.Services.CRM;
-using bdDevs.Shared.DataTransferObjects.CRM;
 using Domain.Exceptions;
 using Application.Shared.Grid;
-using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -19,183 +18,191 @@ namespace Application.Services.CRM;
 /// </summary>
 internal sealed class CrmIntakeMonthService : ICrmIntakeMonthService
 {
-  private readonly IRepositoryManager _repository;
-  private readonly ILogger<CrmIntakeMonthService> _logger;
-  private readonly IConfiguration _configuration;
+	private readonly IRepositoryManager _repository;
+	private readonly ILogger<CrmIntakeMonthService> _logger;
+	private readonly IConfiguration _config;
 
-  public CrmIntakeMonthService(IRepositoryManager repository, ILogger<CrmIntakeMonthService> logger, IConfiguration configuration)
-  {
-    _repository = repository;
-    _logger = logger;
-    _configuration = configuration;
-  }
+	/// <summary>
+	/// Initializes a new instance of <see cref="CrmIntakeMonthService"/> with required dependencies.
+	/// </summary>
+	public CrmIntakeMonthService(IRepositoryManager repository, ILogger<CrmIntakeMonthService> logger, IConfiguration configuration)
+	{
+		_repository = repository;
+		_logger = logger;
+		_config = configuration;
+	}
 
-  ///// <summary>
-  ///// Retrieves paginated summary grid of CrmIntakeMonth records asynchronously.
-  ///// </summary>
-  //public async Task<GridEntity<CrmIntakeMonthDto>> CrmIntakeMonthSummaryAsync(bool trackChanges, GridOptions options, CancellationToken cancellationToken = default)
-  //{
-  //  _logger.LogInformation("Fetching CrmIntakeMonth summary grid");
+	/// <summary>
+	/// Creates a new intake month record using CRUD Record pattern.
+	/// </summary>
+	public async Task<CrmIntakeMonthDto> CreateAsync(CreateCrmIntakeMonthRecord record, CancellationToken cancellationToken = default)
+	{
+		if (record == null)
+			throw new BadRequestException(nameof(CreateCrmIntakeMonthRecord));
 
-  //  string query = "SELECT * FROM CrmIntakeMonth";
-  //  string orderBy = "Name ASC";
+		_logger.LogInformation("Creating new intake month. MonthName: {MonthName}, Time: {Time}",
+						record.MonthName, DateTime.UtcNow);
 
-  //  var gridEntity = await _repository.CrmIntakeMonths.AdoGridDataAsync<CrmIntakeMonthDto>(query, options, orderBy, "", cancellationToken);
-  //  return gridEntity;
-  //}
+		// Map Record to Entity using Mapster
+		CrmIntakeMonth intakeMonth = record.MapTo<CrmIntakeMonth>();
+		int intakeMonthId = await _repository.CrmIntakeMonths.CreateAndIdAsync(intakeMonth, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
-  ///// <summary>
-  ///// Retrieves all CrmIntakeMonth records asynchronously.
-  ///// </summary>
-  //public async Task<IEnumerable<CrmIntakeMonthDto>> CrmIntakeMonthsAsync(bool trackChanges, CancellationToken cancellationToken = default)
-  //{
-  //  _logger.LogInformation("Fetching all CrmIntakeMonth records");
+		_logger.LogInformation("Intake month created successfully. ID: {IntakeMonthId}, Time: {Time}",
+						intakeMonthId, DateTime.UtcNow);
 
-  //  var records = await _repository.CrmIntakeMonths.CrmIntakeMonthsAsync(trackChanges, cancellationToken);
+		// Return as DTO
+		var resultDto = intakeMonth.MapTo<CrmIntakeMonthDto>();
+		resultDto.IntakeMonthId = intakeMonthId;
+		return resultDto;
+	}
 
-  //  if (!records.Any())
-  //  {
-  //    _logger.LogWarning("No CrmIntakeMonth records found");
-  //    return Enumerable.Empty<CrmIntakeMonthDto>();
-  //  }
+	/// <summary>
+	/// Updates an existing intake month record using CRUD Record pattern.
+	/// </summary>
+	public async Task<CrmIntakeMonthDto> UpdateAsync(UpdateCrmIntakeMonthRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		if (record == null)
+			throw new BadRequestException(nameof(UpdateCrmIntakeMonthRecord));
 
-  //  var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmIntakeMonth, CrmIntakeMonthDto>(records);
-  //  return recordDtos;
-  //}
+		_logger.LogInformation("Updating intake month. ID: {IntakeMonthId}, Time: {Time}", record.IntakeMonthId, DateTime.UtcNow);
 
-  ///// <summary>
-  ///// Retrieves a CrmIntakeMonth record by ID asynchronously.
-  ///// </summary>
-  //public async Task<CrmIntakeMonthDto> CrmIntakeMonthAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
-  //{
-  //  if (id <= 0)
-  //  {
-  //    _logger.LogWarning("CrmIntakeMonthAsync called with invalid id: {CrmIntakeMonthId}", id);
-  //    throw new BadRequestException("Invalid request!");
-  //  }
+		// Check if intake month exists
+		var existingIntakeMonth = await _repository.CrmIntakeMonths
+						.FirstOrDefaultAsync(x => x.IntakeMonthId == record.IntakeMonthId, trackChanges: false, cancellationToken)
+						?? throw new NotFoundException("IntakeMonth", "IntakeMonthId", record.IntakeMonthId.ToString());
 
-  //  _logger.LogInformation("Fetching CrmIntakeMonth record with ID: {CrmIntakeMonthId}", id);
+		// Map Record to Entity using Mapster
+		CrmIntakeMonth intakeMonth = record.MapTo<CrmIntakeMonth>();
+		_repository.CrmIntakeMonths.UpdateByState(intakeMonth);
+		await _repository.SaveAsync(cancellationToken);
 
-  //  var record = await _repository.CrmIntakeMonths.CrmIntakeMonthAsync(id, trackChanges, cancellationToken);
+		_logger.LogInformation("Intake month updated successfully. ID: {IntakeMonthId}, Time: {Time}",
+						record.IntakeMonthId, DateTime.UtcNow);
 
-  //  if (record == null)
-  //  {
-  //    _logger.LogWarning("CrmIntakeMonth record not found with ID: {CrmIntakeMonthId}", id);
-  //    throw new NotFoundException("CrmIntakeMonth", "CrmIntakeMonthId", id.ToString());
-  //  }
+		return intakeMonth.MapTo<CrmIntakeMonthDto>();
+	}
 
-  //  var recordDto = MyMapper.JsonClone<CrmIntakeMonth, CrmIntakeMonthDto>(record);
-  //  return recordDto;
-  //}
+	/// <summary>
+	/// Deletes an intake month record using CRUD Record pattern.
+	/// </summary>
+	public async Task DeleteAsync(DeleteCrmIntakeMonthRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		if (record == null || record.IntakeMonthId <= 0)
+			throw new BadRequestException("Invalid delete request!");
 
-  ///// <summary>
-  ///// Creates a new CrmIntakeMonth record asynchronously.
-  ///// </summary>
-  //public async Task<CrmIntakeMonthDto> CreateAsync(CrmIntakeMonthDto modelDto)
-  //{
-  //  if (modelDto == null)
-  //    throw new BadRequestException(nameof(CrmIntakeMonthDto));
+		_logger.LogInformation("Deleting intake month. ID: {IntakeMonthId}, Time: {Time}", record.IntakeMonthId, DateTime.UtcNow);
 
-  //  _logger.LogInformation("Creating new CrmIntakeMonth record");
+		var intakeMonthEntity = await _repository.CrmIntakeMonths
+						.FirstOrDefaultAsync(x => x.IntakeMonthId == record.IntakeMonthId, trackChanges, cancellationToken)
+						?? throw new NotFoundException("IntakeMonth", "IntakeMonthId", record.IntakeMonthId.ToString());
 
-  //  // Check for duplicate record
-  //  bool recordExists = await _repository.CrmIntakeMonths.ExistsAsync(
-  //      x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower());
+		await _repository.CrmIntakeMonths.DeleteAsync(x => x.IntakeMonthId == record.IntakeMonthId, trackChanges: false, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
-  //  if (recordExists)
-  //    throw new DuplicateRecordException("CrmIntakeMonth", "Name");
+		_logger.LogWarning("Intake month deleted successfully. ID: {IntakeMonthId}, Time: {Time}",
+						record.IntakeMonthId, DateTime.UtcNow);
+	}
 
-  //  // Map and create
-  //  CrmIntakeMonth entity = MyMapper.JsonClone<CrmIntakeMonthDto, CrmIntakeMonth>(modelDto);
-  //  modelDto.CrmIntakeMonthId = await _repository.CrmIntakeMonths.CreateAndIdAsync(entity);
-  //  await _repository.SaveAsync();
+	/// <summary>
+	/// Retrieves a single intake month record by its ID.
+	/// </summary>
+	public async Task<CrmIntakeMonthDto> IntakeMonthAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching intake month. ID: {IntakeMonthId}, Time: {Time}", id, DateTime.UtcNow);
 
-  //  _logger.LogInformation("CrmIntakeMonth record created successfully with ID: {CrmIntakeMonthId}", modelDto.CrmIntakeMonthId);
+		var intakeMonth = await _repository.CrmIntakeMonths
+						.FirstOrDefaultAsync(x => x.IntakeMonthId == id, trackChanges, cancellationToken)
+						?? throw new NotFoundException("IntakeMonth", "IntakeMonthId", id.ToString());
 
-  //  return modelDto;
-  //}
+		_logger.LogInformation("Intake month fetched successfully. ID: {IntakeMonthId}, Time: {Time}",
+						id, DateTime.UtcNow);
 
-  ///// <summary>
-  ///// Updates an existing CrmIntakeMonth record asynchronously.
-  ///// </summary>
-  //public async Task<CrmIntakeMonthDto> UpdateAsync(int key, CrmIntakeMonthDto modelDto)
-  //{
-  //  if (modelDto == null)
-  //    throw new BadRequestException(nameof(CrmIntakeMonthDto));
+		return intakeMonth.MapTo<CrmIntakeMonthDto>();
+	}
 
-  //  if (key != modelDto.CrmIntakeMonthId)
-  //    throw new BadRequestException(key.ToString(), nameof(CrmIntakeMonthDto));
+	/// <summary>
+	/// Retrieves all intake month records from the database.
+	/// </summary>
+	public async Task<IEnumerable<CrmIntakeMonthDto>> IntakeMonthsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching all intake months. Time: {Time}", DateTime.UtcNow);
 
-  //  _logger.LogInformation("Updating CrmIntakeMonth record with ID: {CrmIntakeMonthId}", key);
+		var intakeMonths = await _repository.CrmIntakeMonths.ListAsync(x => x.IntakeMonthId, trackChanges, cancellationToken);
 
-  //  // Check if record exists
-  //  var existingRecord = await _repository.CrmIntakeMonths.ByIdAsync(
-  //      x => x.CrmIntakeMonthId == key, trackChanges: false);
+		if (!intakeMonths.Any())
+		{
+			_logger.LogWarning("No intake months found. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmIntakeMonthDto>();
+		}
 
-  //  if (existingRecord == null)
-  //    throw new NotFoundException("CrmIntakeMonth", "CrmIntakeMonthId", key.ToString());
+		var intakeMonthsDto = intakeMonths.MapToList<CrmIntakeMonthDto>();
 
-  //  // Check for duplicate name (excluding current record)
-  //  bool duplicateExists = await _repository.CrmIntakeMonths.ExistsAsync(
-  //      x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower()
-  //           && x.CrmIntakeMonthId != key);
+		_logger.LogInformation("Intake months fetched successfully. Count: {Count}, Time: {Time}",
+						intakeMonthsDto.Count(), DateTime.UtcNow);
 
-  //  if (duplicateExists)
-  //    throw new DuplicateRecordException("CrmIntakeMonth", "Name");
+		return intakeMonthsDto;
+	}
 
-  //  // Map and update
-  //  CrmIntakeMonth entity = MyMapper.JsonClone<CrmIntakeMonthDto, CrmIntakeMonth>(modelDto);
-  //  _repository.CrmIntakeMonths.UpdateByState(entity);
-  //  await _repository.SaveAsync();
+	/// <summary>
+	/// Retrieves active intake month records from the database.
+	/// </summary>
+	public async Task<IEnumerable<CrmIntakeMonthDto>> ActiveIntakeMonthsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching active intake months. Time: {Time}", DateTime.UtcNow);
 
-  //  _logger.LogInformation("CrmIntakeMonth record updated successfully: {CrmIntakeMonthId}", key);
+		var intakeMonths = await _repository.CrmIntakeMonths.CrmIntakeMonthsAsync(trackChanges, cancellationToken);
 
-  //  return modelDto;
-  //}
+		if (!intakeMonths.Any())
+		{
+			_logger.LogWarning("No active intake months found. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmIntakeMonthDto>();
+		}
 
-  ///// <summary>
-  ///// Deletes a CrmIntakeMonth record by ID asynchronously.
-  ///// </summary>
-  //public async Task DeleteAsync(int key)
-  //{
-  //  if (key <= 0)
-  //    throw new BadRequestException("Invalid request!");
+		var intakeMonthsDto = intakeMonths.MapToList<CrmIntakeMonthDto>();
 
-  //  _logger.LogInformation("Deleting CrmIntakeMonth record with ID: {CrmIntakeMonthId}", key);
+		_logger.LogInformation("Active intake months fetched successfully. Count: {Count}, Time: {Time}",
+						intakeMonthsDto.Count(), DateTime.UtcNow);
 
-  //  var record = await _repository.CrmIntakeMonths.ByIdAsync(
-  //      x => x.CrmIntakeMonthId == key, trackChanges: false);
+		return intakeMonthsDto;
+	}
 
-  //  if (record == null)
-  //    throw new NotFoundException("CrmIntakeMonth", "CrmIntakeMonthId", key.ToString());
+	/// <summary>
+	/// Retrieves a lightweight list of all intake months suitable for use in dropdown lists.
+	/// </summary>
+	public async Task<IEnumerable<CrmIntakeMonthDto>> IntakeMonthForDDLAsync(CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching intake months for dropdown list. Time: {Time}", DateTime.UtcNow);
 
-  //  await _repository.CrmIntakeMonths.DeleteAsync(x => x.CrmIntakeMonthId == key, trackChanges: false);
-  //  await _repository.SaveAsync();
+		var intakeMonths = await _repository.CrmIntakeMonths.CrmIntakeMonthsAsync(false, cancellationToken);
 
-  //  _logger.LogInformation("CrmIntakeMonth record deleted successfully: {CrmIntakeMonthId}", key);
-  //}
+		if (!intakeMonths.Any())
+		{
+			_logger.LogWarning("No intake months found for dropdown list. Time: {Time}", DateTime.UtcNow);
+			return Enumerable.Empty<CrmIntakeMonthDto>();
+		}
 
-  ///// <summary>
-  ///// Retrieves CrmIntakeMonth records for dropdown list asynchronously.
-  ///// </summary>
-  //public async Task<IEnumerable<CrmIntakeMonthForDDLDto>> CrmIntakeMonthsForDDLAsync()
-  //{
-  //  _logger.LogInformation("Fetching CrmIntakeMonth records for dropdown list");
+		var intakeMonthsDto = intakeMonths.MapToList<CrmIntakeMonthDto>();
 
-  //  var records = await _repository.CrmIntakeMonths.ListWithSelectAsync(
-  //      x => new CrmIntakeMonth
-  //      {
-  //        CrmIntakeMonthId = x.CrmIntakeMonthId,
-  //        Name = x.Name
-  //      },
-  //      orderBy: x => x.Name,
-  //      trackChanges: false
-  //  );
+		_logger.LogInformation("Intake months fetched successfully for dropdown list. Count: {Count}, Time: {Time}",
+						intakeMonthsDto.Count(), DateTime.UtcNow);
 
-  //  if (!records.Any())
-  //    return new List<CrmIntakeMonthForDDLDto>();
+		return intakeMonthsDto;
+	}
 
-  //  var recordsForDDLDto = MyMapper.JsonCloneIEnumerableToList<CrmIntakeMonth, CrmIntakeMonthForDDLDto>(records);
-  //  return recordsForDDLDto;
-  //}
+	/// <summary>
+	/// Retrieves a paginated summary grid of all intake months.
+	/// </summary>
+	public async Task<GridEntity<CrmIntakeMonthDto>> IntakeMonthsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
+	{
+		_logger.LogInformation("Fetching intake months summary grid. Time: {Time}", DateTime.UtcNow);
+
+		const string sql = @"
+SELECT IntakeMonthId, MonthName, MonthCode, MonthNumber, Description, IsActive, CreatedDate, CreatedBy, UpdatedDate, UpdatedBy
+FROM CrmIntakeMonth";
+
+		const string orderBy = "MonthNumber ASC";
+
+		return await _repository.CrmIntakeMonths.AdoGridDataAsync<CrmIntakeMonthDto>(sql, options, orderBy, string.Empty, cancellationToken);
+	}
 }

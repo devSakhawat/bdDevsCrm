@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -330,7 +332,7 @@ internal sealed class CrmStatementOfPurposeService : ICrmStatementOfPurposeServi
 //            return Enumerable.Empty<CrmStatementOfPurposeDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmStatementOfPurpose, CrmStatementOfPurposeDto>(records);
+//        var recordDtos = records.MapToList<CrmStatementOfPurposeDto>();
 //        return recordDtos;
 //    }
 
@@ -355,7 +357,7 @@ internal sealed class CrmStatementOfPurposeService : ICrmStatementOfPurposeServi
 //            throw new NotFoundException("CrmStatementOfPurpose", "CrmStatementOfPurposeId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmStatementOfPurpose, CrmStatementOfPurposeDto>(record);
+//        var recordDto = record.MapTo<CrmStatementOfPurposeDto>();
 //        return recordDto;
 //    }
 
@@ -377,7 +379,7 @@ internal sealed class CrmStatementOfPurposeService : ICrmStatementOfPurposeServi
 //            throw new DuplicateRecordException("CrmStatementOfPurpose", "Name");
 
 //        // Map and create
-//        CrmStatementOfPurpose entity = MyMapper.JsonClone<CrmStatementOfPurposeDto, CrmStatementOfPurpose>(modelDto);
+//        CrmStatementOfPurpose entity = modelDto.MapTo<CrmStatementOfPurpose>();
 //        modelDto.CrmStatementOfPurposeId = await _repository.CrmStatementOfPurposes.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -415,7 +417,7 @@ internal sealed class CrmStatementOfPurposeService : ICrmStatementOfPurposeServi
 //            throw new DuplicateRecordException("CrmStatementOfPurpose", "Name");
 
 //        // Map and update
-//        CrmStatementOfPurpose entity = MyMapper.JsonClone<CrmStatementOfPurposeDto, CrmStatementOfPurpose>(modelDto);
+//        CrmStatementOfPurpose entity = modelDto.MapTo<CrmStatementOfPurpose>();
 //        _repository.CrmStatementOfPurposes.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -333,7 +335,7 @@ internal sealed class CrmAdditionalDocumentsService : ICrmAdditionalDocumentServ
 //            return Enumerable.Empty<CrmAdditionalDocumentDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmAdditionalDocument, CrmAdditionalDocumentDto>(records);
+//        var recordDtos = records.MapToList<CrmAdditionalDocumentDto>();
 //        return recordDtos;
 //    }
 
@@ -358,7 +360,7 @@ internal sealed class CrmAdditionalDocumentsService : ICrmAdditionalDocumentServ
 //            throw new NotFoundException("CrmAdditionalDocument", "CrmAdditionalDocumentId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmAdditionalDocument, CrmAdditionalDocumentDto>(record);
+//        var recordDto = record.MapTo<CrmAdditionalDocumentDto>();
 //        return recordDto;
 //    }
 
@@ -380,7 +382,7 @@ internal sealed class CrmAdditionalDocumentsService : ICrmAdditionalDocumentServ
 //            throw new DuplicateRecordException("CrmAdditionalDocument", "Name");
 
 //        // Map and create
-//        CrmAdditionalDocument entity = MyMapper.JsonClone<CrmAdditionalDocumentDto, CrmAdditionalDocument>(modelDto);
+//        CrmAdditionalDocument entity = modelDto.MapTo<CrmAdditionalDocument>();
 //        modelDto.CrmAdditionalDocumentId = await _repository.CrmAdditionalDocuments.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -418,7 +420,7 @@ internal sealed class CrmAdditionalDocumentsService : ICrmAdditionalDocumentServ
 //            throw new DuplicateRecordException("CrmAdditionalDocument", "Name");
 
 //        // Map and update
-//        CrmAdditionalDocument entity = MyMapper.JsonClone<CrmAdditionalDocumentDto, CrmAdditionalDocument>(modelDto);
+//        CrmAdditionalDocument entity = modelDto.MapTo<CrmAdditionalDocument>();
 //        _repository.CrmAdditionalDocuments.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

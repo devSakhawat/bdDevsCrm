@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -367,7 +369,7 @@ internal sealed class CrmPresentAddressService : ICrmPresentAddressService
 //            return Enumerable.Empty<CrmPresentAddressDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmPresentAddress, CrmPresentAddressDto>(records);
+//        var recordDtos = records.MapToList<CrmPresentAddressDto>();
 //        return recordDtos;
 //    }
 
@@ -392,7 +394,7 @@ internal sealed class CrmPresentAddressService : ICrmPresentAddressService
 //            throw new NotFoundException("CrmPresentAddress", "CrmPresentAddressId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmPresentAddress, CrmPresentAddressDto>(record);
+//        var recordDto = record.MapTo<CrmPresentAddressDto>();
 //        return recordDto;
 //    }
 
@@ -414,7 +416,7 @@ internal sealed class CrmPresentAddressService : ICrmPresentAddressService
 //            throw new DuplicateRecordException("CrmPresentAddress", "Name");
 
 //        // Map and create
-//        CrmPresentAddress entity = MyMapper.JsonClone<CrmPresentAddressDto, CrmPresentAddress>(modelDto);
+//        CrmPresentAddress entity = modelDto.MapTo<CrmPresentAddress>();
 //        modelDto.CrmPresentAddressId = await _repository.CrmPresentAddresss.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -452,7 +454,7 @@ internal sealed class CrmPresentAddressService : ICrmPresentAddressService
 //            throw new DuplicateRecordException("CrmPresentAddress", "Name");
 
 //        // Map and update
-//        CrmPresentAddress entity = MyMapper.JsonClone<CrmPresentAddressDto, CrmPresentAddress>(modelDto);
+//        CrmPresentAddress entity = modelDto.MapTo<CrmPresentAddress>();
 //        _repository.CrmPresentAddresss.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

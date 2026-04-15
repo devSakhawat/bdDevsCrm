@@ -1,10 +1,8 @@
-// CrmYearService.cs
 using Domain.Entities.Entities.CRM;
 using Domain.Entities.Entities.System;
 using Domain.Contracts.Services.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Domain.Contracts.Services.CRM;
-using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using Domain.Exceptions;
 using Domain.Contracts.Repositories;
@@ -12,14 +10,12 @@ using Application.Shared.Grid;
 using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
 
-/// <summary>
-/// CRM year service implementing business logic for year management.
-/// Follows enterprise patterns with structured logging and exception handling.
-/// </summary>
 internal sealed class CrmYearService : ICrmYearService
 {
 	private readonly IRepositoryManager _repository;
@@ -37,89 +33,71 @@ internal sealed class CrmYearService : ICrmYearService
 	}
 
 	/// <summary>
-	/// Creates a new year record.
+	/// Creates a new year record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmYearDto> CreateYearAsync(CrmYearDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default)
+	public async Task<CrmYearDto> CreateAsync(CreateCrmYearRecord record, CancellationToken cancellationToken = default)
 	{
-		if (entityForCreate is null)
-			throw new BadRequestException(nameof(CrmYearDto));
-
-		if (entityForCreate.YearId != 0)
-			throw new InvalidCreateOperationException("YearId must be 0 for new record.");
+		if (record == null)
+			throw new BadRequestException(nameof(CreateCrmYearRecord));
 
 		_logger.LogInformation("Creating new year. YearName: {YearName}, Time: {Time}",
-						entityForCreate.YearName, DateTime.UtcNow);
+						record.YearName, DateTime.UtcNow);
 
-		var yearEntity = MyMapper.JsonClone<CrmYearDto, CrmYear>(entityForCreate);
-		//yearEntity.CreatedDate = DateTime.UtcNow;
-		//yearEntity.CreatedBy = currentUser.UserId ?? 0;
-		//yearEntity.IsActive = true;
+		CrmYear year = record.MapTo<CrmYear>();
+		int yearId = await _repository.CrmYears.CreateAndIdAsync(year, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
-		await _repository.CrmYears.CreateAsync(yearEntity, cancellationToken);
-		int affected = await _repository.SaveChangesAsync(cancellationToken);
-
-		if (affected <= 0)
-			throw new InvalidOperationException("Year could not be saved to the database.");
 		_logger.LogInformation("Year created successfully. ID: {YearId}, Time: {Time}",
-						yearEntity.YearId, DateTime.UtcNow);
+						yearId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmYear, CrmYearDto>(yearEntity);
+		var resultDto = year.MapTo<CrmYearDto>();
+		resultDto.YearId = yearId;
+		return resultDto;
 	}
 
 	/// <summary>
-	/// Updates an existing year record.
+	/// Updates an existing year record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmYearDto> UpdateYearAsync(int yearId, CrmYearDto modelDto, bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task<CrmYearDto> UpdateAsync(UpdateCrmYearRecord record, bool trackChanges, CancellationToken cancellationToken = default)
 	{
-		if (modelDto is null)
-			throw new BadRequestException(nameof(CrmYearDto));
+		if (record == null)
+			throw new BadRequestException(nameof(UpdateCrmYearRecord));
 
-		if (yearId != modelDto.YearId)
-			throw new BadRequestException(yearId.ToString(), nameof(CrmYearDto));
+		_logger.LogInformation("Updating year. ID: {YearId}, Time: {Time}", record.YearId, DateTime.UtcNow);
 
-		_logger.LogInformation("Updating year. ID: {YearId}, Time: {Time}", yearId, DateTime.UtcNow);
+		var existingYear = await _repository.CrmYears
+						.FirstOrDefaultAsync(x => x.YearId == record.YearId, trackChanges: false, cancellationToken)
+						?? throw new NotFoundException("Year", "YearId", record.YearId.ToString());
 
-		var yearEntity = await _repository.CrmYears
-						.FirstOrDefaultAsync(x => x.YearId == yearId, trackChanges: false, cancellationToken)
-						?? throw new NotFoundException("Year", "YearId", yearId.ToString());
+		CrmYear year = record.MapTo<CrmYear>();
+		_repository.CrmYears.UpdateByState(year);
+		await _repository.SaveAsync(cancellationToken);
 
-		var updatedEntity = MyMapper.MergeChangedValues<CrmYear, CrmYearDto>(yearEntity, modelDto);
-		//updatedEntity.UpdatedDate = DateTime.UtcNow;
-
-		_repository.CrmYears.UpdateByState(updatedEntity);
-
-		int affected = await _repository.SaveChangesAsync(cancellationToken);
-		if (affected <= 0)
-			throw new NotFoundException("Year", "YearId", yearId.ToString());
 		_logger.LogInformation("Year updated successfully. ID: {YearId}, Time: {Time}",
-						yearId, DateTime.UtcNow);
+						record.YearId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmYear, CrmYearDto>(updatedEntity);
+		return year.MapTo<CrmYearDto>();
 	}
 
 	/// <summary>
-	/// Deletes a year record identified by the given ID.
+	/// Deletes a year record using CRUD Record pattern.
 	/// </summary>
-	public async Task<int> DeleteYearAsync(int yearId, bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task DeleteAsync(DeleteCrmYearRecord record, bool trackChanges, CancellationToken cancellationToken = default)
 	{
-		if (yearId <= 0)
-			throw new BadRequestException(yearId.ToString(), nameof(CrmYearDto));
+		if (record == null || record.YearId <= 0)
+			throw new BadRequestException("Invalid delete request!");
 
-		_logger.LogInformation("Deleting year. ID: {YearId}, Time: {Time}", yearId, DateTime.UtcNow);
+		_logger.LogInformation("Deleting year. ID: {YearId}, Time: {Time}", record.YearId, DateTime.UtcNow);
 
 		var yearEntity = await _repository.CrmYears
-						.FirstOrDefaultAsync(x => x.YearId == yearId, trackChanges, cancellationToken)
-						?? throw new NotFoundException("Year", "YearId", yearId.ToString());
+						.FirstOrDefaultAsync(x => x.YearId == record.YearId, trackChanges, cancellationToken)
+						?? throw new NotFoundException("Year", "YearId", record.YearId.ToString());
 
-		await _repository.CrmYears.DeleteAsync(x => x.YearId == yearId, trackChanges, cancellationToken);
-		int affected = await _repository.SaveChangesAsync(cancellationToken);
+		await _repository.CrmYears.DeleteAsync(x => x.YearId == record.YearId, trackChanges: false, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
-		if (affected <= 0)
-			throw new NotFoundException("Year", "YearId", yearId.ToString());
 		_logger.LogWarning("Year deleted successfully. ID: {YearId}, Time: {Time}",
-						yearId, DateTime.UtcNow);
-
-		return affected;
+						record.YearId, DateTime.UtcNow);
 	}
 
 	/// <summary>
@@ -135,7 +113,7 @@ internal sealed class CrmYearService : ICrmYearService
 		_logger.LogInformation("Year fetched successfully. ID: {YearId}, Time: {Time}",
 						id, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmYear, CrmYearDto>(year);
+		return year.MapTo<CrmYearDto>();
 	}
 
 	/// <summary>
@@ -152,7 +130,7 @@ internal sealed class CrmYearService : ICrmYearService
 			return Enumerable.Empty<CrmYearDto>();
 		}
 
-		var yearsDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmYear, CrmYearDto>(years);
+		var yearsDto = years.MapToList<CrmYearDto>();
 		_logger.LogInformation("Years fetched successfully. Count: {Count}, Time: {Time}",
 						yearsDto.Count(), DateTime.UtcNow);
 
@@ -175,7 +153,7 @@ internal sealed class CrmYearService : ICrmYearService
 			return Enumerable.Empty<CrmYearDto>();
 		}
 
-		var yearsDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmYear, CrmYearDto>(years);
+		var yearsDto = years.MapToList<CrmYearDto>();
 
 		_logger.LogInformation("Active years fetched successfully. Count: {Count}, Time: {Time}",
 						yearsDto.Count(), DateTime.UtcNow);
@@ -197,7 +175,7 @@ internal sealed class CrmYearService : ICrmYearService
 			return Enumerable.Empty<CrmYearDto>();
 		}
 
-		var yearsDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmYear, CrmYearDto>(years);
+		var yearsDto = years.MapToList<CrmYearDto>();
 		_logger.LogInformation("Years fetched successfully for dropdown list. Count: {Count}, Time: {Time}",
 						yearsDto.Count(), DateTime.UtcNow);
 
@@ -249,7 +227,7 @@ internal sealed class CrmYearService : ICrmYearService
 			return Enumerable.Empty<CrmYearDto>();
 		}
 
-		var yearsDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmYear, CrmYearDto>(years);
+		var yearsDto = years.MapToList<CrmYearDto>();
 
 		_logger.LogInformation("Years fetched successfully for applicant ID: {ApplicantId}. Count: {Count}, Time: {Time}",
 						applicantId, yearsDto.Count(), DateTime.UtcNow);
@@ -270,209 +248,7 @@ FROM CrmYear";
 
 		const string orderBy = "YearName ASC";
 
-		//return await _repository.CrmYears.GridData<CrmYearDto>(sql, options, orderBy, string.Empty, cancellationToken);
+		
 		return await _repository.CrmYears.AdoGridDataAsync<CrmYearDto>(sql, options, orderBy, string.Empty, cancellationToken);
 	}
 }
-
-
-
-//using Domain.Entities.Entities.CRM;
-//using Domain.Contracts.Services.Core.SystemAdmin;
-//using bdDevs.Shared.DataTransferObjects.CRM;
-//using Domain.Contracts.Services.CRM;
-//using bdDevs.Shared.DataTransferObjects.CRM;
-//using Domain.Exceptions;
-//using Application.Shared.Grid;
-//using Application.Services.Mappings;
-//using Microsoft.Extensions.Configuration;
-//using Microsoft.Extensions.Logging;
-
-//namespace Application.Services.CRM;
-
-///// <summary>
-///// CrmYear service implementing business logic for CrmYear management.
-///// Follows enterprise patterns with structured logging and exception handling.
-///// </summary>
-//internal sealed class CrmYearService : ICrmYearService
-//{
-//    private readonly IRepositoryManager _repository;
-//    private readonly ILogger<CrmYearService> _logger;
-//    private readonly IConfiguration _configuration;
-
-//    public CrmYearService(IRepositoryManager repository, ILogger<CrmYearService> logger, IConfiguration configuration)
-//    {
-//        _repository = repository;
-//        _logger = logger;
-//        _configuration = configuration;
-//    }
-
-//    /// <summary>
-//    /// Retrieves paginated summary grid of CrmYear records asynchronously.
-//    /// </summary>
-//    public async Task<GridEntity<CrmYearDto>> CrmYearSummaryAsync(bool trackChanges, GridOptions options, CancellationToken cancellationToken = default)
-//    {
-//        _logger.LogInformation("Fetching CrmYear summary grid");
-
-//        string query = "SELECT * FROM CrmYear";
-//        string orderBy = "Name ASC";
-
-//        var gridEntity = await _repository.CrmYears.AdoGridDataAsync<CrmYearDto>(query, options, orderBy, "", cancellationToken);
-//        return gridEntity;
-//    }
-
-//    /// <summary>
-//    /// Retrieves all CrmYear records asynchronously.
-//    /// </summary>
-//    public async Task<IEnumerable<CrmYearDto>> CrmYearsAsync(bool trackChanges, CancellationToken cancellationToken = default)
-//    {
-//        _logger.LogInformation("Fetching all CrmYear records");
-
-//        var records = await _repository.CrmYears.CrmYearsAsync(trackChanges, cancellationToken);
-
-//        if (!records.Any())
-//        {
-//            _logger.LogWarning("No CrmYear records found");
-//            return Enumerable.Empty<CrmYearDto>();
-//        }
-
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmYear, CrmYearDto>(records);
-//        return recordDtos;
-//    }
-
-//    /// <summary>
-//    /// Retrieves a CrmYear record by ID asynchronously.
-//    /// </summary>
-//    public async Task<CrmYearDto> CrmYearAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
-//    {
-//        if (id <= 0)
-//        {
-//            _logger.LogWarning("CrmYearAsync called with invalid id: {CrmYearId}", id);
-//            throw new BadRequestException("Invalid request!");
-//        }
-
-//        _logger.LogInformation("Fetching CrmYear record with ID: {CrmYearId}", id);
-
-//        var record = await _repository.CrmYears.CrmYearAsync(id, trackChanges, cancellationToken);
-
-//        if (record == null)
-//        {
-//            _logger.LogWarning("CrmYear record not found with ID: {CrmYearId}", id);
-//            throw new NotFoundException("CrmYear", "CrmYearId", id.ToString());
-//        }
-
-//        var recordDto = MyMapper.JsonClone<CrmYear, CrmYearDto>(record);
-//        return recordDto;
-//    }
-
-//    /// <summary>
-//    /// Creates a new CrmYear record asynchronously.
-//    /// </summary>
-//    public async Task<CrmYearDto> CreateAsync(CrmYearDto modelDto)
-//    {
-//        if (modelDto == null)
-//            throw new BadRequestException(nameof(CrmYearDto));
-
-//        _logger.LogInformation("Creating new CrmYear record");
-
-//        // Check for duplicate record
-//        bool recordExists = await _repository.CrmYears.ExistsAsync(
-//            x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower());
-
-//        if (recordExists)
-//            throw new DuplicateRecordException("CrmYear", "Name");
-
-//        // Map and create
-//        CrmYear entity = MyMapper.JsonClone<CrmYearDto, CrmYear>(modelDto);
-//        modelDto.CrmYearId = await _repository.CrmYears.CreateAndIdAsync(entity);
-//        await _repository.SaveAsync();
-
-//        _logger.LogInformation("CrmYear record created successfully with ID: {CrmYearId}", modelDto.CrmYearId);
-
-//        return modelDto;
-//    }
-
-//    /// <summary>
-//    /// Updates an existing CrmYear record asynchronously.
-//    /// </summary>
-//    public async Task<CrmYearDto> UpdateAsync(int key, CrmYearDto modelDto)
-//    {
-//        if (modelDto == null)
-//            throw new BadRequestException(nameof(CrmYearDto));
-
-//        if (key != modelDto.CrmYearId)
-//            throw new BadRequestException(key.ToString(), nameof(CrmYearDto));
-
-//        _logger.LogInformation("Updating CrmYear record with ID: {CrmYearId}", key);
-
-//        // Check if record exists
-//        var existingRecord = await _repository.CrmYears.ByIdAsync(
-//            x => x.CrmYearId == key, trackChanges: false);
-
-//        if (existingRecord == null)
-//            throw new NotFoundException("CrmYear", "CrmYearId", key.ToString());
-
-//        // Check for duplicate name (excluding current record)
-//        bool duplicateExists = await _repository.CrmYears.ExistsAsync(
-//            x => x.Name.Trim().ToLower() == modelDto.Name.Trim().ToLower() 
-//                 && x.CrmYearId != key);
-
-//        if (duplicateExists)
-//            throw new DuplicateRecordException("CrmYear", "Name");
-
-//        // Map and update
-//        CrmYear entity = MyMapper.JsonClone<CrmYearDto, CrmYear>(modelDto);
-//        _repository.CrmYears.UpdateByState(entity);
-//        await _repository.SaveAsync();
-
-//        _logger.LogInformation("CrmYear record updated successfully: {CrmYearId}", key);
-
-//        return modelDto;
-//    }
-
-//    /// <summary>
-//    /// Deletes a CrmYear record by ID asynchronously.
-//    /// </summary>
-//    public async Task DeleteAsync(int key)
-//    {
-//        if (key <= 0)
-//            throw new BadRequestException("Invalid request!");
-
-//        _logger.LogInformation("Deleting CrmYear record with ID: {CrmYearId}", key);
-
-//        var record = await _repository.CrmYears.ByIdAsync(
-//            x => x.CrmYearId == key, trackChanges: false);
-
-//        if (record == null)
-//            throw new NotFoundException("CrmYear", "CrmYearId", key.ToString());
-
-//        await _repository.CrmYears.DeleteAsync(x => x.CrmYearId == key, trackChanges: false);
-//        await _repository.SaveAsync();
-
-//        _logger.LogInformation("CrmYear record deleted successfully: {CrmYearId}", key);
-//    }
-
-//    /// <summary>
-//    /// Retrieves CrmYear records for dropdown list asynchronously.
-//    /// </summary>
-//    public async Task<IEnumerable<CrmYearForDDLDto>> CrmYearsForDDLAsync()
-//    {
-//        _logger.LogInformation("Fetching CrmYear records for dropdown list");
-
-//        var records = await _repository.CrmYears.ListWithSelectAsync(
-//            x => new CrmYear
-//            {
-//                CrmYearId = x.CrmYearId,
-//                Name = x.Name
-//            },
-//            orderBy: x => x.Name,
-//            trackChanges: false
-//        );
-
-//        if (!records.Any())
-//            return new List<CrmYearForDDLDto>();
-
-//        var recordsForDDLDto = MyMapper.JsonCloneIEnumerableToList<CrmYear, CrmYearForDDLDto>(records);
-//        return recordsForDDLDto;
-//    }
-//}

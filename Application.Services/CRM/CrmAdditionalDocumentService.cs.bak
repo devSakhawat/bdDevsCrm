@@ -11,8 +11,6 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using bdDevs.Shared.Records.CRM;
-using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -335,7 +333,7 @@ internal sealed class CrmAdditionalDocumentsService : ICrmAdditionalDocumentServ
 //            return Enumerable.Empty<CrmAdditionalDocumentDto>();
 //        }
 
-//        var recordDtos = records.MapToList<CrmAdditionalDocumentDto>();
+//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmAdditionalDocument, CrmAdditionalDocumentDto>(records);
 //        return recordDtos;
 //    }
 
@@ -360,7 +358,7 @@ internal sealed class CrmAdditionalDocumentsService : ICrmAdditionalDocumentServ
 //            throw new NotFoundException("CrmAdditionalDocument", "CrmAdditionalDocumentId", id.ToString());
 //        }
 
-//        var recordDto = record.MapTo<CrmAdditionalDocumentDto>();
+//        var recordDto = MyMapper.JsonClone<CrmAdditionalDocument, CrmAdditionalDocumentDto>(record);
 //        return recordDto;
 //    }
 
@@ -382,7 +380,7 @@ internal sealed class CrmAdditionalDocumentsService : ICrmAdditionalDocumentServ
 //            throw new DuplicateRecordException("CrmAdditionalDocument", "Name");
 
 //        // Map and create
-//        CrmAdditionalDocument entity = modelDto.MapTo<CrmAdditionalDocument>();
+//        CrmAdditionalDocument entity = MyMapper.JsonClone<CrmAdditionalDocumentDto, CrmAdditionalDocument>(modelDto);
 //        modelDto.CrmAdditionalDocumentId = await _repository.CrmAdditionalDocuments.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -420,7 +418,7 @@ internal sealed class CrmAdditionalDocumentsService : ICrmAdditionalDocumentServ
 //            throw new DuplicateRecordException("CrmAdditionalDocument", "Name");
 
 //        // Map and update
-//        CrmAdditionalDocument entity = modelDto.MapTo<CrmAdditionalDocument>();
+//        CrmAdditionalDocument entity = MyMapper.JsonClone<CrmAdditionalDocumentDto, CrmAdditionalDocument>(modelDto);
 //        _repository.CrmAdditionalDocuments.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

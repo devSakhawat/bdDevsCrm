@@ -11,8 +11,6 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using bdDevs.Shared.Records.CRM;
-using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -332,7 +330,7 @@ internal sealed class CrmStatementOfPurposeService : ICrmStatementOfPurposeServi
 //            return Enumerable.Empty<CrmStatementOfPurposeDto>();
 //        }
 
-//        var recordDtos = records.MapToList<CrmStatementOfPurposeDto>();
+//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmStatementOfPurpose, CrmStatementOfPurposeDto>(records);
 //        return recordDtos;
 //    }
 
@@ -357,7 +355,7 @@ internal sealed class CrmStatementOfPurposeService : ICrmStatementOfPurposeServi
 //            throw new NotFoundException("CrmStatementOfPurpose", "CrmStatementOfPurposeId", id.ToString());
 //        }
 
-//        var recordDto = record.MapTo<CrmStatementOfPurposeDto>();
+//        var recordDto = MyMapper.JsonClone<CrmStatementOfPurpose, CrmStatementOfPurposeDto>(record);
 //        return recordDto;
 //    }
 
@@ -379,7 +377,7 @@ internal sealed class CrmStatementOfPurposeService : ICrmStatementOfPurposeServi
 //            throw new DuplicateRecordException("CrmStatementOfPurpose", "Name");
 
 //        // Map and create
-//        CrmStatementOfPurpose entity = modelDto.MapTo<CrmStatementOfPurpose>();
+//        CrmStatementOfPurpose entity = MyMapper.JsonClone<CrmStatementOfPurposeDto, CrmStatementOfPurpose>(modelDto);
 //        modelDto.CrmStatementOfPurposeId = await _repository.CrmStatementOfPurposes.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -417,7 +415,7 @@ internal sealed class CrmStatementOfPurposeService : ICrmStatementOfPurposeServi
 //            throw new DuplicateRecordException("CrmStatementOfPurpose", "Name");
 
 //        // Map and update
-//        CrmStatementOfPurpose entity = modelDto.MapTo<CrmStatementOfPurpose>();
+//        CrmStatementOfPurpose entity = MyMapper.JsonClone<CrmStatementOfPurposeDto, CrmStatementOfPurpose>(modelDto);
 //        _repository.CrmStatementOfPurposes.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

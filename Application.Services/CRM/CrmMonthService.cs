@@ -9,6 +9,8 @@ using Application.Shared.Grid;
 using Application.Services.Mappings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -33,92 +35,75 @@ internal sealed class CrmMonthService : ICrmMonthService
 	}
 
 	/// <summary>
-	/// Creates a new month record.
+	/// Creates a new month record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmMonthDto> CreateMonthAsync(CrmMonthDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default)
+	public async Task<CrmMonthDto> CreateAsync(CreateCrmMonthRecord record, CancellationToken cancellationToken = default)
 	{
-		if (entityForCreate is null)
-			throw new BadRequestException(nameof(CrmMonthDto));
-
-		if (entityForCreate.MonthId != 0)
-			throw new InvalidCreateOperationException("MonthId must be 0 for new record.");
+		if (record == null)
+			throw new BadRequestException(nameof(CreateCrmMonthRecord));
 
 		_logger.LogInformation("Creating new month. MonthName: {MonthName}, Time: {Time}",
-						entityForCreate.MonthName, DateTime.UtcNow);
+						record.MonthName, DateTime.UtcNow);
 
-		var monthEntity = MyMapper.JsonClone<CrmMonthDto, CrmMonth>(entityForCreate);
-		//monthEntity.CreatedDate = DateTime.UtcNow;
-		//monthEntity.CreatedBy = currentUser.UserId ?? 0;
-		//monthEntity.IsActive = true;
-
-		await _repository.CrmMonths.CreateAsync(monthEntity, cancellationToken);
-		int affected = await _repository.SaveChangesAsync(cancellationToken);
-
-		if (affected <= 0)
-			throw new InvalidOperationException("Month could not be saved to the database.");
+		// Map Record to Entity using Mapster
+		CrmMonth month = record.MapTo<CrmMonth>();
+		int monthId = await _repository.CrmMonths.CreateAndIdAsync(month, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
 		_logger.LogInformation("Month created successfully. ID: {MonthId}, Time: {Time}",
-						monthEntity.MonthId, DateTime.UtcNow);
+						monthId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmMonth, CrmMonthDto>(monthEntity);
+		// Return as DTO
+		var resultDto = month.MapTo<CrmMonthDto>();
+		resultDto.MonthId = monthId;
+		return resultDto;
 	}
 
 	/// <summary>
-	/// Updates an existing month record.
+	/// Updates an existing month record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmMonthDto> UpdateMonthAsync(int monthId, CrmMonthDto modelDto, bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task<CrmMonthDto> UpdateAsync(UpdateCrmMonthRecord record, bool trackChanges, CancellationToken cancellationToken = default)
 	{
-		if (modelDto is null)
-			throw new BadRequestException(nameof(CrmMonthDto));
+		if (record == null)
+			throw new BadRequestException(nameof(UpdateCrmMonthRecord));
 
-		if (monthId != modelDto.MonthId)
-			throw new BadRequestException(monthId.ToString(), nameof(CrmMonthDto));
+		_logger.LogInformation("Updating month. ID: {MonthId}, Time: {Time}", record.MonthId, DateTime.UtcNow);
 
-		_logger.LogInformation("Updating month. ID: {MonthId}, Time: {Time}", monthId, DateTime.UtcNow);
+		// Check if month exists
+		var existingMonth = await _repository.CrmMonths
+						.FirstOrDefaultAsync(x => x.MonthId == record.MonthId, trackChanges: false, cancellationToken)
+						?? throw new NotFoundException("Month", "MonthId", record.MonthId.ToString());
 
-		var monthEntity = await _repository.CrmMonths
-						.FirstOrDefaultAsync(x => x.MonthId == monthId, trackChanges: false, cancellationToken)
-						?? throw new NotFoundException("Month", "MonthId", monthId.ToString());
-
-		var updatedEntity = MyMapper.MergeChangedValues<CrmMonth, CrmMonthDto>(monthEntity, modelDto);
-		//updatedEntity.UpdatedDate = DateTime.UtcNow;
-
-		_repository.CrmMonths.UpdateByState(updatedEntity);
-
-		int affected = await _repository.SaveChangesAsync(cancellationToken);
-		if (affected <= 0)
-			throw new NotFoundException("Month", "MonthId", monthId.ToString());
+		// Map Record to Entity using Mapster
+		CrmMonth month = record.MapTo<CrmMonth>();
+		_repository.CrmMonths.UpdateByState(month);
+		await _repository.SaveAsync(cancellationToken);
 
 		_logger.LogInformation("Month updated successfully. ID: {MonthId}, Time: {Time}",
-						monthId, DateTime.UtcNow);
+						record.MonthId, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmMonth, CrmMonthDto>(updatedEntity);
+		return month.MapTo<CrmMonthDto>();
 	}
 
 	/// <summary>
-	/// Deletes a month record identified by the given ID.
+	/// Deletes a month record using CRUD Record pattern.
 	/// </summary>
-	public async Task<int> DeleteMonthAsync(int monthId, bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task DeleteAsync(DeleteCrmMonthRecord record, bool trackChanges, CancellationToken cancellationToken = default)
 	{
-		if (monthId <= 0)
-			throw new BadRequestException(monthId.ToString(), nameof(CrmMonthDto));
+		if (record == null || record.MonthId <= 0)
+			throw new BadRequestException("Invalid delete request!");
 
-		_logger.LogInformation("Deleting month. ID: {MonthId}, Time: {Time}", monthId, DateTime.UtcNow);
+		_logger.LogInformation("Deleting month. ID: {MonthId}, Time: {Time}", record.MonthId, DateTime.UtcNow);
 
 		var monthEntity = await _repository.CrmMonths
-						.FirstOrDefaultAsync(x => x.MonthId == monthId, trackChanges, cancellationToken)
-						?? throw new NotFoundException("Month", "MonthId", monthId.ToString());
+						.FirstOrDefaultAsync(x => x.MonthId == record.MonthId, trackChanges, cancellationToken)
+						?? throw new NotFoundException("Month", "MonthId", record.MonthId.ToString());
 
-		await _repository.CrmMonths.DeleteAsync(x => x.MonthId == monthId, trackChanges, cancellationToken);
-		int affected = await _repository.SaveChangesAsync(cancellationToken);
-
-		if (affected <= 0)
-			throw new NotFoundException("Month", "MonthId", monthId.ToString());
+		await _repository.CrmMonths.DeleteAsync(x => x.MonthId == record.MonthId, trackChanges: false, cancellationToken);
+		await _repository.SaveAsync(cancellationToken);
 
 		_logger.LogWarning("Month deleted successfully. ID: {MonthId}, Time: {Time}",
-						monthId, DateTime.UtcNow);
-
-		return affected;
+						record.MonthId, DateTime.UtcNow);
 	}
 
 	/// <summary>
@@ -135,7 +120,7 @@ internal sealed class CrmMonthService : ICrmMonthService
 		_logger.LogInformation("Month fetched successfully. ID: {MonthId}, Time: {Time}",
 						id, DateTime.UtcNow);
 
-		return MyMapper.JsonClone<CrmMonth, CrmMonthDto>(month);
+		return month.MapTo<CrmMonthDto>();
 	}
 
 	/// <summary>
@@ -153,7 +138,7 @@ internal sealed class CrmMonthService : ICrmMonthService
 			return Enumerable.Empty<CrmMonthDto>();
 		}
 
-		var monthsDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmMonth, CrmMonthDto>(months);
+		var monthsDto = months.MapToList<CrmMonthDto>();
 
 		_logger.LogInformation("Months fetched successfully. Count: {Count}, Time: {Time}",
 						monthsDto.Count(), DateTime.UtcNow);
@@ -169,7 +154,6 @@ internal sealed class CrmMonthService : ICrmMonthService
 		_logger.LogInformation("Fetching active months. Time: {Time}", DateTime.UtcNow);
 
 		var months = await _repository.CrmMonths.CrmMonthsAsync(trackChanges, cancellationToken);
-		//var months = await _repository.CrmMonths.GetActiveMonthAsync(trackChanges, cancellationToken);
 
 		if (!months.Any())
 		{
@@ -177,7 +161,7 @@ internal sealed class CrmMonthService : ICrmMonthService
 			return Enumerable.Empty<CrmMonthDto>();
 		}
 
-		var monthsDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmMonth, CrmMonthDto>(months);
+		var monthsDto = months.MapToList<CrmMonthDto>();
 
 		_logger.LogInformation("Active months fetched successfully. Count: {Count}, Time: {Time}",
 						monthsDto.Count(), DateTime.UtcNow);
@@ -200,7 +184,7 @@ internal sealed class CrmMonthService : ICrmMonthService
 			return Enumerable.Empty<CrmMonthDto>();
 		}
 
-		var monthsDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmMonth, CrmMonthDto>(months);
+		var monthsDto = months.MapToList<CrmMonthDto>();
 
 		_logger.LogInformation("Months fetched successfully for dropdown list. Count: {Count}, Time: {Time}",
 						monthsDto.Count(), DateTime.UtcNow);
@@ -258,7 +242,7 @@ internal sealed class CrmMonthService : ICrmMonthService
 			return Enumerable.Empty<CrmMonthDto>();
 		}
 
-		var monthsDto = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmMonth, CrmMonthDto>(months);
+		var monthsDto = months.MapToList<CrmMonthDto>();
 
 		_logger.LogInformation("Months fetched successfully for applicant ID: {ApplicantId}. Count: {Count}, Time: {Time}",
 						applicantId, monthsDto.Count(), DateTime.UtcNow);
@@ -279,7 +263,7 @@ FROM CrmMonth";
 
 		const string orderBy = "MonthNumber ASC";
 
-		//return await _repository.CrmMonths.GridData<CrmMonthDto>(sql, options, orderBy, string.Empty, cancellationToken);
+		(sql, options, orderBy, string.Empty, cancellationToken);
 		return await _repository.CrmMonths.AdoGridDataAsync<CrmMonthDto>(sql, options, orderBy, string.Empty, cancellationToken);
 	}
 }

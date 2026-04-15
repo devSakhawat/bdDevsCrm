@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -342,7 +344,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 //            return Enumerable.Empty<CrmAdditionalInfoDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmAdditionalInfo, CrmAdditionalInfoDto>(records);
+//        var recordDtos = records.MapToList<CrmAdditionalInfoDto>();
 //        return recordDtos;
 //    }
 
@@ -367,7 +369,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 //            throw new NotFoundException("CrmAdditionalInfo", "CrmAdditionalInfoId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmAdditionalInfo, CrmAdditionalInfoDto>(record);
+//        var recordDto = record.MapTo<CrmAdditionalInfoDto>();
 //        return recordDto;
 //    }
 
@@ -389,7 +391,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 //            throw new DuplicateRecordException("CrmAdditionalInfo", "Name");
 
 //        // Map and create
-//        CrmAdditionalInfo entity = MyMapper.JsonClone<CrmAdditionalInfoDto, CrmAdditionalInfo>(modelDto);
+//        CrmAdditionalInfo entity = modelDto.MapTo<CrmAdditionalInfo>();
 //        modelDto.CrmAdditionalInfoId = await _repository.CrmAdditionalInfos.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -427,7 +429,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 //            throw new DuplicateRecordException("CrmAdditionalInfo", "Name");
 
 //        // Map and update
-//        CrmAdditionalInfo entity = MyMapper.JsonClone<CrmAdditionalInfoDto, CrmAdditionalInfo>(modelDto);
+//        CrmAdditionalInfo entity = modelDto.MapTo<CrmAdditionalInfo>();
 //        _repository.CrmAdditionalInfos.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

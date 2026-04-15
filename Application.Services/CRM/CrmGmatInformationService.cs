@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -337,7 +339,7 @@ internal sealed class CrmGmatInformationService : ICrmGmatInformationService
 //            return Enumerable.Empty<CrmGmatInformationDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmGmatInformation, CrmGmatInformationDto>(records);
+//        var recordDtos = records.MapToList<CrmGmatInformationDto>();
 //        return recordDtos;
 //    }
 
@@ -362,7 +364,7 @@ internal sealed class CrmGmatInformationService : ICrmGmatInformationService
 //            throw new NotFoundException("CrmGmatInformation", "CrmGmatInformationId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmGmatInformation, CrmGmatInformationDto>(record);
+//        var recordDto = record.MapTo<CrmGmatInformationDto>();
 //        return recordDto;
 //    }
 
@@ -384,7 +386,7 @@ internal sealed class CrmGmatInformationService : ICrmGmatInformationService
 //            throw new DuplicateRecordException("CrmGmatInformation", "Name");
 
 //        // Map and create
-//        CrmGmatInformation entity = MyMapper.JsonClone<CrmGmatInformationDto, CrmGmatInformation>(modelDto);
+//        CrmGmatInformation entity = modelDto.MapTo<CrmGmatInformation>();
 //        modelDto.CrmGmatInformationId = await _repository.CrmGmatInformations.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -422,7 +424,7 @@ internal sealed class CrmGmatInformationService : ICrmGmatInformationService
 //            throw new DuplicateRecordException("CrmGmatInformation", "Name");
 
 //        // Map and update
-//        CrmGmatInformation entity = MyMapper.JsonClone<CrmGmatInformationDto, CrmGmatInformation>(modelDto);
+//        CrmGmatInformation entity = modelDto.MapTo<CrmGmatInformation>();
 //        _repository.CrmGmatInformations.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

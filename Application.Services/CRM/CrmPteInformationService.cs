@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -337,7 +339,7 @@ internal sealed class CrmPteInformationService : ICrmPteInformationService
 //            return Enumerable.Empty<CrmPteInformationDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmPteInformation, CrmPteInformationDto>(records);
+//        var recordDtos = records.MapToList<CrmPteInformationDto>();
 //        return recordDtos;
 //    }
 
@@ -362,7 +364,7 @@ internal sealed class CrmPteInformationService : ICrmPteInformationService
 //            throw new NotFoundException("CrmPteInformation", "CrmPteInformationId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmPteInformation, CrmPteInformationDto>(record);
+//        var recordDto = record.MapTo<CrmPteInformationDto>();
 //        return recordDto;
 //    }
 
@@ -384,7 +386,7 @@ internal sealed class CrmPteInformationService : ICrmPteInformationService
 //            throw new DuplicateRecordException("CrmPteInformation", "Name");
 
 //        // Map and create
-//        CrmPteInformation entity = MyMapper.JsonClone<CrmPteInformationDto, CrmPteInformation>(modelDto);
+//        CrmPteInformation entity = modelDto.MapTo<CrmPteInformation>();
 //        modelDto.CrmPteInformationId = await _repository.CrmPteInformations.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -422,7 +424,7 @@ internal sealed class CrmPteInformationService : ICrmPteInformationService
 //            throw new DuplicateRecordException("CrmPteInformation", "Name");
 
 //        // Map and update
-//        CrmPteInformation entity = MyMapper.JsonClone<CrmPteInformationDto, CrmPteInformation>(modelDto);
+//        CrmPteInformation entity = modelDto.MapTo<CrmPteInformation>();
 //        _repository.CrmPteInformations.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

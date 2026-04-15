@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -335,7 +337,7 @@ internal sealed class CrmToeflInformationService : ICrmToeflInformationService
 //            return Enumerable.Empty<CrmToeflInformationDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmToeflInformation, CrmToeflInformationDto>(records);
+//        var recordDtos = records.MapToList<CrmToeflInformationDto>();
 //        return recordDtos;
 //    }
 
@@ -360,7 +362,7 @@ internal sealed class CrmToeflInformationService : ICrmToeflInformationService
 //            throw new NotFoundException("CrmToeflInformation", "CrmToeflInformationId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmToeflInformation, CrmToeflInformationDto>(record);
+//        var recordDto = record.MapTo<CrmToeflInformationDto>();
 //        return recordDto;
 //    }
 
@@ -382,7 +384,7 @@ internal sealed class CrmToeflInformationService : ICrmToeflInformationService
 //            throw new DuplicateRecordException("CrmToeflInformation", "Name");
 
 //        // Map and create
-//        CrmToeflInformation entity = MyMapper.JsonClone<CrmToeflInformationDto, CrmToeflInformation>(modelDto);
+//        CrmToeflInformation entity = modelDto.MapTo<CrmToeflInformation>();
 //        modelDto.CrmToeflInformationId = await _repository.CrmToeflInformations.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -420,7 +422,7 @@ internal sealed class CrmToeflInformationService : ICrmToeflInformationService
 //            throw new DuplicateRecordException("CrmToeflInformation", "Name");
 
 //        // Map and update
-//        CrmToeflInformation entity = MyMapper.JsonClone<CrmToeflInformationDto, CrmToeflInformation>(modelDto);
+//        CrmToeflInformation entity = modelDto.MapTo<CrmToeflInformation>();
 //        _repository.CrmToeflInformations.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

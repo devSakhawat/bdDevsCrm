@@ -12,6 +12,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -345,7 +347,7 @@ internal sealed class CrmApplicantReferenceService : ICrmApplicantReferenceServi
 //            return Enumerable.Empty<CrmApplicantReferenceDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmApplicantReference, CrmApplicantReferenceDto>(records);
+//        var recordDtos = records.MapToList<CrmApplicantReferenceDto>();
 //        return recordDtos;
 //    }
 
@@ -370,7 +372,7 @@ internal sealed class CrmApplicantReferenceService : ICrmApplicantReferenceServi
 //            throw new NotFoundException("CrmApplicantReference", "CrmApplicantReferenceId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmApplicantReference, CrmApplicantReferenceDto>(record);
+//        var recordDto = record.MapTo<CrmApplicantReferenceDto>();
 //        return recordDto;
 //    }
 
@@ -392,7 +394,7 @@ internal sealed class CrmApplicantReferenceService : ICrmApplicantReferenceServi
 //            throw new DuplicateRecordException("CrmApplicantReference", "Name");
 
 //        // Map and create
-//        CrmApplicantReference entity = MyMapper.JsonClone<CrmApplicantReferenceDto, CrmApplicantReference>(modelDto);
+//        CrmApplicantReference entity = modelDto.MapTo<CrmApplicantReference>();
 //        modelDto.CrmApplicantReferenceId = await _repository.CrmApplicantReferences.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -430,7 +432,7 @@ internal sealed class CrmApplicantReferenceService : ICrmApplicantReferenceServi
 //            throw new DuplicateRecordException("CrmApplicantReference", "Name");
 
 //        // Map and update
-//        CrmApplicantReference entity = MyMapper.JsonClone<CrmApplicantReferenceDto, CrmApplicantReference>(modelDto);
+//        CrmApplicantReference entity = modelDto.MapTo<CrmApplicantReference>();
 //        _repository.CrmApplicantReferences.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

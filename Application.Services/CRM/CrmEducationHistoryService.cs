@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -356,7 +358,7 @@ internal sealed class CrmEducationHistoryService : ICrmEducationHistoryService
 //            return Enumerable.Empty<CrmEducationHistoryDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmEducationHistory, CrmEducationHistoryDto>(records);
+//        var recordDtos = records.MapToList<CrmEducationHistoryDto>();
 //        return recordDtos;
 //    }
 
@@ -381,7 +383,7 @@ internal sealed class CrmEducationHistoryService : ICrmEducationHistoryService
 //            throw new NotFoundException("CrmEducationHistory", "CrmEducationHistoryId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmEducationHistory, CrmEducationHistoryDto>(record);
+//        var recordDto = record.MapTo<CrmEducationHistoryDto>();
 //        return recordDto;
 //    }
 
@@ -403,7 +405,7 @@ internal sealed class CrmEducationHistoryService : ICrmEducationHistoryService
 //            throw new DuplicateRecordException("CrmEducationHistory", "Name");
 
 //        // Map and create
-//        CrmEducationHistory entity = MyMapper.JsonClone<CrmEducationHistoryDto, CrmEducationHistory>(modelDto);
+//        CrmEducationHistory entity = modelDto.MapTo<CrmEducationHistory>();
 //        modelDto.CrmEducationHistoryId = await _repository.CrmEducationHistorys.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -441,7 +443,7 @@ internal sealed class CrmEducationHistoryService : ICrmEducationHistoryService
 //            throw new DuplicateRecordException("CrmEducationHistory", "Name");
 
 //        // Map and update
-//        CrmEducationHistory entity = MyMapper.JsonClone<CrmEducationHistoryDto, CrmEducationHistory>(modelDto);
+//        CrmEducationHistory entity = modelDto.MapTo<CrmEducationHistory>();
 //        _repository.CrmEducationHistorys.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

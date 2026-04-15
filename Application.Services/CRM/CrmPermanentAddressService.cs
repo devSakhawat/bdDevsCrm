@@ -11,6 +11,8 @@ using Application.Services.Mappings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using bdDevs.Shared.Records.CRM;
+using bdDevs.Shared.Extensions;
 
 namespace Application.Services.CRM;
 
@@ -366,7 +368,7 @@ internal sealed class CrmPermanentAddressService : ICrmPermanentAddressService
 //            return Enumerable.Empty<CrmPermanentAddressDto>();
 //        }
 
-//        var recordDtos = MyMapper.JsonCloneIEnumerableToList<CrmPermanentAddress, CrmPermanentAddressDto>(records);
+//        var recordDtos = records.MapToList<CrmPermanentAddressDto>();
 //        return recordDtos;
 //    }
 
@@ -391,7 +393,7 @@ internal sealed class CrmPermanentAddressService : ICrmPermanentAddressService
 //            throw new NotFoundException("CrmPermanentAddress", "CrmPermanentAddressId", id.ToString());
 //        }
 
-//        var recordDto = MyMapper.JsonClone<CrmPermanentAddress, CrmPermanentAddressDto>(record);
+//        var recordDto = record.MapTo<CrmPermanentAddressDto>();
 //        return recordDto;
 //    }
 
@@ -413,7 +415,7 @@ internal sealed class CrmPermanentAddressService : ICrmPermanentAddressService
 //            throw new DuplicateRecordException("CrmPermanentAddress", "Name");
 
 //        // Map and create
-//        CrmPermanentAddress entity = MyMapper.JsonClone<CrmPermanentAddressDto, CrmPermanentAddress>(modelDto);
+//        CrmPermanentAddress entity = modelDto.MapTo<CrmPermanentAddress>();
 //        modelDto.CrmPermanentAddressId = await _repository.CrmPermanentAddresss.CreateAndIdAsync(entity);
 //        await _repository.SaveAsync();
 
@@ -451,7 +453,7 @@ internal sealed class CrmPermanentAddressService : ICrmPermanentAddressService
 //            throw new DuplicateRecordException("CrmPermanentAddress", "Name");
 
 //        // Map and update
-//        CrmPermanentAddress entity = MyMapper.JsonClone<CrmPermanentAddressDto, CrmPermanentAddress>(modelDto);
+//        CrmPermanentAddress entity = modelDto.MapTo<CrmPermanentAddress>();
 //        _repository.CrmPermanentAddresss.UpdateByState(entity);
 //        await _repository.SaveAsync();
 

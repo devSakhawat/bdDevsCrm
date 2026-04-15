@@ -12,7 +12,7 @@ public record CreateCurrencyRateRecord(
 /// Record for updating an existing currency rate.
 /// </summary>
 public record UpdateCurrencyRateRecord(
-    int CurencyRateId,
+    int CurrencyRateId,
     int CurrencyId,
     decimal? CurrencyRateRation,
     DateTime? CurrencyMonth);
@@ -20,4 +20,4 @@ public record UpdateCurrencyRateRecord(
 /// <summary>
 /// Record for deleting a currency rate.
 /// </summary>
-public record DeleteCurrencyRateRecord(int CurencyRateId);
+public record DeleteCurrencyRateRecord(int CurrencyRateId);

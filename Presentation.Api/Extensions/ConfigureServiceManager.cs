@@ -45,6 +45,6 @@ public static class ConfigureServiceManager
       this IServiceCollection services)
   {
     // Mapster global config register
-    MappingConfig.RegisterMappings();
+    services.AddMapsterConfiguration();
   }
 }

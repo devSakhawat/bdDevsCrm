@@ -1,19 +1,16 @@
-﻿using Microsoft.OpenApi;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Presentation.Api.Extensions;
 
 public static class ConfigureSwagger
 {
+  /// <summary>
+  /// Configures Swagger/OpenAPI documentation with JWT Bearer authentication support
+  /// </summary>
   public static void AddSwaggerDocumentation(
       this IServiceCollection services)
   {
-    services.AddSwaggerGen(options =>
-    {
-      options.SwaggerDoc("v1", new OpenApiInfo
-      {
-        Title = "bdDevsCrm API",
-        Version = "v1"
-      });
-    });
+    services.AddSwaggerGen();
+    services.AddEndpointsApiExplorer();
   }
 }

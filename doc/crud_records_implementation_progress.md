@@ -61,7 +61,7 @@ This document tracks the implementation of the CRUD Records pattern across all e
 
 ## 📊 System Module Entities (54 Total)
 
-### ✅ Already Completed (13/54 - 24.1%)
+### ✅ Already Completed (25/54 - 46.3%)
 1. ✅ **Company** - CompanyRecords.cs
 2. ✅ **Branch** - BranchRecords.cs
 3. ✅ **Department** - DepartmentRecords.cs
@@ -70,74 +70,65 @@ This document tracks the implementation of the CRUD Records pattern across all e
 6. ✅ **Group** - GroupRecords.cs
 7. ✅ **Module** - ModuleRecords.cs
 8. ✅ **Users** - UsersRecords.cs
-9. ✅ **Holiday** - HolidayRecords.cs (NEW)
-10. ✅ **MaritalStatus** - MaritalStatusRecords.cs (NEW)
-11. ✅ **Employeetype** - EmployeetypeRecords.cs (NEW)
-12. ✅ **Employment** - EmploymentRecords.cs (NEW)
+9. ✅ **Holiday** - HolidayRecords.cs
+10. ✅ **MaritalStatus** - MaritalStatusRecords.cs
+11. ✅ **Employeetype** - EmployeetypeRecords.cs
+12. ✅ **Employment** - EmploymentRecords.cs
 13. ✅ **Groups** - GroupsRecords.cs (via GroupRecords.cs)
+14. ✅ **Thana** - ThanaRecords.cs
+15. ✅ **SystemSettings** - SystemSettingsRecords.cs
+16. ✅ **Competencies** - CompetenciesRecords.cs
+17. ✅ **CompetencyLevel** - CompetencyLevelRecords.cs
+18. ✅ **BoardInstitute** - BoardInstituteRecords.cs
+19. ✅ **CurrencyRate** - CurrencyRateRecords.cs
+20. ✅ **AboutUsLicense** - AboutUsLicenseRecords.cs (NEW - Batch 3)
+21. ✅ **AccessRestriction** - AccessRestrictionRecords.cs (NEW - Batch 3)
+22. ✅ **Accesscontrol** - AccesscontrolRecords.cs (NEW - Batch 3)
+23. ✅ **ApproverDetails** - ApproverDetailsRecords.cs (NEW - Batch 3)
+24. ✅ **ApproverHistory** - ApproverHistoryRecords.cs (NEW - Batch 3)
+25. ✅ **ApproverOrder** - ApproverOrderRecords.cs (NEW - Batch 3)
 
 ### 🚧 In Progress (0/54)
 *None currently in progress*
 
-### ⏳ Pending (41/54 - 75.9%)
-1. ⏳ AboutUsLicense
-2. ⏳ AccessRestriction
-3. ⏳ Accesscontrol (AccessControl)
-4. ⏳ ApproverDetails
-5. ⏳ ApproverHistory
-6. ⏳ ApproverOrder
-7. ⏳ ApproverType
-8. ⏳ ApproverTypeToGroupMapping
-9. ⏳ AppsTokenInfo
-10. ⏳ AppsTransactionLog
-11. ⏳ AssemblyInfo
-12. ⏳ AssignApprover
-13. ⏳ AuditLog
-14. ⏳ AuditTrail
-15. ⏳ AuditType
-16. ⏳ BoardInstitute
-17. ⏳ CompanyDepartmentMap
-18. ⏳ CompanyLocationMap
-19. ⏳ Competencies
-20. ⏳ CompetencyLevel
-21. ⏳ Currency
-22. ⏳ CurrencyRate
-23. ⏳ DelegationInfo
-24. ⏳ Docmdetails
-25. ⏳ Docmdetailshistory
-26. ⏳ Document
-27. ⏳ DocumentParameter
-28. ⏳ DocumentParameterMapping
-29. ⏳ DocumentQueryMapping
-30. ⏳ DocumentTemplate
-31. ⏳ DocumentType
-32. ⏳ Employee
-33. ✅ Employeetype (DONE)
-34. ✅ Employment (DONE)
-35. ⏳ GroupMember
-36. ⏳ GroupPermission
-37. ✅ Groups (via GroupRecords.cs)
-38. ✅ Holiday (DONE)
-39. ✅ MaritalStatus (DONE)
-40. ⏳ Menu
-41. ⏳ Module
-42. ⏳ PasswordHistory
-43. ⏳ QueryAnalyzer
-44. ⏳ ReportBuilder
-45. ⏳ SystemSettings
-46. ⏳ Thana
-47. ⏳ Timesheet
-48. ⏳ TokenBlacklist
-49. ⏳ Users
-50. ⏳ WfAction
-51. ⏳ WfState
+### ⏳ Pending (29/54 - 53.7%)
+1. ⏳ ApproverType
+2. ⏳ ApproverTypeToGroupMapping
+3. ⏳ AppsTokenInfo
+4. ⏳ AppsTransactionLog
+5. ⏳ AssemblyInfo
+6. ⏳ AssignApprover
+7. ⏳ AuditLog
+8. ⏳ AuditTrail
+9. ⏳ AuditType
+10. ⏳ CompanyDepartmentMap
+11. ⏳ CompanyLocationMap
+12. ⏳ DelegationInfo
+13. ⏳ Docmdetails
+14. ⏳ Docmdetailshistory
+15. ⏳ Document
+16. ⏳ DocumentParameter
+17. ⏳ DocumentParameterMapping
+18. ⏳ DocumentQueryMapping
+19. ⏳ DocumentTemplate
+20. ⏳ DocumentType
+21. ⏳ Employee
+22. ⏳ GroupMember
+23. ⏳ GroupPermission
+24. ⏳ PasswordHistory
+25. ⏳ QueryAnalyzer
+26. ⏳ ReportBuilder
+27. ⏳ Timesheet
+28. ⏳ TokenBlacklist
+29. ⏳ WfAction
+30. ⏳ WfState
 
 ---
 
 ## 📝 Progress by Task Type
 
 ### Records Generation
-- **Completed**: 39/267 (14.6%)
+- **Completed**: 63/267 (23.6%)
   - CountryRecords.cs ✅
   - MenuRecords.cs ✅
   - GroupRecords.cs ✅
@@ -147,11 +138,23 @@ This document tracks the implementation of the CRUD Records pattern across all e
   - CompanyRecords.cs ✅
   - BranchRecords.cs ✅
   - DepartmentRecords.cs ✅
-  - HolidayRecords.cs ✅ (NEW)
-  - MaritalStatusRecords.cs ✅ (NEW)
-  - EmployeetypeRecords.cs ✅ (NEW)
-  - EmploymentRecords.cs ✅ (NEW)
-- **Pending**: 228/267 (85.4%)
+  - HolidayRecords.cs ✅
+  - MaritalStatusRecords.cs ✅
+  - EmployeetypeRecords.cs ✅
+  - EmploymentRecords.cs ✅
+  - ThanaRecords.cs ✅
+  - SystemSettingsRecords.cs ✅
+  - CompetenciesRecords.cs ✅
+  - CompetencyLevelRecords.cs ✅
+  - BoardInstituteRecords.cs ✅
+  - CurrencyRateRecords.cs ✅
+  - AboutUsLicenseRecords.cs ✅ (Batch 3)
+  - AccessRestrictionRecords.cs ✅ (Batch 3)
+  - AccesscontrolRecords.cs ✅ (Batch 3)
+  - ApproverDetailsRecords.cs ✅ (Batch 3)
+  - ApproverHistoryRecords.cs ✅ (Batch 3)
+  - ApproverOrderRecords.cs ✅ (Batch 3)
+- **Pending**: 204/267 (76.4%)
 
 ### FluentValidation Setup
 - **Completed**: 0/89 (0%)

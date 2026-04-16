@@ -8,6 +8,9 @@ using Infrastructure.Repositories.Core.Authentication;
 using Infrastructure.Repositories.Core.HR;
 using Infrastructure.Repositories.Core.SystemAdmin;
 using Infrastructure.Repositories.CRM;
+using Infrastructure.Repositories.Repositories.Core.SystemAdmin;
+using Infrastructure.Repositories.Repositories.CRM;
+using Infrastructure.Repositories.Repositories.DMS;
 using Infrastructure.Repositories.DMS;
 using Infrastructure.Sql.Context;
 
@@ -38,6 +41,10 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<IAccessControlRepository> _accessControlRepository;
   private readonly Lazy<IAccessRestrictionRepository> _accessRestrictionRepository;
   private readonly Lazy<ICurrencyRepository> _currencyRepository;
+  private readonly Lazy<IHolidayRepository> _holidayRepository;
+  private readonly Lazy<ITimesheetRepository> _timesheetRepository;
+  private readonly Lazy<ICurrencyRateRepository> _currencyRateRepository;
+  private readonly Lazy<IThanaRepository> _thanaRepository;
 
   // HR area start  
   private readonly Lazy<IEmployeeRepository> _employeeRepository;
@@ -56,6 +63,7 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ICrmIntakeMonthRepository> _crmIntakeMonthRepository;
   private readonly Lazy<ICrmIntakeYearRepository> _crmIntakeYearRepository;
   private readonly Lazy<ICrmPaymentMethodRepository> _crmPaymentMethodRepository;
+  private readonly Lazy<ICrmCourseIntakeRepository> _crmCourseIntakeRepository;
 
 
   // Existing CRM repositories

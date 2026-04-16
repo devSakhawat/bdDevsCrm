@@ -29,6 +29,10 @@ public interface IRepositoryManager : IDisposable
   IAccessControlRepository AccessControls { get; }
   IAccessRestrictionRepository AccessRestrictions { get; }
   ICurrencyRepository Currencies { get; }
+  IHolidayRepository Holidays { get; }
+  ITimesheetRepository Timesheets { get; }
+  ICurrencyRateRepository CurrencyRates { get; }
+  IThanaRepository Thanas { get; }
 
   // HR Part
   IEmployeeRepository Employees { get; }
@@ -68,6 +72,7 @@ public interface IRepositoryManager : IDisposable
   ICrmIntakeMonthRepository CrmIntakeMonths { get; }
   ICrmIntakeYearRepository CrmIntakeYears { get; }
   ICrmPaymentMethodRepository CrmPaymentMethods { get; }
+  ICrmCourseIntakeRepository CrmCourseIntakes { get; }
   #endregion CRM
 
   #region DMS

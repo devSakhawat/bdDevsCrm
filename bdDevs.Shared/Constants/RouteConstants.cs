@@ -871,4 +871,65 @@ public static class RouteConstants
 	public const string AccessRestrictionDDL = "access-restrictions-ddl";
 	public const string ReadAccessRestriction = "access-restriction/{id:int}";
 	#endregion AccessRestriction
+
+	// =============================================
+	// Phase 2: System Configuration & Workflow Entities
+	// =============================================
+
+	#region BoardInstitute
+	public const string CreateBoardInstitute = "board-institute";
+	public const string UpdateBoardInstitute = "board-institute/{key}";
+	public const string DeleteBoardInstitute = "board-institute/{key}";
+	public const string BoardInstituteSummary = "board-institute-summary";
+	public const string ReadBoardInstitutes = "board-institutes";
+	public const string BoardInstituteDDL = "board-institutes-ddl";
+	public const string ReadBoardInstitute = "board-institute/{id:int}";
+	#endregion BoardInstitute
+
+	#region MaritalStatus
+	public const string CreateMaritalStatus = "marital-status";
+	public const string UpdateMaritalStatus = "marital-status/{key}";
+	public const string DeleteMaritalStatus = "marital-status/{key}";
+	public const string MaritalStatusSummary = "marital-status-summary";
+	public const string ReadMaritalStatuses = "marital-statuses";
+	public const string MaritalStatusDDL = "marital-statuses-ddl";
+	public const string ReadMaritalStatus = "marital-status/{id:int}";
+	#endregion MaritalStatus
+
+	#region SystemSettings
+	public const string SystemSettingsByCompanyId = "system-settings/company/{companyId:int}";
+	public const string AssemblyInfo = "assembly-info";
+	public const string UpdateSystemSettings = "system-settings";
+	public const string ReadSystemSettings = "system-settings";
+	#endregion SystemSettings
+
+	#region AuditType
+	public const string CreateAuditType = "audit-type";
+	public const string UpdateAuditType = "audit-type/{key}";
+	public const string DeleteAuditType = "audit-type/{key}";
+	public const string AuditTypeSummary = "audit-type-summary";
+	public const string ReadAuditTypes = "audit-types";
+	public const string AuditTypeDDL = "audit-types-ddl";
+	public const string ReadAuditType = "audit-type/{id:int}";
+	#endregion AuditType
+
+	#region Competencies
+	public const string CreateCompetency = "competency";
+	public const string UpdateCompetency = "competency/{key}";
+	public const string DeleteCompetency = "competency/{key}";
+	public const string CompetenciesSummary = "competencies-summary";
+	public const string ReadCompetencies = "competencies";
+	public const string CompetenciesDDL = "competencies-ddl";
+	public const string ReadCompetency = "competency/{id:int}";
+	#endregion Competencies
+
+	#region CompetencyLevel
+	public const string CreateCompetencyLevel = "competency-level";
+	public const string UpdateCompetencyLevel = "competency-level/{key}";
+	public const string DeleteCompetencyLevel = "competency-level/{key}";
+	public const string CompetencyLevelSummary = "competency-level-summary";
+	public const string ReadCompetencyLevels = "competency-levels";
+	public const string CompetencyLevelDDL = "competency-levels-ddl";
+	public const string ReadCompetencyLevel = "competency-level/{id:int}";
+	#endregion CompetencyLevel
 }

@@ -1,6 +1,7 @@
 ﻿// ICrmMonthService.cs
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.CRM;
+using bdDevs.Shared.Records.CRM;
 using Application.Shared.Grid;
 
 namespace Domain.Contracts.Services.CRM;
@@ -12,39 +13,19 @@ namespace Domain.Contracts.Services.CRM;
 public interface ICrmMonthService
 {
 	/// <summary>
-	/// Creates a new month record.
+	/// Creates a new month record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="entityForCreate">The DTO containing data for the new month.</param>
-	/// <param name="currentUser">The DTO containing current user information.</param>
-	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The created <see cref="CrmMonthDto"/> with the newly assigned ID.</returns>
-	/// <exception cref="BadRequestException">Thrown when <paramref name="entityForCreate"/> is null.</exception>
-	/// <exception cref="InvalidCreateOperationException">Thrown when MonthId is not 0 for new creation.</exception>
-	Task<CrmMonthDto> CreateMonthAsync(CrmMonthDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default);
+	Task<CrmMonthDto> CreateAsync(CreateCrmMonthRecord record, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Updates an existing month record.
+	/// Updates an existing month record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="monthId">The ID of the month to update.</param>
-	/// <param name="modelDto">The DTO containing updated field values.</param>
-	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
-	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The updated <see cref="CrmMonthDto"/> reflecting the saved state.</returns>
-	/// <exception cref="BadRequestException">Thrown when <paramref name="modelDto"/> is null.</exception>
-	/// <exception cref="BadRequestException">Thrown when route ID does not match DTO ID.</exception>
-	/// <exception cref="NotFoundException">Thrown when no month is found for the given ID.</exception>
-	Task<CrmMonthDto> UpdateMonthAsync(int monthId, CrmMonthDto modelDto, bool trackChanges, CancellationToken cancellationToken = default);
+	Task<CrmMonthDto> UpdateAsync(UpdateCrmMonthRecord record, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Deletes a month record identified by the given ID.
+	/// Deletes a month record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="monthId">The ID of the month to delete.</param>
-	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
-	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The number of affected rows.</returns>
-	/// <exception cref="IdParametersBadRequestException">Thrown when <paramref name="monthId"/> is zero or negative.</exception>
-	/// <exception cref="NotFoundException">Thrown when no month record is found for the given ID.</exception>
-	Task<int> DeleteMonthAsync(int monthId, bool trackChanges, CancellationToken cancellationToken = default);
+	Task DeleteAsync(DeleteCrmMonthRecord record, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Retrieves a single month record by its ID.

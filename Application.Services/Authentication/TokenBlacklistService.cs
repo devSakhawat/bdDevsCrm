@@ -1,7 +1,11 @@
-﻿using Domain.Contracts.Repositories;
+using Domain.Contracts.Repositories;
 using Domain.Contracts.Services.Authentication;
 using Domain.Entities.Entities.System;
 using Domain.Exceptions;
+using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.Records.Core.SystemAdmin;
+using bdDevs.Shared.Extensions;
+using Application.Shared.Grid;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,7 +16,6 @@ namespace Application.Services.Authentication;
 
 public class TokenBlacklistService : ITokenBlacklistService
 {
-
   private readonly IRepositoryManager _repository;
   private readonly ILogger<TokenBlacklistService> _logger;
 
@@ -24,6 +27,74 @@ public class TokenBlacklistService : ITokenBlacklistService
     _logger = logger;
   }
 
+  // CRUD Records Pattern Implementation
+  public async Task<TokenBlacklistDto> CreateAsync(CreateTokenBlacklistRecord record, CancellationToken cancellationToken = default)
+  {
+    var entity = new TokenBlacklist
+    {
+      TokenId = Guid.NewGuid(),
+      Token = record.Token,
+      TokenHash = record.TokenHash ?? HashToken(record.Token),
+      ExpiryDate = record.ExpiryDate,
+      CreatedAt = record.CreatedAt
+    };
+
+    await _repository.TokenBlacklists.AddAsync(entity, cancellationToken);
+    await _repository.SaveAsync(cancellationToken);
+
+    return entity.MapTo<TokenBlacklistDto>();
+  }
+
+  public async Task<TokenBlacklistDto> UpdateAsync(UpdateTokenBlacklistRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+  {
+    var entity = await _repository.TokenBlacklists.FirstOrDefaultAsync(
+        t => t.TokenId == record.TokenId, trackChanges, cancellationToken)
+        ?? throw new TokenBlacklistNotFoundException(record.TokenId);
+
+    entity.Token = record.Token;
+    entity.TokenHash = record.TokenHash ?? HashToken(record.Token);
+    entity.ExpiryDate = record.ExpiryDate;
+    entity.CreatedAt = record.CreatedAt;
+
+    await _repository.SaveAsync(cancellationToken);
+
+    return entity.MapTo<TokenBlacklistDto>();
+  }
+
+  public async Task DeleteAsync(DeleteTokenBlacklistRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+  {
+    var entity = await _repository.TokenBlacklists.FirstOrDefaultAsync(
+        t => t.TokenId == record.TokenId, trackChanges, cancellationToken)
+        ?? throw new TokenBlacklistNotFoundException(record.TokenId);
+
+    _repository.TokenBlacklists.Delete(entity);
+    await _repository.SaveAsync(cancellationToken);
+  }
+
+  public async Task<TokenBlacklistDto> TokenBlacklistAsync(Guid tokenId, bool trackChanges, CancellationToken cancellationToken = default)
+  {
+    var entity = await _repository.TokenBlacklists.FirstOrDefaultAsync(
+        t => t.TokenId == tokenId, trackChanges, cancellationToken)
+        ?? throw new TokenBlacklistNotFoundException(tokenId);
+
+    return entity.MapTo<TokenBlacklistDto>();
+  }
+
+  public async Task<IEnumerable<TokenBlacklistDto>> TokenBlacklistsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+  {
+    var entities = await _repository.TokenBlacklists.ListAsync(trackChanges: trackChanges, cancellationToken: cancellationToken);
+    return entities.MapToList<TokenBlacklistDto>();
+  }
+
+  public async Task<GridEntity<TokenBlacklistDto>> TokenBlacklistsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
+  {
+    const string sql = @"SELECT * FROM TokenBlacklist";
+    const string orderBy = "CreatedAt DESC";
+
+    return await _repository.TokenBlacklists.AdoGridDataAsync<TokenBlacklistDto>(sql, options, orderBy, "", cancellationToken);
+  }
+
+  // Authentication-specific Methods
   public async Task<bool> IsTokenBlacklistedAsync(
       string token,
       CancellationToken ct = default)
@@ -57,6 +128,8 @@ public class TokenBlacklistService : ITokenBlacklistService
 
     var blacklistedToken = new TokenBlacklist
     {
+      TokenId = Guid.NewGuid(),
+      Token = token,
       TokenHash = hash,
       ExpiryDate = expiry,
       CreatedAt = DateTime.UtcNow,
@@ -90,113 +163,4 @@ public class TokenBlacklistService : ITokenBlacklistService
     var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
     return Convert.ToHexString(bytes).ToLowerInvariant();
   }
-
-  //private readonly IConfiguration _configuration;
-  //private readonly IRepositoryManager _repository;
-  //private readonly ILogger<TokenBlacklistService> _logger;
-
-  //public TokenBlacklistService(IConfiguration configuration, IRepositoryManager repository, ILogger<TokenBlacklistService> logger)
-  //{
-  //  _configuration = configuration;
-  //  _repository = repository;
-  //  _logger = logger;
-  //}
-  //public async Task<TokenBlacklist> AddToBlacklistAsync(string token, bool trackChanges, CancellationToken cancellationToken = default)
-  //{
-
-  //  if (string.IsNullOrEmpty(token)) throw new BadRequestException("TokenBlacklist");
-
-  //  var handler = new JwtSecurityTokenHandler();
-  //  var jwtToken = handler.ReadJwtToken(token);
-  //  var expiryDate = jwtToken.ValidTo;
-  //  var tokenBlacklist = new TokenBlacklist
-  //  {
-  //    TokenId = Guid.NewGuid(),
-  //    Token = token,
-  //    ExpiryDate = expiryDate
-  //  };
-
-  //  var tokenEntity = await _repository.TokenBlacklists.AddToBlacklistAsync(tokenBlacklist, cancellationToken);
-  //  await _repository.SaveAsync(cancellationToken);
-  //  return tokenBlacklist;
-  //}
-
-  //public Task<bool> IsTokenBlacklisted(string token, bool trackChanges, CancellationToken cancellationToken = default)
-  //{
-  //  var isBlacklisted = _repository.TokenBlacklists.IsTokenBlacklistedAsync(token, cancellationToken);
-  //  return isBlacklisted;
-  //}
-
-
-  //public async Task<bool> IsTokenBlacklistedAsync(
-  //      string token,
-  //      CancellationToken ct = default)
-  //{
-  //  if (string.IsNullOrEmpty(token))
-  //    return false;
-
-  //  // Raw token hash করো — DB-তে hash store করা safe
-  //  var hash = HashToken(token);
-
-  //  return await _repository.TokenBlacklists.IsBlacklistedAsync(hash, ct);
-  //}
-
-  //public async Task BlacklistTokenAsync(
-  //    string token,
-  //    DateTime expiry,
-  //    CancellationToken ct = default)
-  //{
-  //  if (string.IsNullOrEmpty(token))
-  //    return;
-
-  //  var hash = HashToken(token);
-
-  //  // Already blacklisted কিনা check করো
-  //  bool exists = await _repository.TokenBlacklists
-  //      .IsBlacklistedAsync(hash, ct);
-
-  //  if (exists)
-  //    return;
-
-  //  var blacklistedToken = new TokenBlacklist
-  //  {
-  //    TokenHash = hash,
-  //    ExpiryDate = expiry,
-  //    CreatedAt = DateTime.UtcNow,
-  //  };
-
-  //  await _repository.TokenBlacklists
-  //      .AddAsync(blacklistedToken, ct);
-
-  //  await _repository.SaveAsync(ct);
-
-  //  _logger.LogInformation(
-  //      "Token blacklisted. Expiry: {Expiry}", expiry);
-  //}
-
-  //public async Task RemoveExpiredTokensAsync(
-  //    CancellationToken ct = default)
-  //{
-  //  await _repository.TokenBlacklists.RemoveExpiredAsync(ct);
-
-  //  await _repository.SaveAsync(ct);
-
-  //  _logger.LogInformation(
-  //      "Expired blacklisted tokens removed at {Time}",
-  //      DateTime.UtcNow);
-  //}
-
-  //// SHA-256 hash — token directly store করা unsafe
-  //private static string HashToken(string token)
-  //{
-  //  var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
-  //  return Convert.ToHexString(bytes).ToLowerInvariant();
-  //}
-
-
-
-
-
-
-
 }

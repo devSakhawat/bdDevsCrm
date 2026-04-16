@@ -1,6 +1,7 @@
 ﻿// ICrmYearService.cs
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.Records.CRM;
 using Application.Shared.Grid;
 
 namespace Domain.Contracts.Services.CRM;
@@ -12,38 +13,19 @@ namespace Domain.Contracts.Services.CRM;
 public interface ICrmYearService
 {
 	/// <summary>
-	/// Creates a new year record.
+	/// Creates a new year record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="entityForCreate">The DTO containing data for the new year.</param>
-	/// <param name="currentUser">The DTO containing current user information.</param>
-	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The created <see cref="CrmYearDto"/> with the newly assigned ID.</returns>
-	/// <exception cref="BadRequestException">Thrown when <paramref name="entityForCreate"/> is null.</exception>
-	/// <exception cref="InvalidCreateOperationException">Thrown when YearId is not 0 for new creation.</exception>
-	Task<CrmYearDto> CreateYearAsync(CrmYearDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default);
+	Task<CrmYearDto> CreateAsync(CreateCrmYearRecord record, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Updates an existing year record.
+	/// Updates an existing year record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="yearId">The ID of the year to update.</param>
-	/// <param name="modelDto">The DTO containing updated field values.</param>
-	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
-	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The updated <see cref="CrmYearDto"/> reflecting the saved state.</returns>
-	/// <exception cref="BadRequestException">Thrown when <paramref name="modelDto"/> is null.</exception>
-	/// <exception cref="BadRequestException">Thrown when route ID does not match DTO ID.</exception>
-	/// <exception cref="NotFoundException">Thrown when no year is found for the given ID.</exception>
-	Task<CrmYearDto> UpdateYearAsync(int yearId, CrmYearDto modelDto, bool trackChanges, CancellationToken cancellationToken = default);
+	Task<CrmYearDto> UpdateAsync(UpdateCrmYearRecord record, bool trackChanges, CancellationToken cancellationToken = default);
+
 	/// <summary>
-	/// Deletes a year record identified by the given ID.
+	/// Deletes a year record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="yearId">The ID of the year to delete.</param>
-	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
-	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The number of affected rows.</returns>
-	/// <exception cref="IdParametersBadRequestException">Thrown when <paramref name="yearId"/> is zero or negative.</exception>
-	/// <exception cref="NotFoundException">Thrown when no year record is found for the given ID.</exception>
-	Task<int> DeleteYearAsync(int yearId, bool trackChanges, CancellationToken cancellationToken = default);
+	Task DeleteAsync(DeleteCrmYearRecord record, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Retrieves a single year record by its ID.

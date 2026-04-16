@@ -476,6 +476,221 @@ public static class RouteConstants
 	public const string CrmCourseIntakesByCourse = "crm-course-intakes-by-course/{courseId:int}";
 	#endregion CrmCourseIntake
 
+	#region CrmApplicantInfo
+	public const string CreateCrmApplicantInfo = "crm-applicant-info";
+	public const string UpdateCrmApplicantInfo = "crm-applicant-info/{key}";
+	public const string DeleteCrmApplicantInfo = "crm-applicant-info/{key}";
+	public const string CrmApplicantInfoSummary = "crm-applicant-info-summary";
+	public const string ReadCrmApplicantInfos = "crm-applicant-infos";
+	public const string CrmApplicantInfoDDL = "crm-applicant-infos-ddl";
+	public const string ReadCrmApplicantInfo = "crm-applicant-info/{id:int}";
+	public const string CrmApplicantInfoByApplicationId = "crm-applicant-info-by-application/{applicationId:int}";
+	public const string CrmApplicantInfoByEmail = "crm-applicant-info-by-email";
+	#endregion CrmApplicantInfo
+
+	#region CrmApplication
+	public const string CreateCrmApplication = "crm-application";
+	public const string UpdateCrmApplication = "crm-application/{key}";
+	public const string DeleteCrmApplication = "crm-application/{key}";
+	public const string CrmApplicationSummary = "crm-application-summary";
+	public const string ReadCrmApplications = "crm-applications";
+	public const string ReadCrmApplication = "crm-application/{id:int}";
+	#endregion CrmApplication
+
+	#region CrmApplicantCourse
+	public const string CreateCrmApplicantCourse = "crm-applicant-course";
+	public const string UpdateCrmApplicantCourse = "crm-applicant-course/{key}";
+	public const string DeleteCrmApplicantCourse = "crm-applicant-course/{key}";
+	public const string CrmApplicantCourseSummary = "crm-applicant-course-summary";
+	public const string ReadCrmApplicantCourses = "crm-applicant-courses";
+	public const string ReadCrmApplicantCourse = "crm-applicant-course/{id:int}";
+	public const string CrmApplicantCoursesByApplicationId = "crm-applicant-courses-by-application/{applicationId:int}";
+	#endregion CrmApplicantCourse
+
+	#region CrmCourse
+	public const string CreateCrmCourse = "crm-course";
+	public const string UpdateCrmCourse = "crm-course/{key}";
+	public const string DeleteCrmCourse = "crm-course/{key}";
+	public const string CrmCourseSummary = "crm-course-summary";
+	public const string ReadCrmCourses = "crm-courses";
+	public const string CrmCourseDDL = "crm-courses-ddl";
+	public const string ReadCrmCourse = "crm-course/{id:int}";
+	public const string CrmCoursesByInstituteId = "crm-courses-by-institute/{instituteId:int}";
+	#endregion CrmCourse
+
+	#region CrmInstitute
+	public const string CreateCrmInstitute = "crm-institute";
+	public const string UpdateCrmInstitute = "crm-institute/{key}";
+	public const string DeleteCrmInstitute = "crm-institute/{key}";
+	public const string CrmInstituteSummary = "crm-institute-summary";
+	public const string ReadCrmInstitutes = "crm-institutes";
+	public const string CrmInstituteDDL = "crm-institutes-ddl";
+	public const string ReadCrmInstitute = "crm-institute/{id:int}";
+	public const string CrmInstitutesByCountryId = "crm-institutes-by-country/{countryId:int}";
+	#endregion CrmInstitute
+
+	#region CrmInstituteType
+	public const string CreateCrmInstituteType = "crm-institute-type";
+	public const string UpdateCrmInstituteType = "crm-institute-type/{key}";
+	public const string DeleteCrmInstituteType = "crm-institute-type/{key}";
+	public const string CrmInstituteTypeSummary = "crm-institute-type-summary";
+	public const string ReadCrmInstituteTypes = "crm-institute-types";
+	public const string ReadCrmInstituteType = "crm-institute-type/{id:int}";
+	#endregion CrmInstituteType
+
+	#region CrmEducationHistory
+	public const string CreateCrmEducationHistory = "crm-education-history";
+	public const string UpdateCrmEducationHistory = "crm-education-history/{key}";
+	public const string DeleteCrmEducationHistory = "crm-education-history/{key}";
+	public const string CrmEducationHistorySummary = "crm-education-history-summary";
+	public const string ReadCrmEducationHistories = "crm-education-histories";
+	public const string ReadCrmEducationHistory = "crm-education-history/{id:int}";
+	#endregion CrmEducationHistory
+
+	#region CrmWorkExperience
+	public const string CreateCrmWorkExperience = "crm-work-experience";
+	public const string UpdateCrmWorkExperience = "crm-work-experience/{key}";
+	public const string DeleteCrmWorkExperience = "crm-work-experience/{key}";
+	public const string CrmWorkExperienceSummary = "crm-work-experience-summary";
+	public const string ReadCrmWorkExperiences = "crm-work-experiences";
+	public const string ReadCrmWorkExperience = "crm-work-experience/{id:int}";
+	#endregion CrmWorkExperience
+
+	#region CrmPresentAddress
+	public const string CreateCrmPresentAddress = "crm-present-address";
+	public const string UpdateCrmPresentAddress = "crm-present-address/{key}";
+	public const string DeleteCrmPresentAddress = "crm-present-address/{key}";
+	public const string CrmPresentAddressSummary = "crm-present-address-summary";
+	public const string ReadCrmPresentAddresses = "crm-present-addresses";
+	public const string ReadCrmPresentAddress = "crm-present-address/{id:int}";
+	#endregion CrmPresentAddress
+
+	#region CrmPermanentAddress
+	public const string CreateCrmPermanentAddress = "crm-permanent-address";
+	public const string UpdateCrmPermanentAddress = "crm-permanent-address/{key}";
+	public const string DeleteCrmPermanentAddress = "crm-permanent-address/{key}";
+	public const string CrmPermanentAddressSummary = "crm-permanent-address-summary";
+	public const string ReadCrmPermanentAddresses = "crm-permanent-addresses";
+	public const string ReadCrmPermanentAddress = "crm-permanent-address/{id:int}";
+	#endregion CrmPermanentAddress
+
+	#region CrmApplicantReference
+	public const string CreateCrmApplicantReference = "crm-applicant-reference";
+	public const string UpdateCrmApplicantReference = "crm-applicant-reference/{key}";
+	public const string DeleteCrmApplicantReference = "crm-applicant-reference/{key}";
+	public const string CrmApplicantReferenceSummary = "crm-applicant-reference-summary";
+	public const string ReadCrmApplicantReferences = "crm-applicant-references";
+	public const string ReadCrmApplicantReference = "crm-applicant-reference/{id:int}";
+	#endregion CrmApplicantReference
+
+	#region CrmIeltsInformation
+	public const string CreateCrmIeltsInformation = "crm-ielts-information";
+	public const string UpdateCrmIeltsInformation = "crm-ielts-information/{key}";
+	public const string DeleteCrmIeltsInformation = "crm-ielts-information/{key}";
+	public const string CrmIeltsInformationSummary = "crm-ielts-information-summary";
+	public const string ReadCrmIeltsInformations = "crm-ielts-informations";
+	public const string ReadCrmIeltsInformation = "crm-ielts-information/{id:int}";
+	#endregion CrmIeltsInformation
+
+	#region CrmToeflInformation
+	public const string CreateCrmToeflInformation = "crm-toefl-information";
+	public const string UpdateCrmToeflInformation = "crm-toefl-information/{key}";
+	public const string DeleteCrmToeflInformation = "crm-toefl-information/{key}";
+	public const string CrmToeflInformationSummary = "crm-toefl-information-summary";
+	public const string ReadCrmToeflInformations = "crm-toefl-informations";
+	public const string ReadCrmToeflInformation = "crm-toefl-information/{id:int}";
+	#endregion CrmToeflInformation
+
+	#region CrmGmatInformation
+	public const string CreateCrmGmatInformation = "crm-gmat-information";
+	public const string UpdateCrmGmatInformation = "crm-gmat-information/{key}";
+	public const string DeleteCrmGmatInformation = "crm-gmat-information/{key}";
+	public const string CrmGmatInformationSummary = "crm-gmat-information-summary";
+	public const string ReadCrmGmatInformations = "crm-gmat-informations";
+	public const string ReadCrmGmatInformation = "crm-gmat-information/{id:int}";
+	#endregion CrmGmatInformation
+
+	#region CrmStatementOfPurpose
+	public const string CreateCrmStatementOfPurpose = "crm-statement-of-purpose";
+	public const string UpdateCrmStatementOfPurpose = "crm-statement-of-purpose/{key}";
+	public const string DeleteCrmStatementOfPurpose = "crm-statement-of-purpose/{key}";
+	public const string CrmStatementOfPurposeSummary = "crm-statement-of-purpose-summary";
+	public const string ReadCrmStatementOfPurposes = "crm-statement-of-purposes";
+	public const string ReadCrmStatementOfPurpose = "crm-statement-of-purpose/{id:int}";
+	#endregion CrmStatementOfPurpose
+
+	#region CrmAdditionalInfo
+	public const string CreateCrmAdditionalInfo = "crm-additional-info";
+	public const string UpdateCrmAdditionalInfo = "crm-additional-info/{key}";
+	public const string DeleteCrmAdditionalInfo = "crm-additional-info/{key}";
+	public const string CrmAdditionalInfoSummary = "crm-additional-info-summary";
+	public const string ReadCrmAdditionalInfos = "crm-additional-infos";
+	public const string ReadCrmAdditionalInfo = "crm-additional-info/{id:int}";
+	#endregion CrmAdditionalInfo
+
+	#region CrmAdditionalDocument
+	public const string CreateCrmAdditionalDocument = "crm-additional-document";
+	public const string UpdateCrmAdditionalDocument = "crm-additional-document/{key}";
+	public const string DeleteCrmAdditionalDocument = "crm-additional-document/{key}";
+	public const string CrmAdditionalDocumentSummary = "crm-additional-document-summary";
+	public const string ReadCrmAdditionalDocuments = "crm-additional-documents";
+	public const string ReadCrmAdditionalDocument = "crm-additional-document/{id:int}";
+	#endregion CrmAdditionalDocument
+
+	#region CrmOthersInformation
+	public const string CreateCrmOthersInformation = "crm-others-information";
+	public const string UpdateCrmOthersInformation = "crm-others-information/{key}";
+	public const string DeleteCrmOthersInformation = "crm-others-information/{key}";
+	public const string CrmOthersInformationSummary = "crm-others-information-summary";
+	public const string ReadCrmOthersInformations = "crm-others-informations";
+	public const string ReadCrmOthersInformation = "crm-others-information/{id:int}";
+	#endregion CrmOthersInformation
+
+	#region CrmPaymentMethod
+	public const string CreateCrmPaymentMethod = "crm-payment-method";
+	public const string UpdateCrmPaymentMethod = "crm-payment-method/{key}";
+	public const string DeleteCrmPaymentMethod = "crm-payment-method/{key}";
+	public const string CrmPaymentMethodSummary = "crm-payment-method-summary";
+	public const string ReadCrmPaymentMethods = "crm-payment-methods";
+	public const string ReadCrmPaymentMethod = "crm-payment-method/{id:int}";
+	#endregion CrmPaymentMethod
+
+	#region CrmIntakeYear
+	public const string CreateCrmIntakeYear = "crm-intake-year";
+	public const string UpdateCrmIntakeYear = "crm-intake-year/{key}";
+	public const string DeleteCrmIntakeYear = "crm-intake-year/{key}";
+	public const string CrmIntakeYearSummary = "crm-intake-year-summary";
+	public const string ReadCrmIntakeYears = "crm-intake-years";
+	public const string ReadCrmIntakeYear = "crm-intake-year/{id:int}";
+	#endregion CrmIntakeYear
+
+	#region CrmIntakeMonth
+	public const string CreateCrmIntakeMonth = "crm-intake-month";
+	public const string UpdateCrmIntakeMonth = "crm-intake-month/{key}";
+	public const string DeleteCrmIntakeMonth = "crm-intake-month/{key}";
+	public const string CrmIntakeMonthSummary = "crm-intake-month-summary";
+	public const string ReadCrmIntakeMonths = "crm-intake-months";
+	public const string ReadCrmIntakeMonth = "crm-intake-month/{id:int}";
+	#endregion CrmIntakeMonth
+
+	#region CrmMonth
+	public const string CreateCrmMonth = "crm-month";
+	public const string UpdateCrmMonth = "crm-month/{key}";
+	public const string DeleteCrmMonth = "crm-month/{key}";
+	public const string CrmMonthSummary = "crm-month-summary";
+	public const string ReadCrmMonths = "crm-months";
+	public const string ReadCrmMonth = "crm-month/{id:int}";
+	#endregion CrmMonth
+
+	#region CrmYear
+	public const string CreateCrmYear = "crm-year";
+	public const string UpdateCrmYear = "crm-year/{key}";
+	public const string DeleteCrmYear = "crm-year/{key}";
+	public const string CrmYearSummary = "crm-year-summary";
+	public const string ReadCrmYears = "crm-years";
+	public const string ReadCrmYear = "crm-year/{id:int}";
+	#endregion CrmYear
+
 	#region DmsFileUpdateHistory
 	public const string CreateDmsFileUpdateHistory = "dms-file-update-history";
 	public const string UpdateDmsFileUpdateHistory = "dms-file-update-history/{key}";
@@ -656,4 +871,77 @@ public static class RouteConstants
 	public const string AccessRestrictionDDL = "access-restrictions-ddl";
 	public const string ReadAccessRestriction = "access-restriction/{id:int}";
 	#endregion AccessRestriction
+
+	// =============================================
+	// Phase 2: System Configuration & Workflow Entities
+	// =============================================
+
+	#region BoardInstitute
+	public const string CreateBoardInstitute = "board-institute";
+	public const string UpdateBoardInstitute = "board-institute/{key}";
+	public const string DeleteBoardInstitute = "board-institute/{key}";
+	public const string BoardInstituteSummary = "board-institute-summary";
+	public const string ReadBoardInstitutes = "board-institutes";
+	public const string BoardInstituteDDL = "board-institutes-ddl";
+	public const string ReadBoardInstitute = "board-institute/{id:int}";
+	#endregion BoardInstitute
+
+	#region MaritalStatus
+	public const string CreateMaritalStatus = "marital-status";
+	public const string UpdateMaritalStatus = "marital-status/{key}";
+	public const string DeleteMaritalStatus = "marital-status/{key}";
+	public const string MaritalStatusSummary = "marital-status-summary";
+	public const string ReadMaritalStatuses = "marital-statuses";
+	public const string MaritalStatusDDL = "marital-statuses-ddl";
+	public const string ReadMaritalStatus = "marital-status/{id:int}";
+	#endregion MaritalStatus
+
+	#region SystemSettings
+	public const string SystemSettingsByCompanyId = "system-settings/company/{companyId:int}";
+	public const string AssemblyInfo = "assembly-info";
+	public const string UpdateSystemSettings = "system-settings";
+	public const string ReadSystemSettings = "system-settings";
+	#endregion SystemSettings
+
+	#region AuditType
+	public const string CreateAuditType = "audit-type";
+	public const string UpdateAuditType = "audit-type/{key}";
+	public const string DeleteAuditType = "audit-type/{key}";
+	public const string AuditTypeSummary = "audit-type-summary";
+	public const string ReadAuditTypes = "audit-types";
+	public const string AuditTypeDDL = "audit-types-ddl";
+	public const string ReadAuditType = "audit-type/{id:int}";
+	#endregion AuditType
+
+	#region Competencies
+	public const string CreateCompetency = "competency";
+	public const string UpdateCompetency = "competency/{key}";
+	public const string DeleteCompetency = "competency/{key}";
+	public const string CompetenciesSummary = "competencies-summary";
+	public const string ReadCompetencies = "competencies";
+	public const string CompetenciesDDL = "competencies-ddl";
+	public const string ReadCompetency = "competency/{id:int}";
+	#endregion Competencies
+
+	#region CompetencyLevel
+	public const string CreateCompetencyLevel = "competency-level";
+	public const string UpdateCompetencyLevel = "competency-level/{key}";
+	public const string DeleteCompetencyLevel = "competency-level/{key}";
+	public const string CompetencyLevelSummary = "competency-level-summary";
+	public const string ReadCompetencyLevels = "competency-levels";
+	public const string CompetencyLevelDDL = "competency-levels-ddl";
+	public const string ReadCompetencyLevel = "competency-level/{id:int}";
+	#endregion CompetencyLevel
+
+	#region TokenBlacklist
+	public const string CreateTokenBlacklist = "token-blacklist";
+	public const string UpdateTokenBlacklist = "token-blacklist/{key:guid}";
+	public const string DeleteTokenBlacklist = "token-blacklist/{key:guid}";
+	public const string TokenBlacklistSummary = "token-blacklist-summary";
+	public const string ReadTokenBlacklists = "token-blacklists";
+	public const string ReadTokenBlacklist = "token-blacklist/{id:guid}";
+	public const string IsTokenBlacklisted = "token-blacklist/check";
+	public const string BlacklistToken = "token-blacklist/blacklist";
+	public const string RemoveExpiredTokens = "token-blacklist/cleanup";
+	#endregion TokenBlacklist
 }

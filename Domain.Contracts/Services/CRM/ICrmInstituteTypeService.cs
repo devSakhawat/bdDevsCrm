@@ -1,6 +1,7 @@
 ﻿// ICrmInstituteTypeService.cs
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.Records.CRM;
 using Application.Shared.Grid;
 
 namespace Domain.Contracts.Services.CRM;
@@ -12,40 +13,19 @@ namespace Domain.Contracts.Services.CRM;
 public interface ICrmInstituteTypeService
 {
 	/// <summary>
-	/// Creates a new institute type record.
+	/// Creates a new institute type record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="entityForCreate">The DTO containing data for the new institute type.</param>
-	/// <param name="currentUser">The DTO containing current user information.</param>
-	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The created <see cref="CrmInstituteTypeDto"/> with the newly assigned ID.</returns>
-	/// <exception cref="BadRequestException">Thrown when <paramref name="entityForCreate"/> is null.</exception>
-	/// <exception cref="InvalidCreateOperationException">Thrown when InstituteTypeId is not 0 for new creation.</exception>
-	/// <exception cref="DuplicateRecordException">Thrown when an institute type with the same name already exists.</exception>
-	Task<CrmInstituteTypeDto> CreateInstituteTypeAsync(CrmInstituteTypeDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default);
+	Task<CrmInstituteTypeDto> CreateAsync(CreateCrmInstituteTypeRecord record, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Updates an existing institute type record.
+	/// Updates an existing institute type record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="instituteTypeId">The ID of the institute type to update.</param>
-	/// <param name="modelDto">The DTO containing updated field values.</param>
-	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
-	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The updated <see cref="CrmInstituteTypeDto"/> reflecting the saved state.</returns>
-	/// <exception cref="BadRequestException">Thrown when <paramref name="modelDto"/> is null.</exception>
-	/// <exception cref="BadRequestException">Thrown when route ID does not match DTO ID.</exception>
-	/// <exception cref="NotFoundException">Thrown when no institute type is found for the given ID.</exception>
-	Task<CrmInstituteTypeDto> UpdateInstituteTypeAsync(int instituteTypeId, CrmInstituteTypeDto modelDto, bool trackChanges, CancellationToken cancellationToken = default);
+	Task<CrmInstituteTypeDto> UpdateAsync(UpdateCrmInstituteTypeRecord record, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Deletes an institute type record identified by the given ID.
+	/// Deletes an institute type record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="instituteTypeId">The ID of the institute type to delete.</param>
-	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
-	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The number of affected rows.</returns>
-	/// <exception cref="IdParametersBadRequestException">Thrown when <paramref name="instituteTypeId"/> is zero or negative.</exception>
-	/// <exception cref="NotFoundException">Thrown when no institute type record is found for the given ID.</exception>
-	Task<int> DeleteInstituteTypeAsync(int instituteTypeId, bool trackChanges, CancellationToken cancellationToken = default);
+	Task DeleteAsync(DeleteCrmInstituteTypeRecord record, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Retrieves all institute type records from the database.

@@ -47,11 +47,9 @@ public class TokenBlacklistService : ITokenBlacklistService
 
   public async Task<TokenBlacklistDto> UpdateAsync(UpdateTokenBlacklistRecord record, bool trackChanges, CancellationToken cancellationToken = default)
   {
-    var entity = await _repository.TokenBlacklists.GetByConditionAsync(
-        t => t.TokenId == record.TokenId, trackChanges, cancellationToken);
-
-    if (entity == null)
-      throw new TokenBlacklistNotFoundException(record.TokenId);
+    var entity = await _repository.TokenBlacklists.FirstOrDefaultAsync(
+        t => t.TokenId == record.TokenId, trackChanges, cancellationToken)
+        ?? throw new TokenBlacklistNotFoundException(record.TokenId);
 
     entity.Token = record.Token;
     entity.TokenHash = record.TokenHash ?? HashToken(record.Token);
@@ -65,11 +63,9 @@ public class TokenBlacklistService : ITokenBlacklistService
 
   public async Task DeleteAsync(DeleteTokenBlacklistRecord record, bool trackChanges, CancellationToken cancellationToken = default)
   {
-    var entity = await _repository.TokenBlacklists.GetByConditionAsync(
-        t => t.TokenId == record.TokenId, trackChanges, cancellationToken);
-
-    if (entity == null)
-      throw new TokenBlacklistNotFoundException(record.TokenId);
+    var entity = await _repository.TokenBlacklists.FirstOrDefaultAsync(
+        t => t.TokenId == record.TokenId, trackChanges, cancellationToken)
+        ?? throw new TokenBlacklistNotFoundException(record.TokenId);
 
     _repository.TokenBlacklists.Delete(entity);
     await _repository.SaveAsync(cancellationToken);
@@ -77,25 +73,25 @@ public class TokenBlacklistService : ITokenBlacklistService
 
   public async Task<TokenBlacklistDto> TokenBlacklistAsync(Guid tokenId, bool trackChanges, CancellationToken cancellationToken = default)
   {
-    var entity = await _repository.TokenBlacklists.GetByConditionAsync(
-        t => t.TokenId == tokenId, trackChanges, cancellationToken);
-
-    if (entity == null)
-      throw new TokenBlacklistNotFoundException(tokenId);
+    var entity = await _repository.TokenBlacklists.FirstOrDefaultAsync(
+        t => t.TokenId == tokenId, trackChanges, cancellationToken)
+        ?? throw new TokenBlacklistNotFoundException(tokenId);
 
     return entity.MapTo<TokenBlacklistDto>();
   }
 
   public async Task<IEnumerable<TokenBlacklistDto>> TokenBlacklistsAsync(bool trackChanges, CancellationToken cancellationToken = default)
   {
-    var entities = await _repository.TokenBlacklists.GetAllAsync(trackChanges, cancellationToken);
+    var entities = await _repository.TokenBlacklists.ListAsync(trackChanges: trackChanges, cancellationToken: cancellationToken);
     return entities.MapToList<TokenBlacklistDto>();
   }
 
   public async Task<GridEntity<TokenBlacklistDto>> TokenBlacklistsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
   {
-    var gridEntity = await _repository.TokenBlacklists.GetGridDataAsync<TokenBlacklist, TokenBlacklistDto>(options, cancellationToken);
-    return gridEntity;
+    const string sql = @"SELECT * FROM TokenBlacklist";
+    const string orderBy = "CreatedAt DESC";
+
+    return await _repository.TokenBlacklists.AdoGridDataAsync<TokenBlacklistDto>(sql, options, orderBy, "", cancellationToken);
   }
 
   // Authentication-specific Methods

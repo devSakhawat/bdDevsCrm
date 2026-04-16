@@ -1,6 +1,7 @@
 ﻿// ICrmCourseService.cs
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.Records.CRM;
 using Application.Shared.Grid;
 
 namespace Domain.Contracts.Services.CRM;
@@ -12,40 +13,29 @@ namespace Domain.Contracts.Services.CRM;
 public interface ICrmCourseService
 {
 	/// <summary>
-	/// Creates a new course record.
+	/// Creates a new course record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="entityForCreate">The DTO containing data for the new course.</param>
-	/// <param name="currentUser">The DTO containing current user information.</param>
+	/// <param name="record">The Record containing data for the new course.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
 	/// <returns>The created <see cref="CrmCourseDto"/> with the newly assigned ID.</returns>
-	/// <exception cref="BadRequestException">Thrown when <paramref name="entityForCreate"/> is null.</exception>
-	/// <exception cref="InvalidCreateOperationException">Thrown when CourseId is not 0 for new creation.</exception>
-	/// <exception cref="DuplicateRecordException">Thrown when a course with the same title already exists.</exception>
-	Task<CrmCourseDto> CreateCourseAsync(CrmCourseDto entityForCreate, UsersDto currentUser, CancellationToken cancellationToken = default);
+	Task<CrmCourseDto> CreateAsync(CreateCrmCourseRecord record, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Updates an existing course record.
+	/// Updates an existing course record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="courseId">The ID of the course to update.</param>
-	/// <param name="modelDto">The DTO containing updated field values.</param>
+	/// <param name="record">The Record containing updated field values.</param>
 	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
 	/// <returns>The updated <see cref="CrmCourseDto"/> reflecting the saved state.</returns>
-	/// <exception cref="BadRequestException">Thrown when <paramref name="modelDto"/> is null.</exception>
-	/// <exception cref="BadRequestException">Thrown when route ID does not match DTO ID.</exception>
-	/// <exception cref="NotFoundException">Thrown when no course is found for the given ID.</exception>
-	Task<CrmCourseDto> UpdateCourseAsync(int courseId, CrmCourseDto modelDto, bool trackChanges, CancellationToken cancellationToken = default);
+	Task<CrmCourseDto> UpdateAsync(UpdateCrmCourseRecord record, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
-	/// Deletes a course record identified by the given ID.
+	/// Deletes a course record using CRUD Record pattern.
 	/// </summary>
-	/// <param name="courseId">The ID of the course to delete.</param>
+	/// <param name="record">The Record containing the course ID to delete.</param>
 	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
-	/// <returns>The number of affected rows.</returns>
-	/// <exception cref="IdParametersBadRequestException">Thrown when <paramref name="courseId"/> is zero or negative.</exception>
-	/// <exception cref="NotFoundException">Thrown when no course record is found for the given ID.</exception>
-	Task<int> DeleteCourseAsync(int courseId, bool trackChanges, CancellationToken cancellationToken = default);
+	Task DeleteAsync(DeleteCrmCourseRecord record, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Retrieves a single course record by its ID.

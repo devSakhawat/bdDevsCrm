@@ -71,20 +71,20 @@ internal sealed class BoardInstituteService : IBoardInstituteService
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var boardInstitute = await _repository.BoardInstitutes.BoardInstituteAsync(record.Id, trackChanges, cancellationToken)
-            ?? throw new NotFoundException("BoardInstitute", "Id", record.Id.ToString());
+        var boardInstitute = await _repository.BoardInstitutes.BoardInstituteAsync(record.BoardInstituteId, trackChanges, cancellationToken)
+            ?? throw new NotFoundException("BoardInstitute", "BoardInstituteId", record.BoardInstituteId.ToString());
 
         _logger.LogInformation("Updating board/institute. ID: {Id}, Time: {Time}",
-            record.Id, DateTime.UtcNow);
+            record.BoardInstituteId, DateTime.UtcNow);
 
         record.MapTo(boardInstitute);
         
         await _repository.SaveAsync(cancellationToken);
 
         _logger.LogInformation("BoardInstitute updated successfully. ID: {Id}, Time: {Time}",
-            record.Id, DateTime.UtcNow);
+            record.BoardInstituteId, DateTime.UtcNow);
 
-        await _cache.RemoveAsync($"BoardInstitute:{record.Id}");
+        await _cache.RemoveAsync($"BoardInstitute:{record.BoardInstituteId}");
         await _cache.RemoveAsync("BoardInstitute:All");
         await _cache.RemoveAsync("BoardInstitute:Active");
 
@@ -96,19 +96,19 @@ internal sealed class BoardInstituteService : IBoardInstituteService
         if (record == null)
             throw new BadRequestException(nameof(DeleteBoardInstituteRecord));
 
-        var boardInstitute = await _repository.BoardInstitutes.BoardInstituteAsync(record.Id, trackChanges, cancellationToken)
-            ?? throw new NotFoundException("BoardInstitute", "Id", record.Id.ToString());
+        var boardInstitute = await _repository.BoardInstitutes.BoardInstituteAsync(record.BoardInstituteId, trackChanges, cancellationToken)
+            ?? throw new NotFoundException("BoardInstitute", "BoardInstituteId", record.BoardInstituteId.ToString());
 
         _logger.LogInformation("Deleting board/institute. ID: {Id}, Time: {Time}",
-            record.Id, DateTime.UtcNow);
+            record.BoardInstituteId, DateTime.UtcNow);
 
         _repository.BoardInstitutes.Delete(boardInstitute);
         await _repository.SaveAsync(cancellationToken);
 
         _logger.LogInformation("BoardInstitute deleted successfully. ID: {Id}, Time: {Time}",
-            record.Id, DateTime.UtcNow);
+            record.BoardInstituteId, DateTime.UtcNow);
 
-        await _cache.RemoveAsync($"BoardInstitute:{record.Id}");
+        await _cache.RemoveAsync($"BoardInstitute:{record.BoardInstituteId}");
         await _cache.RemoveAsync("BoardInstitute:All");
         await _cache.RemoveAsync("BoardInstitute:Active");
     }

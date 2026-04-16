@@ -55,6 +55,13 @@ public interface IRepositoryManager : IDisposable
   IDocumentParameterMappingRepository DocumentParameterMappings { get; }
   IDocumentQueryMappingRepository DocumentQueryMappings { get; }
 
+  // Audit & Security Part
+  IAuditLogRepository AuditLogs { get; }
+  IAuditTrailRepository AuditTrails { get; }
+  IAppsTokenInfoRepository AppsTokenInfos { get; }
+  IAppsTransactionLogRepository AppsTransactionLogs { get; }
+  IPasswordHistoryRepository PasswordHistories { get; }
+
   // HR Part
   IEmployeeRepository Employees { get; }
   IEmployeeTypeRepository EmployeeTypes { get; }

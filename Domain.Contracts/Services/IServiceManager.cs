@@ -47,6 +47,13 @@ public interface IServiceManager
   IDocumentParameterMappingService DocumentParameterMappings { get; }
   IDocumentQueryMappingService DocumentQueryMappings { get; }
 
+  // Audit & Security Services
+  IAuditLogService AuditLogs { get; }
+  IAuditTrailService AuditTrails { get; }
+  IAppsTokenInfoService AppsTokenInfos { get; }
+  IAppsTransactionLogService AppsTransactionLogs { get; }
+  IPasswordHistoryService PasswordHistories { get; }
+
   #region HR
   IEmployeeService Employees { get; }
   IBranchService Branches { get; }

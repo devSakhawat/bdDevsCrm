@@ -69,6 +69,13 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<IDocumentParameterMappingService> _documentParameterMappingService;
   private readonly Lazy<IDocumentQueryMappingService> _documentQueryMappingService;
 
+  // Audit & Security Services
+  private readonly Lazy<IAuditLogService> _auditLogService;
+  private readonly Lazy<IAuditTrailService> _auditTrailService;
+  private readonly Lazy<IAppsTokenInfoService> _appsTokenInfoService;
+  private readonly Lazy<IAppsTransactionLogService> _appsTransactionLogService;
+  private readonly Lazy<IPasswordHistoryService> _passwordHistoryService;
+
 
   #region HR Area
   private readonly Lazy<IEmployeeService> _employeeService;
@@ -168,6 +175,13 @@ public sealed class ServiceManager : IServiceManager
     _documentParameterMappingService = new Lazy<IDocumentParameterMappingService>(() => new DocumentParameterMappingService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentParameterMappingService>(), configuration));
     _documentQueryMappingService = new Lazy<IDocumentQueryMappingService>(() => new DocumentQueryMappingService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentQueryMappingService>(), configuration));
 
+    // Audit & Security Services
+    _auditLogService = new Lazy<IAuditLogService>(() => new AuditLogService(repository, _hybridCache, loggerFactory.CreateLogger<AuditLogService>(), configuration));
+    _auditTrailService = new Lazy<IAuditTrailService>(() => new AuditTrailService(repository, _hybridCache, loggerFactory.CreateLogger<AuditTrailService>(), configuration));
+    _appsTokenInfoService = new Lazy<IAppsTokenInfoService>(() => new AppsTokenInfoService(repository, _hybridCache, loggerFactory.CreateLogger<AppsTokenInfoService>(), configuration));
+    _appsTransactionLogService = new Lazy<IAppsTransactionLogService>(() => new AppsTransactionLogService(repository, _hybridCache, loggerFactory.CreateLogger<AppsTransactionLogService>(), configuration));
+    _passwordHistoryService = new Lazy<IPasswordHistoryService>(() => new PasswordHistoryService(repository, _hybridCache, loggerFactory.CreateLogger<PasswordHistoryService>(), configuration));
+
     // HR Area
     _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(repository, loggerFactory.CreateLogger<EmployeeService>(), configuration));
     _branchService = new Lazy<IBranchService>(() => new BranchService(repository, loggerFactory.CreateLogger<BranchService>(), configuration));
@@ -258,6 +272,13 @@ public sealed class ServiceManager : IServiceManager
   public IDocumentParameterService DocumentParameters => _documentParameterService.Value;
   public IDocumentParameterMappingService DocumentParameterMappings => _documentParameterMappingService.Value;
   public IDocumentQueryMappingService DocumentQueryMappings => _documentQueryMappingService.Value;
+
+  // Audit & Security Services
+  public IAuditLogService AuditLogs => _auditLogService.Value;
+  public IAuditTrailService AuditTrails => _auditTrailService.Value;
+  public IAppsTokenInfoService AppsTokenInfos => _appsTokenInfoService.Value;
+  public IAppsTransactionLogService AppsTransactionLogs => _appsTransactionLogService.Value;
+  public IPasswordHistoryService PasswordHistories => _passwordHistoryService.Value;
 
   #region HR Area
   public IEmployeeService Employees => _employeeService.Value;

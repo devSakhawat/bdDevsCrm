@@ -596,4 +596,64 @@ public static class RouteConstants
 	public const string DocumentQueryMappingDDL = "document-query-mappings-ddl";
 	public const string ReadDocumentQueryMapping = "document-query-mapping/{id:int}";
 	#endregion DocumentQueryMapping
+
+	#region AuditLog
+	public const string CreateAuditLog = "audit-log";
+	public const string UpdateAuditLog = "audit-log/{key}";
+	public const string DeleteAuditLog = "audit-log/{key}";
+	public const string AuditLogSummary = "audit-log-summary";
+	public const string ReadAuditLogs = "audit-logs";
+	public const string AuditLogDDL = "audit-logs-ddl";
+	public const string ReadAuditLog = "audit-log/{id:long}";
+	#endregion AuditLog
+
+	#region AuditTrail
+	public const string CreateAuditTrail = "audit-trail";
+	public const string UpdateAuditTrail = "audit-trail/{key}";
+	public const string DeleteAuditTrail = "audit-trail/{key}";
+	public const string AuditTrailSummary = "audit-trail-summary";
+	public const string ReadAuditTrails = "audit-trails";
+	public const string AuditTrailDDL = "audit-trails-ddl";
+	public const string ReadAuditTrail = "audit-trail/{id:int}";
+	#endregion AuditTrail
+
+	#region AppsTokenInfo
+	public const string CreateAppsTokenInfo = "apps-token-info";
+	public const string UpdateAppsTokenInfo = "apps-token-info/{key}";
+	public const string DeleteAppsTokenInfo = "apps-token-info/{key}";
+	public const string AppsTokenInfoSummary = "apps-token-info-summary";
+	public const string ReadAppsTokenInfos = "apps-token-infos";
+	public const string AppsTokenInfoDDL = "apps-token-infos-ddl";
+	public const string ReadAppsTokenInfo = "apps-token-info/{id:int}";
+	#endregion AppsTokenInfo
+
+	#region AppsTransactionLog
+	public const string CreateAppsTransactionLog = "apps-transaction-log";
+	public const string UpdateAppsTransactionLog = "apps-transaction-log/{key}";
+	public const string DeleteAppsTransactionLog = "apps-transaction-log/{key}";
+	public const string AppsTransactionLogSummary = "apps-transaction-log-summary";
+	public const string ReadAppsTransactionLogs = "apps-transaction-logs";
+	public const string AppsTransactionLogDDL = "apps-transaction-logs-ddl";
+	public const string ReadAppsTransactionLog = "apps-transaction-log/{id:int}";
+	#endregion AppsTransactionLog
+
+	#region PasswordHistory
+	public const string CreatePasswordHistory = "password-history";
+	public const string UpdatePasswordHistory = "password-history/{key}";
+	public const string DeletePasswordHistory = "password-history/{key}";
+	public const string PasswordHistorySummary = "password-history-summary";
+	public const string ReadPasswordHistories = "password-histories";
+	public const string PasswordHistoryDDL = "password-histories-ddl";
+	public const string ReadPasswordHistory = "password-history/{id:int}";
+	#endregion PasswordHistory
+
+	#region AccessRestriction
+	public const string CreateAccessRestriction = "access-restriction";
+	public const string UpdateAccessRestriction = "access-restriction/{key}";
+	public const string DeleteAccessRestriction = "access-restriction/{key}";
+	public const string AccessRestrictionSummary = "access-restriction-summary";
+	public const string ReadAccessRestrictions = "access-restrictions";
+	public const string AccessRestrictionDDL = "access-restrictions-ddl";
+	public const string ReadAccessRestriction = "access-restriction/{id:int}";
+	#endregion AccessRestriction
 }

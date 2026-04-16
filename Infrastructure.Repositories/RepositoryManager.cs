@@ -65,6 +65,13 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<IDocumentParameterMappingRepository> _documentParameterMappingRepository;
   private readonly Lazy<IDocumentQueryMappingRepository> _documentQueryMappingRepository;
 
+  // Audit & Security area
+  private readonly Lazy<IAuditLogRepository> _auditLogRepository;
+  private readonly Lazy<IAuditTrailRepository> _auditTrailRepository;
+  private readonly Lazy<IAppsTokenInfoRepository> _appsTokenInfoRepository;
+  private readonly Lazy<IAppsTransactionLogRepository> _appsTransactionLogRepository;
+  private readonly Lazy<IPasswordHistoryRepository> _passwordHistoryRepository;
+
   // HR area start  
   private readonly Lazy<IEmployeeRepository> _employeeRepository;
   private readonly Lazy<IEmployeeTypeRepository> _employeetypeRepository;
@@ -170,6 +177,13 @@ public class RepositoryManager : IRepositoryManager
     _documentParameterRepository = new Lazy<IDocumentParameterRepository>(() => new DocumentParameterRepository(_repositoryContext));
     _documentParameterMappingRepository = new Lazy<IDocumentParameterMappingRepository>(() => new DocumentParameterMappingRepository(_repositoryContext));
     _documentQueryMappingRepository = new Lazy<IDocumentQueryMappingRepository>(() => new DocumentQueryMappingRepository(_repositoryContext));
+
+    // Audit & Security area initialization
+    _auditLogRepository = new Lazy<IAuditLogRepository>(() => new AuditLogRepository(_repositoryContext));
+    _auditTrailRepository = new Lazy<IAuditTrailRepository>(() => new AuditTrailRepository(_repositoryContext));
+    _appsTokenInfoRepository = new Lazy<IAppsTokenInfoRepository>(() => new AppsTokenInfoRepository(_repositoryContext));
+    _appsTransactionLogRepository = new Lazy<IAppsTransactionLogRepository>(() => new AppsTransactionLogRepository(_repositoryContext));
+    _passwordHistoryRepository = new Lazy<IPasswordHistoryRepository>(() => new PasswordHistoryRepository(_repositoryContext));
     #endregion System
 
     // HR area start  
@@ -270,6 +284,13 @@ public class RepositoryManager : IRepositoryManager
   public IDocumentParameterRepository DocumentParameters => _documentParameterRepository.Value;
   public IDocumentParameterMappingRepository DocumentParameterMappings => _documentParameterMappingRepository.Value;
   public IDocumentQueryMappingRepository DocumentQueryMappings => _documentQueryMappingRepository.Value;
+
+  // Audit & Security area
+  public IAuditLogRepository AuditLogs => _auditLogRepository.Value;
+  public IAuditTrailRepository AuditTrails => _auditTrailRepository.Value;
+  public IAppsTokenInfoRepository AppsTokenInfos => _appsTokenInfoRepository.Value;
+  public IAppsTransactionLogRepository AppsTransactionLogs => _appsTransactionLogRepository.Value;
+  public IPasswordHistoryRepository PasswordHistories => _passwordHistoryRepository.Value;
   #endregion SystemAdmin
 
   #region HR area

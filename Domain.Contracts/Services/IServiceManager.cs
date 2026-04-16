@@ -12,6 +12,15 @@ public interface IServiceManager
   ITokenBlacklistService TokenBlacklist { get; }
   ICrmCountryService CrmCountries { get; }
   ICurrencyService Currencies { get; }
+  IHolidayService Holidays { get; }
+  ITimesheetService Timesheets { get; }
+  ICurrencyRateService CurrencyRates { get; }
+  IThanaService Thanas { get; }
+  IMaritalStatusService MaritalStatuses { get; }
+  ICompetenciesService Competencies { get; }
+  ICompetencyLevelService CompetencyLevels { get; }
+  IBoardInstituteService BoardInstitutes { get; }
+  IAuditTypeService AuditTypes { get; }
   ICompanyService Companies { get; }
   ISystemSettingsService SystemSettings { get; }
   IUsersService Users { get; }
@@ -22,6 +31,28 @@ public interface IServiceManager
   IQueryAnalyzerService QueryAnalyzer { get; }
   IStatusService WfState { get; }
   IAccessControlService AccessControls { get; }
+
+  // Approver/Workflow Services
+  IApproverDetailsService ApproverDetails { get; }
+  IApproverHistoryService ApproverHistories { get; }
+  IApproverOrderService ApproverOrders { get; }
+  IApproverTypeService ApproverTypes { get; }
+  IAssignApproverService AssignApprovers { get; }
+  IApproverTypeToGroupMappingService ApproverTypeToGroupMappings { get; }
+
+  // Document Management Services
+  IDocumentTemplateService DocumentTemplates { get; }
+  IDocumentTypeService DocumentTypes { get; }
+  IDocumentParameterService DocumentParameters { get; }
+  IDocumentParameterMappingService DocumentParameterMappings { get; }
+  IDocumentQueryMappingService DocumentQueryMappings { get; }
+
+  // Audit & Security Services
+  IAuditLogService AuditLogs { get; }
+  IAuditTrailService AuditTrails { get; }
+  IAppsTokenInfoService AppsTokenInfos { get; }
+  IAppsTransactionLogService AppsTransactionLogs { get; }
+  IPasswordHistoryService PasswordHistories { get; }
 
   #region HR
   IEmployeeService Employees { get; }
@@ -60,6 +91,7 @@ public interface IServiceManager
   ICrmIntakeMonthService CrmIntakeMonths { get; }
   ICrmIntakeYearService CrmIntakeYears { get; }
   ICrmPaymentMethodService CrmPaymentMethods { get; }
+  ICrmCourseIntakeService CrmCourseIntakes { get; }
   #endregion Crm
 
   #region DMS
@@ -70,6 +102,7 @@ public interface IServiceManager
   IDmsDocumentFolderService DmsDocumentFolders { get; }
   IDmsDocumentVersionService DmsDocumentVersions { get; }
   IDmsDocumentAccessLogService DmsDocumentAccessLogs { get; }
+  IDmsFileUpdateHistoryService DmsFileUpdateHistories { get; }
   #endregion
 
   T Cache<T>(int key);

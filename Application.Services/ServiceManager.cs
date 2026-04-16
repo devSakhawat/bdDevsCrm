@@ -4,6 +4,7 @@ using Application.Services.Core.HR;
 using Application.Services.Core.SystemAdmin;
 using Application.Services.CRM;
 using Application.Services.DMS;
+using Application.Services.Caching;
 using bdDevsCrm.Shared.Settings;
 using Domain.Contracts.Infrastructure.Security;
 using Domain.Contracts.Repositories;
@@ -26,6 +27,7 @@ public sealed class ServiceManager : IServiceManager
   private readonly IMemoryCache _cache;
   private readonly IPasswordHasher _passwordHasher;
   private readonly IOptions<AppSettings> _appSettings;
+  private readonly IHybridCacheService _hybridCache;
   //private IOptions<AppSettings>? appSettings;
 
   private readonly Lazy<ITokenBlacklistService> _tokenBlackListService;
@@ -42,6 +44,37 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<IStatusService> _statusService;
   private readonly Lazy<IAccessControlService> _accessControlService;
   private readonly Lazy<IPropertyInspectorService> _propertyInspectorService;
+  private readonly Lazy<IHolidayService> _holidayService;
+  private readonly Lazy<ITimesheetService> _timesheetService;
+  private readonly Lazy<ICurrencyRateService> _currencyRateService;
+  private readonly Lazy<IThanaService> _thanaService;
+  private readonly Lazy<IMaritalStatusService> _maritalStatusService;
+  private readonly Lazy<ICompetenciesService> _competenciesService;
+  private readonly Lazy<ICompetencyLevelService> _competencyLevelService;
+  private readonly Lazy<IBoardInstituteService> _boardInstituteService;
+  private readonly Lazy<IAuditTypeService> _auditTypeService;
+
+  // Approver/Workflow Services
+  private readonly Lazy<IApproverDetailsService> _approverDetailsService;
+  private readonly Lazy<IApproverHistoryService> _approverHistoryService;
+  private readonly Lazy<IApproverOrderService> _approverOrderService;
+  private readonly Lazy<IApproverTypeService> _approverTypeService;
+  private readonly Lazy<IAssignApproverService> _assignApproverService;
+  private readonly Lazy<IApproverTypeToGroupMappingService> _approverTypeToGroupMappingService;
+
+  // Document Management Services
+  private readonly Lazy<IDocumentTemplateService> _documentTemplateService;
+  private readonly Lazy<IDocumentTypeService> _documentTypeService;
+  private readonly Lazy<IDocumentParameterService> _documentParameterService;
+  private readonly Lazy<IDocumentParameterMappingService> _documentParameterMappingService;
+  private readonly Lazy<IDocumentQueryMappingService> _documentQueryMappingService;
+
+  // Audit & Security Services
+  private readonly Lazy<IAuditLogService> _auditLogService;
+  private readonly Lazy<IAuditTrailService> _auditTrailService;
+  private readonly Lazy<IAppsTokenInfoService> _appsTokenInfoService;
+  private readonly Lazy<IAppsTransactionLogService> _appsTransactionLogService;
+  private readonly Lazy<IPasswordHistoryService> _passwordHistoryService;
 
 
   #region HR Area
@@ -57,6 +90,7 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ICrmMonthService> _crmmonth;
   private readonly Lazy<ICrmYearService> _crmyear;
 
+  private readonly Lazy<ICrmCourseIntakeService> _crmCourseIntakeService;
   // New CRM services for Intake and Payment Method
   private readonly Lazy<ICrmIntakeMonthService> _crmIntakeMonthService;
   private readonly Lazy<ICrmIntakeYearService> _crmIntakeYearService;
@@ -86,6 +120,7 @@ public sealed class ServiceManager : IServiceManager
   #region DMS Lazy Fields
   private readonly Lazy<IDmsDocumentService> _dmsdocumentService;
   private readonly Lazy<IDmsDocumentTypeService> _dmsdocumentTypeService;
+  private readonly Lazy<IDmsFileUpdateHistoryService> _dmsFileUpdateHistoryService;
   private readonly Lazy<IDmsDocumentTagService> _dmsdocumentTagService;
   private readonly Lazy<IDmsDocumentTagMapService> _dmsdocumentTagMapService;
   private readonly Lazy<IDmsDocumentFolderService> _dmsdocumentFolderService;
@@ -94,10 +129,11 @@ public sealed class ServiceManager : IServiceManager
   #endregion
 
   // Note: replaced ILoggerManager with ILoggerFactory to create typed ILogger<T> for each service.
-  public ServiceManager(IRepositoryManager repository, ILoggerFactory loggerFactory, IConfiguration configuration, IMemoryCache cache, IHttpContextAccessor httpContextAccessor, IPasswordHasher passwordHasher, IOptions<AppSettings> appSetting)
+  public ServiceManager(IRepositoryManager repository, ILoggerFactory loggerFactory, IConfiguration configuration, IMemoryCache cache, IHttpContextAccessor httpContextAccessor, IPasswordHasher passwordHasher, IOptions<AppSettings> appSetting, IHybridCacheService hybridCache)
   {
     _cache = cache;
     _passwordHasher = passwordHasher;
+    _hybridCache = hybridCache;
     //_appSettings = appSettings;
 
     _propertyInspectorService = new Lazy<IPropertyInspectorService>(() => new PropertyInspectorService(configuration, loggerFactory.CreateLogger<PropertyInspectorService>(), httpContextAccessor));
@@ -114,6 +150,37 @@ public sealed class ServiceManager : IServiceManager
     _queryAnalyzerService = new Lazy<IQueryAnalyzerService>(() => new QueryAnalyzerService(repository, loggerFactory.CreateLogger<QueryAnalyzerService>(), configuration));
     _statusService = new Lazy<IStatusService>(() => new StatusService(repository, loggerFactory.CreateLogger<StatusService>(), configuration));
     _accessControlService = new Lazy<IAccessControlService>(() => new AccessControlService(repository, loggerFactory.CreateLogger<AccessControlService>(), configuration));
+    _holidayService = new Lazy<IHolidayService>(() => new HolidayService(repository, _hybridCache, loggerFactory.CreateLogger<HolidayService>(), configuration));
+    _timesheetService = new Lazy<ITimesheetService>(() => new TimesheetService(repository, _hybridCache, loggerFactory.CreateLogger<TimesheetService>(), configuration));
+    _currencyRateService = new Lazy<ICurrencyRateService>(() => new CurrencyRateService(repository, _hybridCache, loggerFactory.CreateLogger<CurrencyRateService>(), configuration));
+    _thanaService = new Lazy<IThanaService>(() => new ThanaService(repository, _hybridCache, loggerFactory.CreateLogger<ThanaService>(), configuration));
+    _maritalStatusService = new Lazy<IMaritalStatusService>(() => new MaritalStatusService(repository, _hybridCache, loggerFactory.CreateLogger<MaritalStatusService>(), configuration));
+    _competenciesService = new Lazy<ICompetenciesService>(() => new CompetenciesService(repository, _hybridCache, loggerFactory.CreateLogger<CompetenciesService>(), configuration));
+    _competencyLevelService = new Lazy<ICompetencyLevelService>(() => new CompetencyLevelService(repository, _hybridCache, loggerFactory.CreateLogger<CompetencyLevelService>(), configuration));
+    _boardInstituteService = new Lazy<IBoardInstituteService>(() => new BoardInstituteService(repository, _hybridCache, loggerFactory.CreateLogger<BoardInstituteService>(), configuration));
+    _auditTypeService = new Lazy<IAuditTypeService>(() => new AuditTypeService(repository, _hybridCache, loggerFactory.CreateLogger<AuditTypeService>(), configuration));
+
+    // Approver/Workflow Services initialization
+    _approverDetailsService = new Lazy<IApproverDetailsService>(() => new ApproverDetailsService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverDetailsService>(), configuration));
+    _approverHistoryService = new Lazy<IApproverHistoryService>(() => new ApproverHistoryService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverHistoryService>(), configuration));
+    _approverOrderService = new Lazy<IApproverOrderService>(() => new ApproverOrderService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverOrderService>(), configuration));
+    _approverTypeService = new Lazy<IApproverTypeService>(() => new ApproverTypeService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverTypeService>(), configuration));
+    _assignApproverService = new Lazy<IAssignApproverService>(() => new AssignApproverService(repository, _hybridCache, loggerFactory.CreateLogger<AssignApproverService>(), configuration));
+    _approverTypeToGroupMappingService = new Lazy<IApproverTypeToGroupMappingService>(() => new ApproverTypeToGroupMappingService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverTypeToGroupMappingService>(), configuration));
+
+    // Document Management Services
+    _documentTemplateService = new Lazy<IDocumentTemplateService>(() => new DocumentTemplateService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentTemplateService>(), configuration));
+    _documentTypeService = new Lazy<IDocumentTypeService>(() => new DocumentTypeService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentTypeService>(), configuration));
+    _documentParameterService = new Lazy<IDocumentParameterService>(() => new DocumentParameterService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentParameterService>(), configuration));
+    _documentParameterMappingService = new Lazy<IDocumentParameterMappingService>(() => new DocumentParameterMappingService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentParameterMappingService>(), configuration));
+    _documentQueryMappingService = new Lazy<IDocumentQueryMappingService>(() => new DocumentQueryMappingService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentQueryMappingService>(), configuration));
+
+    // Audit & Security Services
+    _auditLogService = new Lazy<IAuditLogService>(() => new AuditLogService(repository, _hybridCache, loggerFactory.CreateLogger<AuditLogService>(), configuration));
+    _auditTrailService = new Lazy<IAuditTrailService>(() => new AuditTrailService(repository, _hybridCache, loggerFactory.CreateLogger<AuditTrailService>(), configuration));
+    _appsTokenInfoService = new Lazy<IAppsTokenInfoService>(() => new AppsTokenInfoService(repository, _hybridCache, loggerFactory.CreateLogger<AppsTokenInfoService>(), configuration));
+    _appsTransactionLogService = new Lazy<IAppsTransactionLogService>(() => new AppsTransactionLogService(repository, _hybridCache, loggerFactory.CreateLogger<AppsTransactionLogService>(), configuration));
+    _passwordHistoryService = new Lazy<IPasswordHistoryService>(() => new PasswordHistoryService(repository, _hybridCache, loggerFactory.CreateLogger<PasswordHistoryService>(), configuration));
 
     // HR Area
     _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(repository, loggerFactory.CreateLogger<EmployeeService>(), configuration));
@@ -132,6 +199,7 @@ public sealed class ServiceManager : IServiceManager
     _crmIntakeMonthService = new Lazy<ICrmIntakeMonthService>(() => new CrmIntakeMonthService(repository, loggerFactory.CreateLogger<CrmIntakeMonthService>(), configuration));
     _crmIntakeYearService = new Lazy<ICrmIntakeYearService>(() => new CrmIntakeYearService(repository, loggerFactory.CreateLogger<CrmIntakeYearService>(), configuration));
     _crmPaymentMethodService = new Lazy<ICrmPaymentMethodService>(() => new CrmPaymentMethodService(repository, loggerFactory.CreateLogger<CrmPaymentMethodService>(), configuration));
+    _crmCourseIntakeService = new Lazy<ICrmCourseIntakeService>(() => new CrmCourseIntakeService(repository, _hybridCache, loggerFactory.CreateLogger<CrmCourseIntakeService>(), configuration));
 
     // Existing Crm services initialization
     _crmApplicationService = new Lazy<ICrmApplicationService>(() => new CrmApplicationService(repository, loggerFactory.CreateLogger<CrmApplicationService>(), configuration, httpContextAccessor));
@@ -162,6 +230,7 @@ public sealed class ServiceManager : IServiceManager
     _dmsdocumentFolderService = new Lazy<IDmsDocumentFolderService>(() => new DmsDocumentFolderService(repository, loggerFactory.CreateLogger<DmsDocumentFolderService>(), configuration));
     _dmsdocumentVersionService = new Lazy<IDmsDocumentVersionService>(() => new DmsDocumentVersionService(repository, loggerFactory.CreateLogger<DmsDocumentVersionService>(), configuration));
     _dmsdocumentAccessLogService = new Lazy<IDmsDocumentAccessLogService>(() => new DmsDocumentAccessLogService(repository, loggerFactory.CreateLogger<DmsDocumentAccessLogService>(), configuration));
+    _dmsFileUpdateHistoryService = new Lazy<IDmsFileUpdateHistoryService>(() => new DmsFileUpdateHistoryService(repository, _hybridCache, loggerFactory.CreateLogger<DmsFileUpdateHistoryService>(), configuration));
     #endregion
   }
 
@@ -169,6 +238,15 @@ public sealed class ServiceManager : IServiceManager
   public ITokenBlacklistService TokenBlacklist => _tokenBlackListService.Value;
   public ICrmCountryService CrmCountries => _countryService.Value;
   public ICurrencyService Currencies => _currencyService.Value;
+  public IHolidayService Holidays => _holidayService.Value;
+  public ITimesheetService Timesheets => _timesheetService.Value;
+  public ICurrencyRateService CurrencyRates => _currencyRateService.Value;
+  public IThanaService Thanas => _thanaService.Value;
+  public IMaritalStatusService MaritalStatuses => _maritalStatusService.Value;
+  public ICompetenciesService Competencies => _competenciesService.Value;
+  public ICompetencyLevelService CompetencyLevels => _competencyLevelService.Value;
+  public IBoardInstituteService BoardInstitutes => _boardInstituteService.Value;
+  public IAuditTypeService AuditTypes => _auditTypeService.Value;
   public ICompanyService Companies => _companyService.Value; // preserve original property but safe-guard compiled name
   public ISystemSettingsService SystemSettings => _systemSettingsService.Value;
   public IUsersService Users => _userService.Value;
@@ -179,6 +257,28 @@ public sealed class ServiceManager : IServiceManager
   public IQueryAnalyzerService QueryAnalyzer => _queryAnalyzerService.Value;
   public IStatusService WfState => _statusService.Value;
   public IAccessControlService AccessControls => _accessControlService.Value;
+
+  // Approver/Workflow Services
+  public IApproverDetailsService ApproverDetails => _approverDetailsService.Value;
+  public IApproverHistoryService ApproverHistories => _approverHistoryService.Value;
+  public IApproverOrderService ApproverOrders => _approverOrderService.Value;
+  public IApproverTypeService ApproverTypes => _approverTypeService.Value;
+  public IAssignApproverService AssignApprovers => _assignApproverService.Value;
+  public IApproverTypeToGroupMappingService ApproverTypeToGroupMappings => _approverTypeToGroupMappingService.Value;
+
+  // Document Management Services
+  public IDocumentTemplateService DocumentTemplates => _documentTemplateService.Value;
+  public IDocumentTypeService DocumentTypes => _documentTypeService.Value;
+  public IDocumentParameterService DocumentParameters => _documentParameterService.Value;
+  public IDocumentParameterMappingService DocumentParameterMappings => _documentParameterMappingService.Value;
+  public IDocumentQueryMappingService DocumentQueryMappings => _documentQueryMappingService.Value;
+
+  // Audit & Security Services
+  public IAuditLogService AuditLogs => _auditLogService.Value;
+  public IAuditTrailService AuditTrails => _auditTrailService.Value;
+  public IAppsTokenInfoService AppsTokenInfos => _appsTokenInfoService.Value;
+  public IAppsTransactionLogService AppsTransactionLogs => _appsTransactionLogService.Value;
+  public IPasswordHistoryService PasswordHistories => _passwordHistoryService.Value;
 
   #region HR Area
   public IEmployeeService Employees => _employeeService.Value;
@@ -197,6 +297,7 @@ public sealed class ServiceManager : IServiceManager
   public ICrmIntakeMonthService CrmIntakeMonths => _crmIntakeMonthService.Value;
   public ICrmIntakeYearService CrmIntakeYears => _crmIntakeYearService.Value;
   public ICrmPaymentMethodService CrmPaymentMethods => _crmPaymentMethodService.Value;
+  public ICrmCourseIntakeService CrmCourseIntakes => _crmCourseIntakeService.Value;
 
   // Existing Crm service properties
   public ICrmApplicationService CrmApplications => _crmApplicationService.Value;
@@ -227,6 +328,7 @@ public sealed class ServiceManager : IServiceManager
   public IDmsDocumentFolderService DmsDocumentFolders => _dmsdocumentFolderService.Value;
   public IDmsDocumentVersionService DmsDocumentVersions => _dmsdocumentVersionService.Value;
   public IDmsDocumentAccessLogService DmsDocumentAccessLogs => _dmsdocumentAccessLogService.Value;
+  public IDmsFileUpdateHistoryService DmsFileUpdateHistories => _dmsFileUpdateHistoryService.Value;
   #endregion
 
 

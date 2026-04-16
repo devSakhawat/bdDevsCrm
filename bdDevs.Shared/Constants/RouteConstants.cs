@@ -421,4 +421,239 @@ public static class RouteConstants
 	public const string DeleteAdditionalInfo = "additional-info/{key:int}";
 	public const string AdditionalInfoByApplicantId = "additional-info-by-applicantid/{applicantId:int}";
 	#endregion AdditionalInfo
+
+	#region Holiday
+	public const string CreateHoliday = "holiday";
+	public const string UpdateHoliday = "holiday/{key}";
+	public const string DeleteHoliday = "holiday/{key}";
+	public const string HolidaySummary = "holiday-summary";
+	public const string ReadHolidays = "holidays";
+	public const string HolidayDDL = "holidays-ddl";
+	public const string ReadHoliday = "holiday/{id:int}";
+	#endregion Holiday
+
+	#region Timesheet
+	public const string CreateTimesheet = "timesheet";
+	public const string UpdateTimesheet = "timesheet/{key}";
+	public const string DeleteTimesheet = "timesheet/{key}";
+	public const string TimesheetSummary = "timesheet-summary";
+	public const string ReadTimesheets = "timesheets";
+	public const string TimesheetDDL = "timesheets-ddl";
+	public const string ReadTimesheet = "timesheet/{id:int}";
+	public const string TimesheetsByEmployee = "timesheets-by-employee/{hrRecordId:int}";
+	#endregion Timesheet
+
+	#region CurrencyRate
+	public const string CreateCurrencyRate = "currency-rate";
+	public const string UpdateCurrencyRate = "currency-rate/{key}";
+	public const string DeleteCurrencyRate = "currency-rate/{key}";
+	public const string CurrencyRateSummary = "currency-rate-summary";
+	public const string ReadCurrencyRates = "currency-rates";
+	public const string CurrencyRateDDL = "currency-rates-ddl";
+	public const string ReadCurrencyRate = "currency-rate/{id:int}";
+	public const string CurrencyRatesByCurrency = "currency-rates-by-currency/{currencyId:int}";
+	#endregion CurrencyRate
+
+	#region Thana
+	public const string CreateThana = "thana";
+	public const string UpdateThana = "thana/{key}";
+	public const string DeleteThana = "thana/{key}";
+	public const string ThanaSummary = "thana-summary";
+	public const string ReadThanas = "thanas";
+	public const string ThanaDDL = "thanas-ddl";
+	public const string ReadThana = "thana/{id:int}";
+	public const string ThanasByDistrict = "thanas-by-district/{districtId:int}";
+	#endregion Thana
+
+	#region CrmCourseIntake
+	public const string CreateCrmCourseIntake = "crm-course-intake";
+	public const string UpdateCrmCourseIntake = "crm-course-intake/{key}";
+	public const string DeleteCrmCourseIntake = "crm-course-intake/{key}";
+	public const string CrmCourseIntakeSummary = "crm-course-intake-summary";
+	public const string ReadCrmCourseIntakes = "crm-course-intakes";
+	public const string CrmCourseIntakeDDL = "crm-course-intakes-ddl";
+	public const string ReadCrmCourseIntake = "crm-course-intake/{id:int}";
+	public const string CrmCourseIntakesByCourse = "crm-course-intakes-by-course/{courseId:int}";
+	#endregion CrmCourseIntake
+
+	#region DmsFileUpdateHistory
+	public const string CreateDmsFileUpdateHistory = "dms-file-update-history";
+	public const string UpdateDmsFileUpdateHistory = "dms-file-update-history/{key}";
+	public const string DeleteDmsFileUpdateHistory = "dms-file-update-history/{key}";
+	public const string DmsFileUpdateHistorySummary = "dms-file-update-history-summary";
+	public const string ReadDmsFileUpdateHistories = "dms-file-update-histories";
+	public const string DmsFileUpdateHistoryDDL = "dms-file-update-histories-ddl";
+	public const string ReadDmsFileUpdateHistory = "dms-file-update-history/{id:int}";
+	public const string DmsFileUpdateHistoriesByEntity = "dms-file-update-histories-by-entity/{entityId}";
+	#endregion DmsFileUpdateHistory
+
+	#region ApproverDetails
+	public const string CreateApproverDetails = "approver-details";
+	public const string UpdateApproverDetails = "approver-details/{key}";
+	public const string DeleteApproverDetails = "approver-details/{key}";
+	public const string ApproverDetailsSummary = "approver-details-summary";
+	public const string ReadApproverDetails = "approver-details";
+	public const string ApproverDetailsDDL = "approver-details-ddl";
+	public const string ReadApproverDetail = "approver-details/{id:int}";
+	#endregion ApproverDetails
+
+	#region ApproverHistory
+	public const string CreateApproverHistory = "approver-history";
+	public const string UpdateApproverHistory = "approver-history/{key}";
+	public const string DeleteApproverHistory = "approver-history/{key}";
+	public const string ApproverHistorySummary = "approver-history-summary";
+	public const string ReadApproverHistories = "approver-histories";
+	public const string ApproverHistoryDDL = "approver-histories-ddl";
+	public const string ReadApproverHistory = "approver-history/{id:int}";
+	#endregion ApproverHistory
+
+	#region ApproverOrder
+	public const string CreateApproverOrder = "approver-order";
+	public const string UpdateApproverOrder = "approver-order/{key}";
+	public const string DeleteApproverOrder = "approver-order/{key}";
+	public const string ApproverOrderSummary = "approver-order-summary";
+	public const string ReadApproverOrders = "approver-orders";
+	public const string ApproverOrderDDL = "approver-orders-ddl";
+	public const string ReadApproverOrder = "approver-order/{id:int}";
+	#endregion ApproverOrder
+
+	#region ApproverType
+	public const string CreateApproverType = "approver-type";
+	public const string UpdateApproverType = "approver-type/{key}";
+	public const string DeleteApproverType = "approver-type/{key}";
+	public const string ApproverTypeSummary = "approver-type-summary";
+	public const string ReadApproverTypes = "approver-types";
+	public const string ApproverTypeDDL = "approver-types-ddl";
+	public const string ReadApproverType = "approver-type/{id:int}";
+	#endregion ApproverType
+
+	#region AssignApprover
+	public const string CreateAssignApprover = "assign-approver";
+	public const string UpdateAssignApprover = "assign-approver/{key}";
+	public const string DeleteAssignApprover = "assign-approver/{key}";
+	public const string AssignApproverSummary = "assign-approver-summary";
+	public const string ReadAssignApprovers = "assign-approvers";
+	public const string AssignApproverDDL = "assign-approvers-ddl";
+	public const string ReadAssignApprover = "assign-approver/{id:int}";
+	#endregion AssignApprover
+
+	#region ApproverTypeToGroupMapping
+	public const string CreateApproverTypeToGroupMapping = "approver-type-to-group-mapping";
+	public const string UpdateApproverTypeToGroupMapping = "approver-type-to-group-mapping/{key}";
+	public const string DeleteApproverTypeToGroupMapping = "approver-type-to-group-mapping/{key}";
+	public const string ApproverTypeToGroupMappingSummary = "approver-type-to-group-mapping-summary";
+	public const string ReadApproverTypeToGroupMappings = "approver-type-to-group-mappings";
+	public const string ApproverTypeToGroupMappingDDL = "approver-type-to-group-mappings-ddl";
+	public const string ReadApproverTypeToGroupMapping = "approver-type-to-group-mapping/{id:int}";
+	#endregion ApproverTypeToGroupMapping
+
+	#region DocumentTemplate
+	public const string CreateDocumentTemplate = "document-template";
+	public const string UpdateDocumentTemplate = "document-template/{key}";
+	public const string DeleteDocumentTemplate = "document-template/{key}";
+	public const string DocumentTemplateSummary = "document-template-summary";
+	public const string ReadDocumentTemplates = "document-templates";
+	public const string DocumentTemplateDDL = "document-templates-ddl";
+	public const string ReadDocumentTemplate = "document-template/{id:int}";
+	#endregion DocumentTemplate
+
+	#region DocumentType
+	public const string CreateDocumentType = "document-type";
+	public const string UpdateDocumentType = "document-type/{key}";
+	public const string DeleteDocumentType = "document-type/{key}";
+	public const string DocumentTypeSummary = "document-type-summary";
+	public const string ReadDocumentTypes = "document-types";
+	public const string DocumentTypeDDL = "document-types-ddl";
+	public const string ReadDocumentType = "document-type/{id:int}";
+	#endregion DocumentType
+
+	#region DocumentParameter
+	public const string CreateDocumentParameter = "document-parameter";
+	public const string UpdateDocumentParameter = "document-parameter/{key}";
+	public const string DeleteDocumentParameter = "document-parameter/{key}";
+	public const string DocumentParameterSummary = "document-parameter-summary";
+	public const string ReadDocumentParameters = "document-parameters";
+	public const string DocumentParameterDDL = "document-parameters-ddl";
+	public const string ReadDocumentParameter = "document-parameter/{id:int}";
+	#endregion DocumentParameter
+
+	#region DocumentParameterMapping
+	public const string CreateDocumentParameterMapping = "document-parameter-mapping";
+	public const string UpdateDocumentParameterMapping = "document-parameter-mapping/{key}";
+	public const string DeleteDocumentParameterMapping = "document-parameter-mapping/{key}";
+	public const string DocumentParameterMappingSummary = "document-parameter-mapping-summary";
+	public const string ReadDocumentParameterMappings = "document-parameter-mappings";
+	public const string DocumentParameterMappingDDL = "document-parameter-mappings-ddl";
+	public const string ReadDocumentParameterMapping = "document-parameter-mapping/{id:int}";
+	#endregion DocumentParameterMapping
+
+	#region DocumentQueryMapping
+	public const string CreateDocumentQueryMapping = "document-query-mapping";
+	public const string UpdateDocumentQueryMapping = "document-query-mapping/{key}";
+	public const string DeleteDocumentQueryMapping = "document-query-mapping/{key}";
+	public const string DocumentQueryMappingSummary = "document-query-mapping-summary";
+	public const string ReadDocumentQueryMappings = "document-query-mappings";
+	public const string DocumentQueryMappingDDL = "document-query-mappings-ddl";
+	public const string ReadDocumentQueryMapping = "document-query-mapping/{id:int}";
+	#endregion DocumentQueryMapping
+
+	#region AuditLog
+	public const string CreateAuditLog = "audit-log";
+	public const string UpdateAuditLog = "audit-log/{key}";
+	public const string DeleteAuditLog = "audit-log/{key}";
+	public const string AuditLogSummary = "audit-log-summary";
+	public const string ReadAuditLogs = "audit-logs";
+	public const string AuditLogDDL = "audit-logs-ddl";
+	public const string ReadAuditLog = "audit-log/{id:long}";
+	#endregion AuditLog
+
+	#region AuditTrail
+	public const string CreateAuditTrail = "audit-trail";
+	public const string UpdateAuditTrail = "audit-trail/{key}";
+	public const string DeleteAuditTrail = "audit-trail/{key}";
+	public const string AuditTrailSummary = "audit-trail-summary";
+	public const string ReadAuditTrails = "audit-trails";
+	public const string AuditTrailDDL = "audit-trails-ddl";
+	public const string ReadAuditTrail = "audit-trail/{id:int}";
+	#endregion AuditTrail
+
+	#region AppsTokenInfo
+	public const string CreateAppsTokenInfo = "apps-token-info";
+	public const string UpdateAppsTokenInfo = "apps-token-info/{key}";
+	public const string DeleteAppsTokenInfo = "apps-token-info/{key}";
+	public const string AppsTokenInfoSummary = "apps-token-info-summary";
+	public const string ReadAppsTokenInfos = "apps-token-infos";
+	public const string AppsTokenInfoDDL = "apps-token-infos-ddl";
+	public const string ReadAppsTokenInfo = "apps-token-info/{id:int}";
+	#endregion AppsTokenInfo
+
+	#region AppsTransactionLog
+	public const string CreateAppsTransactionLog = "apps-transaction-log";
+	public const string UpdateAppsTransactionLog = "apps-transaction-log/{key}";
+	public const string DeleteAppsTransactionLog = "apps-transaction-log/{key}";
+	public const string AppsTransactionLogSummary = "apps-transaction-log-summary";
+	public const string ReadAppsTransactionLogs = "apps-transaction-logs";
+	public const string AppsTransactionLogDDL = "apps-transaction-logs-ddl";
+	public const string ReadAppsTransactionLog = "apps-transaction-log/{id:int}";
+	#endregion AppsTransactionLog
+
+	#region PasswordHistory
+	public const string CreatePasswordHistory = "password-history";
+	public const string UpdatePasswordHistory = "password-history/{key}";
+	public const string DeletePasswordHistory = "password-history/{key}";
+	public const string PasswordHistorySummary = "password-history-summary";
+	public const string ReadPasswordHistories = "password-histories";
+	public const string PasswordHistoryDDL = "password-histories-ddl";
+	public const string ReadPasswordHistory = "password-history/{id:int}";
+	#endregion PasswordHistory
+
+	#region AccessRestriction
+	public const string CreateAccessRestriction = "access-restriction";
+	public const string UpdateAccessRestriction = "access-restriction/{key}";
+	public const string DeleteAccessRestriction = "access-restriction/{key}";
+	public const string AccessRestrictionSummary = "access-restriction-summary";
+	public const string ReadAccessRestrictions = "access-restrictions";
+	public const string AccessRestrictionDDL = "access-restrictions-ddl";
+	public const string ReadAccessRestriction = "access-restriction/{id:int}";
+	#endregion AccessRestriction
 }

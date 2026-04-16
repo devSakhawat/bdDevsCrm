@@ -58,6 +58,13 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<IAssignApproverRepository> _assignApproverRepository;
   private readonly Lazy<IApproverTypeToGroupMappingRepository> _approverTypeToGroupMappingRepository;
 
+  // Document Management area
+  private readonly Lazy<IDocumentTemplateRepository> _documentTemplateRepository;
+  private readonly Lazy<IDocumentTypeRepository> _documentTypeRepository;
+  private readonly Lazy<IDocumentParameterRepository> _documentParameterRepository;
+  private readonly Lazy<IDocumentParameterMappingRepository> _documentParameterMappingRepository;
+  private readonly Lazy<IDocumentQueryMappingRepository> _documentQueryMappingRepository;
+
   // HR area start  
   private readonly Lazy<IEmployeeRepository> _employeeRepository;
   private readonly Lazy<IEmployeeTypeRepository> _employeetypeRepository;
@@ -156,6 +163,13 @@ public class RepositoryManager : IRepositoryManager
     _approverTypeRepository = new Lazy<IApproverTypeRepository>(() => new ApproverTypeRepository(_repositoryContext));
     _assignApproverRepository = new Lazy<IAssignApproverRepository>(() => new AssignApproverRepository(_repositoryContext));
     _approverTypeToGroupMappingRepository = new Lazy<IApproverTypeToGroupMappingRepository>(() => new ApproverTypeToGroupMappingRepository(_repositoryContext));
+
+    // Document Management area initialization
+    _documentTemplateRepository = new Lazy<IDocumentTemplateRepository>(() => new DocumentTemplateRepository(_repositoryContext));
+    _documentTypeRepository = new Lazy<IDocumentTypeRepository>(() => new DocumentTypeRepository(_repositoryContext));
+    _documentParameterRepository = new Lazy<IDocumentParameterRepository>(() => new DocumentParameterRepository(_repositoryContext));
+    _documentParameterMappingRepository = new Lazy<IDocumentParameterMappingRepository>(() => new DocumentParameterMappingRepository(_repositoryContext));
+    _documentQueryMappingRepository = new Lazy<IDocumentQueryMappingRepository>(() => new DocumentQueryMappingRepository(_repositoryContext));
     #endregion System
 
     // HR area start  
@@ -249,6 +263,13 @@ public class RepositoryManager : IRepositoryManager
   public IApproverTypeRepository ApproverTypes => _approverTypeRepository.Value;
   public IAssignApproverRepository AssignApprovers => _assignApproverRepository.Value;
   public IApproverTypeToGroupMappingRepository ApproverTypeToGroupMappings => _approverTypeToGroupMappingRepository.Value;
+
+  // Document Management area
+  public IDocumentTemplateRepository DocumentTemplates => _documentTemplateRepository.Value;
+  public IDocumentTypeRepository DocumentTypes => _documentTypeRepository.Value;
+  public IDocumentParameterRepository DocumentParameters => _documentParameterRepository.Value;
+  public IDocumentParameterMappingRepository DocumentParameterMappings => _documentParameterMappingRepository.Value;
+  public IDocumentQueryMappingRepository DocumentQueryMappings => _documentQueryMappingRepository.Value;
   #endregion SystemAdmin
 
   #region HR area

@@ -48,6 +48,13 @@ public interface IRepositoryManager : IDisposable
   IAssignApproverRepository AssignApprovers { get; }
   IApproverTypeToGroupMappingRepository ApproverTypeToGroupMappings { get; }
 
+  // Document Management Part
+  IDocumentTemplateRepository DocumentTemplates { get; }
+  IDocumentTypeRepository DocumentTypes { get; }
+  IDocumentParameterRepository DocumentParameters { get; }
+  IDocumentParameterMappingRepository DocumentParameterMappings { get; }
+  IDocumentQueryMappingRepository DocumentQueryMappings { get; }
+
   // HR Part
   IEmployeeRepository Employees { get; }
   IEmployeeTypeRepository EmployeeTypes { get; }

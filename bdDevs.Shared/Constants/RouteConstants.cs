@@ -546,4 +546,54 @@ public static class RouteConstants
 	public const string ApproverTypeToGroupMappingDDL = "approver-type-to-group-mappings-ddl";
 	public const string ReadApproverTypeToGroupMapping = "approver-type-to-group-mapping/{id:int}";
 	#endregion ApproverTypeToGroupMapping
+
+	#region DocumentTemplate
+	public const string CreateDocumentTemplate = "document-template";
+	public const string UpdateDocumentTemplate = "document-template/{key}";
+	public const string DeleteDocumentTemplate = "document-template/{key}";
+	public const string DocumentTemplateSummary = "document-template-summary";
+	public const string ReadDocumentTemplates = "document-templates";
+	public const string DocumentTemplateDDL = "document-templates-ddl";
+	public const string ReadDocumentTemplate = "document-template/{id:int}";
+	#endregion DocumentTemplate
+
+	#region DocumentType
+	public const string CreateDocumentType = "document-type";
+	public const string UpdateDocumentType = "document-type/{key}";
+	public const string DeleteDocumentType = "document-type/{key}";
+	public const string DocumentTypeSummary = "document-type-summary";
+	public const string ReadDocumentTypes = "document-types";
+	public const string DocumentTypeDDL = "document-types-ddl";
+	public const string ReadDocumentType = "document-type/{id:int}";
+	#endregion DocumentType
+
+	#region DocumentParameter
+	public const string CreateDocumentParameter = "document-parameter";
+	public const string UpdateDocumentParameter = "document-parameter/{key}";
+	public const string DeleteDocumentParameter = "document-parameter/{key}";
+	public const string DocumentParameterSummary = "document-parameter-summary";
+	public const string ReadDocumentParameters = "document-parameters";
+	public const string DocumentParameterDDL = "document-parameters-ddl";
+	public const string ReadDocumentParameter = "document-parameter/{id:int}";
+	#endregion DocumentParameter
+
+	#region DocumentParameterMapping
+	public const string CreateDocumentParameterMapping = "document-parameter-mapping";
+	public const string UpdateDocumentParameterMapping = "document-parameter-mapping/{key}";
+	public const string DeleteDocumentParameterMapping = "document-parameter-mapping/{key}";
+	public const string DocumentParameterMappingSummary = "document-parameter-mapping-summary";
+	public const string ReadDocumentParameterMappings = "document-parameter-mappings";
+	public const string DocumentParameterMappingDDL = "document-parameter-mappings-ddl";
+	public const string ReadDocumentParameterMapping = "document-parameter-mapping/{id:int}";
+	#endregion DocumentParameterMapping
+
+	#region DocumentQueryMapping
+	public const string CreateDocumentQueryMapping = "document-query-mapping";
+	public const string UpdateDocumentQueryMapping = "document-query-mapping/{key}";
+	public const string DeleteDocumentQueryMapping = "document-query-mapping/{key}";
+	public const string DocumentQueryMappingSummary = "document-query-mapping-summary";
+	public const string ReadDocumentQueryMappings = "document-query-mappings";
+	public const string DocumentQueryMappingDDL = "document-query-mappings-ddl";
+	public const string ReadDocumentQueryMapping = "document-query-mapping/{id:int}";
+	#endregion DocumentQueryMapping
 }

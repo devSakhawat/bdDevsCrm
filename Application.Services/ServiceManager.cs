@@ -62,6 +62,13 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<IAssignApproverService> _assignApproverService;
   private readonly Lazy<IApproverTypeToGroupMappingService> _approverTypeToGroupMappingService;
 
+  // Document Management Services
+  private readonly Lazy<IDocumentTemplateService> _documentTemplateService;
+  private readonly Lazy<IDocumentTypeService> _documentTypeService;
+  private readonly Lazy<IDocumentParameterService> _documentParameterService;
+  private readonly Lazy<IDocumentParameterMappingService> _documentParameterMappingService;
+  private readonly Lazy<IDocumentQueryMappingService> _documentQueryMappingService;
+
 
   #region HR Area
   private readonly Lazy<IEmployeeService> _employeeService;
@@ -154,6 +161,13 @@ public sealed class ServiceManager : IServiceManager
     _assignApproverService = new Lazy<IAssignApproverService>(() => new AssignApproverService(repository, _hybridCache, loggerFactory.CreateLogger<AssignApproverService>(), configuration));
     _approverTypeToGroupMappingService = new Lazy<IApproverTypeToGroupMappingService>(() => new ApproverTypeToGroupMappingService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverTypeToGroupMappingService>(), configuration));
 
+    // Document Management Services
+    _documentTemplateService = new Lazy<IDocumentTemplateService>(() => new DocumentTemplateService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentTemplateService>(), configuration));
+    _documentTypeService = new Lazy<IDocumentTypeService>(() => new DocumentTypeService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentTypeService>(), configuration));
+    _documentParameterService = new Lazy<IDocumentParameterService>(() => new DocumentParameterService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentParameterService>(), configuration));
+    _documentParameterMappingService = new Lazy<IDocumentParameterMappingService>(() => new DocumentParameterMappingService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentParameterMappingService>(), configuration));
+    _documentQueryMappingService = new Lazy<IDocumentQueryMappingService>(() => new DocumentQueryMappingService(repository, _hybridCache, loggerFactory.CreateLogger<DocumentQueryMappingService>(), configuration));
+
     // HR Area
     _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(repository, loggerFactory.CreateLogger<EmployeeService>(), configuration));
     _branchService = new Lazy<IBranchService>(() => new BranchService(repository, loggerFactory.CreateLogger<BranchService>(), configuration));
@@ -237,6 +251,13 @@ public sealed class ServiceManager : IServiceManager
   public IApproverTypeService ApproverTypes => _approverTypeService.Value;
   public IAssignApproverService AssignApprovers => _assignApproverService.Value;
   public IApproverTypeToGroupMappingService ApproverTypeToGroupMappings => _approverTypeToGroupMappingService.Value;
+
+  // Document Management Services
+  public IDocumentTemplateService DocumentTemplates => _documentTemplateService.Value;
+  public IDocumentTypeService DocumentTypes => _documentTypeService.Value;
+  public IDocumentParameterService DocumentParameters => _documentParameterService.Value;
+  public IDocumentParameterMappingService DocumentParameterMappings => _documentParameterMappingService.Value;
+  public IDocumentQueryMappingService DocumentQueryMappings => _documentQueryMappingService.Value;
 
   #region HR Area
   public IEmployeeService Employees => _employeeService.Value;

@@ -40,6 +40,13 @@ public interface IServiceManager
   IAssignApproverService AssignApprovers { get; }
   IApproverTypeToGroupMappingService ApproverTypeToGroupMappings { get; }
 
+  // Document Management Services
+  IDocumentTemplateService DocumentTemplates { get; }
+  IDocumentTypeService DocumentTypes { get; }
+  IDocumentParameterService DocumentParameters { get; }
+  IDocumentParameterMappingService DocumentParameterMappings { get; }
+  IDocumentQueryMappingService DocumentQueryMappings { get; }
+
   #region HR
   IEmployeeService Employees { get; }
   IBranchService Branches { get; }

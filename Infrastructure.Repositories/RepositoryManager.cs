@@ -4,9 +4,11 @@ using Domain.Contracts.Core.SystemAdmin;
 using Domain.Contracts.CRM;
 using Domain.Contracts.DMS;
 using Domain.Contracts.Repositories;
+using Domain.Contracts.Repositories.Core.SystemAdmin;
 using Infrastructure.Repositories.Core.Authentication;
 using Infrastructure.Repositories.Core.HR;
 using Infrastructure.Repositories.Core.SystemAdmin;
+using Infrastructure.Repositories.Repositories.Core.SystemAdmin;
 using Infrastructure.Repositories.CRM;
 using Infrastructure.Repositories.DMS;
 using Infrastructure.Sql.Context;
@@ -35,9 +37,40 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<IWFActionRepository> _wfActionRepository;
   private readonly Lazy<IWorkFlowSettingsRepository> _workFlowSettingsRepository;
   private readonly Lazy<IGroupPermissionRepository> _groupPermissionRepository;
+  private readonly Lazy<IHolidayRepository> _holidayRepository;
+  private readonly Lazy<ITimesheetRepository> _timesheetRepository;
+  private readonly Lazy<ICurrencyRateRepository> _currencyRateRepository;
+  private readonly Lazy<IThanaRepository> _thanaRepository;
+  private readonly Lazy<IMaritalStatusRepository> _maritalStatusRepository;
+  private readonly Lazy<ICompetenciesRepository> _competenciesRepository;
+  private readonly Lazy<ICompetencyLevelRepository> _competencyLevelRepository;
+  private readonly Lazy<IBoardInstituteRepository> _boardInstituteRepository;
+  private readonly Lazy<IAuditTypeRepository> _auditTypeRepository;
   private readonly Lazy<IAccessControlRepository> _accessControlRepository;
   private readonly Lazy<IAccessRestrictionRepository> _accessRestrictionRepository;
   private readonly Lazy<ICurrencyRepository> _currencyRepository;
+
+  // Approver/Workflow area
+  private readonly Lazy<IApproverDetailsRepository> _approverDetailsRepository;
+  private readonly Lazy<IApproverHistoryRepository> _approverHistoryRepository;
+  private readonly Lazy<IApproverOrderRepository> _approverOrderRepository;
+  private readonly Lazy<IApproverTypeRepository> _approverTypeRepository;
+  private readonly Lazy<IAssignApproverRepository> _assignApproverRepository;
+  private readonly Lazy<IApproverTypeToGroupMappingRepository> _approverTypeToGroupMappingRepository;
+
+  // Document Management area
+  private readonly Lazy<IDocumentTemplateRepository> _documentTemplateRepository;
+  private readonly Lazy<IDocumentTypeRepository> _documentTypeRepository;
+  private readonly Lazy<IDocumentParameterRepository> _documentParameterRepository;
+  private readonly Lazy<IDocumentParameterMappingRepository> _documentParameterMappingRepository;
+  private readonly Lazy<IDocumentQueryMappingRepository> _documentQueryMappingRepository;
+
+  // Audit & Security area
+  private readonly Lazy<IAuditLogRepository> _auditLogRepository;
+  private readonly Lazy<IAuditTrailRepository> _auditTrailRepository;
+  private readonly Lazy<IAppsTokenInfoRepository> _appsTokenInfoRepository;
+  private readonly Lazy<IAppsTransactionLogRepository> _appsTransactionLogRepository;
+  private readonly Lazy<IPasswordHistoryRepository> _passwordHistoryRepository;
 
   // HR area start  
   private readonly Lazy<IEmployeeRepository> _employeeRepository;
@@ -56,6 +89,7 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ICrmIntakeMonthRepository> _crmIntakeMonthRepository;
   private readonly Lazy<ICrmIntakeYearRepository> _crmIntakeYearRepository;
   private readonly Lazy<ICrmPaymentMethodRepository> _crmPaymentMethodRepository;
+  private readonly Lazy<ICrmCourseIntakeRepository> _crmCourseIntakeRepository;
 
 
   // Existing CRM repositories
@@ -119,6 +153,37 @@ public class RepositoryManager : IRepositoryManager
     _accessRestrictionRepository = new Lazy<IAccessRestrictionRepository>(() => new AccessRestrictionRepository(_repositoryContext));
 
     _currencyRepository = new Lazy<ICurrencyRepository>(() => new CurrencyRepository(_repositoryContext));
+    _holidayRepository = new Lazy<IHolidayRepository>(() => new HolidayRepository(_repositoryContext));
+    _timesheetRepository = new Lazy<ITimesheetRepository>(() => new TimesheetRepository(_repositoryContext));
+    _currencyRateRepository = new Lazy<ICurrencyRateRepository>(() => new CurrencyRateRepository(_repositoryContext));
+    _thanaRepository = new Lazy<IThanaRepository>(() => new ThanaRepository(_repositoryContext));
+    _maritalStatusRepository = new Lazy<IMaritalStatusRepository>(() => new MaritalStatusRepository(_repositoryContext));
+    _competenciesRepository = new Lazy<ICompetenciesRepository>(() => new CompetenciesRepository(_repositoryContext));
+    _competencyLevelRepository = new Lazy<ICompetencyLevelRepository>(() => new CompetencyLevelRepository(_repositoryContext));
+    _boardInstituteRepository = new Lazy<IBoardInstituteRepository>(() => new BoardInstituteRepository(_repositoryContext));
+    _auditTypeRepository = new Lazy<IAuditTypeRepository>(() => new AuditTypeRepository(_repositoryContext));
+
+    // Approver/Workflow area initialization
+    _approverDetailsRepository = new Lazy<IApproverDetailsRepository>(() => new ApproverDetailsRepository(_repositoryContext));
+    _approverHistoryRepository = new Lazy<IApproverHistoryRepository>(() => new ApproverHistoryRepository(_repositoryContext));
+    _approverOrderRepository = new Lazy<IApproverOrderRepository>(() => new ApproverOrderRepository(_repositoryContext));
+    _approverTypeRepository = new Lazy<IApproverTypeRepository>(() => new ApproverTypeRepository(_repositoryContext));
+    _assignApproverRepository = new Lazy<IAssignApproverRepository>(() => new AssignApproverRepository(_repositoryContext));
+    _approverTypeToGroupMappingRepository = new Lazy<IApproverTypeToGroupMappingRepository>(() => new ApproverTypeToGroupMappingRepository(_repositoryContext));
+
+    // Document Management area initialization
+    _documentTemplateRepository = new Lazy<IDocumentTemplateRepository>(() => new DocumentTemplateRepository(_repositoryContext));
+    _documentTypeRepository = new Lazy<IDocumentTypeRepository>(() => new DocumentTypeRepository(_repositoryContext));
+    _documentParameterRepository = new Lazy<IDocumentParameterRepository>(() => new DocumentParameterRepository(_repositoryContext));
+    _documentParameterMappingRepository = new Lazy<IDocumentParameterMappingRepository>(() => new DocumentParameterMappingRepository(_repositoryContext));
+    _documentQueryMappingRepository = new Lazy<IDocumentQueryMappingRepository>(() => new DocumentQueryMappingRepository(_repositoryContext));
+
+    // Audit & Security area initialization
+    _auditLogRepository = new Lazy<IAuditLogRepository>(() => new AuditLogRepository(_repositoryContext));
+    _auditTrailRepository = new Lazy<IAuditTrailRepository>(() => new AuditTrailRepository(_repositoryContext));
+    _appsTokenInfoRepository = new Lazy<IAppsTokenInfoRepository>(() => new AppsTokenInfoRepository(_repositoryContext));
+    _appsTransactionLogRepository = new Lazy<IAppsTransactionLogRepository>(() => new AppsTransactionLogRepository(_repositoryContext));
+    _passwordHistoryRepository = new Lazy<IPasswordHistoryRepository>(() => new PasswordHistoryRepository(_repositoryContext));
     #endregion System
 
     // HR area start  
@@ -139,6 +204,7 @@ public class RepositoryManager : IRepositoryManager
     _crmIntakeMonthRepository = new Lazy<ICrmIntakeMonthRepository>(() => new CrmIntakeMonthRepository(_repositoryContext));
     _crmIntakeYearRepository = new Lazy<ICrmIntakeYearRepository>(() => new CrmIntakeYearRepository(_repositoryContext));
     _crmPaymentMethodRepository = new Lazy<ICrmPaymentMethodRepository>(() => new CrmPaymentMethodRepository(_repositoryContext));
+    _crmCourseIntakeRepository = new Lazy<ICrmCourseIntakeRepository>(() => new CrmCourseIntakeRepository(_repositoryContext));
 
     // FIX: Add missing CRM repositories initialization
     _applicantCourseRepository = new Lazy<ICrmApplicantCourseRepository>(() => new CrmApplicantCourseRepository(_repositoryContext));
@@ -194,6 +260,37 @@ public class RepositoryManager : IRepositoryManager
   public IAccessControlRepository AccessControls => _accessControlRepository.Value;
   public IAccessRestrictionRepository AccessRestrictions => _accessRestrictionRepository.Value;
   public ICurrencyRepository Currencies => _currencyRepository.Value;
+  public IHolidayRepository Holidays => _holidayRepository.Value;
+  public ITimesheetRepository Timesheets => _timesheetRepository.Value;
+  public ICurrencyRateRepository CurrencyRates => _currencyRateRepository.Value;
+  public IThanaRepository Thanas => _thanaRepository.Value;
+  public IMaritalStatusRepository MaritalStatuses => _maritalStatusRepository.Value;
+  public ICompetenciesRepository Competencies => _competenciesRepository.Value;
+  public ICompetencyLevelRepository CompetencyLevels => _competencyLevelRepository.Value;
+  public IBoardInstituteRepository BoardInstitutes => _boardInstituteRepository.Value;
+  public IAuditTypeRepository AuditTypes => _auditTypeRepository.Value;
+
+  // Approver/Workflow area
+  public IApproverDetailsRepository ApproverDetails => _approverDetailsRepository.Value;
+  public IApproverHistoryRepository ApproverHistories => _approverHistoryRepository.Value;
+  public IApproverOrderRepository ApproverOrders => _approverOrderRepository.Value;
+  public IApproverTypeRepository ApproverTypes => _approverTypeRepository.Value;
+  public IAssignApproverRepository AssignApprovers => _assignApproverRepository.Value;
+  public IApproverTypeToGroupMappingRepository ApproverTypeToGroupMappings => _approverTypeToGroupMappingRepository.Value;
+
+  // Document Management area
+  public IDocumentTemplateRepository DocumentTemplates => _documentTemplateRepository.Value;
+  public IDocumentTypeRepository DocumentTypes => _documentTypeRepository.Value;
+  public IDocumentParameterRepository DocumentParameters => _documentParameterRepository.Value;
+  public IDocumentParameterMappingRepository DocumentParameterMappings => _documentParameterMappingRepository.Value;
+  public IDocumentQueryMappingRepository DocumentQueryMappings => _documentQueryMappingRepository.Value;
+
+  // Audit & Security area
+  public IAuditLogRepository AuditLogs => _auditLogRepository.Value;
+  public IAuditTrailRepository AuditTrails => _auditTrailRepository.Value;
+  public IAppsTokenInfoRepository AppsTokenInfos => _appsTokenInfoRepository.Value;
+  public IAppsTransactionLogRepository AppsTransactionLogs => _appsTransactionLogRepository.Value;
+  public IPasswordHistoryRepository PasswordHistories => _passwordHistoryRepository.Value;
   #endregion SystemAdmin
 
   #region HR area
@@ -235,6 +332,7 @@ public class RepositoryManager : IRepositoryManager
   public ICrmIntakeMonthRepository CrmIntakeMonths => _crmIntakeMonthRepository.Value;
   public ICrmIntakeYearRepository CrmIntakeYears => _crmIntakeYearRepository.Value;
   public ICrmPaymentMethodRepository CrmPaymentMethods => _crmPaymentMethodRepository.Value;
+  public ICrmCourseIntakeRepository CrmCourseIntakes => _crmCourseIntakeRepository.Value;
   #endregion CRM
 
   #region DMS - Repository Properties

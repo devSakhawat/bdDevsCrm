@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts.Core.Authentication;
 using Domain.Contracts.Core.HR;
 using Domain.Contracts.Core.SystemAdmin;
+using Domain.Contracts.Repositories.Core.SystemAdmin;
 using Domain.Contracts.CRM;
 using Domain.Contracts.DMS;
 using System.Linq.Expressions;
@@ -29,6 +30,37 @@ public interface IRepositoryManager : IDisposable
   IAccessControlRepository AccessControls { get; }
   IAccessRestrictionRepository AccessRestrictions { get; }
   ICurrencyRepository Currencies { get; }
+  IHolidayRepository Holidays { get; }
+  ITimesheetRepository Timesheets { get; }
+  ICurrencyRateRepository CurrencyRates { get; }
+  IThanaRepository Thanas { get; }
+  IMaritalStatusRepository MaritalStatuses { get; }
+  ICompetenciesRepository Competencies { get; }
+  ICompetencyLevelRepository CompetencyLevels { get; }
+  IBoardInstituteRepository BoardInstitutes { get; }
+  IAuditTypeRepository AuditTypes { get; }
+
+  // Approver/Workflow Part
+  IApproverDetailsRepository ApproverDetails { get; }
+  IApproverHistoryRepository ApproverHistories { get; }
+  IApproverOrderRepository ApproverOrders { get; }
+  IApproverTypeRepository ApproverTypes { get; }
+  IAssignApproverRepository AssignApprovers { get; }
+  IApproverTypeToGroupMappingRepository ApproverTypeToGroupMappings { get; }
+
+  // Document Management Part
+  IDocumentTemplateRepository DocumentTemplates { get; }
+  IDocumentTypeRepository DocumentTypes { get; }
+  IDocumentParameterRepository DocumentParameters { get; }
+  IDocumentParameterMappingRepository DocumentParameterMappings { get; }
+  IDocumentQueryMappingRepository DocumentQueryMappings { get; }
+
+  // Audit & Security Part
+  IAuditLogRepository AuditLogs { get; }
+  IAuditTrailRepository AuditTrails { get; }
+  IAppsTokenInfoRepository AppsTokenInfos { get; }
+  IAppsTransactionLogRepository AppsTransactionLogs { get; }
+  IPasswordHistoryRepository PasswordHistories { get; }
 
   // HR Part
   IEmployeeRepository Employees { get; }
@@ -68,6 +100,7 @@ public interface IRepositoryManager : IDisposable
   ICrmIntakeMonthRepository CrmIntakeMonths { get; }
   ICrmIntakeYearRepository CrmIntakeYears { get; }
   ICrmPaymentMethodRepository CrmPaymentMethods { get; }
+  ICrmCourseIntakeRepository CrmCourseIntakes { get; }
   #endregion CRM
 
   #region DMS

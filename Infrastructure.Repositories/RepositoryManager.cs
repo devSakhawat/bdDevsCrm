@@ -50,6 +50,14 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<IAccessRestrictionRepository> _accessRestrictionRepository;
   private readonly Lazy<ICurrencyRepository> _currencyRepository;
 
+  // Approver/Workflow area
+  private readonly Lazy<IApproverDetailsRepository> _approverDetailsRepository;
+  private readonly Lazy<IApproverHistoryRepository> _approverHistoryRepository;
+  private readonly Lazy<IApproverOrderRepository> _approverOrderRepository;
+  private readonly Lazy<IApproverTypeRepository> _approverTypeRepository;
+  private readonly Lazy<IAssignApproverRepository> _assignApproverRepository;
+  private readonly Lazy<IApproverTypeToGroupMappingRepository> _approverTypeToGroupMappingRepository;
+
   // HR area start  
   private readonly Lazy<IEmployeeRepository> _employeeRepository;
   private readonly Lazy<IEmployeeTypeRepository> _employeetypeRepository;
@@ -140,6 +148,14 @@ public class RepositoryManager : IRepositoryManager
     _competencyLevelRepository = new Lazy<ICompetencyLevelRepository>(() => new CompetencyLevelRepository(_repositoryContext));
     _boardInstituteRepository = new Lazy<IBoardInstituteRepository>(() => new BoardInstituteRepository(_repositoryContext));
     _auditTypeRepository = new Lazy<IAuditTypeRepository>(() => new AuditTypeRepository(_repositoryContext));
+
+    // Approver/Workflow area initialization
+    _approverDetailsRepository = new Lazy<IApproverDetailsRepository>(() => new ApproverDetailsRepository(_repositoryContext));
+    _approverHistoryRepository = new Lazy<IApproverHistoryRepository>(() => new ApproverHistoryRepository(_repositoryContext));
+    _approverOrderRepository = new Lazy<IApproverOrderRepository>(() => new ApproverOrderRepository(_repositoryContext));
+    _approverTypeRepository = new Lazy<IApproverTypeRepository>(() => new ApproverTypeRepository(_repositoryContext));
+    _assignApproverRepository = new Lazy<IAssignApproverRepository>(() => new AssignApproverRepository(_repositoryContext));
+    _approverTypeToGroupMappingRepository = new Lazy<IApproverTypeToGroupMappingRepository>(() => new ApproverTypeToGroupMappingRepository(_repositoryContext));
     #endregion System
 
     // HR area start  
@@ -225,6 +241,14 @@ public class RepositoryManager : IRepositoryManager
   public ICompetencyLevelRepository CompetencyLevels => _competencyLevelRepository.Value;
   public IBoardInstituteRepository BoardInstitutes => _boardInstituteRepository.Value;
   public IAuditTypeRepository AuditTypes => _auditTypeRepository.Value;
+
+  // Approver/Workflow area
+  public IApproverDetailsRepository ApproverDetails => _approverDetailsRepository.Value;
+  public IApproverHistoryRepository ApproverHistories => _approverHistoryRepository.Value;
+  public IApproverOrderRepository ApproverOrders => _approverOrderRepository.Value;
+  public IApproverTypeRepository ApproverTypes => _approverTypeRepository.Value;
+  public IAssignApproverRepository AssignApprovers => _assignApproverRepository.Value;
+  public IApproverTypeToGroupMappingRepository ApproverTypeToGroupMappings => _approverTypeToGroupMappingRepository.Value;
   #endregion SystemAdmin
 
   #region HR area

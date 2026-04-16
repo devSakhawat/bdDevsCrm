@@ -32,6 +32,14 @@ public interface IServiceManager
   IStatusService WfState { get; }
   IAccessControlService AccessControls { get; }
 
+  // Approver/Workflow Services
+  IApproverDetailsService ApproverDetails { get; }
+  IApproverHistoryService ApproverHistories { get; }
+  IApproverOrderService ApproverOrders { get; }
+  IApproverTypeService ApproverTypes { get; }
+  IAssignApproverService AssignApprovers { get; }
+  IApproverTypeToGroupMappingService ApproverTypeToGroupMappings { get; }
+
   #region HR
   IEmployeeService Employees { get; }
   IBranchService Branches { get; }

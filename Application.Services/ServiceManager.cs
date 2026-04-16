@@ -54,6 +54,14 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<IBoardInstituteService> _boardInstituteService;
   private readonly Lazy<IAuditTypeService> _auditTypeService;
 
+  // Approver/Workflow Services
+  private readonly Lazy<IApproverDetailsService> _approverDetailsService;
+  private readonly Lazy<IApproverHistoryService> _approverHistoryService;
+  private readonly Lazy<IApproverOrderService> _approverOrderService;
+  private readonly Lazy<IApproverTypeService> _approverTypeService;
+  private readonly Lazy<IAssignApproverService> _assignApproverService;
+  private readonly Lazy<IApproverTypeToGroupMappingService> _approverTypeToGroupMappingService;
+
 
   #region HR Area
   private readonly Lazy<IEmployeeService> _employeeService;
@@ -138,6 +146,14 @@ public sealed class ServiceManager : IServiceManager
     _boardInstituteService = new Lazy<IBoardInstituteService>(() => new BoardInstituteService(repository, _hybridCache, loggerFactory.CreateLogger<BoardInstituteService>(), configuration));
     _auditTypeService = new Lazy<IAuditTypeService>(() => new AuditTypeService(repository, _hybridCache, loggerFactory.CreateLogger<AuditTypeService>(), configuration));
 
+    // Approver/Workflow Services initialization
+    _approverDetailsService = new Lazy<IApproverDetailsService>(() => new ApproverDetailsService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverDetailsService>(), configuration));
+    _approverHistoryService = new Lazy<IApproverHistoryService>(() => new ApproverHistoryService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverHistoryService>(), configuration));
+    _approverOrderService = new Lazy<IApproverOrderService>(() => new ApproverOrderService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverOrderService>(), configuration));
+    _approverTypeService = new Lazy<IApproverTypeService>(() => new ApproverTypeService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverTypeService>(), configuration));
+    _assignApproverService = new Lazy<IAssignApproverService>(() => new AssignApproverService(repository, _hybridCache, loggerFactory.CreateLogger<AssignApproverService>(), configuration));
+    _approverTypeToGroupMappingService = new Lazy<IApproverTypeToGroupMappingService>(() => new ApproverTypeToGroupMappingService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverTypeToGroupMappingService>(), configuration));
+
     // HR Area
     _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(repository, loggerFactory.CreateLogger<EmployeeService>(), configuration));
     _branchService = new Lazy<IBranchService>(() => new BranchService(repository, loggerFactory.CreateLogger<BranchService>(), configuration));
@@ -213,6 +229,14 @@ public sealed class ServiceManager : IServiceManager
   public IQueryAnalyzerService QueryAnalyzer => _queryAnalyzerService.Value;
   public IStatusService WfState => _statusService.Value;
   public IAccessControlService AccessControls => _accessControlService.Value;
+
+  // Approver/Workflow Services
+  public IApproverDetailsService ApproverDetails => _approverDetailsService.Value;
+  public IApproverHistoryService ApproverHistories => _approverHistoryService.Value;
+  public IApproverOrderService ApproverOrders => _approverOrderService.Value;
+  public IApproverTypeService ApproverTypes => _approverTypeService.Value;
+  public IAssignApproverService AssignApprovers => _assignApproverService.Value;
+  public IApproverTypeToGroupMappingService ApproverTypeToGroupMappings => _approverTypeToGroupMappingService.Value;
 
   #region HR Area
   public IEmployeeService Employees => _employeeService.Value;

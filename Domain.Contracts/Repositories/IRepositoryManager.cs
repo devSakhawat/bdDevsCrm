@@ -40,6 +40,14 @@ public interface IRepositoryManager : IDisposable
   IBoardInstituteRepository BoardInstitutes { get; }
   IAuditTypeRepository AuditTypes { get; }
 
+  // Approver/Workflow Part
+  IApproverDetailsRepository ApproverDetails { get; }
+  IApproverHistoryRepository ApproverHistories { get; }
+  IApproverOrderRepository ApproverOrders { get; }
+  IApproverTypeRepository ApproverTypes { get; }
+  IAssignApproverRepository AssignApprovers { get; }
+  IApproverTypeToGroupMappingRepository ApproverTypeToGroupMappings { get; }
+
   // HR Part
   IEmployeeRepository Employees { get; }
   IEmployeeTypeRepository EmployeeTypes { get; }

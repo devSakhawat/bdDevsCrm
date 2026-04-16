@@ -421,4 +421,69 @@ public static class RouteConstants
 	public const string DeleteAdditionalInfo = "additional-info/{key:int}";
 	public const string AdditionalInfoByApplicantId = "additional-info-by-applicantid/{applicantId:int}";
 	#endregion AdditionalInfo
+
+	#region Holiday
+	public const string CreateHoliday = "holiday";
+	public const string UpdateHoliday = "holiday/{key}";
+	public const string DeleteHoliday = "holiday/{key}";
+	public const string HolidaySummary = "holiday-summary";
+	public const string ReadHolidays = "holidays";
+	public const string HolidayDDL = "holidays-ddl";
+	public const string ReadHoliday = "holiday/{id:int}";
+	#endregion Holiday
+
+	#region Timesheet
+	public const string CreateTimesheet = "timesheet";
+	public const string UpdateTimesheet = "timesheet/{key}";
+	public const string DeleteTimesheet = "timesheet/{key}";
+	public const string TimesheetSummary = "timesheet-summary";
+	public const string ReadTimesheets = "timesheets";
+	public const string TimesheetDDL = "timesheets-ddl";
+	public const string ReadTimesheet = "timesheet/{id:int}";
+	public const string TimesheetsByEmployee = "timesheets-by-employee/{hrRecordId:int}";
+	#endregion Timesheet
+
+	#region CurrencyRate
+	public const string CreateCurrencyRate = "currency-rate";
+	public const string UpdateCurrencyRate = "currency-rate/{key}";
+	public const string DeleteCurrencyRate = "currency-rate/{key}";
+	public const string CurrencyRateSummary = "currency-rate-summary";
+	public const string ReadCurrencyRates = "currency-rates";
+	public const string CurrencyRateDDL = "currency-rates-ddl";
+	public const string ReadCurrencyRate = "currency-rate/{id:int}";
+	public const string CurrencyRatesByCurrency = "currency-rates-by-currency/{currencyId:int}";
+	#endregion CurrencyRate
+
+	#region Thana
+	public const string CreateThana = "thana";
+	public const string UpdateThana = "thana/{key}";
+	public const string DeleteThana = "thana/{key}";
+	public const string ThanaSummary = "thana-summary";
+	public const string ReadThanas = "thanas";
+	public const string ThanaDDL = "thanas-ddl";
+	public const string ReadThana = "thana/{id:int}";
+	public const string ThanasByDistrict = "thanas-by-district/{districtId:int}";
+	#endregion Thana
+
+	#region CrmCourseIntake
+	public const string CreateCrmCourseIntake = "crm-course-intake";
+	public const string UpdateCrmCourseIntake = "crm-course-intake/{key}";
+	public const string DeleteCrmCourseIntake = "crm-course-intake/{key}";
+	public const string CrmCourseIntakeSummary = "crm-course-intake-summary";
+	public const string ReadCrmCourseIntakes = "crm-course-intakes";
+	public const string CrmCourseIntakeDDL = "crm-course-intakes-ddl";
+	public const string ReadCrmCourseIntake = "crm-course-intake/{id:int}";
+	public const string CrmCourseIntakesByCourse = "crm-course-intakes-by-course/{courseId:int}";
+	#endregion CrmCourseIntake
+
+	#region DmsFileUpdateHistory
+	public const string CreateDmsFileUpdateHistory = "dms-file-update-history";
+	public const string UpdateDmsFileUpdateHistory = "dms-file-update-history/{key}";
+	public const string DeleteDmsFileUpdateHistory = "dms-file-update-history/{key}";
+	public const string DmsFileUpdateHistorySummary = "dms-file-update-history-summary";
+	public const string ReadDmsFileUpdateHistories = "dms-file-update-histories";
+	public const string DmsFileUpdateHistoryDDL = "dms-file-update-histories-ddl";
+	public const string ReadDmsFileUpdateHistory = "dms-file-update-history/{id:int}";
+	public const string DmsFileUpdateHistoriesByEntity = "dms-file-update-histories-by-entity/{entityId}";
+	#endregion DmsFileUpdateHistory
 }

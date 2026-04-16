@@ -38,13 +38,13 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<IWFActionRepository> _wfActionRepository;
   private readonly Lazy<IWorkFlowSettingsRepository> _workFlowSettingsRepository;
   private readonly Lazy<IGroupPermissionRepository> _groupPermissionRepository;
-  private readonly Lazy<IAccessControlRepository> _accessControlRepository;
-  private readonly Lazy<IAccessRestrictionRepository> _accessRestrictionRepository;
-  private readonly Lazy<ICurrencyRepository> _currencyRepository;
   private readonly Lazy<IHolidayRepository> _holidayRepository;
   private readonly Lazy<ITimesheetRepository> _timesheetRepository;
   private readonly Lazy<ICurrencyRateRepository> _currencyRateRepository;
   private readonly Lazy<IThanaRepository> _thanaRepository;
+  private readonly Lazy<IAccessControlRepository> _accessControlRepository;
+  private readonly Lazy<IAccessRestrictionRepository> _accessRestrictionRepository;
+  private readonly Lazy<ICurrencyRepository> _currencyRepository;
 
   // HR area start  
   private readonly Lazy<IEmployeeRepository> _employeeRepository;
@@ -127,6 +127,10 @@ public class RepositoryManager : IRepositoryManager
     _accessRestrictionRepository = new Lazy<IAccessRestrictionRepository>(() => new AccessRestrictionRepository(_repositoryContext));
 
     _currencyRepository = new Lazy<ICurrencyRepository>(() => new CurrencyRepository(_repositoryContext));
+    _holidayRepository = new Lazy<IHolidayRepository>(() => new HolidayRepository(_repositoryContext));
+    _timesheetRepository = new Lazy<ITimesheetRepository>(() => new TimesheetRepository(_repositoryContext));
+    _currencyRateRepository = new Lazy<ICurrencyRateRepository>(() => new CurrencyRateRepository(_repositoryContext));
+    _thanaRepository = new Lazy<IThanaRepository>(() => new ThanaRepository(_repositoryContext));
     #endregion System
 
     // HR area start  
@@ -147,6 +151,7 @@ public class RepositoryManager : IRepositoryManager
     _crmIntakeMonthRepository = new Lazy<ICrmIntakeMonthRepository>(() => new CrmIntakeMonthRepository(_repositoryContext));
     _crmIntakeYearRepository = new Lazy<ICrmIntakeYearRepository>(() => new CrmIntakeYearRepository(_repositoryContext));
     _crmPaymentMethodRepository = new Lazy<ICrmPaymentMethodRepository>(() => new CrmPaymentMethodRepository(_repositoryContext));
+    _crmCourseIntakeRepository = new Lazy<ICrmCourseIntakeRepository>(() => new CrmCourseIntakeRepository(_repositoryContext));
 
     // FIX: Add missing CRM repositories initialization
     _applicantCourseRepository = new Lazy<ICrmApplicantCourseRepository>(() => new CrmApplicantCourseRepository(_repositoryContext));
@@ -202,6 +207,10 @@ public class RepositoryManager : IRepositoryManager
   public IAccessControlRepository AccessControls => _accessControlRepository.Value;
   public IAccessRestrictionRepository AccessRestrictions => _accessRestrictionRepository.Value;
   public ICurrencyRepository Currencies => _currencyRepository.Value;
+  public IHolidayRepository Holidays => _holidayRepository.Value;
+  public ITimesheetRepository Timesheets => _timesheetRepository.Value;
+  public ICurrencyRateRepository CurrencyRates => _currencyRateRepository.Value;
+  public IThanaRepository Thanas => _thanaRepository.Value;
   #endregion SystemAdmin
 
   #region HR area
@@ -243,6 +252,7 @@ public class RepositoryManager : IRepositoryManager
   public ICrmIntakeMonthRepository CrmIntakeMonths => _crmIntakeMonthRepository.Value;
   public ICrmIntakeYearRepository CrmIntakeYears => _crmIntakeYearRepository.Value;
   public ICrmPaymentMethodRepository CrmPaymentMethods => _crmPaymentMethodRepository.Value;
+  public ICrmCourseIntakeRepository CrmCourseIntakes => _crmCourseIntakeRepository.Value;
   #endregion CRM
 
   #region DMS - Repository Properties

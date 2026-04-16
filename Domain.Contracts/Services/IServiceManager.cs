@@ -12,6 +12,10 @@ public interface IServiceManager
   ITokenBlacklistService TokenBlacklist { get; }
   ICrmCountryService CrmCountries { get; }
   ICurrencyService Currencies { get; }
+  IHolidayService Holidays { get; }
+  ITimesheetService Timesheets { get; }
+  ICurrencyRateService CurrencyRates { get; }
+  IThanaService Thanas { get; }
   ICompanyService Companies { get; }
   ISystemSettingsService SystemSettings { get; }
   IUsersService Users { get; }
@@ -60,6 +64,7 @@ public interface IServiceManager
   ICrmIntakeMonthService CrmIntakeMonths { get; }
   ICrmIntakeYearService CrmIntakeYears { get; }
   ICrmPaymentMethodService CrmPaymentMethods { get; }
+  ICrmCourseIntakeService CrmCourseIntakes { get; }
   #endregion Crm
 
   #region DMS
@@ -70,6 +75,7 @@ public interface IServiceManager
   IDmsDocumentFolderService DmsDocumentFolders { get; }
   IDmsDocumentVersionService DmsDocumentVersions { get; }
   IDmsDocumentAccessLogService DmsDocumentAccessLogs { get; }
+  IDmsFileUpdateHistoryService DmsFileUpdateHistories { get; }
   #endregion
 
   T Cache<T>(int key);

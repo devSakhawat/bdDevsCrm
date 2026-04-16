@@ -1,13 +1,13 @@
 using Domain.Contracts.Core.SystemAdmin;
 using Domain.Entities.Entities.System;
-using Infrastructure.Repositories.Repositories.Common;
-using Infrastructure.Sql;
+using Infrastructure.Repositories;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Repositories.Core.SystemAdmin;
 
 internal sealed class CurrencyRateRepository : RepositoryBase<CurrencyRate>, ICurrencyRateRepository
 {
-    public CurrencyRateRepository(ApplicationDbContext repositoryContext) : base(repositoryContext)
+    public CurrencyRateRepository(CrmContext repositoryContext) : base(repositoryContext)
     {
     }
 
@@ -18,11 +18,11 @@ internal sealed class CurrencyRateRepository : RepositoryBase<CurrencyRate>, ICu
 
     public async Task<IEnumerable<CurrencyRate>> CurrencyRatesAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListAsync(trackChanges, cancellationToken);
+        return await ListAsync(null, trackChanges, cancellationToken);
     }
 
     public async Task<IEnumerable<CurrencyRate>> CurrencyRatesByCurrencyIdAsync(int currencyId, bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListByWhereAsync(cr => cr.CurrencyId == currencyId, trackChanges, cancellationToken);
+        return await ListByConditionAsync(cr => cr.CurrencyId == currencyId, null, trackChanges, false, cancellationToken);
     }
 }

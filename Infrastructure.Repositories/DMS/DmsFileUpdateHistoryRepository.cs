@@ -1,13 +1,13 @@
 using Domain.Contracts.DMS;
 using Domain.Entities.Entities.DMS;
-using Infrastructure.Repositories.Repositories.Common;
-using Infrastructure.Sql;
+using Infrastructure.Repositories;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.DMS;
 
 internal sealed class DmsFileUpdateHistoryRepository : RepositoryBase<DmsFileUpdateHistory>, IDmsFileUpdateHistoryRepository
 {
-    public DmsFileUpdateHistoryRepository(ApplicationDbContext repositoryContext) : base(repositoryContext)
+    public DmsFileUpdateHistoryRepository(CrmContext repositoryContext) : base(repositoryContext)
     {
     }
 
@@ -18,11 +18,11 @@ internal sealed class DmsFileUpdateHistoryRepository : RepositoryBase<DmsFileUpd
 
     public async Task<IEnumerable<DmsFileUpdateHistory>> FileUpdateHistoriesAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListAsync(trackChanges, cancellationToken);
+        return await ListAsync(null, trackChanges, cancellationToken);
     }
 
     public async Task<IEnumerable<DmsFileUpdateHistory>> FileUpdateHistoriesByEntityAsync(string entityId, bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListByWhereAsync(f => f.EntityId == entityId, trackChanges, cancellationToken);
+        return await ListByConditionAsync(f => f.EntityId == entityId, null, trackChanges, false, cancellationToken);
     }
 }

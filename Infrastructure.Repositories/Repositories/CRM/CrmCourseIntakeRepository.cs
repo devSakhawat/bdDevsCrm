@@ -1,13 +1,13 @@
 using Domain.Contracts.CRM;
 using Domain.Entities.Entities.CRM;
-using Infrastructure.Repositories.Repositories.Common;
-using Infrastructure.Sql;
+using Infrastructure.Repositories;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.CRM;
 
 internal sealed class CrmCourseIntakeRepository : RepositoryBase<CrmCourseIntake>, ICrmCourseIntakeRepository
 {
-    public CrmCourseIntakeRepository(ApplicationDbContext repositoryContext) : base(repositoryContext)
+    public CrmCourseIntakeRepository(CrmContext repositoryContext) : base(repositoryContext)
     {
     }
 
@@ -18,11 +18,11 @@ internal sealed class CrmCourseIntakeRepository : RepositoryBase<CrmCourseIntake
 
     public async Task<IEnumerable<CrmCourseIntake>> CourseIntakesAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListAsync(trackChanges, cancellationToken);
+        return await ListAsync(null, trackChanges, cancellationToken);
     }
 
     public async Task<IEnumerable<CrmCourseIntake>> CourseIntakesByCourseIdAsync(int courseId, bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListByWhereAsync(ci => ci.CourseId == courseId, trackChanges, cancellationToken);
+        return await ListByConditionAsync(ci => ci.CourseId == courseId, null, trackChanges, false, cancellationToken);
     }
 }

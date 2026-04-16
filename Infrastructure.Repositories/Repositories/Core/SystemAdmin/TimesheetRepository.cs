@@ -1,13 +1,13 @@
 using Domain.Contracts.Core.SystemAdmin;
 using Domain.Entities.Entities.System;
-using Infrastructure.Repositories.Repositories.Common;
-using Infrastructure.Sql;
+using Infrastructure.Repositories;
+using Infrastructure.Sql.Context;
 
 namespace Infrastructure.Repositories.Repositories.Core.SystemAdmin;
 
 internal sealed class TimesheetRepository : RepositoryBase<Timesheet>, ITimesheetRepository
 {
-    public TimesheetRepository(ApplicationDbContext repositoryContext) : base(repositoryContext)
+    public TimesheetRepository(CrmContext repositoryContext) : base(repositoryContext)
     {
     }
 
@@ -18,11 +18,11 @@ internal sealed class TimesheetRepository : RepositoryBase<Timesheet>, ITimeshee
 
     public async Task<IEnumerable<Timesheet>> TimesheetsAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListAsync(trackChanges, cancellationToken);
+        return await ListAsync(null, trackChanges, cancellationToken);
     }
 
     public async Task<IEnumerable<Timesheet>> TimesheetsByEmployeeAsync(int hrRecordId, bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListByWhereAsync(t => t.Hrrecordid == hrRecordId, trackChanges, cancellationToken);
+        return await ListByConditionAsync(t => t.Hrrecordid == hrRecordId, null, trackChanges, false, cancellationToken);
     }
 }

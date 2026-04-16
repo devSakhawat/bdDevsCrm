@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts.Core.Authentication;
 using Domain.Contracts.Core.HR;
 using Domain.Contracts.Core.SystemAdmin;
+using Domain.Contracts.Repositories.Core.SystemAdmin;
 using Domain.Contracts.CRM;
 using Domain.Contracts.DMS;
 using System.Linq.Expressions;

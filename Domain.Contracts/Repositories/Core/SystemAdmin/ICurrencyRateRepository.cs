@@ -1,4 +1,4 @@
-using Domain.Contracts.Repositories.Common;
+using Domain.Contracts.Repositories;
 using Domain.Entities.Entities.System;
 
 namespace Domain.Contracts.Core.SystemAdmin;

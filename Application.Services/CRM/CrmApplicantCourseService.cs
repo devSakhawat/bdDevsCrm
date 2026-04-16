@@ -93,7 +93,8 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 						.FirstOrDefaultAsync(x => x.ApplicantCourseId == applicantCourseId, trackChanges: false, cancellationToken)
 						?? throw new NotFoundException("ApplicantCourse", "ApplicantCourseId", applicantCourseId.ToString());
 
-		var updatedEntity = courseEntity, modelDto.MapTo<CrmApplicantCourse>();
+		var updatedEntity = modelDto.MapTo<CrmApplicantCourse>();
+		updatedEntity.ApplicantCourseId = courseEntity.ApplicantCourseId;
 		updatedEntity.UpdatedDate = DateTime.UtcNow;
 
 		_repository.CrmApplicantCourses.UpdateByState(updatedEntity);

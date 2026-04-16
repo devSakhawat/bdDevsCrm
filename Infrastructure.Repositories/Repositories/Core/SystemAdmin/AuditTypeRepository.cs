@@ -1,14 +1,14 @@
 using Domain.Contracts.Repositories.Core.SystemAdmin;
 using Domain.Entities.Entities.System;
-using Infrastructure.Repositories.Repositories.Common;
-using Infrastructure.Sql;
+using Infrastructure.Repositories;
+using Infrastructure.Sql.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories.Repositories.Core.SystemAdmin;
 
 internal sealed class AuditTypeRepository : RepositoryBase<AuditType>, IAuditTypeRepository
 {
-    public AuditTypeRepository(ApplicationDbContext repositoryContext) : base(repositoryContext)
+    public AuditTypeRepository(CrmContext repositoryContext) : base(repositoryContext)
     {
     }
 
@@ -19,6 +19,6 @@ internal sealed class AuditTypeRepository : RepositoryBase<AuditType>, IAuditTyp
 
     public async Task<IEnumerable<AuditType>> AuditTypesAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListAsync(trackChanges, cancellationToken);
+        return await ListAsync(null, trackChanges, cancellationToken);
     }
 }

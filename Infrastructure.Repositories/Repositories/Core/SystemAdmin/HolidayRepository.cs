@@ -1,14 +1,14 @@
 using Domain.Contracts.Core.SystemAdmin;
 using Domain.Entities.Entities.System;
-using Infrastructure.Repositories.Repositories.Common;
-using Infrastructure.Sql;
+using Infrastructure.Repositories;
+using Infrastructure.Sql.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories.Repositories.Core.SystemAdmin;
 
 internal sealed class HolidayRepository : RepositoryBase<Holiday>, IHolidayRepository
 {
-    public HolidayRepository(ApplicationDbContext repositoryContext) : base(repositoryContext)
+    public HolidayRepository(CrmContext repositoryContext) : base(repositoryContext)
     {
     }
 
@@ -19,11 +19,11 @@ internal sealed class HolidayRepository : RepositoryBase<Holiday>, IHolidayRepos
 
     public async Task<IEnumerable<Holiday>> HolidaysAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListAsync(trackChanges, cancellationToken);
+        return await ListAsync(null, trackChanges, cancellationToken);
     }
 
     public async Task<IEnumerable<Holiday>> ActiveHolidaysAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
-        return await ListByWhereAsync(h => h.HolidayDate >= DateOnly.FromDateTime(DateTime.Now), trackChanges, cancellationToken);
+        return await ListByConditionAsync(h => h.HolidayDate >= DateOnly.FromDateTime(DateTime.Now), null, trackChanges, false, cancellationToken);
     }
 }

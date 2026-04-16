@@ -4,13 +4,12 @@ using Domain.Contracts.Core.SystemAdmin;
 using Domain.Contracts.CRM;
 using Domain.Contracts.DMS;
 using Domain.Contracts.Repositories;
+using Domain.Contracts.Repositories.Core.SystemAdmin;
 using Infrastructure.Repositories.Core.Authentication;
 using Infrastructure.Repositories.Core.HR;
 using Infrastructure.Repositories.Core.SystemAdmin;
-using Infrastructure.Repositories.CRM;
 using Infrastructure.Repositories.Repositories.Core.SystemAdmin;
-using Infrastructure.Repositories.Repositories.CRM;
-using Infrastructure.Repositories.Repositories.DMS;
+using Infrastructure.Repositories.CRM;
 using Infrastructure.Repositories.DMS;
 using Infrastructure.Sql.Context;
 

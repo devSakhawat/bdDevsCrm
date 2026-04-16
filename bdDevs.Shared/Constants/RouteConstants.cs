@@ -486,4 +486,64 @@ public static class RouteConstants
 	public const string ReadDmsFileUpdateHistory = "dms-file-update-history/{id:int}";
 	public const string DmsFileUpdateHistoriesByEntity = "dms-file-update-histories-by-entity/{entityId}";
 	#endregion DmsFileUpdateHistory
+
+	#region ApproverDetails
+	public const string CreateApproverDetails = "approver-details";
+	public const string UpdateApproverDetails = "approver-details/{key}";
+	public const string DeleteApproverDetails = "approver-details/{key}";
+	public const string ApproverDetailsSummary = "approver-details-summary";
+	public const string ReadApproverDetails = "approver-details";
+	public const string ApproverDetailsDDL = "approver-details-ddl";
+	public const string ReadApproverDetail = "approver-details/{id:int}";
+	#endregion ApproverDetails
+
+	#region ApproverHistory
+	public const string CreateApproverHistory = "approver-history";
+	public const string UpdateApproverHistory = "approver-history/{key}";
+	public const string DeleteApproverHistory = "approver-history/{key}";
+	public const string ApproverHistorySummary = "approver-history-summary";
+	public const string ReadApproverHistories = "approver-histories";
+	public const string ApproverHistoryDDL = "approver-histories-ddl";
+	public const string ReadApproverHistory = "approver-history/{id:int}";
+	#endregion ApproverHistory
+
+	#region ApproverOrder
+	public const string CreateApproverOrder = "approver-order";
+	public const string UpdateApproverOrder = "approver-order/{key}";
+	public const string DeleteApproverOrder = "approver-order/{key}";
+	public const string ApproverOrderSummary = "approver-order-summary";
+	public const string ReadApproverOrders = "approver-orders";
+	public const string ApproverOrderDDL = "approver-orders-ddl";
+	public const string ReadApproverOrder = "approver-order/{id:int}";
+	#endregion ApproverOrder
+
+	#region ApproverType
+	public const string CreateApproverType = "approver-type";
+	public const string UpdateApproverType = "approver-type/{key}";
+	public const string DeleteApproverType = "approver-type/{key}";
+	public const string ApproverTypeSummary = "approver-type-summary";
+	public const string ReadApproverTypes = "approver-types";
+	public const string ApproverTypeDDL = "approver-types-ddl";
+	public const string ReadApproverType = "approver-type/{id:int}";
+	#endregion ApproverType
+
+	#region AssignApprover
+	public const string CreateAssignApprover = "assign-approver";
+	public const string UpdateAssignApprover = "assign-approver/{key}";
+	public const string DeleteAssignApprover = "assign-approver/{key}";
+	public const string AssignApproverSummary = "assign-approver-summary";
+	public const string ReadAssignApprovers = "assign-approvers";
+	public const string AssignApproverDDL = "assign-approvers-ddl";
+	public const string ReadAssignApprover = "assign-approver/{id:int}";
+	#endregion AssignApprover
+
+	#region ApproverTypeToGroupMapping
+	public const string CreateApproverTypeToGroupMapping = "approver-type-to-group-mapping";
+	public const string UpdateApproverTypeToGroupMapping = "approver-type-to-group-mapping/{key}";
+	public const string DeleteApproverTypeToGroupMapping = "approver-type-to-group-mapping/{key}";
+	public const string ApproverTypeToGroupMappingSummary = "approver-type-to-group-mapping-summary";
+	public const string ReadApproverTypeToGroupMappings = "approver-type-to-group-mappings";
+	public const string ApproverTypeToGroupMappingDDL = "approver-type-to-group-mappings-ddl";
+	public const string ReadApproverTypeToGroupMapping = "approver-type-to-group-mapping/{id:int}";
+	#endregion ApproverTypeToGroupMapping
 }

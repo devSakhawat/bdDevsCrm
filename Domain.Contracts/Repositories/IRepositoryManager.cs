@@ -33,6 +33,11 @@ public interface IRepositoryManager : IDisposable
   ITimesheetRepository Timesheets { get; }
   ICurrencyRateRepository CurrencyRates { get; }
   IThanaRepository Thanas { get; }
+  IMaritalStatusRepository MaritalStatuses { get; }
+  ICompetenciesRepository Competencies { get; }
+  ICompetencyLevelRepository CompetencyLevels { get; }
+  IBoardInstituteRepository BoardInstitutes { get; }
+  IAuditTypeRepository AuditTypes { get; }
 
   // HR Part
   IEmployeeRepository Employees { get; }

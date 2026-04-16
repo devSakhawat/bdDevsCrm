@@ -16,6 +16,11 @@ public interface IServiceManager
   ITimesheetService Timesheets { get; }
   ICurrencyRateService CurrencyRates { get; }
   IThanaService Thanas { get; }
+  IMaritalStatusService MaritalStatuses { get; }
+  ICompetenciesService Competencies { get; }
+  ICompetencyLevelService CompetencyLevels { get; }
+  IBoardInstituteService BoardInstitutes { get; }
+  IAuditTypeService AuditTypes { get; }
   ICompanyService Companies { get; }
   ISystemSettingsService SystemSettings { get; }
   IUsersService Users { get; }

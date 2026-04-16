@@ -48,6 +48,11 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ITimesheetService> _timesheetService;
   private readonly Lazy<ICurrencyRateService> _currencyRateService;
   private readonly Lazy<IThanaService> _thanaService;
+  private readonly Lazy<IMaritalStatusService> _maritalStatusService;
+  private readonly Lazy<ICompetenciesService> _competenciesService;
+  private readonly Lazy<ICompetencyLevelService> _competencyLevelService;
+  private readonly Lazy<IBoardInstituteService> _boardInstituteService;
+  private readonly Lazy<IAuditTypeService> _auditTypeService;
 
 
   #region HR Area
@@ -127,6 +132,11 @@ public sealed class ServiceManager : IServiceManager
     _timesheetService = new Lazy<ITimesheetService>(() => new TimesheetService(repository, _hybridCache, loggerFactory.CreateLogger<TimesheetService>(), configuration));
     _currencyRateService = new Lazy<ICurrencyRateService>(() => new CurrencyRateService(repository, _hybridCache, loggerFactory.CreateLogger<CurrencyRateService>(), configuration));
     _thanaService = new Lazy<IThanaService>(() => new ThanaService(repository, _hybridCache, loggerFactory.CreateLogger<ThanaService>(), configuration));
+    _maritalStatusService = new Lazy<IMaritalStatusService>(() => new MaritalStatusService(repository, _hybridCache, loggerFactory.CreateLogger<MaritalStatusService>(), configuration));
+    _competenciesService = new Lazy<ICompetenciesService>(() => new CompetenciesService(repository, _hybridCache, loggerFactory.CreateLogger<CompetenciesService>(), configuration));
+    _competencyLevelService = new Lazy<ICompetencyLevelService>(() => new CompetencyLevelService(repository, _hybridCache, loggerFactory.CreateLogger<CompetencyLevelService>(), configuration));
+    _boardInstituteService = new Lazy<IBoardInstituteService>(() => new BoardInstituteService(repository, _hybridCache, loggerFactory.CreateLogger<BoardInstituteService>(), configuration));
+    _auditTypeService = new Lazy<IAuditTypeService>(() => new AuditTypeService(repository, _hybridCache, loggerFactory.CreateLogger<AuditTypeService>(), configuration));
 
     // HR Area
     _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(repository, loggerFactory.CreateLogger<EmployeeService>(), configuration));
@@ -188,6 +198,11 @@ public sealed class ServiceManager : IServiceManager
   public ITimesheetService Timesheets => _timesheetService.Value;
   public ICurrencyRateService CurrencyRates => _currencyRateService.Value;
   public IThanaService Thanas => _thanaService.Value;
+  public IMaritalStatusService MaritalStatuses => _maritalStatusService.Value;
+  public ICompetenciesService Competencies => _competenciesService.Value;
+  public ICompetencyLevelService CompetencyLevels => _competencyLevelService.Value;
+  public IBoardInstituteService BoardInstitutes => _boardInstituteService.Value;
+  public IAuditTypeService AuditTypes => _auditTypeService.Value;
   public ICompanyService Companies => _companyService.Value; // preserve original property but safe-guard compiled name
   public ISystemSettingsService SystemSettings => _systemSettingsService.Value;
   public IUsersService Users => _userService.Value;

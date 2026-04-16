@@ -42,6 +42,11 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ITimesheetRepository> _timesheetRepository;
   private readonly Lazy<ICurrencyRateRepository> _currencyRateRepository;
   private readonly Lazy<IThanaRepository> _thanaRepository;
+  private readonly Lazy<IMaritalStatusRepository> _maritalStatusRepository;
+  private readonly Lazy<ICompetenciesRepository> _competenciesRepository;
+  private readonly Lazy<ICompetencyLevelRepository> _competencyLevelRepository;
+  private readonly Lazy<IBoardInstituteRepository> _boardInstituteRepository;
+  private readonly Lazy<IAuditTypeRepository> _auditTypeRepository;
   private readonly Lazy<IAccessControlRepository> _accessControlRepository;
   private readonly Lazy<IAccessRestrictionRepository> _accessRestrictionRepository;
   private readonly Lazy<ICurrencyRepository> _currencyRepository;
@@ -131,6 +136,11 @@ public class RepositoryManager : IRepositoryManager
     _timesheetRepository = new Lazy<ITimesheetRepository>(() => new TimesheetRepository(_repositoryContext));
     _currencyRateRepository = new Lazy<ICurrencyRateRepository>(() => new CurrencyRateRepository(_repositoryContext));
     _thanaRepository = new Lazy<IThanaRepository>(() => new ThanaRepository(_repositoryContext));
+    _maritalStatusRepository = new Lazy<IMaritalStatusRepository>(() => new MaritalStatusRepository(_repositoryContext));
+    _competenciesRepository = new Lazy<ICompetenciesRepository>(() => new CompetenciesRepository(_repositoryContext));
+    _competencyLevelRepository = new Lazy<ICompetencyLevelRepository>(() => new CompetencyLevelRepository(_repositoryContext));
+    _boardInstituteRepository = new Lazy<IBoardInstituteRepository>(() => new BoardInstituteRepository(_repositoryContext));
+    _auditTypeRepository = new Lazy<IAuditTypeRepository>(() => new AuditTypeRepository(_repositoryContext));
     #endregion System
 
     // HR area start  
@@ -211,6 +221,11 @@ public class RepositoryManager : IRepositoryManager
   public ITimesheetRepository Timesheets => _timesheetRepository.Value;
   public ICurrencyRateRepository CurrencyRates => _currencyRateRepository.Value;
   public IThanaRepository Thanas => _thanaRepository.Value;
+  public IMaritalStatusRepository MaritalStatuses => _maritalStatusRepository.Value;
+  public ICompetenciesRepository Competencies => _competenciesRepository.Value;
+  public ICompetencyLevelRepository CompetencyLevels => _competencyLevelRepository.Value;
+  public IBoardInstituteRepository BoardInstitutes => _boardInstituteRepository.Value;
+  public IAuditTypeRepository AuditTypes => _auditTypeRepository.Value;
   #endregion SystemAdmin
 
   #region HR area

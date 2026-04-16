@@ -932,4 +932,16 @@ public static class RouteConstants
 	public const string CompetencyLevelDDL = "competency-levels-ddl";
 	public const string ReadCompetencyLevel = "competency-level/{id:int}";
 	#endregion CompetencyLevel
+
+	#region TokenBlacklist
+	public const string CreateTokenBlacklist = "token-blacklist";
+	public const string UpdateTokenBlacklist = "token-blacklist/{key:guid}";
+	public const string DeleteTokenBlacklist = "token-blacklist/{key:guid}";
+	public const string TokenBlacklistSummary = "token-blacklist-summary";
+	public const string ReadTokenBlacklists = "token-blacklists";
+	public const string ReadTokenBlacklist = "token-blacklist/{id:guid}";
+	public const string IsTokenBlacklisted = "token-blacklist/check";
+	public const string BlacklistToken = "token-blacklist/blacklist";
+	public const string RemoveExpiredTokens = "token-blacklist/cleanup";
+	#endregion TokenBlacklist
 }

@@ -1,4 +1,4 @@
-using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using bdDevs.Shared.DataTransferObjects.Core.HR;
 using bdDevs.Shared.Records.Core.SystemAdmin;
 using Application.Shared.Grid;
 

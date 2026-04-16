@@ -37,11 +37,6 @@ internal sealed class DmsFileUpdateHistoryService : IDmsFileUpdateHistoryService
         if (record == null)
             throw new BadRequestException(nameof(CreateDmsFileUpdateHistoryRecord));
 
-        var validator = new CreateDmsFileUpdateHistoryRecordValidator();
-        var validationResult = await validator.ValidateAsync(record, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
-
         _logger.LogInformation("Creating new file update history. EntityId: {EntityId}, Time: {Time}",
             record.EntityId, DateTime.UtcNow);
 
@@ -67,12 +62,7 @@ internal sealed class DmsFileUpdateHistoryService : IDmsFileUpdateHistoryService
         if (record == null)
             throw new BadRequestException(nameof(UpdateDmsFileUpdateHistoryRecord));
 
-        var validator = new UpdateDmsFileUpdateHistoryRecordValidator();
-        var validationResult = await validator.ValidateAsync(record, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
-
-        _logger.LogInformation("Updating file update history. ID: {Id}, Time: {Time}", 
+        _logger.LogInformation("Updating file update history. ID: {Id}, Time: {Time}",
             record.Id, DateTime.UtcNow);
 
         var existing = await _repository.DmsFileUpdateHistories.FileUpdateHistoryAsync(
@@ -98,12 +88,7 @@ internal sealed class DmsFileUpdateHistoryService : IDmsFileUpdateHistoryService
         if (record == null || record.Id <= 0)
             throw new BadRequestException("Invalid delete request!");
 
-        var validator = new DeleteDmsFileUpdateHistoryRecordValidator();
-        var validationResult = await validator.ValidateAsync(record, cancellationToken);
-        if (!validationResult.IsValid)
-            throw new ValidationException(validationResult.Errors);
-
-        _logger.LogInformation("Deleting file update history. ID: {Id}, Time: {Time}", 
+        _logger.LogInformation("Deleting file update history. ID: {Id}, Time: {Time}",
             record.Id, DateTime.UtcNow);
 
         var entity = await _repository.DmsFileUpdateHistories.FileUpdateHistoryAsync(
@@ -120,7 +105,7 @@ internal sealed class DmsFileUpdateHistoryService : IDmsFileUpdateHistoryService
         await _cache.RemoveAsync($"FileUpdateHistory:{record.Id}");
     }
 
-    public async Task<DmsFileUpdateHistoryDto> FileUpdateHistoryAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
+    public async Task<DmsFileUpdateHistoryDto> DmsFileUpdateHistoryAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Fetching file update history. ID: {Id}, Time: {Time}", id, DateTime.UtcNow);
 
@@ -137,7 +122,7 @@ internal sealed class DmsFileUpdateHistoryService : IDmsFileUpdateHistoryService
         ) ?? throw new NotFoundException("DmsFileUpdateHistory", "Id", id.ToString());
     }
 
-    public async Task<IEnumerable<DmsFileUpdateHistoryDto>> FileUpdateHistoriesAsync(bool trackChanges, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<DmsFileUpdateHistoryDto>> DmsFileUpdateHistoriesAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Fetching all file update histories. Time: {Time}", DateTime.UtcNow);
 
@@ -159,7 +144,7 @@ internal sealed class DmsFileUpdateHistoryService : IDmsFileUpdateHistoryService
         ) ?? Enumerable.Empty<DmsFileUpdateHistoryDto>();
     }
 
-    public async Task<IEnumerable<DmsFileUpdateHistoryDDLDto>> FileUpdateHistoriesForDDLAsync(bool trackChanges = false, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<DmsFileUpdateHistoryDto>> DmsFileUpdateHistoriesForDDLAsync(bool trackChanges = false, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Fetching file update histories for dropdown list");
 
@@ -196,7 +181,7 @@ internal sealed class DmsFileUpdateHistoryService : IDmsFileUpdateHistoryService
         ) ?? Enumerable.Empty<DmsFileUpdateHistoryDto>();
     }
 
-    public async Task<GridEntity<DmsFileUpdateHistoryDto>> FileUpdateHistoriesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
+    public async Task<GridEntity<DmsFileUpdateHistoryDto>> DmsFileUpdateHistoriesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
     {
         const string sql = @"SELECT * FROM FileUpdateHistory";
         const string orderBy = "UpdatedDate DESC";

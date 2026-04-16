@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.Entities.System;
-using Domain.Contracts.Core.SystemAdmin;
+using Domain.Contracts.Repositories.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Infrastructure.Sql.Context;
 
@@ -12,11 +12,26 @@ public class AccessRestrictionRepository : RepositoryBase<AccessRestriction>, IA
 	#region Priority 1: Basic Retrieval (EF Core)
 
 	/// <summary>
-	/// s access restrictions by HR record ID using EF Core.
+	/// Gets a single access restriction by ID.
 	/// </summary>
-	public async Task<IEnumerable<AccessRestriction>> AccessRestrictionsAsync(int hrRecordId, CancellationToken cancellationToken = default)
+	public async Task<AccessRestriction?> AccessRestrictionAsync(int accessRestrictionId, bool trackChanges, CancellationToken cancellationToken = default)
 	{
-		// Using EF Core function from RepositoryBase for simple filtering
+		return await GetByConditionAsync(x => x.AccessRestrictionId == accessRestrictionId, trackChanges, cancellationToken);
+	}
+
+	/// <summary>
+	/// Gets all access restrictions.
+	/// </summary>
+	public async Task<IEnumerable<AccessRestriction>> AccessRestrictionsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		return await ListAllAsync(trackChanges, cancellationToken);
+	}
+
+	/// <summary>
+	/// Gets access restrictions by HR record ID.
+	/// </summary>
+	public async Task<IEnumerable<AccessRestriction>> AccessRestrictionsByHrRecordIdAsync(int hrRecordId, CancellationToken cancellationToken = default)
+	{
 		return await ListByConditionAsync(x => x.HrRecordId == hrRecordId, trackChanges: false, cancellationToken: cancellationToken);
 	}
 

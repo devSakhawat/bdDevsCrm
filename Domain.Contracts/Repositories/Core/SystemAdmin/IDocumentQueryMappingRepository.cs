@@ -7,4 +7,5 @@ public interface IDocumentQueryMappingRepository : IRepositoryBase<DocumentQuery
 {
     Task<DocumentQueryMapping?> DocumentQueryMappingAsync(int documentQueryId, bool trackChanges, CancellationToken cancellationToken = default);
     Task<IEnumerable<DocumentQueryMapping>> DocumentQueryMappingsAsync(bool trackChanges, CancellationToken cancellationToken = default);
+    Task<IEnumerable<DocumentQueryMapping>> ActiveDocumentQueryMappingsAsync(bool trackChanges, CancellationToken cancellationToken = default);
 }

@@ -253,17 +253,16 @@ internal sealed class CrmMonthService : ICrmMonthService
 	/// <summary>
 	/// Retrieves a paginated summary grid of all months.
 	/// </summary>
-	public async Task<GridEntity<CrmMonthDto>> MonthsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
-	{
-		_logger.LogInformation("Fetching months summary grid. Time: {Time}", DateTime.UtcNow);
+    public async Task<GridEntity<CrmMonthDto>> MonthsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Fetching months summary grid. Time: {Time}", DateTime.UtcNow);
 
-		const string sql = @"
+        const string sql = @"
 SELECT MonthId, MonthName, MonthCode, MonthNumber, Description, IsActive, CreatedDate, CreatedBy, UpdatedDate, UpdatedBy
 FROM CrmMonth";
 
-		const string orderBy = "MonthNumber ASC";
+        const string orderBy = "MonthNumber ASC";
 
-		(sql, options, orderBy, string.Empty, cancellationToken);
-		return await _repository.CrmMonths.AdoGridDataAsync<CrmMonthDto>(sql, options, orderBy, string.Empty, cancellationToken);
-	}
+        return await _repository.CrmMonths.AdoGridDataAsync<CrmMonthDto>(sql, options, orderBy, string.Empty, cancellationToken);
+    }
 }

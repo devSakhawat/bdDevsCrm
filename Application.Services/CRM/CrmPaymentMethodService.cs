@@ -52,8 +52,7 @@ internal sealed class CrmPaymentMethodService : ICrmPaymentMethodService
 						paymentMethodId, DateTime.UtcNow);
 
 		// Return as DTO
-		var resultDto = paymentMethod.MapTo<CrmPaymentMethodDto>();
-		resultDto.PaymentMethodId = paymentMethodId;
+		var resultDto = paymentMethod.MapTo<CrmPaymentMethodDto>() with { PaymentMethodId = paymentMethodId };
 		return resultDto;
 	}
 

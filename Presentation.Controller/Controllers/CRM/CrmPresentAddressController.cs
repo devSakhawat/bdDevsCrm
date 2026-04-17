@@ -107,7 +107,7 @@ public class CrmPresentAddressController : BaseApiController
     /// <summary>
     /// Retrieves all records.
     /// </summary>
-    [HttpGet(RouteConstants.ReadCrmPresentAddresss)]
+    [HttpGet(RouteConstants.ReadCrmPresentAddresses)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var records = await _serviceManager.PresentAddresses.CrmPresentAddresssAsync(trackChanges: false, cancellationToken: cancellationToken);

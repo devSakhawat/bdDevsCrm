@@ -107,7 +107,7 @@ public class CrmPermanentAddressController : BaseApiController
     /// <summary>
     /// Retrieves all records.
     /// </summary>
-    [HttpGet(RouteConstants.ReadCrmPermanentAddresss)]
+    [HttpGet(RouteConstants.ReadCrmPermanentAddresses)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var records = await _serviceManager.PermanentAddresses.CrmPermanentAddresssAsync(trackChanges: false, cancellationToken: cancellationToken);

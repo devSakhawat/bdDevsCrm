@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.Entities.System;
-using Domain.Contracts.Core.SystemAdmin;
+using Domain.Contracts.Repositories.Core.SystemAdmin;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Infrastructure.Sql.Context;
 
@@ -11,13 +11,14 @@ public class AccessRestrictionRepository : RepositoryBase<AccessRestriction>, IA
 
 	#region Priority 1: Basic Retrieval (EF Core)
 
-	/// <summary>
-	/// s access restrictions by HR record ID using EF Core.
-	/// </summary>
-	public async Task<IEnumerable<AccessRestriction>> AccessRestrictionsAsync(int hrRecordId, CancellationToken cancellationToken = default)
+	public async Task<AccessRestriction?> AccessRestrictionAsync(int accessRestrictionId, bool trackChanges, CancellationToken cancellationToken = default)
 	{
-		// Using EF Core function from RepositoryBase for simple filtering
-		return await ListByConditionAsync(x => x.HrRecordId == hrRecordId, trackChanges: false, cancellationToken: cancellationToken);
+		return await FirstOrDefaultAsync(x => x.AccessRestrictionId == accessRestrictionId, trackChanges, cancellationToken);
+	}
+
+	public async Task<IEnumerable<AccessRestriction>> AccessRestrictionsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		return await ListAsync(null, trackChanges, cancellationToken);
 	}
 
 	#endregion
@@ -41,9 +42,9 @@ where HRRecordId = {0}", hrRecordId);
 	/// <summary>
 	/// Retrieves access restriction data based on HR record ID and group condition using ADO.NET.
 	/// </summary>
-	public async Task<IEnumerable<AccessRestriction>> AccessRestrictionsByHrRecordIdAsync(int hrRecordId, string groupCondition, CancellationToken cancellationToken = default)
+	public async Task<IEnumerable<AccessRestriction>> AccessRestrictionsByHrRecordIdAsync(int hrRecordId, CancellationToken cancellationToken = default)
 	{
-		var query = string.Format(@"select Distinct ReferenceId,ReferenceType,ParentReference,ChiledParentReference from AccessRestriction where (HrRecordId = {0} {1})", hrRecordId, groupCondition);
+		var query = string.Format(@"select Distinct ReferenceId,ReferenceType,ParentReference,ChiledParentReference from AccessRestriction where HrRecordId = {0}", hrRecordId);
 
 		return await AdoExecuteListQueryAsync<AccessRestriction>(query, null, cancellationToken);
 	}

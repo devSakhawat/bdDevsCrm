@@ -155,8 +155,11 @@ internal sealed class CompetenciesService : ICompetenciesService
 
     public async Task<GridEntity<CompetenciesDto>> CompetenciesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
     {
-        var competencies = await _repository.Competencies.CompetenciesAsync(false, cancellationToken);
-        var competenciesDtos = competencies.MapToList<CompetenciesDto>();
-        return competenciesDtos.GridDataSource(options);
+        const string sql = @"SELECT * FROM Competencies";
+        const string orderBy = "CompetencyName ASC";
+
+        _logger.LogInformation("Fetching competencies summary grid. Time: {Time}", DateTime.UtcNow);
+
+        return await _repository.Competencies.AdoGridDataAsync<CompetenciesDto>(sql, options, orderBy, string.Empty, cancellationToken);
     }
 }

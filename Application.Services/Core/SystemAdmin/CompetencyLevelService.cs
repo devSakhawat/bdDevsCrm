@@ -152,8 +152,11 @@ internal sealed class CompetencyLevelService : ICompetencyLevelService
 
     public async Task<GridEntity<CompetencyLevelDto>> CompetencyLevelsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
     {
-        var competencyLevels = await _repository.CompetencyLevels.CompetencyLevelsAsync(false, cancellationToken);
-        var competencyLevelDtos = competencyLevels.MapToList<CompetencyLevelDto>();
-        return competencyLevelDtos.GridDataSource(options);
+        const string sql = @"SELECT * FROM CompetencyLevel";
+        const string orderBy = "CompetencyLevelId ASC";
+
+        _logger.LogInformation("Fetching competency level summary grid. Time: {Time}", DateTime.UtcNow);
+
+        return await _repository.CompetencyLevels.AdoGridDataAsync<CompetencyLevelDto>(sql, options, orderBy, string.Empty, cancellationToken);
     }
 }

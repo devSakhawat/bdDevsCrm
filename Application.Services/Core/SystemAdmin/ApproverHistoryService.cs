@@ -55,7 +55,7 @@ internal sealed class ApproverHistoryService : IApproverHistoryService
 
         // Map Record to Entity using Mapster
         ApproverHistory approverHistory = record.MapTo<ApproverHistory>();
-        approverHistory.LastUpdatedDate = DateTime.UtcNow;
+        approverHistory.UpdatedDate = DateTime.UtcNow;
 
         int assignApproverId = await _repository.ApproverHistories.CreateAndIdAsync(approverHistory, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
@@ -97,7 +97,7 @@ internal sealed class ApproverHistoryService : IApproverHistoryService
 
         // Map Record to Entity using Mapster
         ApproverHistory approverHistory = record.MapTo<ApproverHistory>();
-        approverHistory.LastUpdatedDate = DateTime.UtcNow;
+        approverHistory.UpdatedDate = DateTime.UtcNow;
 
         _repository.ApproverHistories.UpdateByState(approverHistory);
         await _repository.SaveAsync(cancellationToken);

@@ -21,4 +21,9 @@ internal sealed class DocumentParameterRepository : RepositoryBase<DocumentParam
     {
         return await ListAsync(null, trackChanges, cancellationToken);
     }
+
+    public async Task<IEnumerable<DocumentParameter>> ActiveDocumentParametersAsync(bool trackChanges, CancellationToken cancellationToken = default)
+    {
+        return await DocumentParametersAsync(trackChanges, cancellationToken);
+    }
 }

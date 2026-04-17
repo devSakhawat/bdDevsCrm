@@ -300,8 +300,8 @@ internal sealed class StatusService : IStatusService
 
 		_logger.LogInformation("Fetching workflow summary grid. Time: {Time}", DateTime.UtcNow);
 
-		//return await _repository.Workflowes.GridData<WfStateDto>(query, options, orderBy, "", cancellationToken);
-		return await _repository.Workflowes.AdoGridDataAsync<WfStateDto>(query, options, orderBy, "", cancellationToken);
+		//return await _repository.Workflows.GridData<WfStateDto>(query, options, orderBy, "", cancellationToken);
+		return await _repository.Workflows.AdoGridDataAsync<WfStateDto>(query, options, orderBy, "", cancellationToken);
 
 	}
 

@@ -12,7 +12,7 @@ public static class ConfigureServiceManager
 {
   public static void AddServiceManager(this IServiceCollection services,  IConfiguration configuration)
   {
-    //services.AddScoped<IServiceManager, ServiceManager>();
+    services.AddScoped<IServiceManager, ServiceManager>();
     services.Configure<AppSettings>(configuration.GetSection(AppSettings.SectionName));
 
     // Startup- validate

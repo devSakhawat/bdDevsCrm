@@ -255,8 +255,8 @@ public class RepositoryManager : IRepositoryManager
   public IQueryAnalyzerRepository QueryAnalyzers => _queryAnalyzerRepository.Value;
   public IStatusRepository WfStates => _statusRepository.Value;
   public IWFActionRepository WfActions => _wfActionRepository.Value;
-  public IWorkFlowSettingsRepository Workflowes => _workFlowSettingsRepository.Value;
-  public IGroupPermissionRepository GroupPermissiones => _groupPermissionRepository.Value;
+  public IWorkFlowSettingsRepository Workflows => _workFlowSettingsRepository.Value;
+  public IGroupPermissionRepository GroupPermissions => _groupPermissionRepository.Value;
   public IAccessControlRepository AccessControls => _accessControlRepository.Value;
   public IAccessRestrictionRepository AccessRestrictions => _accessRestrictionRepository.Value;
   public ICurrencyRepository Currencies => _currencyRepository.Value;
@@ -297,7 +297,7 @@ public class RepositoryManager : IRepositoryManager
   public IEmployeeRepository Employees => _employeeRepository.Value;
   public IEmployeeTypeRepository EmployeeTypes => _employeetypeRepository.Value;
   public IBranchRepository Branches => _branchRepository.Value;
-  public IDepartmentRepository departments => _departmentRepository.Value;
+  public IDepartmentRepository Departments => _departmentRepository.Value;
   #endregion HR area
 
   #region Crm
@@ -311,7 +311,7 @@ public class RepositoryManager : IRepositoryManager
   // Existing Crm repository properties
   public ICrmApplicationRepository CrmApplications => _crmApplicationRepository.Value;
   public ICrmApplicantCourseRepository CrmApplicantCourses => _applicantCourseRepository.Value;
-  public ICrmApplicantInfoRepository CrmApplicantInfoes => _applicantInfoRepository.Value;
+  public ICrmApplicantInfoRepository CrmApplicantInfos => _applicantInfoRepository.Value;
   public ICrmPermanentAddressRepository CrmPermanentAddresses => _permanentAddressRepository.Value;
   public ICrmPresentAddressRepository CrmPresentAddresses => _presentAddressRepository.Value;
 
@@ -325,7 +325,7 @@ public class RepositoryManager : IRepositoryManager
   public ICrmWorkExperienceRepository CrmWorkExperiences => _workExperienceRepository.Value;
   public ICrmApplicantReferenceRepository CrmApplicantReferences => _applicantReferenceRepository.Value;
   public ICrmStatementOfPurposeRepository CrmStatementOfPurposes => _statementOfPurposeRepository.Value;
-  public ICrmAdditionalInfoRepository CrmAdditionalInfoes => _additionalInfoRepository.Value;
+  public ICrmAdditionalInfoRepository CrmAdditionalInfos => _additionalInfoRepository.Value;
   public ICrmAdditionalDocumentRepository CrmAdditionalDocuments => _additionalDocumentRepository.Value;
 
   // New repository properties

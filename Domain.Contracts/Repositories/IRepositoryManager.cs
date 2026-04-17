@@ -25,8 +25,8 @@ public interface IRepositoryManager : IDisposable
   IQueryAnalyzerRepository QueryAnalyzers { get; }
   IStatusRepository WfStates { get; }
   IWFActionRepository WfActions { get; }
-  IWorkFlowSettingsRepository Workflowes { get; }
-  IGroupPermissionRepository GroupPermissiones { get; }
+  IWorkFlowSettingsRepository Workflows { get; }
+  IGroupPermissionRepository GroupPermissions { get; }
   IAccessControlRepository AccessControls { get; }
   IAccessRestrictionRepository AccessRestrictions { get; }
   ICurrencyRepository Currencies { get; }
@@ -66,7 +66,7 @@ public interface IRepositoryManager : IDisposable
   IEmployeeRepository Employees { get; }
   IEmployeeTypeRepository EmployeeTypes { get; }
   IBranchRepository Branches { get; }
-  IDepartmentRepository departments { get; }
+  IDepartmentRepository Departments { get; }
   // instance should be small letter.
 
   #region CRM
@@ -80,7 +80,7 @@ public interface IRepositoryManager : IDisposable
   // Existing CRM repositories
   ICrmApplicationRepository CrmApplications { get; }
   ICrmApplicantCourseRepository CrmApplicantCourses { get; }
-  ICrmApplicantInfoRepository CrmApplicantInfoes { get; }
+  ICrmApplicantInfoRepository CrmApplicantInfos { get; }
   ICrmPermanentAddressRepository CrmPermanentAddresses { get; }
   ICrmPresentAddressRepository CrmPresentAddresses { get; }
   
@@ -94,7 +94,7 @@ public interface IRepositoryManager : IDisposable
   ICrmWorkExperienceRepository CrmWorkExperiences { get; }
   ICrmApplicantReferenceRepository CrmApplicantReferences { get; }
   ICrmStatementOfPurposeRepository CrmStatementOfPurposes { get; }
-  ICrmAdditionalInfoRepository CrmAdditionalInfoes { get; }
+  ICrmAdditionalInfoRepository CrmAdditionalInfos { get; }
   ICrmAdditionalDocumentRepository CrmAdditionalDocuments { get; }
   // New CRM repositories
   ICrmIntakeMonthRepository CrmIntakeMonths { get; }

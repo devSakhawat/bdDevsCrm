@@ -51,7 +51,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 
 		if (!string.IsNullOrEmpty(entityForCreate.EmailAddress))
 		{
-			bool emailExists = await _repository.CrmApplicantInfoes.ExistsAsync(
+			bool emailExists = await _repository.CrmApplicantInfos.ExistsAsync(
 							x => x.EmailAddress != null && x.EmailAddress.ToLower() == entityForCreate.EmailAddress.ToLower(),
 							cancellationToken: cancellationToken);
 
@@ -59,7 +59,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 				throw new DuplicateRecordException("CrmApplicantInfo", "EmailAddress");
 		}
 
-		bool appExists = await _repository.CrmApplicantInfoes.ExistsAsync(
+		bool appExists = await _repository.CrmApplicantInfos.ExistsAsync(
 						x => x.ApplicationId == entityForCreate.ApplicationId,
 						cancellationToken: cancellationToken);
 
@@ -73,7 +73,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 		infoEntity.CreatedDate = DateTime.UtcNow;
 		infoEntity.CreatedBy = currentUser.UserId ?? 0;
 
-		await _repository.CrmApplicantInfoes.CreateAsync(infoEntity, cancellationToken);
+		await _repository.CrmApplicantInfos.CreateAsync(infoEntity, cancellationToken);
 		int affected = await _repository.SaveChangesAsync(cancellationToken);
 
 		if (affected <= 0)
@@ -98,14 +98,14 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 
 		_logger.LogInformation("Updating applicant info. ID: {ApplicantId}, Time: {Time}", applicantId, DateTime.UtcNow);
 
-		var applicantInfo = await _repository.CrmApplicantInfoes
+		var applicantInfo = await _repository.CrmApplicantInfos
 						.FirstOrDefaultAsync(x => x.ApplicantId == applicantId, trackChanges: false, cancellationToken)
 						?? throw new NotFoundException("CrmApplicantInfo", "ApplicantId", applicantId.ToString());
 
 		var updatedEntity = MyMapper.MergeChangedValues<CrmApplicantInfo, ApplicantInfoDto>(applicantInfo, modelDto);
 		updatedEntity.UpdatedDate = DateTime.UtcNow;
 
-		_repository.CrmApplicantInfoes.UpdateByState(updatedEntity);
+		_repository.CrmApplicantInfos.UpdateByState(updatedEntity);
 
 		int affected = await _repository.SaveChangesAsync(cancellationToken);
 		if (affected <= 0)
@@ -130,11 +130,11 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 
 		_logger.LogInformation("Deleting applicant info. ID: {ApplicantId}, Time: {Time}", applicantId, DateTime.UtcNow);
 
-		var infoEntity = await _repository.CrmApplicantInfoes
+		var infoEntity = await _repository.CrmApplicantInfos
 						.FirstOrDefaultAsync(x => x.ApplicantId == applicantId, trackChanges, cancellationToken)
 						?? throw new NotFoundException("CrmApplicantInfo", "ApplicantId", applicantId.ToString());
 
-		await _repository.CrmApplicantInfoes.DeleteAsync(x => x.ApplicantId == applicantId, trackChanges, cancellationToken);
+		await _repository.CrmApplicantInfos.DeleteAsync(x => x.ApplicantId == applicantId, trackChanges, cancellationToken);
 		int affected = await _repository.SaveChangesAsync(cancellationToken);
 
 		if (affected <= 0)
@@ -153,7 +153,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 	{
 		_logger.LogInformation("Fetching applicant info. ID: {ApplicantId}, Time: {Time}", id, DateTime.UtcNow);
 
-		var info = await _repository.CrmApplicantInfoes
+		var info = await _repository.CrmApplicantInfos
 						.FirstOrDefaultAsync(x => x.ApplicantId == id, trackChanges, cancellationToken)
 						?? throw new NotFoundException("CrmApplicantInfo", "ApplicantId", id.ToString());
 
@@ -170,7 +170,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 	{
 		_logger.LogInformation("Fetching applicant info by application ID: {ApplicationId}, Time: {Time}", applicationId, DateTime.UtcNow);
 
-		var info = await _repository.CrmApplicantInfoes
+		var info = await _repository.CrmApplicantInfos
 						.FirstOrDefaultAsync(x => x.ApplicationId == applicationId, trackChanges, cancellationToken)
 						?? throw new NotFoundException("CrmApplicantInfo", "ApplicationId", applicationId.ToString());
 
@@ -193,7 +193,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 
 		_logger.LogInformation("Fetching applicant info by email: {Email}, Time: {Time}", email, DateTime.UtcNow);
 
-		var info = await _repository.CrmApplicantInfoes
+		var info = await _repository.CrmApplicantInfos
 						.FirstOrDefaultAsync(x => x.EmailAddress != null && x.EmailAddress.ToLower() == email.ToLower(), trackChanges, cancellationToken)
 						?? throw new NotFoundException("CrmApplicantInfo", "EmailAddress", email);
 
@@ -210,7 +210,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 	{
 		_logger.LogInformation("Fetching all applicant infos. Time: {Time}", DateTime.UtcNow);
 
-		var infos = await _repository.CrmApplicantInfoes.CrmApplicantInfosAsync(trackChanges, cancellationToken);
+		var infos = await _repository.CrmApplicantInfos.CrmApplicantInfosAsync(trackChanges, cancellationToken);
 
 		if (!infos.Any())
 		{
@@ -233,7 +233,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 	{
 		_logger.LogInformation("Fetching active applicant infos. Time: {Time}", DateTime.UtcNow);
 
-		var infos = await _repository.CrmApplicantInfoes.CrmApplicantInfosAsync(trackChanges, cancellationToken);
+		var infos = await _repository.CrmApplicantInfos.CrmApplicantInfosAsync(trackChanges, cancellationToken);
 
 		if (!infos.Any())
 		{
@@ -256,7 +256,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 	{
 		_logger.LogInformation("Fetching applicant infos for dropdown list. Time: {Time}", DateTime.UtcNow);
 
-		var infos = await _repository.CrmApplicantInfoes.CrmApplicantInfosAsync(trackChanges, cancellationToken);
+		var infos = await _repository.CrmApplicantInfos.CrmApplicantInfosAsync(trackChanges, cancellationToken);
 
 		if (!infos.Any())
 		{
@@ -315,7 +315,7 @@ internal sealed class CrmApplicantInfoService : ICrmApplicantInfoService
 
 		_logger.LogInformation("Fetching applicant infos summary grid. Time: {Time}", DateTime.UtcNow);
 
-		return await _repository.CrmApplicantInfoes.AdoGridDataAsync<ApplicantInfoDto>(sql, options, orderBy, "", cancellationToken);
+		return await _repository.CrmApplicantInfos.AdoGridDataAsync<ApplicantInfoDto>(sql, options, orderBy, "", cancellationToken);
 	}
 }
 

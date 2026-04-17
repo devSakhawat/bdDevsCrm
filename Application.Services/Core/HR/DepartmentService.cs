@@ -43,7 +43,7 @@ internal sealed class DepartmentService : IDepartmentService
     }
 
     string query = string.Format(SELECT_DEPARTMENT_BY_COMPANYID, companyId, "");
-    IEnumerable<DepartmentDto> result = await _repository.departments.AdoExecuteListQueryAsync<DepartmentDto>(query, parameters: null, cancellationToken: cancellationToken);
+    IEnumerable<DepartmentDto> result = await _repository.Departments.AdoExecuteListQueryAsync<DepartmentDto>(query, parameters: null, cancellationToken: cancellationToken);
 
     return result;
   }

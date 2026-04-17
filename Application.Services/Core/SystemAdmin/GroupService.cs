@@ -130,7 +130,7 @@ internal sealed class GroupService : IGroupService
 
 		try
 		{
-			await _repository.GroupPermissiones.TransactionBeginAsync();
+			await _repository.GroupPermissions.TransactionBeginAsync();
 
 			// Create group
 			Groups entity = MyMapper.JsonClone<GroupDto, Groups>(modelDto);
@@ -148,20 +148,20 @@ internal sealed class GroupService : IGroupService
 			await InsertPermissionsIfNotEmptyAsync(groupId, modelDto.ActionList, "Action", cancellationToken);
 			await InsertPermissionsIfNotEmptyAsync(groupId, modelDto.ReportList, "Report", cancellationToken);
 
-			await _repository.GroupPermissiones.TransactionCommitAsync();
+			await _repository.GroupPermissions.TransactionCommitAsync();
 
 			_logger.LogInformation("Group created successfully with ID: {GroupId}", groupId);
 			return modelDto;
 		}
 		catch (Exception ex)
 		{
-			await _repository.GroupPermissiones.TransactionRollbackAsync();
+			await _repository.GroupPermissions.TransactionRollbackAsync();
 			_logger.LogError(ex, "Error creating group: {GroupName}", modelDto.GroupName);
 			throw;
 		}
 		finally
 		{
-			await _repository.GroupPermissiones.TransactionDisposeAsync();
+			await _repository.GroupPermissions.TransactionDisposeAsync();
 		}
 	}
 
@@ -196,7 +196,7 @@ internal sealed class GroupService : IGroupService
 
 		try
 		{
-			await _repository.GroupPermissiones.TransactionBeginAsync(cancellationToken);
+			await _repository.GroupPermissions.TransactionBeginAsync(cancellationToken);
 
 			// Update group
 			Groups entity = MyMapper.JsonClone<GroupDto, Groups>(modelDto);
@@ -213,7 +213,7 @@ internal sealed class GroupService : IGroupService
 			await InsertPermissionsIfNotEmptyAsync(key, modelDto.ActionList, "Action", cancellationToken);
 			await InsertPermissionsIfNotEmptyAsync(key, modelDto.ReportList, "Report", cancellationToken);
 
-			await _repository.GroupPermissiones.TransactionCommitAsync(cancellationToken);
+			await _repository.GroupPermissions.TransactionCommitAsync(cancellationToken);
 			await _repository.SaveAsync(cancellationToken);
 
 			_logger.LogInformation("Group updated successfully: {GroupId}", key);
@@ -221,13 +221,13 @@ internal sealed class GroupService : IGroupService
 		}
 		catch (Exception ex)
 		{
-			await _repository.GroupPermissiones.TransactionRollbackAsync(cancellationToken);
+			await _repository.GroupPermissions.TransactionRollbackAsync(cancellationToken);
 			_logger.LogError(ex, "Error updating group: {GroupId}", key);
 			throw;
 		}
 		finally
 		{
-			await _repository.GroupPermissiones.TransactionDisposeAsync();
+			await _repository.GroupPermissions.TransactionDisposeAsync();
 		}
 	}
 
@@ -249,7 +249,7 @@ internal sealed class GroupService : IGroupService
 
 		try
 		{
-			await _repository.GroupPermissiones.TransactionBeginAsync(cancellationToken);
+			await _repository.GroupPermissions.TransactionBeginAsync(cancellationToken);
 
 			// Delete permissions first
 			await DeleteExistingPermissionsForGroupAsync(key, cancellationToken);
@@ -258,19 +258,19 @@ internal sealed class GroupService : IGroupService
 			await _repository.Groups.DeleteAsync(g => g.GroupId == key, trackChanges: false, cancellationToken);
 			await _repository.SaveAsync(cancellationToken);
 
-			await _repository.GroupPermissiones.TransactionCommitAsync(cancellationToken);
+			await _repository.GroupPermissions.TransactionCommitAsync(cancellationToken);
 
 			_logger.LogInformation("Group deleted successfully: {GroupId}", key);
 		}
 		catch (Exception ex)
 		{
-			await _repository.GroupPermissiones.TransactionRollbackAsync(cancellationToken);
+			await _repository.GroupPermissions.TransactionRollbackAsync(cancellationToken);
 			_logger.LogError(ex, "Error deleting group: {GroupId}", key);
 			throw;
 		}
 		finally
 		{
-			await _repository.GroupPermissiones.TransactionDisposeAsync();
+			await _repository.GroupPermissions.TransactionDisposeAsync();
 		}
 	}
 
@@ -319,7 +319,7 @@ internal sealed class GroupService : IGroupService
 	private async Task DeleteExistingPermissionsForGroupAsync(int groupId, CancellationToken cancellationToken = default)
 	{
 		string deleteQuery = $"DELETE FROM GroupPermission WHERE GroupId = {groupId}";
-		await _repository.GroupPermissiones.EfCoreExecuteNonQueryAsync(deleteQuery, cancellationToken);
+		await _repository.GroupPermissions.EfCoreExecuteNonQueryAsync(deleteQuery, cancellationToken);
 	}
 
 	/// <summary>
@@ -334,7 +334,7 @@ internal sealed class GroupService : IGroupService
 		{
 			string insertQuery = $@"INSERT INTO GroupPermission (GroupId, PermissionTableName, ReferenceID) 
                 VALUES ({groupId}, '{permissionTableName}', {permissionId})";
-			await _repository.GroupPermissiones.EfCoreExecuteNonQueryAsync(insertQuery, cancellationToken);
+			await _repository.GroupPermissions.EfCoreExecuteNonQueryAsync(insertQuery, cancellationToken);
 		}
 
 		await Task.CompletedTask;

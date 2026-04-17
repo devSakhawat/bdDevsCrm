@@ -57,7 +57,7 @@ public interface IServiceManager
   #region HR
   IEmployeeService Employees { get; }
   IBranchService Branches { get; }
-  IDepartmentService departments { get; }
+  IDepartmentService Departments { get; }
   #endregion HR
 
   #region Crm

@@ -56,7 +56,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 		infoEntity.CreatedDate = DateTime.UtcNow;
 		infoEntity.CreatedBy = currentUser.UserId ?? 0;
 
-		await _repository.CrmAdditionalInfoes.CreateAsync(infoEntity, cancellationToken);
+		await _repository.CrmAdditionalInfos.CreateAsync(infoEntity, cancellationToken);
 		int affected = await _repository.SaveChangesAsync(cancellationToken);
 
 		if (affected <= 0)
@@ -81,14 +81,14 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 
 		_logger.LogInformation("Updating additional info. ID: {AdditionalInfoId}, Time: {Time}", additionalInfoId, DateTime.UtcNow);
 
-		var infoEntity = await _repository.CrmAdditionalInfoes
+		var infoEntity = await _repository.CrmAdditionalInfos
 						.FirstOrDefaultAsync(x => x.AdditionalInfoId == additionalInfoId, trackChanges: false, cancellationToken)
 						?? throw new NotFoundException("CrmAdditionalInfo", "AdditionalInfoId", additionalInfoId.ToString());
 
 		var updatedEntity = MyMapper.MergeChangedValues<CrmAdditionalInfo, AdditionalInfoDto>(infoEntity, modelDto);
 		updatedEntity.UpdatedDate = DateTime.UtcNow;
 
-		_repository.CrmAdditionalInfoes.UpdateByState(updatedEntity);
+		_repository.CrmAdditionalInfos.UpdateByState(updatedEntity);
 
 		int affected = await _repository.SaveChangesAsync(cancellationToken);
 		if (affected <= 0)
@@ -113,11 +113,11 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 
 		_logger.LogInformation("Deleting additional info. ID: {AdditionalInfoId}, Time: {Time}", additionalInfoId, DateTime.UtcNow);
 
-		var infoEntity = await _repository.CrmAdditionalInfoes
+		var infoEntity = await _repository.CrmAdditionalInfos
 						.FirstOrDefaultAsync(x => x.AdditionalInfoId == additionalInfoId, trackChanges, cancellationToken)
 						?? throw new NotFoundException("CrmAdditionalInfo", "AdditionalInfoId", additionalInfoId.ToString());
 
-		await _repository.CrmAdditionalInfoes.DeleteAsync(x => x.AdditionalInfoId == additionalInfoId, trackChanges, cancellationToken);
+		await _repository.CrmAdditionalInfos.DeleteAsync(x => x.AdditionalInfoId == additionalInfoId, trackChanges, cancellationToken);
 		int affected = await _repository.SaveChangesAsync(cancellationToken);
 
 		if (affected <= 0)
@@ -136,7 +136,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 	{
 		_logger.LogInformation("Fetching additional info. ID: {AdditionalInfoId}, Time: {Time}", id, DateTime.UtcNow);
 
-		var info = await _repository.CrmAdditionalInfoes
+		var info = await _repository.CrmAdditionalInfos
 						.FirstOrDefaultAsync(x => x.AdditionalInfoId == id, trackChanges, cancellationToken)
 						?? throw new NotFoundException("CrmAdditionalInfo", "AdditionalInfoId", id.ToString());
 
@@ -153,7 +153,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 	{
 		_logger.LogInformation("Fetching all additional infos. Time: {Time}", DateTime.UtcNow);
 
-		var infos = await _repository.CrmAdditionalInfoes.CrmAdditionalInfosAsync(trackChanges, cancellationToken);
+		var infos = await _repository.CrmAdditionalInfos.CrmAdditionalInfosAsync(trackChanges, cancellationToken);
 
 		if (!infos.Any())
 		{
@@ -176,7 +176,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 	{
 		_logger.LogInformation("Fetching active additional infos. Time: {Time}", DateTime.UtcNow);
 
-		var infos = await _repository.CrmAdditionalInfoes.CrmAdditionalInfosAsync(trackChanges, cancellationToken);
+		var infos = await _repository.CrmAdditionalInfos.CrmAdditionalInfosAsync(trackChanges, cancellationToken);
 
 		if (!infos.Any())
 		{
@@ -205,7 +205,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 
 		_logger.LogInformation("Fetching additional infos for applicant ID: {ApplicantId}, Time: {Time}", applicantId, DateTime.UtcNow);
 
-		var infos = await _repository.CrmAdditionalInfoes.CrmAdditionalInfosByApplicantIdAsync(applicantId, trackChanges, cancellationToken);
+		var infos = await _repository.CrmAdditionalInfos.CrmAdditionalInfosByApplicantIdAsync(applicantId, trackChanges, cancellationToken);
 
 		if (!infos.Any())
 		{
@@ -228,7 +228,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 	{
 		_logger.LogInformation("Fetching additional infos for dropdown list. Time: {Time}", DateTime.UtcNow);
 
-		var infos = await _repository.CrmAdditionalInfoes.CrmAdditionalInfosAsync(trackChanges, cancellationToken);
+		var infos = await _repository.CrmAdditionalInfos.CrmAdditionalInfosAsync(trackChanges, cancellationToken);
 
 		if (!infos.Any())
 		{
@@ -274,7 +274,7 @@ internal sealed class CrmAdditionalInfoService : ICrmAdditionalInfoService
 
 		_logger.LogInformation("Fetching additional infos summary grid. Time: {Time}", DateTime.UtcNow);
 
-		return await _repository.CrmAdditionalInfoes.AdoGridDataAsync<AdditionalInfoDto>(sql, options, orderBy, "", cancellationToken);
+		return await _repository.CrmAdditionalInfos.AdoGridDataAsync<AdditionalInfoDto>(sql, options, orderBy, "", cancellationToken);
 	}
 }
 

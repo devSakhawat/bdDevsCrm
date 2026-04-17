@@ -283,7 +283,7 @@ public sealed class ServiceManager : IServiceManager
   #region HR Area
   public IEmployeeService Employees => _employeeService.Value;
   public IBranchService Branches => _branchService.Value;
-  public IDepartmentService departments => _departmentService.Value;
+  public IDepartmentService Departments => _departmentService.Value;
   #endregion HR Area
 
   #region Crm

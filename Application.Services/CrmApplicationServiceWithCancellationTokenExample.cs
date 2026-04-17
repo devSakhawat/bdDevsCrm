@@ -336,7 +336,7 @@ using Domain.Contracts.Repositories;
 //        var applicantInfoEntity = MyMapper.JsonClone<ApplicantInfoDto, CrmApplicantInfo>(applicantInfoDto);
 
 //        // ✅ Pass CancellationToken
-//        int applicantId = await _repository.CrmApplicantInfoes.CreateAndIdAsync(
+//        int applicantId = await _repository.CrmApplicantInfos.CreateAndIdAsync(
 //            applicantInfoEntity,
 //            cancellationToken);
 
@@ -547,7 +547,7 @@ using Domain.Contracts.Repositories;
 //        var applicantInfoDto = updateDto.CourseInformation.PersonalDetails;
 
 //        // ✅ Pass CancellationToken to ExistsAsync
-//        bool applicantExists = await _repository.CrmApplicantInfoes.ExistsAsync(
+//        bool applicantExists = await _repository.CrmApplicantInfos.ExistsAsync(
 //            x => x.ApplicantId == applicantInfoDto.ApplicantId && x.ApplicationId == key,
 //            cancellationToken);
 
@@ -561,7 +561,7 @@ using Domain.Contracts.Repositories;
 
 //          // ✅ Pass CancellationToken
 //          updateDto.CourseInformation.PersonalDetails.ApplicantId =
-//              await _repository.CrmApplicantInfoes.CreateAndIdAsync(
+//              await _repository.CrmApplicantInfos.CreateAndIdAsync(
 //                  crmApplicantInfo,
 //                  cancellationToken);
 
@@ -572,7 +572,7 @@ using Domain.Contracts.Repositories;
 //        else
 //        {
 //          // Update existing
-//          var applicantInfosDB = await _repository.CrmApplicantInfoes.FirstOrDefaultAsync(
+//          var applicantInfosDB = await _repository.CrmApplicantInfos.FirstOrDefaultAsync(
 //              x => x.ApplicantId == applicantInfoDto.ApplicantId && x.ApplicationId == updateDto.ApplicationId,
 //              false,
 //              cancellationToken);
@@ -591,7 +591,7 @@ using Domain.Contracts.Repositories;
 //          applicantInfoDto.UpdatedDate = DateTime.UtcNow;
 //          applicantInfoDto.UpdatedBy = currentUser.UserId ?? 0;
 //          applicantInfosDB = MyMapper.JsonCloneSafe<ApplicantInfoDto, CrmApplicantInfo>(applicantInfoDto);
-//          _repository.CrmApplicantInfoes.UpdateByState(applicantInfosDB);
+//          _repository.CrmApplicantInfos.UpdateByState(applicantInfosDB);
 
 //          // ✅ Pass CancellationToken
 //          await _repository.SaveAsync(cancellationToken);

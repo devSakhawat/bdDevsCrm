@@ -34,7 +34,7 @@ public class DepartmentController : BaseApiController
     UsersDto currentUser = _serviceManager.Cache<UsersDto>(userId);
     if (currentUser == null) return Unauthorized("User not found in cache.");
 
-    IEnumerable<DepartmentDto> res = await _serviceManager.departments.DepartmentesByCompanyIdForCombo(companyId, currentUser, trackChanges: false, cancellationToken);
+    IEnumerable<DepartmentDto> res = await _serviceManager.Departments.DepartmentesByCompanyIdForCombo(companyId, currentUser, trackChanges: false, cancellationToken);
     //return Ok(branchList);
 
     if (res == null || !res.Any())

@@ -53,6 +53,7 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ICompetencyLevelService> _competencyLevelService;
   private readonly Lazy<IBoardInstituteService> _boardInstituteService;
   private readonly Lazy<IAuditTypeService> _auditTypeService;
+  private readonly Lazy<IAccessRestrictionService> _accessRestrictionService;
 
   // Approver/Workflow Services
   private readonly Lazy<IApproverDetailsService> _approverDetailsService;
@@ -159,6 +160,7 @@ public sealed class ServiceManager : IServiceManager
     _competencyLevelService = new Lazy<ICompetencyLevelService>(() => new CompetencyLevelService(repository, _hybridCache, loggerFactory.CreateLogger<CompetencyLevelService>(), configuration));
     _boardInstituteService = new Lazy<IBoardInstituteService>(() => new BoardInstituteService(repository, _hybridCache, loggerFactory.CreateLogger<BoardInstituteService>(), configuration));
     _auditTypeService = new Lazy<IAuditTypeService>(() => new AuditTypeService(repository, _hybridCache, loggerFactory.CreateLogger<AuditTypeService>(), configuration));
+    _accessRestrictionService = new Lazy<IAccessRestrictionService>(() => new AccessRestrictionService(repository, _hybridCache, loggerFactory.CreateLogger<AccessRestrictionService>(), configuration));
 
     // Approver/Workflow Services initialization
     _approverDetailsService = new Lazy<IApproverDetailsService>(() => new ApproverDetailsService(repository, _hybridCache, loggerFactory.CreateLogger<ApproverDetailsService>(), configuration));
@@ -257,10 +259,11 @@ public sealed class ServiceManager : IServiceManager
   public IQueryAnalyzerService QueryAnalyzer => _queryAnalyzerService.Value;
   public IStatusService WfState => _statusService.Value;
   public IAccessControlService AccessControls => _accessControlService.Value;
+  public IAccessRestrictionService AccessRestrictions => _accessRestrictionService.Value;
 
   // Approver/Workflow Services
   public IApproverDetailsService ApproverDetails => _approverDetailsService.Value;
-  public IApproverHistoryService ApproverHistories => _approverHistoryService.Value;
+  public IApproverHistoryService ApproverHistory => _approverHistoryService.Value;
   public IApproverOrderService ApproverOrders => _approverOrderService.Value;
   public IApproverTypeService ApproverTypes => _approverTypeService.Value;
   public IAssignApproverService AssignApprovers => _assignApproverService.Value;

@@ -7,6 +7,11 @@ public class UsersDto
 	public int? CompanyId { get; set; }
 	public string? LoginId { get; set; }
 	public string? UserName { get; set; }
+	public string? Username
+	{
+		get => UserName;
+		set => UserName = value;
+	}
 	public string? Password { get; set; }
 	public int? EmployeeId { get; set; } //HrRecorId
 

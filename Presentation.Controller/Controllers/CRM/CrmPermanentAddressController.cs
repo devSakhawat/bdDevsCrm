@@ -36,10 +36,10 @@ public class CrmPermanentAddressController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.PermanentAddresses.CrmPermanentAddresssSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.PermanentAddresses.PermanentAddressesSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmPermanentAddressDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<PermanentAddressDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,10 +51,10 @@ public class CrmPermanentAddressController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmPermanentAddressRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmPermanentAddressDto>();
+        var dto = record.MapTo<PermanentAddressDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.PermanentAddresses.CreateCrmPermanentAddressAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.PermanentAddresses.CreatePermanentAddressAsync(dto, currentUser, cancellationToken);
 
         if (created.PermanentAddressId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +72,8 @@ public class CrmPermanentAddressController : BaseApiController
         if (key != record.PermanentAddressId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmPermanentAddressRecord));
 
-        var dto = record.MapTo<CrmPermanentAddressDto>();
-        var updated = await _serviceManager.PermanentAddresses.UpdateCrmPermanentAddressAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<PermanentAddressDto>();
+        var updated = await _serviceManager.PermanentAddresses.UpdatePermanentAddressAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -84,9 +84,7 @@ public class CrmPermanentAddressController : BaseApiController
     [HttpDelete(RouteConstants.DeleteCrmPermanentAddress)]
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
-        var deleteRecord = new DeleteCrmPermanentAddressRecord(key);
-        var dto = new CrmPermanentAddressDto { PermanentAddressId = key };
-        await _serviceManager.PermanentAddresses.DeleteCrmPermanentAddressAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.PermanentAddresses.DeletePermanentAddressAsync(key, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +97,7 @@ public class CrmPermanentAddressController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.PermanentAddresses.CrmPermanentAddressAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.PermanentAddresses.PermanentAddressAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +108,10 @@ public class CrmPermanentAddressController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmPermanentAddresses)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.PermanentAddresses.CrmPermanentAddresssAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.PermanentAddresses.PermanentAddressesAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmPermanentAddressDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<PermanentAddressDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

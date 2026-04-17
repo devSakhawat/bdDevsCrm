@@ -36,7 +36,7 @@ public class CrmMonthController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.CrmMonths.CrmMonthsSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.CrmMonths.MonthsSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
             return Ok(ApiResponseHelper.Success(new GridEntity<CrmMonthDto>(), "No records found."));
@@ -51,10 +51,7 @@ public class CrmMonthController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmMonthRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmMonthDto>();
-        var currentUser = await GetCurrentUserAsync();
-
-        var created = await _serviceManager.CrmMonths.CreateCrmMonthAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.CrmMonths.CreateAsync(record, cancellationToken);
 
         if (created.MonthId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +69,7 @@ public class CrmMonthController : BaseApiController
         if (key != record.MonthId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmMonthRecord));
 
-        var dto = record.MapTo<CrmMonthDto>();
-        var updated = await _serviceManager.CrmMonths.UpdateCrmMonthAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var updated = await _serviceManager.CrmMonths.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +81,7 @@ public class CrmMonthController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmMonthRecord(key);
-        var dto = new CrmMonthDto { MonthId = key };
-        await _serviceManager.CrmMonths.DeleteCrmMonthAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.CrmMonths.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +94,7 @@ public class CrmMonthController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.CrmMonths.CrmMonthAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.CrmMonths.MonthAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,7 +105,7 @@ public class CrmMonthController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmMonths)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.CrmMonths.CrmMonthsAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.CrmMonths.MonthsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmMonthDto>(), "No records found."));
@@ -118,13 +113,4 @@ public class CrmMonthController : BaseApiController
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }
 
-    private async Task<UsersDto> GetCurrentUserAsync()
-    {
-        var userId = User?.FindFirst("UserId")?.Value;
-        if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int parsedUserId))
-        {
-            return new UsersDto { UserId = 1, Username = "system" };
-        }
-        return new UsersDto { UserId = parsedUserId };
-    }
 }

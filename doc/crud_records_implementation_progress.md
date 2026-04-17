@@ -1,9 +1,9 @@
 # CRUD Records Pattern Implementation Progress
 
-**Project**: bdDevsCrm
-**Started**: 2026-04-15
-**Status**: 🚧 In Progress
-**Current Phase**: System Module Implementation
+**Project**: bdDevsCrm  
+**Started**: 2026-04-15  
+**Status**: 🚧 In Progress  
+**Current Focus**: Service/Controller migration & build fixes
 
 ---
 
@@ -12,46 +12,54 @@
 This document tracks the implementation of the CRUD Records pattern across all entities in the bdDevsCrm project. The goal is to replace DTOs with C# record types for all HTTP requests and implement proper validation using FluentValidation.
 
 ### Key Requirements
-1. ✅ Use **Mapster** for mapping (NOT AutoMapper) - **INSTALLED**
-2. ✅ Use **FluentValidation** for validation - **INSTALLED**
-3. 🚧 Create **CreateXxxRecord**, **UpdateXxxRecord**, **DeleteXxxRecord** for each entity - **IN PROGRESS**
-4. ⏳ Update Controllers to use Records instead of DTOs - **PENDING**
-5. ⏳ Update Services to use Mapster instead of MyMapper.JsonClone - **PENDING**
-6. ✅ Install Mapster in bdDevs.Shared for shared mapping utilities - **DONE**
+1. ✅ Use **Mapster** for mapping (NOT AutoMapper) - installed
+2. ✅ Use **FluentValidation** for validation - installed
+3. 🚧 Use **Create/Update/Delete XxxRecord** for every entity - partially done across modules
+4. 🚧 Controllers use Records instead of DTOs - in progress
+5. 🚧 Services use Mapster instead of MyMapper.JsonClone - in progress
+6. ✅ Mapster available in bdDevs.Shared for shared mapping utilities
+
+### Current Snapshot (2026-04-17)
+- Records created: **90** total (SystemAdmin 53, HR 2, CRM 26, DMS 9)
+- Validators created: **88** total (SystemAdmin 53, CRM 26, DMS 9) + BaseRecordValidator
+- Services using Records: **54 / 80** (67.5%)
+- Controllers using Records: **54 / 78** (69.2%)
+- Build status: **FAILED** (112 errors). Primary blockers: missing validator type resolutions in several SystemAdmin services, missing repository method `ActiveDocumentParameterMappingsAsync`, missing entity members (`LastUpdatedDate`) referenced in services, and grid extension calls (e.g., `GridDataSource`) not present. Needs remediation before further migrations.
 
 ---
 
 ## 🎯 Implementation Strategy
 
-### Phase 1: Infrastructure Setup ✅ COMPLETED
-- [x] Install Mapster 10.0.7 in bdDevs.Shared project
-- [x] Install FluentValidation 11.12.0 in Application.Services project
-- [x] Install FluentValidation.DependencyInjectionExtensions 11.12.0
-- [x] Create base validator classes (BaseRecordValidator<T>)
-- [x] Configure Mapster mappings (MapsterConfig.cs)
-- [x] Create reusable mapping extensions (MapsterExtensions.cs)
+### Phase 1: Infrastructure Setup ✅ Completed
+- [x] Mapster 10.0.7 added to bdDevs.Shared & Application.Services
+- [x] FluentValidation 11.12.0 (+ DI extensions) added
+- [x] BaseRecordValidator<T>, MapsterConfig, MapsterExtensions created
 
-### Phase 2: System Module (54 entities) - 🚧 IN PROGRESS
-- [x] Create CRUD Records for all System entities ✅ **COMPLETED**
-- [x] Create FluentValidation validators for each Record ✅ **COMPLETED**
-- [ ] Update Service interfaces
-- [ ] Update Service implementations with Mapster
-- [ ] Update Controllers to use Records
-- [ ] Test and verify
+### Phase 2: System Module - 🚧 In Progress
+- [x] CRUD Records for SystemAdmin entities (53 files)
+- [x] Validators for SystemAdmin Records (53 files)
+- [ ] Services fully migrated to Records/Mapster (26 SystemAdmin services still using DTO/MyMapper; see priority list)
+- [ ] Controllers fully migrated (12 SystemAdmin controllers still DTO-based)
+- [ ] Build/test verification (current solution build failing)
 
-### Phase 3: CRM Module (~30 entities)
-- [ ] Create CRUD Records for all CRM entities
-- [ ] Create validators
-- [ ] Update services and controllers
-- [ ] Test and verify
+### Phase 3: CRM Module - 🚧 In Progress
+- [x] CRUD Records (26 files)
+- [x] Validators (26 files)
+- [ ] Services & controllers: majority migrated; remaining MyMapper usage to replace and endpoints to verify
+- [ ] Build/test verification (blocked by global build failures)
 
-### Phase 4: DMS Module (~8 entities)
-- [ ] Create CRUD Records for all DMS entities
-- [ ] Create validators
-- [ ] Update services and controllers
-- [ ] Test and verify
+### Phase 4: DMS Module - 🚧 In Progress
+- [x] CRUD Records (9 files)
+- [x] Validators (9 files)
+- [ ] Services/controllers: DMS document services/controllers still DTO/MyMapper heavy
+- [ ] Build/test verification (blocked)
 
-### Phase 5: Final Testing & Documentation
+### Phase 5: HR Module - 🚧 Not Started (beyond records)
+- [x] Records for Branch, Department (2 files)
+- [ ] Validators
+- [ ] Service/controller migrations
+
+### Phase 6: Final Testing & Documentation
 - [ ] Build verification (0 errors)
 - [ ] Integration testing
 - [ ] Update API documentation
@@ -59,103 +67,31 @@ This document tracks the implementation of the CRUD Records pattern across all e
 
 ---
 
-## 📊 System Module Entities (54 Total)
+## 📊 Coverage Summary
 
-### ✅ Already Completed (54/54 - 100%) 🎉
-1. ✅ **Company** - CompanyRecords.cs
-2. ✅ **Branch** - BranchRecords.cs
-3. ✅ **Department** - DepartmentRecords.cs
-4. ✅ **Currency** - CurrencyRecords.cs
-5. ✅ **Menu** - MenuRecords.cs
-6. ✅ **Group** - GroupRecords.cs
-7. ✅ **Module** - ModuleRecords.cs
-8. ✅ **Users** - UsersRecords.cs
-9. ✅ **Holiday** - HolidayRecords.cs
-10. ✅ **MaritalStatus** - MaritalStatusRecords.cs
-11. ✅ **Employeetype** - EmployeetypeRecords.cs
-12. ✅ **Employment** - EmploymentRecords.cs
-13. ✅ **Groups** - GroupsRecords.cs (via GroupRecords.cs)
-14. ✅ **Thana** - ThanaRecords.cs
-15. ✅ **SystemSettings** - SystemSettingsRecords.cs
-16. ✅ **Competencies** - CompetenciesRecords.cs
-17. ✅ **CompetencyLevel** - CompetencyLevelRecords.cs
-18. ✅ **BoardInstitute** - BoardInstituteRecords.cs
-19. ✅ **CurrencyRate** - CurrencyRateRecords.cs
-20. ✅ **AboutUsLicense** - AboutUsLicenseRecords.cs
-21. ✅ **AccessRestriction** - AccessRestrictionRecords.cs
-22. ✅ **Accesscontrol** - AccesscontrolRecords.cs
-23. ✅ **ApproverDetails** - ApproverDetailsRecords.cs
-24. ✅ **ApproverHistory** - ApproverHistoryRecords.cs
-25. ✅ **ApproverOrder** - ApproverOrderRecords.cs
-26. ✅ **ApproverType** - ApproverTypeRecords.cs
-27. ✅ **ApproverTypeToGroupMapping** - ApproverTypeToGroupMappingRecords.cs
-28. ✅ **AppsTokenInfo** - AppsTokenInfoRecords.cs
-29. ✅ **AppsTransactionLog** - AppsTransactionLogRecords.cs
-30. ✅ **AssemblyInfo** - AssemblyInfoRecords.cs
-31. ✅ **AssignApprover** - AssignApproverRecords.cs
-32. ✅ **AuditLog** - AuditLogRecords.cs
-33. ✅ **AuditTrail** - AuditTrailRecords.cs
-34. ✅ **AuditType** - AuditTypeRecords.cs
-35. ✅ **CompanyDepartmentMap** - CompanyDepartmentMapRecords.cs
-36. ✅ **CompanyLocationMap** - CompanyLocationMapRecords.cs
-37. ✅ **DelegationInfo** - DelegationInfoRecords.cs
-38. ✅ **Docmdetails** - DocmdetailsRecords.cs (NEW - Batch 6)
-39. ✅ **Docmdetailshistory** - DocmdetailshistoryRecords.cs (NEW - Batch 6)
-40. ✅ **Document** - DocumentRecords.cs (NEW - Batch 6)
-41. ✅ **DocumentParameter** - DocumentParameterRecords.cs (NEW - Batch 6)
-42. ✅ **DocumentParameterMapping** - DocumentParameterMappingRecords.cs (NEW - Batch 6)
-43. ✅ **DocumentQueryMapping** - DocumentQueryMappingRecords.cs (NEW - Batch 6)
-44. ✅ **DocumentTemplate** - DocumentTemplateRecords.cs (NEW - Batch 7)
-45. ✅ **DocumentType** - DocumentTypeRecords.cs (NEW - Batch 7)
-46. ✅ **Employee** - EmployeeRecords.cs (NEW - Batch 7)
-47. ✅ **GroupMember** - GroupMemberRecords.cs (NEW - Batch 7)
-48. ✅ **GroupPermission** - GroupPermissionRecords.cs (NEW - Batch 7)
-49. ✅ **PasswordHistory** - PasswordHistoryRecords.cs (NEW - Batch 7)
-50. ✅ **QueryAnalyzer** - QueryAnalyzerRecords.cs (NEW - Batch 8)
-51. ✅ **ReportBuilder** - ReportBuilderRecords.cs (NEW - Batch 8)
-52. ✅ **Timesheet** - TimesheetRecords.cs (NEW - Batch 8)
-53. ✅ **TokenBlacklist** - TokenBlacklistRecords.cs (NEW - Batch 8)
-54. ✅ **WfAction** - WfActionRecords.cs (NEW - Batch 8)
-55. ✅ **WfState** - WfStateRecords.cs (NEW - Batch 8)
+### Records & Validators
+- **SystemAdmin Records**: 53 files present
+- **HR Records**: 2 files present (Branch, Department)
+- **CRM Records**: 26 files present
+- **DMS Records**: 9 files present
+- **Validators**: 88 files (53 SystemAdmin, 26 CRM, 9 DMS) + BaseRecordValidator
 
-### 🚧 In Progress (0/54)
-*System module completed!*
-
-### ⏳ Pending (0/54 - 0%)
-*All System entities completed! 🎉*
+### Services & Controllers
+- **Services using Records/Mapster**: 54 of 80 (67.5%)
+- **Services still DTO/MyMapper** (26): ModuleService, AccessControlService, MenuService, CurrencyService, PropertyExtractionService, GroupService, SystemSettingsService, QueryAnalyzerService, StatusService, UsersService, CompanyService, BranchService, EmployeeService, DepartmentService, HttpContextService, CookieManagementService, CacheManagementService, AuthenticationService, HybridCacheService, DmsDocumentVersionService, DmsDocumentTagService, DmsDocumentAccessLogService, DmsDocumentTypeService, DmsDocumentFolderService, DmsDocumentService, DmsDocumentTagMapService.
+- **Controllers using Records**: 54 of 78 (69.2%)
+- **Controllers still DTO-based** (24): QueryAnalyzer, Users, Group, SystemSettings, AccessControl, WorkFlow, Companies, Currency, Common, Menu, Module, Branch, Employee, Department, BaseApi, Buggy, Home, Authentication, DmsDocumentTag, DmsDocumentType, DmsDocumentAccessLog, DmsDocument, DmsDocumentFolder, Test.
 
 ---
 
 ## 📝 Progress by Task Type
 
-### Records Generation
-- **Completed**: 153/267 (57.3%)
-  - **System Module**: 54/54 (100%) ✅ COMPLETE
-    - All CRUD Records generated (Batches 1-8)
-    - Build verified: 0 Errors
-  - **Pre-existing**: Additional records from previous work
-- **Pending**: 114/267 (42.7%)
-  - CRM Module: ~30 entities
-  - DMS Module: ~8 entities
-  - Other modules: Remaining entities
-
-### FluentValidation Setup
-- **Completed**: 53/89 (59.6%) ✅
-  - **System Module**: 53/54 (98.1%) - All validators generated and verified
-  - Build Status: ✅ 0 Errors, 124 Warnings (pre-existing nullable warnings)
-- **Pending**: 36/89 (40.4%)
-  - CRM Module: ~30 entities
-  - DMS Module: ~6 entities
-
-### Service Layer Updates
-- **Completed**: 1/20+ (5%)
-  - CountryService.cs ✅ (uses MyMapper, needs Mapster migration)
-- **Pending**: 19/20+ (95%)
-
-### Controller Updates
-- **Completed**: 0/20+ (0%)
-  - CountryController.cs uses DTOs (needs Records migration)
-- **Pending**: 20/20+ (100%)
+### Progress by Task Type
+- **Records generation**: 90 files present across SystemAdmin/HR/CRM/DMS
+- **Validators**: 88 files present across SystemAdmin/CRM/DMS
+- **Service layer migration**: 54/80 services use Records + Mapster; 26 services remain on DTO/MyMapper
+- **Controller migration**: 54/78 controllers accept Records; 24 remain on DTOs
+- **Build**: currently failing (see Known Issues)
 
 ---
 
@@ -233,29 +169,13 @@ public class Create{Entity}RecordValidator : AbstractValidator<Create{Entity}Rec
 
 ---
 
-## 🚀 Next Actions
-
-### Immediate Tasks (Today)
-1. ✅ Create tracking document (this file)
-2. ✅ Install Mapster 10.0.7 in bdDevs.Shared
-3. ✅ Install FluentValidation 11.12.0 in Application.Services
-4. ✅ Create base validator class (BaseRecordValidator<T>)
-5. ✅ Generate Records for System entities (54/54 completed - 100%) 🎉
-6. ✅ Create validators for generated Records (53/54 completed - 98.1%) 🎉
-7. ⏳ Update Service interfaces to use Records
-8. ⏳ Update Service implementations with Mapster mappings
-
-### This Week
-- ✅ Complete all System module Records
-- ✅ Create validators for System module
-- ⏳ Update 5+ System module services with Mapster
-- ⏳ Update corresponding controllers to use Records
-- ⏳ Test System module endpoints
-
-### Next Week
-- Complete CRM module implementation
-- Complete DMS module implementation
-- Full integration testing
+## 🚀 Priority Task List
+1. **Unblock the build**: fix missing validator type resolutions, add/adjust repository methods (e.g., `ActiveDocumentParameterMappingsAsync`), align entity models with service expectations (`LastUpdatedDate`, nullable checks, `GridDataSource` helpers).
+2. **Migrate remaining SystemAdmin services/controllers** to Records + Mapster (Module, AccessControl, Menu, Currency, Group, Users, SystemSettings, Company, Status/Workflow, QueryAnalyzer).
+3. **Migrate remaining DMS services/controllers** (Document, DocumentFolder, DocumentType, DocumentTag, DocumentAccessLog, DocumentTagMap, DocumentVersion) off DTO/MyMapper to Records + Mapster.
+4. **Migrate HR services/controllers** (Branch, Department, Employee) to CRUD Records with validators.
+5. **Finish Mapster adoption** by removing MyMapper usage in CRM/DMS legacy services and ensuring validators are wired in DI.
+6. **Re-run full build/tests** once above are addressed; then proceed to integration testing and documentation refresh.
 
 ---
 
@@ -293,7 +213,15 @@ Before marking an entity as complete, verify:
 
 ---
 
-**Last Updated**: 2026-04-15 05:15 UTC
-**Updated By**: Claude Agent - Validator Generation Complete
-**Next Review**: After Service Layer updates begin
-**Current Progress**: 54/54 System Records (100%) | 53/54 System Validators (98.1%) ✅
+## 🐛 Known Issues (blocking build)
+1. Missing validator types referenced in services (e.g., Create/Update/Delete validators for AppsTransactionLog, AssignApprover, ApproverOrder, ApproverType, ApproverHistory, AuditLog/AuditTrail, AppsTokenInfo) despite validator files existing—verify namespaces, DI registration, and using statements.
+2. Repository/API gaps: `IDocumentParameterMappingRepository.ActiveDocumentParameterMappingsAsync` referenced but not implemented.
+3. Entity shape mismatches: several services expect `LastUpdatedDate` on entities (AssignApprover, ApproverOrder, ApproverType, ApproverHistory, ApproverTypeToGroupMapping) and nullable `int.HasValue`/`Value` usages in `AuditTypeService`; grid helper `GridDataSource` extension referenced in BoardInstitute/AuditType services missing.
+4. Build result (2026-04-17): `dotnet build` => **112 errors**, **366 warnings**.
+
+---
+
+**Last Updated**: 2026-04-17 06:53 UTC  
+**Updated By**: Codex Agent  
+**Next Review**: After build blockers are resolved and remaining services/controllers are migrated  
+**Current Progress**: Records 90 | Validators 88 | Services migrated 54/80 | Controllers migrated 54/78

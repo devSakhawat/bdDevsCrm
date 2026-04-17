@@ -7,4 +7,5 @@ public interface IDocumentParameterMappingRepository : IRepositoryBase<DocumentP
 {
     Task<DocumentParameterMapping?> DocumentParameterMappingAsync(int mappingId, bool trackChanges, CancellationToken cancellationToken = default);
     Task<IEnumerable<DocumentParameterMapping>> DocumentParameterMappingsAsync(bool trackChanges, CancellationToken cancellationToken = default);
+    Task<IEnumerable<DocumentParameterMapping>> ActiveDocumentParameterMappingsAsync(bool trackChanges, CancellationToken cancellationToken = default);
 }

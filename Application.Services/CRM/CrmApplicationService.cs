@@ -201,7 +201,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 					modelDto.CourseInformation.PersonalDetails.CreatedBy = currentUser.UserId ?? 0;
 
 					var applicantInfoEntity = MyMapper.JsonClone<ApplicantInfoDto, CrmApplicantInfo>(modelDto.CourseInformation.PersonalDetails);
-					var applicantEntity = await _repository.CrmApplicantInfoes.CreateCrmApplicantInfoAsync(applicantInfoEntity, cancellationToken);
+					var applicantEntity = await _repository.CrmApplicantInfos.CreateCrmApplicantInfoAsync(applicantInfoEntity, cancellationToken);
 
 					SetApplicantIdInAllNestedDtos(modelDto, applicantEntity.ApplicantId);
 				}
@@ -515,7 +515,7 @@ INNER JOIN CrmCountry c ON ac.CountryId = c.CountryId";
 //					modelDto.CourseInformation.PersonalDetails.CreatedBy = currentUser.UserId ?? 0;
 
 //					var applicantInfoEntity = MyMapper.JsonClone<ApplicantInfoDto, CrmApplicantInfo>(modelDto.CourseInformation.PersonalDetails);
-//					int applicantId = await _repository.CrmApplicantInfoes.CreateAndGetIdAsync(applicantInfoEntity, cancellationToken);
+//					int applicantId = await _repository.CrmApplicantInfos.CreateAndGetIdAsync(applicantInfoEntity, cancellationToken);
 
 //					SetApplicantIdInAllNestedDtos(modelDto, applicantId);
 //				}

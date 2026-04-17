@@ -43,7 +43,7 @@ internal sealed class BoardInstituteService : IBoardInstituteService
             throw new ValidationException(validationResult.Errors);
 
         _logger.LogInformation("Creating new board/institute. Name: {InstituteName}, Time: {Time}",
-            record.InstituteName, DateTime.UtcNow);
+            record.BoardInstituteName, DateTime.UtcNow);
 
         BoardInstitute boardInstitute = record.MapTo<BoardInstitute>();
         
@@ -155,8 +155,11 @@ internal sealed class BoardInstituteService : IBoardInstituteService
 
     public async Task<GridEntity<BoardInstituteDto>> BoardInstitutesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
     {
-        var boardInstitutes = await _repository.BoardInstitutes.BoardInstitutesAsync(false, cancellationToken);
-        var boardInstituteDtos = boardInstitutes.MapToList<BoardInstituteDto>();
-        return boardInstituteDtos.GridDataSource(options);
+        const string sql = @"SELECT * FROM BoardInstitute";
+        const string orderBy = "BoardInstituteName ASC";
+
+        _logger.LogInformation("Fetching board institute summary grid. Time: {Time}", DateTime.UtcNow);
+
+        return await _repository.BoardInstitutes.AdoGridDataAsync<BoardInstituteDto>(sql, options, orderBy, string.Empty, cancellationToken);
     }
 }

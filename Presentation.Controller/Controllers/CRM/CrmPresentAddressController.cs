@@ -36,10 +36,10 @@ public class CrmPresentAddressController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.PresentAddresses.CrmPresentAddresssSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.PresentAddresses.PresentAddressesSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmPresentAddressDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<PresentAddressDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,10 +51,10 @@ public class CrmPresentAddressController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmPresentAddressRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmPresentAddressDto>();
+        var dto = record.MapTo<PresentAddressDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.PresentAddresses.CreateCrmPresentAddressAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.PresentAddresses.CreatePresentAddressAsync(dto, currentUser, cancellationToken);
 
         if (created.PresentAddressId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +72,8 @@ public class CrmPresentAddressController : BaseApiController
         if (key != record.PresentAddressId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmPresentAddressRecord));
 
-        var dto = record.MapTo<CrmPresentAddressDto>();
-        var updated = await _serviceManager.PresentAddresses.UpdateCrmPresentAddressAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<PresentAddressDto>();
+        var updated = await _serviceManager.PresentAddresses.UpdatePresentAddressAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -84,9 +84,7 @@ public class CrmPresentAddressController : BaseApiController
     [HttpDelete(RouteConstants.DeleteCrmPresentAddress)]
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
-        var deleteRecord = new DeleteCrmPresentAddressRecord(key);
-        var dto = new CrmPresentAddressDto { PresentAddressId = key };
-        await _serviceManager.PresentAddresses.DeleteCrmPresentAddressAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.PresentAddresses.DeletePresentAddressAsync(key, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +97,7 @@ public class CrmPresentAddressController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.PresentAddresses.CrmPresentAddressAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.PresentAddresses.PresentAddressAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -107,13 +105,13 @@ public class CrmPresentAddressController : BaseApiController
     /// <summary>
     /// Retrieves all records.
     /// </summary>
-    [HttpGet(RouteConstants.ReadCrmPresentAddresss)]
+    [HttpGet(RouteConstants.ReadCrmPresentAddresses)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.PresentAddresses.CrmPresentAddresssAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.PresentAddresses.PresentAddressesAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmPresentAddressDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<PresentAddressDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

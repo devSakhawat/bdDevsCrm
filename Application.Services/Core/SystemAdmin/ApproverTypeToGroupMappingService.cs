@@ -55,7 +55,6 @@ internal sealed class ApproverTypeToGroupMappingService : IApproverTypeToGroupMa
 
         // Map Record to Entity using Mapster
         ApproverTypeToGroupMapping approverTypeToGroupMapping = record.MapTo<ApproverTypeToGroupMapping>();
-        approverTypeToGroupMapping.LastUpdatedDate = DateTime.UtcNow;
 
         int approverTypeMapId = await _repository.ApproverTypeToGroupMappings.CreateAndIdAsync(approverTypeToGroupMapping, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
@@ -97,7 +96,6 @@ internal sealed class ApproverTypeToGroupMappingService : IApproverTypeToGroupMa
 
         // Map Record to Entity using Mapster
         ApproverTypeToGroupMapping approverTypeToGroupMapping = record.MapTo<ApproverTypeToGroupMapping>();
-        approverTypeToGroupMapping.LastUpdatedDate = DateTime.UtcNow;
 
         _repository.ApproverTypeToGroupMappings.UpdateByState(approverTypeToGroupMapping);
         await _repository.SaveAsync(cancellationToken);

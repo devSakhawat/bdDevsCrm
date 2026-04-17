@@ -46,8 +46,8 @@ internal sealed class AuditTypeService : IAuditTypeService
             record.AuditType1, DateTime.UtcNow);
 
         AuditType auditType = record.MapTo<AuditType>();
-        
-        int? auditTypeId = await _repository.AuditTypes.CreateAndIdAsync(auditType, cancellationToken);
+
+        int auditTypeId = await _repository.AuditTypes.CreateAndIdAsync(auditType, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
 
         _logger.LogInformation("AuditType created successfully. ID: {AuditTypeId}, Time: {Time}",
@@ -70,11 +70,11 @@ internal sealed class AuditTypeService : IAuditTypeService
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        if (!record.AuditTypeId.HasValue)
+        if (record.AuditTypeId is not { } updateId || updateId <= 0)
             throw new BadRequestException("AuditTypeId is required");
 
-        var auditType = await _repository.AuditTypes.AuditTypeAsync(record.AuditTypeId.Value, trackChanges, cancellationToken)
-            ?? throw new NotFoundException("AuditType", "AuditTypeId", record.AuditTypeId.Value.ToString());
+        var auditType = await _repository.AuditTypes.AuditTypeAsync(updateId, trackChanges, cancellationToken)
+            ?? throw new NotFoundException("AuditType", "AuditTypeId", updateId.ToString());
 
         _logger.LogInformation("Updating audit type. ID: {AuditTypeId}, Time: {Time}",
             record.AuditTypeId, DateTime.UtcNow);
@@ -97,11 +97,11 @@ internal sealed class AuditTypeService : IAuditTypeService
         if (record == null)
             throw new BadRequestException(nameof(DeleteAuditTypeRecord));
 
-        if (!record.AuditTypeId.HasValue)
+        if (record.AuditTypeId <= 0)
             throw new BadRequestException("AuditTypeId is required");
 
-        var auditType = await _repository.AuditTypes.AuditTypeAsync(record.AuditTypeId.Value, trackChanges, cancellationToken)
-            ?? throw new NotFoundException("AuditType", "AuditTypeId", record.AuditTypeId.Value.ToString());
+        var auditType = await _repository.AuditTypes.AuditTypeAsync(record.AuditTypeId, trackChanges, cancellationToken)
+            ?? throw new NotFoundException("AuditType", "AuditTypeId", record.AuditTypeId.ToString());
 
         _logger.LogInformation("Deleting audit type. ID: {AuditTypeId}, Time: {Time}",
             record.AuditTypeId, DateTime.UtcNow);
@@ -158,8 +158,11 @@ internal sealed class AuditTypeService : IAuditTypeService
 
     public async Task<GridEntity<AuditTypeDto>> AuditTypesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
     {
-        var auditTypes = await _repository.AuditTypes.AuditTypesAsync(false, cancellationToken);
-        var auditTypeDtos = auditTypes.MapToList<AuditTypeDto>();
-        return auditTypeDtos.GridDataSource(options);
+        const string sql = @"SELECT * FROM AuditType";
+        const string orderBy = "AuditType1 ASC";
+
+        _logger.LogInformation("Fetching audit types summary grid. Time: {Time}", DateTime.UtcNow);
+
+        return await _repository.AuditTypes.AdoGridDataAsync<AuditTypeDto>(sql, options, orderBy, string.Empty, cancellationToken);
     }
 }

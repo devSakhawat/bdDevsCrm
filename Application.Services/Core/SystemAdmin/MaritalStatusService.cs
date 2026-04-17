@@ -158,8 +158,11 @@ internal sealed class MaritalStatusService : IMaritalStatusService
 
     public async Task<GridEntity<MaritalStatusDto>> MaritalStatusesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
     {
-        var maritalStatuses = await _repository.MaritalStatuses.MaritalStatusesAsync(false, cancellationToken);
-        var maritalStatusDtos = maritalStatuses.MapToList<MaritalStatusDto>();
-        return maritalStatusDtos.GridDataSource(options);
+        const string sql = @"SELECT * FROM MaritalStatus";
+        const string orderBy = "MaritalStatusName ASC";
+
+        _logger.LogInformation("Fetching marital status summary grid. Time: {Time}", DateTime.UtcNow);
+
+        return await _repository.MaritalStatuses.AdoGridDataAsync<MaritalStatusDto>(sql, options, orderBy, string.Empty, cancellationToken);
     }
 }

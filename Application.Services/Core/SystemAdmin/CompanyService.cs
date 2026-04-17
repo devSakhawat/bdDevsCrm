@@ -236,11 +236,11 @@ internal sealed class CompanyService : ICompanyService
     else
     {
       //int controlPanelModuleId = Convert.ToInt32(_configuration["AppSettings:controlPanelModuleId"]);
-      //var res = await _repository.GroupPermissiones.AccessPermisionForCurrentUser(controlPanelModuleId, (int)users.UserId);
+      //var res = await _repository.GroupPermissions.AccessPermisionForCurrentUser(controlPanelModuleId, (int)users.UserId);
 
       int controlPanelModuleId = _appSettings.ControlPanelModuleId;
 
-      var res = await _repository.GroupPermissiones.AccessPermissionsForCurrentUserAsync(controlPanelModuleId, (int)users.UserId);
+      var res = await _repository.GroupPermissions.AccessPermissionsForCurrentUserAsync(controlPanelModuleId, (int)users.UserId);
       var isHr = res.Any(groupPermission => groupPermission.Referenceid == 22);
 
       if (isHr && string.IsNullOrEmpty(additionalCondition))
@@ -510,8 +510,8 @@ internal sealed class CompanyService : ICompanyService
     else
     {
       int controlPanelModuleId = Convert.ToInt32(_configuration["AppSettings:controlPanelModuleId"]);
-      //var res = await _repository.GroupPermissiones.AccessPermisionForCurrentUser(controlPanelModuleId, (int)users.UserId);
-      var res = await _repository.GroupPermissiones.AccessPermissionsForCurrentUserAsync(controlPanelModuleId, (int)users.UserId);
+      //var res = await _repository.GroupPermissions.AccessPermisionForCurrentUser(controlPanelModuleId, (int)users.UserId);
+      var res = await _repository.GroupPermissions.AccessPermissionsForCurrentUserAsync(controlPanelModuleId, (int)users.UserId);
       var isHr = res.Any(groupPermission => groupPermission.Referenceid == 22);
 
       if (isHr && string.IsNullOrEmpty(additionalCondition))

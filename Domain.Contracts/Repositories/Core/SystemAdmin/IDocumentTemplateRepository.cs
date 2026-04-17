@@ -7,4 +7,5 @@ public interface IDocumentTemplateRepository : IRepositoryBase<DocumentTemplate>
 {
     Task<DocumentTemplate?> DocumentTemplateAsync(int documentId, bool trackChanges, CancellationToken cancellationToken = default);
     Task<IEnumerable<DocumentTemplate>> DocumentTemplatesAsync(bool trackChanges, CancellationToken cancellationToken = default);
+    Task<IEnumerable<DocumentTemplate>> ActiveDocumentTemplatesAsync(bool trackChanges, CancellationToken cancellationToken = default);
 }

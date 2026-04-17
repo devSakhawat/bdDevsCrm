@@ -21,4 +21,9 @@ internal sealed class DocumentParameterMappingRepository : RepositoryBase<Docume
     {
         return await ListAsync(null, trackChanges, cancellationToken);
     }
+
+    public async Task<IEnumerable<DocumentParameterMapping>> ActiveDocumentParameterMappingsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+    {
+        return await ListByConditionAsync(d => d.IsVisible == true, orderBy: null, trackChanges: trackChanges, descending: false, cancellationToken: cancellationToken);
+    }
 }

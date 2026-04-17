@@ -36,10 +36,10 @@ public class CrmIeltsInformationController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.IELTSInformations.CrmIeltsInformationsSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.IELTSInformations.IELTSInformationsSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmIeltsInformationDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<IeltsInformationDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,12 +51,12 @@ public class CrmIeltsInformationController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmIeltsInformationRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmIeltsInformationDto>();
+        var dto = record.MapTo<IeltsInformationDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.IELTSInformations.CreateCrmIeltsInformationAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.IELTSInformations.CreateIELTSInformationAsync(dto, currentUser, cancellationToken);
 
-        if (created.IeltsInformationId <= 0)
+        if (created.IELTSInformationId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
 
         return Ok(ApiResponseHelper.Created(created, "Record created successfully."));
@@ -69,11 +69,11 @@ public class CrmIeltsInformationController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> UpdateAsync([FromRoute] int key, [FromBody] UpdateCrmIeltsInformationRecord record, CancellationToken cancellationToken = default)
     {
-        if (key != record.IeltsInformationId)
+        if (key != record.IELTSInformationId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmIeltsInformationRecord));
 
-        var dto = record.MapTo<CrmIeltsInformationDto>();
-        var updated = await _serviceManager.IELTSInformations.UpdateCrmIeltsInformationAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<IeltsInformationDto>();
+        var updated = await _serviceManager.IELTSInformations.UpdateIELTSInformationAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -84,9 +84,7 @@ public class CrmIeltsInformationController : BaseApiController
     [HttpDelete(RouteConstants.DeleteCrmIeltsInformation)]
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
-        var deleteRecord = new DeleteCrmIeltsInformationRecord(key);
-        var dto = new CrmIeltsInformationDto { IeltsInformationId = key };
-        await _serviceManager.IELTSInformations.DeleteCrmIeltsInformationAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.IELTSInformations.DeleteIELTSInformationAsync(key, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +97,7 @@ public class CrmIeltsInformationController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.IELTSInformations.CrmIeltsInformationAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.IELTSInformations.IELTSInformationAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +108,10 @@ public class CrmIeltsInformationController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmIeltsInformations)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.IELTSInformations.CrmIeltsInformationsAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.IELTSInformations.IELTSInformationsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmIeltsInformationDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<IeltsInformationDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

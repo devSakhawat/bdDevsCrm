@@ -55,7 +55,7 @@ internal sealed class AssignApproverService : IAssignApproverService
 
         // Map Record to Entity using Mapster
         AssignApprover assignApprover = record.MapTo<AssignApprover>();
-        assignApprover.LastUpdatedDate = DateTime.UtcNow;
+        assignApprover.UpdatedDate = DateTime.UtcNow;
 
         int assignApproverId = await _repository.AssignApprovers.CreateAndIdAsync(assignApprover, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
@@ -97,7 +97,7 @@ internal sealed class AssignApproverService : IAssignApproverService
 
         // Map Record to Entity using Mapster
         AssignApprover assignApprover = record.MapTo<AssignApprover>();
-        assignApprover.LastUpdatedDate = DateTime.UtcNow;
+        assignApprover.UpdatedDate = DateTime.UtcNow;
 
         _repository.AssignApprovers.UpdateByState(assignApprover);
         await _repository.SaveAsync(cancellationToken);

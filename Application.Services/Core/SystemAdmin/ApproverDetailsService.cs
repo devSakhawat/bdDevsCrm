@@ -55,7 +55,6 @@ internal sealed class ApproverDetailsService : IApproverDetailsService
 
         // Map Record to Entity using Mapster
         ApproverDetails approverDetails = record.MapTo<ApproverDetails>();
-        approverDetails.LastUpdatedDate = DateTime.UtcNow;
 
         int remarksId = await _repository.ApproverDetails.CreateAndIdAsync(approverDetails, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
@@ -97,7 +96,6 @@ internal sealed class ApproverDetailsService : IApproverDetailsService
 
         // Map Record to Entity using Mapster
         ApproverDetails approverDetails = record.MapTo<ApproverDetails>();
-        approverDetails.LastUpdatedDate = DateTime.UtcNow;
 
         _repository.ApproverDetails.UpdateByState(approverDetails);
         await _repository.SaveAsync(cancellationToken);

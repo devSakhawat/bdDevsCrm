@@ -32,7 +32,7 @@ public class ApproverTypeToGroupMappingController : BaseApiController
     [ResponseCache(Duration = 300)]
     public async Task<IActionResult> ApproverTypeToGroupMappingsForDDLAsync(CancellationToken cancellationToken = default)
     {
-        var approverTypeToGroupMappings = await _serviceManager.ApproverTypeToGroupMapping.ApproverTypeToGroupMappingsForDDLAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var approverTypeToGroupMappings = await _serviceManager.ApproverTypeToGroupMappings.ApproverTypeToGroupMappingsForDDLAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!approverTypeToGroupMappings.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApproverTypeToGroupMappingDDLDto>(), "No approver type to group mappings found."));
@@ -49,7 +49,7 @@ public class ApproverTypeToGroupMappingController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.ApproverTypeToGroupMapping.ApproverTypeToGroupMappingsSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.ApproverTypeToGroupMappings.ApproverTypeToGroupMappingsSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
             return Ok(ApiResponseHelper.Success(new GridEntity<ApproverTypeToGroupMappingDto>(), "No approver type to group mappings found."));
@@ -64,7 +64,7 @@ public class ApproverTypeToGroupMappingController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateApproverTypeToGroupMappingAsync([FromBody] CreateApproverTypeToGroupMappingRecord record, CancellationToken cancellationToken = default)
     {
-        var createdApproverTypeToGroupMapping = await _serviceManager.ApproverTypeToGroupMapping.CreateAsync(record, cancellationToken);
+        var createdApproverTypeToGroupMapping = await _serviceManager.ApproverTypeToGroupMappings.CreateAsync(record, cancellationToken);
 
         if (createdApproverTypeToGroupMapping.ApproverTypeMapId <= 0)
             throw new InvalidCreateOperationException("Failed to create approver type to group mapping record.");
@@ -82,7 +82,7 @@ public class ApproverTypeToGroupMappingController : BaseApiController
         if (key != record.ApproverTypeMapId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateApproverTypeToGroupMappingRecord));
 
-        var updatedApproverTypeToGroupMapping = await _serviceManager.ApproverTypeToGroupMapping.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
+        var updatedApproverTypeToGroupMapping = await _serviceManager.ApproverTypeToGroupMappings.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updatedApproverTypeToGroupMapping, "Approver type to group mapping updated successfully."));
     }
@@ -94,7 +94,7 @@ public class ApproverTypeToGroupMappingController : BaseApiController
     public async Task<IActionResult> DeleteApproverTypeToGroupMappingAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteApproverTypeToGroupMappingRecord(key);
-        await _serviceManager.ApproverTypeToGroupMapping.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.ApproverTypeToGroupMappings.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Approver type to group mapping deleted successfully"));
     }
 
@@ -107,7 +107,7 @@ public class ApproverTypeToGroupMappingController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var approverTypeToGroupMapping = await _serviceManager.ApproverTypeToGroupMapping.ApproverTypeToGroupMappingAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var approverTypeToGroupMapping = await _serviceManager.ApproverTypeToGroupMappings.ApproverTypeToGroupMappingAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(approverTypeToGroupMapping, "Approver type to group mapping retrieved successfully"));
     }
@@ -118,7 +118,7 @@ public class ApproverTypeToGroupMappingController : BaseApiController
     [HttpGet(RouteConstants.ReadApproverTypeToGroupMappings)]
     public async Task<IActionResult> ApproverTypeToGroupMappingsAsync(CancellationToken cancellationToken = default)
     {
-        var approverTypeToGroupMappings = await _serviceManager.ApproverTypeToGroupMapping.ApproverTypeToGroupMappingsAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var approverTypeToGroupMappings = await _serviceManager.ApproverTypeToGroupMappings.ApproverTypeToGroupMappingsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!approverTypeToGroupMappings.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApproverTypeToGroupMappingDto>(), "No approver type to group mappings found."));

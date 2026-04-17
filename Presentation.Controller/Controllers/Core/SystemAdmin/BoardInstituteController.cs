@@ -66,7 +66,7 @@ public class BoardInstituteController : BaseApiController
     {
         var createdBoardInstitute = await _serviceManager.BoardInstitutes.CreateAsync(record, cancellationToken);
 
-        if (createdBoardInstitute.BoardInstituteId <= 0)
+        if (createdBoardInstitute.Id <= 0)
             throw new InvalidCreateOperationException("Failed to create board/institute record.");
 
         return Ok(ApiResponseHelper.Created(createdBoardInstitute, "Board/institute created successfully."));

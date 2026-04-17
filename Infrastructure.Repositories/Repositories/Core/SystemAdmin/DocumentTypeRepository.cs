@@ -21,4 +21,9 @@ internal sealed class DocumentTypeRepository : RepositoryBase<DocumentType>, IDo
     {
         return await ListAsync(null, trackChanges, cancellationToken);
     }
+
+    public async Task<IEnumerable<DocumentType>> ActiveDocumentTypesAsync(bool trackChanges, CancellationToken cancellationToken = default)
+    {
+        return await DocumentTypesAsync(trackChanges, cancellationToken);
+    }
 }

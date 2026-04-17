@@ -66,7 +66,7 @@ public class CompetenciesController : BaseApiController
     {
         var createdCompetency = await _serviceManager.Competencies.CreateAsync(record, cancellationToken);
 
-        if (createdCompetency.CompetencyId <= 0)
+        if (createdCompetency.Id <= 0)
             throw new InvalidCreateOperationException("Failed to create competency record.");
 
         return Ok(ApiResponseHelper.Created(createdCompetency, "Competency created successfully."));
@@ -79,7 +79,7 @@ public class CompetenciesController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> UpdateCompetencyAsync([FromRoute] int key, [FromBody] UpdateCompetenciesRecord record, CancellationToken cancellationToken = default)
     {
-        if (key != record.CompetencyId)
+        if (key != record.Id)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCompetenciesRecord));
 
         var updatedCompetency = await _serviceManager.Competencies.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);

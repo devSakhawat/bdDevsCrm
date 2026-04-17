@@ -21,4 +21,9 @@ internal sealed class DocumentTemplateRepository : RepositoryBase<DocumentTempla
     {
         return await ListAsync(null, trackChanges, cancellationToken);
     }
+
+    public async Task<IEnumerable<DocumentTemplate>> ActiveDocumentTemplatesAsync(bool trackChanges, CancellationToken cancellationToken = default)
+    {
+        return await DocumentTemplatesAsync(trackChanges, cancellationToken);
+    }
 }

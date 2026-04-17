@@ -36,7 +36,7 @@ public class CrmPaymentMethodController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.CrmPaymentMethods.CrmPaymentMethodsSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.CrmPaymentMethods.PaymentMethodsSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
             return Ok(ApiResponseHelper.Success(new GridEntity<CrmPaymentMethodDto>(), "No records found."));
@@ -51,10 +51,7 @@ public class CrmPaymentMethodController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmPaymentMethodRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmPaymentMethodDto>();
-        var currentUser = await GetCurrentUserAsync();
-
-        var created = await _serviceManager.CrmPaymentMethods.CreateCrmPaymentMethodAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.CrmPaymentMethods.CreateAsync(record, cancellationToken);
 
         if (created.PaymentMethodId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +69,7 @@ public class CrmPaymentMethodController : BaseApiController
         if (key != record.PaymentMethodId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmPaymentMethodRecord));
 
-        var dto = record.MapTo<CrmPaymentMethodDto>();
-        var updated = await _serviceManager.CrmPaymentMethods.UpdateCrmPaymentMethodAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var updated = await _serviceManager.CrmPaymentMethods.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +81,7 @@ public class CrmPaymentMethodController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmPaymentMethodRecord(key);
-        var dto = new CrmPaymentMethodDto { PaymentMethodId = key };
-        await _serviceManager.CrmPaymentMethods.DeleteCrmPaymentMethodAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.CrmPaymentMethods.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +94,7 @@ public class CrmPaymentMethodController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.CrmPaymentMethods.CrmPaymentMethodAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.CrmPaymentMethods.PaymentMethodAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,7 +105,7 @@ public class CrmPaymentMethodController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmPaymentMethods)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.CrmPaymentMethods.CrmPaymentMethodsAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.CrmPaymentMethods.PaymentMethodsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmPaymentMethodDto>(), "No records found."));

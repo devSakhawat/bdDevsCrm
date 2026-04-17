@@ -32,7 +32,7 @@ public class AssignApproverController : BaseApiController
     [ResponseCache(Duration = 300)]
     public async Task<IActionResult> AssignApproversForDDLAsync(CancellationToken cancellationToken = default)
     {
-        var assignApprovers = await _serviceManager.AssignApprover.AssignApproversForDDLAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var assignApprovers = await _serviceManager.AssignApprovers.AssignApproversForDDLAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!assignApprovers.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<AssignApproverDDLDto>(), "No assign approvers found."));
@@ -49,7 +49,7 @@ public class AssignApproverController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.AssignApprover.AssignApproversSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.AssignApprovers.AssignApproversSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
             return Ok(ApiResponseHelper.Success(new GridEntity<AssignApproverDto>(), "No assign approvers found."));
@@ -64,7 +64,7 @@ public class AssignApproverController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAssignApproverAsync([FromBody] CreateAssignApproverRecord record, CancellationToken cancellationToken = default)
     {
-        var createdAssignApprover = await _serviceManager.AssignApprover.CreateAsync(record, cancellationToken);
+        var createdAssignApprover = await _serviceManager.AssignApprovers.CreateAsync(record, cancellationToken);
 
         if (createdAssignApprover.AssignApproverId <= 0)
             throw new InvalidCreateOperationException("Failed to create assign approver record.");
@@ -82,7 +82,7 @@ public class AssignApproverController : BaseApiController
         if (key != record.AssignApproverId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateAssignApproverRecord));
 
-        var updatedAssignApprover = await _serviceManager.AssignApprover.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
+        var updatedAssignApprover = await _serviceManager.AssignApprovers.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updatedAssignApprover, "Assign approver updated successfully."));
     }
@@ -94,7 +94,7 @@ public class AssignApproverController : BaseApiController
     public async Task<IActionResult> DeleteAssignApproverAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteAssignApproverRecord(key);
-        await _serviceManager.AssignApprover.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.AssignApprovers.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Assign approver deleted successfully"));
     }
 
@@ -107,7 +107,7 @@ public class AssignApproverController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var assignApprover = await _serviceManager.AssignApprover.AssignApproverAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var assignApprover = await _serviceManager.AssignApprovers.AssignApproverAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(assignApprover, "Assign approver retrieved successfully"));
     }
@@ -118,7 +118,7 @@ public class AssignApproverController : BaseApiController
     [HttpGet(RouteConstants.ReadAssignApprovers)]
     public async Task<IActionResult> AssignApproversAsync(CancellationToken cancellationToken = default)
     {
-        var assignApprovers = await _serviceManager.AssignApprover.AssignApproversAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var assignApprovers = await _serviceManager.AssignApprovers.AssignApproversAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!assignApprovers.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<AssignApproverDto>(), "No assign approvers found."));

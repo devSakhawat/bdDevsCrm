@@ -107,7 +107,7 @@ public class CrmEducationHistoryController : BaseApiController
     /// <summary>
     /// Retrieves all records.
     /// </summary>
-    [HttpGet(RouteConstants.ReadCrmEducationHistorys)]
+    [HttpGet(RouteConstants.ReadCrmEducationHistories)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var records = await _serviceManager.EducationHistories.CrmEducationHistorysAsync(trackChanges: false, cancellationToken: cancellationToken);

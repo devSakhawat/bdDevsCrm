@@ -61,7 +61,7 @@ public class DocumentTypeController : BaseApiController
     {
         var createdDocumentType = await _serviceManager.DocumentTypes.CreateAsync(record, cancellationToken);
 
-        if (createdDocumentType.DocumenttypeId <= 0)
+        if (createdDocumentType.Documenttypeid <= 0)
             throw new InvalidCreateOperationException("Failed to create document type record.");
 
         return Ok(ApiResponseHelper.Created(createdDocumentType, "Document type created successfully."));
@@ -74,7 +74,7 @@ public class DocumentTypeController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> UpdateDocumentTypeAsync([FromRoute] int key, [FromBody] UpdateDocumentTypeRecord record, CancellationToken cancellationToken = default)
     {
-        if (key != record.DocumenttypeId)
+        if (key != record.Documenttypeid)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateDocumentTypeRecord));
 
         var updatedDocumentType = await _serviceManager.DocumentTypes.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);

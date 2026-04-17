@@ -55,7 +55,6 @@ internal sealed class ApproverTypeService : IApproverTypeService
 
         // Map Record to Entity using Mapster
         ApproverType approverType = record.MapTo<ApproverType>();
-        approverType.LastUpdatedDate = DateTime.UtcNow;
 
         int approverTypeId = await _repository.ApproverTypes.CreateAndIdAsync(approverType, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
@@ -97,7 +96,6 @@ internal sealed class ApproverTypeService : IApproverTypeService
 
         // Map Record to Entity using Mapster
         ApproverType approverType = record.MapTo<ApproverType>();
-        approverType.LastUpdatedDate = DateTime.UtcNow;
 
         _repository.ApproverTypes.UpdateByState(approverType);
         await _repository.SaveAsync(cancellationToken);

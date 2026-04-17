@@ -32,7 +32,7 @@ public class ApproverTypeController : BaseApiController
     [ResponseCache(Duration = 300)]
     public async Task<IActionResult> ApproverTypesForDDLAsync(CancellationToken cancellationToken = default)
     {
-        var approverTypes = await _serviceManager.ApproverType.ApproverTypesForDDLAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var approverTypes = await _serviceManager.ApproverTypes.ApproverTypesForDDLAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!approverTypes.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApproverTypeDDLDto>(), "No approver types found."));
@@ -49,7 +49,7 @@ public class ApproverTypeController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.ApproverType.ApproverTypesSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.ApproverTypes.ApproverTypesSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
             return Ok(ApiResponseHelper.Success(new GridEntity<ApproverTypeDto>(), "No approver types found."));
@@ -64,7 +64,7 @@ public class ApproverTypeController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateApproverTypeAsync([FromBody] CreateApproverTypeRecord record, CancellationToken cancellationToken = default)
     {
-        var createdApproverType = await _serviceManager.ApproverType.CreateAsync(record, cancellationToken);
+        var createdApproverType = await _serviceManager.ApproverTypes.CreateAsync(record, cancellationToken);
 
         if (createdApproverType.ApproverTypeId <= 0)
             throw new InvalidCreateOperationException("Failed to create approver type record.");
@@ -82,7 +82,7 @@ public class ApproverTypeController : BaseApiController
         if (key != record.ApproverTypeId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateApproverTypeRecord));
 
-        var updatedApproverType = await _serviceManager.ApproverType.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
+        var updatedApproverType = await _serviceManager.ApproverTypes.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updatedApproverType, "Approver type updated successfully."));
     }
@@ -94,7 +94,7 @@ public class ApproverTypeController : BaseApiController
     public async Task<IActionResult> DeleteApproverTypeAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteApproverTypeRecord(key);
-        await _serviceManager.ApproverType.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.ApproverTypes.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Approver type deleted successfully"));
     }
 
@@ -107,7 +107,7 @@ public class ApproverTypeController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var approverType = await _serviceManager.ApproverType.ApproverTypeAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var approverType = await _serviceManager.ApproverTypes.ApproverTypeAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(approverType, "Approver type retrieved successfully"));
     }
@@ -118,7 +118,7 @@ public class ApproverTypeController : BaseApiController
     [HttpGet(RouteConstants.ReadApproverTypes)]
     public async Task<IActionResult> ApproverTypesAsync(CancellationToken cancellationToken = default)
     {
-        var approverTypes = await _serviceManager.ApproverType.ApproverTypesAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var approverTypes = await _serviceManager.ApproverTypes.ApproverTypesAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!approverTypes.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApproverTypeDto>(), "No approver types found."));

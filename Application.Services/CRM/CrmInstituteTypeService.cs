@@ -202,7 +202,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 
 		if (instituteTypeId == 0)
 		{
-			var record = new CreateCrmInstituteTypeRecord { InstituteTypeName = modelDto.InstituteTypeName };
+			var record = new CreateCrmInstituteTypeRecord(modelDto.InstituteTypeName);
 			var created = await CreateAsync(record, cancellationToken);
 			return created.InstituteTypeId > 0
 					? OperationMessage.Success
@@ -210,7 +210,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 		}
 		else
 		{
-			var record = new UpdateCrmInstituteTypeRecord { InstituteTypeId = modelDto.InstituteTypeId, InstituteTypeName = modelDto.InstituteTypeName };
+			var record = new UpdateCrmInstituteTypeRecord(modelDto.InstituteTypeId, modelDto.InstituteTypeName);
 			await UpdateAsync(record, false, cancellationToken);
 			return OperationMessage.Success;
 		}

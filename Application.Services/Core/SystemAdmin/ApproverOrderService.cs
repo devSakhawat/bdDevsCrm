@@ -55,7 +55,6 @@ internal sealed class ApproverOrderService : IApproverOrderService
 
         // Map Record to Entity using Mapster
         ApproverOrder approverOrder = record.MapTo<ApproverOrder>();
-        approverOrder.LastUpdatedDate = DateTime.UtcNow;
 
         int approverOrderId = await _repository.ApproverOrders.CreateAndIdAsync(approverOrder, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
@@ -97,7 +96,6 @@ internal sealed class ApproverOrderService : IApproverOrderService
 
         // Map Record to Entity using Mapster
         ApproverOrder approverOrder = record.MapTo<ApproverOrder>();
-        approverOrder.LastUpdatedDate = DateTime.UtcNow;
 
         _repository.ApproverOrders.UpdateByState(approverOrder);
         await _repository.SaveAsync(cancellationToken);

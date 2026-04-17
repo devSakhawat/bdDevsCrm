@@ -21,4 +21,9 @@ internal sealed class DocumentQueryMappingRepository : RepositoryBase<DocumentQu
     {
         return await ListAsync(null, trackChanges, cancellationToken);
     }
+
+    public async Task<IEnumerable<DocumentQueryMapping>> ActiveDocumentQueryMappingsAsync(bool trackChanges, CancellationToken cancellationToken = default)
+    {
+        return await DocumentQueryMappingsAsync(trackChanges, cancellationToken);
+    }
 }

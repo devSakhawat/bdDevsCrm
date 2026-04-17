@@ -32,7 +32,7 @@ public class ApproverOrderController : BaseApiController
     [ResponseCache(Duration = 300)]
     public async Task<IActionResult> ApproverOrdersForDDLAsync(CancellationToken cancellationToken = default)
     {
-        var approverOrders = await _serviceManager.ApproverOrder.ApproverOrdersForDDLAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var approverOrders = await _serviceManager.ApproverOrders.ApproverOrdersForDDLAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!approverOrders.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApproverOrderDDLDto>(), "No approver orders found."));
@@ -49,7 +49,7 @@ public class ApproverOrderController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.ApproverOrder.ApproverOrdersSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.ApproverOrders.ApproverOrdersSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
             return Ok(ApiResponseHelper.Success(new GridEntity<ApproverOrderDto>(), "No approver orders found."));
@@ -64,7 +64,7 @@ public class ApproverOrderController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateApproverOrderAsync([FromBody] CreateApproverOrderRecord record, CancellationToken cancellationToken = default)
     {
-        var createdApproverOrder = await _serviceManager.ApproverOrder.CreateAsync(record, cancellationToken);
+        var createdApproverOrder = await _serviceManager.ApproverOrders.CreateAsync(record, cancellationToken);
 
         if (createdApproverOrder.ApproverOrderId <= 0)
             throw new InvalidCreateOperationException("Failed to create approver order record.");
@@ -82,7 +82,7 @@ public class ApproverOrderController : BaseApiController
         if (key != record.ApproverOrderId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateApproverOrderRecord));
 
-        var updatedApproverOrder = await _serviceManager.ApproverOrder.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
+        var updatedApproverOrder = await _serviceManager.ApproverOrders.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updatedApproverOrder, "Approver order updated successfully."));
     }
@@ -94,7 +94,7 @@ public class ApproverOrderController : BaseApiController
     public async Task<IActionResult> DeleteApproverOrderAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteApproverOrderRecord(key);
-        await _serviceManager.ApproverOrder.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.ApproverOrders.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Approver order deleted successfully"));
     }
 
@@ -107,7 +107,7 @@ public class ApproverOrderController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var approverOrder = await _serviceManager.ApproverOrder.ApproverOrderAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var approverOrder = await _serviceManager.ApproverOrders.ApproverOrderAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(approverOrder, "Approver order retrieved successfully"));
     }
@@ -118,7 +118,7 @@ public class ApproverOrderController : BaseApiController
     [HttpGet(RouteConstants.ReadApproverOrders)]
     public async Task<IActionResult> ApproverOrdersAsync(CancellationToken cancellationToken = default)
     {
-        var approverOrders = await _serviceManager.ApproverOrder.ApproverOrdersAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var approverOrders = await _serviceManager.ApproverOrders.ApproverOrdersAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!approverOrders.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApproverOrderDto>(), "No approver orders found."));

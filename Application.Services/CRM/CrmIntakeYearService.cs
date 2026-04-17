@@ -52,8 +52,7 @@ internal sealed class CrmIntakeYearService : ICrmIntakeYearService
 						intakeYearId, DateTime.UtcNow);
 
 		// Return as DTO
-		var resultDto = intakeYear.MapTo<CrmIntakeYearDto>();
-		resultDto.IntakeYearId = intakeYearId;
+		var resultDto = intakeYear.MapTo<CrmIntakeYearDto>() with { IntakeYearId = intakeYearId };
 		return resultDto;
 	}
 

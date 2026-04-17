@@ -52,8 +52,7 @@ internal sealed class CrmIntakeMonthService : ICrmIntakeMonthService
 						intakeMonthId, DateTime.UtcNow);
 
 		// Return as DTO
-		var resultDto = intakeMonth.MapTo<CrmIntakeMonthDto>();
-		resultDto.IntakeMonthId = intakeMonthId;
+		var resultDto = intakeMonth.MapTo<CrmIntakeMonthDto>() with { IntakeMonthId = intakeMonthId };
 		return resultDto;
 	}
 

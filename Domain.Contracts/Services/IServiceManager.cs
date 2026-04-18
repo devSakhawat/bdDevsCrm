@@ -31,10 +31,11 @@ public interface IServiceManager
   IQueryAnalyzerService QueryAnalyzer { get; }
   IStatusService WfState { get; }
   IAccessControlService AccessControls { get; }
+  IAccessRestrictionService AccessRestrictions { get; }
 
   // Approver/Workflow Services
   IApproverDetailsService ApproverDetails { get; }
-  IApproverHistoryService ApproverHistories { get; }
+  IApproverHistoryService ApproverHistory { get; }
   IApproverOrderService ApproverOrders { get; }
   IApproverTypeService ApproverTypes { get; }
   IAssignApproverService AssignApprovers { get; }

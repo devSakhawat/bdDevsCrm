@@ -39,7 +39,7 @@ public class CrmApplicantCourseController : BaseApiController
         var summaryGrid = await _serviceManager.ApplicantCourses.ApplicantCoursesSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmApplicantCourseDto>(), "No applicant courses found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<ApplicantCourseDto>(), "No applicant courses found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Applicant course summary retrieved successfully"));
     }
@@ -51,7 +51,7 @@ public class CrmApplicantCourseController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateApplicantCourseAsync([FromBody] CreateCrmApplicantCourseRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmApplicantCourseDto>();
+        var dto = record.MapTo<ApplicantCourseDto>();
         var currentUser = await GetCurrentUserAsync();
 
         var createdApplicantCourse = await _serviceManager.ApplicantCourses.CreateApplicantCourseAsync(dto, currentUser, cancellationToken);
@@ -72,7 +72,7 @@ public class CrmApplicantCourseController : BaseApiController
         if (key != record.ApplicantCourseId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmApplicantCourseRecord));
 
-        var dto = record.MapTo<CrmApplicantCourseDto>();
+        var dto = record.MapTo<ApplicantCourseDto>();
         var updatedApplicantCourse = await _serviceManager.ApplicantCourses.UpdateApplicantCourseAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updatedApplicantCourse, "Applicant course updated successfully."));
@@ -85,7 +85,7 @@ public class CrmApplicantCourseController : BaseApiController
     public async Task<IActionResult> DeleteApplicantCourseAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmApplicantCourseRecord(key);
-        var dto = new CrmApplicantCourseDto { ApplicantCourseId = key };
+        var dto = new ApplicantCourseDto { ApplicantCourseId = key };
         await _serviceManager.ApplicantCourses.DeleteApplicantCourseAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Applicant course deleted successfully"));
     }
@@ -113,7 +113,7 @@ public class CrmApplicantCourseController : BaseApiController
         var applicantCourses = await _serviceManager.ApplicantCourses.ApplicantCoursesAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!applicantCourses.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmApplicantCourseDto>(), "No applicant courses found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApplicantCourseDto>(), "No applicant courses found."));
 
         return Ok(ApiResponseHelper.Success(applicantCourses, "Applicant courses retrieved successfully"));
     }
@@ -130,7 +130,7 @@ public class CrmApplicantCourseController : BaseApiController
         var applicantCourses = await _serviceManager.ApplicantCourses.ApplicantCoursesByApplicationIdAsync(applicationId, trackChanges: false, cancellationToken: cancellationToken);
 
         if (!applicantCourses.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmApplicantCourseDto>(), "No applicant courses found for this application."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApplicantCourseDto>(), "No applicant courses found for this application."));
 
         return Ok(ApiResponseHelper.Success(applicantCourses, "Applicant courses retrieved successfully"));
     }

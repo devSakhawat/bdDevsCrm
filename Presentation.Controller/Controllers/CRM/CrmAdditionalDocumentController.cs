@@ -36,10 +36,10 @@ public class CrmAdditionalDocumentController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.AdditionalDocuments.CrmAdditionalDocumentsSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.AdditionalDocuments.AdditionalDocumentsSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmAdditionalDocumentDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<AdditionalDocumentDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,10 +51,10 @@ public class CrmAdditionalDocumentController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmAdditionalDocumentRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmAdditionalDocumentDto>();
+        var dto = record.MapTo<AdditionalDocumentDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.AdditionalDocuments.CreateCrmAdditionalDocumentAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.AdditionalDocuments.CreateAdditionalDocumentAsync(dto, currentUser, cancellationToken);
 
         if (created.AdditionalDocumentId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +72,8 @@ public class CrmAdditionalDocumentController : BaseApiController
         if (key != record.AdditionalDocumentId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmAdditionalDocumentRecord));
 
-        var dto = record.MapTo<CrmAdditionalDocumentDto>();
-        var updated = await _serviceManager.AdditionalDocuments.UpdateCrmAdditionalDocumentAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<AdditionalDocumentDto>();
+        var updated = await _serviceManager.AdditionalDocuments.UpdateAdditionalDocumentAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +85,8 @@ public class CrmAdditionalDocumentController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmAdditionalDocumentRecord(key);
-        var dto = new CrmAdditionalDocumentDto { AdditionalDocumentId = key };
-        await _serviceManager.AdditionalDocuments.DeleteCrmAdditionalDocumentAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = new AdditionalDocumentDto { AdditionalDocumentId = key };
+        await _serviceManager.AdditionalDocuments.DeleteAdditionalDocumentAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +99,7 @@ public class CrmAdditionalDocumentController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.AdditionalDocuments.CrmAdditionalDocumentAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.AdditionalDocuments.AdditionalDocumentAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +110,10 @@ public class CrmAdditionalDocumentController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmAdditionalDocuments)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.AdditionalDocuments.CrmAdditionalDocumentsAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.AdditionalDocuments.AdditionalDocumentsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmAdditionalDocumentDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<AdditionalDocumentDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

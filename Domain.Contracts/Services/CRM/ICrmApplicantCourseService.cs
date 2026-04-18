@@ -87,6 +87,15 @@ public interface ICrmApplicantCourseService
 	Task<IEnumerable<ApplicantCourseDto>> ApplicantCoursesByApplicantIdAsync(int applicantId, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
+	/// Retrieves applicant courses by the specified application ID.
+	/// </summary>
+	/// <param name="applicationId">The ID of the application.</param>
+	/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
+	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
+	/// <returns>A collection of <see cref="ApplicantCourseDto"/> for the specified application.</returns>
+	Task<IEnumerable<ApplicantCourseDto>> ApplicantCoursesByApplicationIdAsync(int applicationId, bool trackChanges, CancellationToken cancellationToken = default);
+
+	/// <summary>
 	/// Retrieves a single applicant course by applicant ID and course ID.
 	/// </summary>
 	/// <param name="applicantId">The ID of the applicant.</param>

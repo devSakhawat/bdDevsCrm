@@ -231,6 +231,36 @@ internal sealed class CrmApplicantCourseService : ICrmApplicantCourseService
 	}
 
 	/// <summary>
+	/// Retrieves applicant courses by the specified application ID.
+	/// Note: ApplicationId and ApplicantId refer to the same field in this context.
+	/// </summary>
+	public async Task<IEnumerable<ApplicantCourseDto>> ApplicantCoursesByApplicationIdAsync(int applicationId, bool trackChanges, CancellationToken cancellationToken = default)
+	{
+		if (applicationId <= 0)
+		{
+			_logger.LogWarning("ApplicantCoursesByApplicationIdAsync called with invalid applicationId: {ApplicationId}", applicationId);
+			throw new BadRequestException("Invalid request!");
+		}
+
+		_logger.LogInformation("Fetching applicant courses for application ID: {ApplicationId}, Time: {Time}", applicationId, DateTime.UtcNow);
+
+		var courses = await _repository.CrmApplicantCourses.CrmApplicantCoursesByApplicantIdAsync(applicationId, trackChanges, cancellationToken);
+
+		if (!courses.Any())
+		{
+			_logger.LogWarning("No applicant courses found for application ID: {ApplicationId}, Time: {Time}", applicationId, DateTime.UtcNow);
+			return Enumerable.Empty<ApplicantCourseDto>();
+		}
+
+		var coursesDto = courses.MapToList<ApplicantCourseDto>();
+
+		_logger.LogInformation("Applicant courses fetched successfully for application ID: {ApplicationId}. Count: {Count}, Time: {Time}",
+						applicationId, coursesDto.Count(), DateTime.UtcNow);
+
+		return coursesDto;
+	}
+
+	/// <summary>
 	/// Retrieves a single applicant course by applicant ID and course ID.
 	/// </summary>
 	public async Task<ApplicantCourseDto> ApplicantCourseByApplicantAndCourseIdAsync(int applicantId, int courseId, bool trackChanges, CancellationToken cancellationToken = default)

@@ -36,10 +36,10 @@ public class CrmAdditionalInfoController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.AdditionalInfos.CrmAdditionalInfosSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.AdditionalInfos.AdditionalInfosSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmAdditionalInfoDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<AdditionalInfoDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,10 +51,10 @@ public class CrmAdditionalInfoController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmAdditionalInfoRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmAdditionalInfoDto>();
+        var dto = record.MapTo<AdditionalInfoDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.AdditionalInfos.CreateCrmAdditionalInfoAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.AdditionalInfos.CreateAdditionalInfoAsync(dto, currentUser, cancellationToken);
 
         if (created.AdditionalInfoId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +72,8 @@ public class CrmAdditionalInfoController : BaseApiController
         if (key != record.AdditionalInfoId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmAdditionalInfoRecord));
 
-        var dto = record.MapTo<CrmAdditionalInfoDto>();
-        var updated = await _serviceManager.AdditionalInfos.UpdateCrmAdditionalInfoAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<AdditionalInfoDto>();
+        var updated = await _serviceManager.AdditionalInfos.UpdateAdditionalInfoAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +85,8 @@ public class CrmAdditionalInfoController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmAdditionalInfoRecord(key);
-        var dto = new CrmAdditionalInfoDto { AdditionalInfoId = key };
-        await _serviceManager.AdditionalInfos.DeleteCrmAdditionalInfoAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = new AdditionalInfoDto { AdditionalInfoId = key };
+        await _serviceManager.AdditionalInfos.DeleteAdditionalInfoAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +99,7 @@ public class CrmAdditionalInfoController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.AdditionalInfos.CrmAdditionalInfoAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.AdditionalInfos.AdditionalInfoAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +110,10 @@ public class CrmAdditionalInfoController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmAdditionalInfos)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.AdditionalInfos.CrmAdditionalInfosAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.AdditionalInfos.AdditionalInfosAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmAdditionalInfoDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<AdditionalInfoDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

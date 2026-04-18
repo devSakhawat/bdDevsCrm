@@ -1,9 +1,10 @@
 # CRUD Records Pattern Implementation Progress
 
-**Project**: bdDevsCrm  
-**Started**: 2026-04-15  
-**Status**: 🚧 In Progress  
+**Project**: bdDevsCrm
+**Started**: 2026-04-15
+**Status**: 🚧 In Progress
 **Current Focus**: Service/Controller migration & build fixes
+**Latest Update**: 2026-04-18 - Fixed ApproverDetailsService and ICrmApplicantCourseService interface mismatches
 
 ---
 
@@ -19,12 +20,12 @@ This document tracks the implementation of the CRUD Records pattern across all e
 5. 🚧 Services use Mapster instead of MyMapper.JsonClone - in progress
 6. ✅ Mapster available in bdDevs.Shared for shared mapping utilities
 
-### Current Snapshot (2026-04-17)
+### Current Snapshot (2026-04-18)
 - Records created: **90** total (SystemAdmin 53, HR 2, CRM 26, DMS 9)
 - Validators created: **88** total (SystemAdmin 53, CRM 26, DMS 9) + BaseRecordValidator
 - Services using Records: **54 / 80** (67.5%)
 - Controllers using Records: **54 / 78** (69.2%)
-- Build status: **FAILED** (112 errors). Primary blockers: missing validator type resolutions in several SystemAdmin services, missing repository method `ActiveDocumentParameterMappingsAsync`, missing entity members (`LastUpdatedDate`) referenced in services, and grid extension calls (e.g., `GridDataSource`) not present. Needs remediation before further migrations.
+- Build status: **FAILING** (115 errors, down from 162). Recent fixes: ApproverDetailsService and ICrmApplicantCourseService interface mismatches resolved. Primary blockers: missing validator type resolutions in several SystemAdmin services, missing repository method `ActiveDocumentParameterMappingsAsync`, missing entity members (`LastUpdatedDate`) referenced in services, and grid extension calls (e.g., `GridDataSource`) not present. Needs remediation before further migrations.
 
 ---
 

@@ -1,7 +1,7 @@
 # 🔧 bdDevsCrm Architecture Fixes Report
 
-**Date:** 2026-04-17
-**Status:** ✅ Critical Issues Fixed
+**Date:** 2026-04-18
+**Status:** ✅ Critical Issues Fixed + Service Interface Mismatches Resolved
 
 ---
 
@@ -12,6 +12,121 @@ All critical architecture issues have been **successfully fixed**. The project n
 - ✅ Naming conventions 100% consistent
 - ✅ ServiceManager properly registered in DI container
 - ✅ Infrastructure references removed from Presentation layer
+- ✅ ApproverDetailsService interface implementation fixed (2026-04-18)
+- ✅ ICrmApplicantCourseService missing method added (2026-04-18)
+
+---
+
+## ✅ Issue 6: Fix ApproverDetailsService Interface Mismatch (2026-04-18)
+
+### Problem (বাংলায়)
+`ApproverDetailsService` class-এ ৪টি method name interface-এর সাথে match করছিল না। এর ফলে build error হচ্ছিল কারণ interface contract properly implement হয়নি।
+
+### Errors:
+```
+error CS0535: 'ApproverDetailsService' does not implement interface member 'IApproverDetailsService.ApproverDetailAsync(int, bool, CancellationToken)'
+error CS0535: 'ApproverDetailsService' does not implement interface member 'IApproverDetailsService.ApproverDetailsAsync(bool, CancellationToken)'
+error CS0535: 'ApproverDetailsService' does not implement interface member 'IApproverDetailsService.ApproverDetailsForDDLAsync(bool, CancellationToken)'
+error CS0535: 'ApproverDetailsService' does not implement interface member 'IApproverDetailsService.ApproverDetailsSummaryAsync(GridOptions, CancellationToken)'
+```
+
+### Solution
+**File:** `/Application.Services/Core/SystemAdmin/ApproverDetailsService.cs`
+
+**Method Name Corrections:**
+| Interface Method (Expected) | Service Method (Was) | Service Method (Fixed) | Status |
+|----------------------------|---------------------|----------------------|--------|
+| `ApproverDetailAsync` | `ApproverDetailsAsync` | `ApproverDetailAsync` | ✅ Fixed |
+| `ApproverDetailsAsync` | `ApproverDetailsesAsync` | `ApproverDetailsAsync` | ✅ Fixed |
+| `ApproverDetailsForDDLAsync` | `ApproverDetailsesForDDLAsync` | `ApproverDetailsForDDLAsync` | ✅ Fixed |
+| `ApproverDetailsSummaryAsync` | `ApproverDetailsesSummaryAsync` | `ApproverDetailsSummaryAsync` | ✅ Fixed |
+
+**Changes Made:**
+1. `ApproverDetailsAsync(int id, ...)` → `ApproverDetailAsync(int remarksId, ...)` (singular, correct parameter name)
+2. `ApproverDetailsesAsync(bool trackChanges, ...)` → `ApproverDetailsAsync(bool trackChanges, ...)` (correct plural)
+3. `ApproverDetailsesForDDLAsync(...)` → `ApproverDetailsForDDLAsync(...)` (correct plural)
+4. `ApproverDetailsesSummaryAsync(...)` → `ApproverDetailsSummaryAsync(...)` (correct plural)
+
+### Impact (প্রভাব)
+- ✅ Interface contract properly implemented
+- ✅ Build errors resolved for ApproverDetailsService
+- ✅ Service can now be properly dependency injected and used in controllers
+- ✅ Method naming follows consistent plural/singular conventions
+
+---
+
+## ✅ Issue 7: Add Missing ApplicantCoursesByApplicationIdAsync Method (2026-04-18)
+
+### Problem (বাংলায়)
+`CrmApplicantCourseController` একটি method call করছিল যা `ICrmApplicantCourseService` interface-এ define করা ছিল না। Controller endpoint ছিল কিন্তু service method implement করা হয়নি।
+
+### Error:
+```
+error CS1061: 'ICrmApplicantCourseService' does not contain a definition for 'ApplicantCoursesByApplicationIdAsync' and no accessible extension method 'ApplicantCoursesByApplicationIdAsync' accepting a first argument of type 'ICrmApplicantCourseService' could be found
+```
+
+### Solution
+
+**Step 1: Added Method to Interface**
+**File:** `/Domain.Contracts/Services/CRM/ICrmApplicantCourseService.cs`
+
+```csharp
+/// <summary>
+/// Retrieves applicant courses by the specified application ID.
+/// </summary>
+/// <param name="applicationId">The ID of the application.</param>
+/// <param name="trackChanges">Indicates whether EF change tracking should be enabled.</param>
+/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
+/// <returns>A collection of <see cref="ApplicantCourseDto"/> for the specified application.</returns>
+Task<IEnumerable<ApplicantCourseDto>> ApplicantCoursesByApplicationIdAsync(int applicationId, bool trackChanges, CancellationToken cancellationToken = default);
+```
+
+**Step 2: Implemented Method in Service**
+**File:** `/Application.Services/CRM/CrmApplicantCourseService.cs`
+
+```csharp
+/// <summary>
+/// Retrieves applicant courses by the specified application ID.
+/// Note: ApplicationId and ApplicantId refer to the same field in this context.
+/// </summary>
+public async Task<IEnumerable<ApplicantCourseDto>> ApplicantCoursesByApplicationIdAsync(int applicationId, bool trackChanges, CancellationToken cancellationToken = default)
+{
+    if (applicationId <= 0)
+    {
+        _logger.LogWarning("ApplicantCoursesByApplicationIdAsync called with invalid applicationId: {ApplicationId}", applicationId);
+        throw new BadRequestException("Invalid request!");
+    }
+
+    _logger.LogInformation("Fetching applicant courses for application ID: {ApplicationId}, Time: {Time}", applicationId, DateTime.UtcNow);
+
+    var courses = await _repository.CrmApplicantCourses.CrmApplicantCoursesByApplicantIdAsync(applicationId, trackChanges, cancellationToken);
+
+    if (!courses.Any())
+    {
+        _logger.LogWarning("No applicant courses found for application ID: {ApplicationId}, Time: {Time}", applicationId, DateTime.UtcNow);
+        return Enumerable.Empty<ApplicantCourseDto>();
+    }
+
+    var coursesDto = courses.MapToList<ApplicantCourseDto>();
+
+    _logger.LogInformation("Applicant courses fetched successfully for application ID: {ApplicationId}. Count: {Count}, Time: {Time}",
+                    applicationId, coursesDto.Count(), DateTime.UtcNow);
+
+    return coursesDto;
+}
+```
+
+### Implementation Notes:
+- The method uses existing repository method `CrmApplicantCoursesByApplicantIdAsync` because in the CRM domain, `ApplicationId` and `ApplicantId` refer to the same entity
+- Proper logging and validation added following enterprise patterns
+- Returns empty collection instead of throwing exception when no records found
+- Uses Mapster for DTO mapping following CRUD Records pattern
+
+### Impact (প্রভাব)
+- ✅ Interface contract completed with missing method
+- ✅ Controller endpoint now properly supported by service layer
+- ✅ Build error resolved for CrmApplicantCourseController
+- ✅ Follows existing code patterns and enterprise standards
 
 ---
 

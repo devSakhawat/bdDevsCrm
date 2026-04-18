@@ -147,30 +147,30 @@ internal sealed class ApproverDetailsService : IApproverDetailsService
     /// <summary>
     /// Retrieves a single approver details record by its ID with caching.
     /// </summary>
-    public async Task<ApproverDetailsDto> ApproverDetailsAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)
+    public async Task<ApproverDetailsDto> ApproverDetailAsync(int remarksId, bool trackChanges, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Fetching approver details. ID: {RemarksId}, Time: {Time}", id, DateTime.UtcNow);
+        _logger.LogInformation("Fetching approver details. ID: {RemarksId}, Time: {Time}", remarksId, DateTime.UtcNow);
 
         return await _cache.OrSetAsync(
-            key: $"ApproverDetails:{id}",
+            key: $"ApproverDetails:{remarksId}",
             factory: async () =>
             {
-                var approverDetails = await _repository.ApproverDetails.ApproverDetailsAsync(id, trackChanges, cancellationToken)
-                    ?? throw new NotFoundException("ApproverDetails", "RemarksId", id.ToString());
+                var approverDetails = await _repository.ApproverDetails.ApproverDetailsAsync(remarksId, trackChanges, cancellationToken)
+                    ?? throw new NotFoundException("ApproverDetails", "RemarksId", remarksId.ToString());
 
                 _logger.LogInformation("ApproverDetails fetched successfully. ID: {RemarksId}, Time: {Time}",
-                    id, DateTime.UtcNow);
+                    remarksId, DateTime.UtcNow);
 
                 return approverDetails.MapTo<ApproverDetailsDto>();
             },
             profile: CacheProfile.Static
-        ) ?? throw new NotFoundException("ApproverDetails", "RemarksId", id.ToString());
+        ) ?? throw new NotFoundException("ApproverDetails", "RemarksId", remarksId.ToString());
     }
 
     /// <summary>
     /// Retrieves all approver details records from the database with caching.
     /// </summary>
-    public async Task<IEnumerable<ApproverDetailsDto>> ApproverDetailsesAsync(bool trackChanges, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<ApproverDetailsDto>> ApproverDetailsAsync(bool trackChanges, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Fetching all approver details. Time: {Time}", DateTime.UtcNow);
 
@@ -200,7 +200,7 @@ internal sealed class ApproverDetailsService : IApproverDetailsService
     /// <summary>
     /// Retrieves all approver details for dropdown list asynchronously with caching.
     /// </summary>
-    public async Task<IEnumerable<ApproverDetailsDDLDto>> ApproverDetailsesForDDLAsync(bool trackChanges = false, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<ApproverDetailsDDLDto>> ApproverDetailsForDDLAsync(bool trackChanges = false, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Fetching approver details for dropdown list");
 
@@ -225,7 +225,7 @@ internal sealed class ApproverDetailsService : IApproverDetailsService
     /// <summary>
     /// Retrieves a paginated summary grid of all approver details.
     /// </summary>
-    public async Task<GridEntity<ApproverDetailsDto>> ApproverDetailsesSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
+    public async Task<GridEntity<ApproverDetailsDto>> ApproverDetailsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
     {
         const string sql = @"SELECT * FROM ApproverDetails";
         const string orderBy = "RemarksId DESC";

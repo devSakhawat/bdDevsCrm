@@ -1155,7 +1155,7 @@ UI-এর overall feel হবে:
 এই project-এর main layout structure হবে fixed enterprise shell based:
 
 - **Header**: fixed top bar, 70px
-- **Sidebar**: left navigation, 260px, collapsible to ~50px
+- **Sidebar**: left navigation, 260px, collapsible to approximately 50px
 - **Main Content**: responsive work area
 - **Footer**: fixed bottom, 20px
 

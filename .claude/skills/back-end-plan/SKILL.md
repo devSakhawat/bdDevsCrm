@@ -17,19 +17,37 @@ framework: .NET 10.0 + ASP.NET Core + EF Core 8+ + ADO.NET
 
 ```
 bdDevsCrm/
-├── Domain.Entities/          → Entity classes (POCO)
-├── Domain.Contracts/         → Service interfaces (IXxxService)
-├── Domain.Exceptions/        → Custom exception types (root namespace)
-├── Application.Services/     → Service implementations (internal sealed)
-│   └── Core/SystemAdmin/     → SystemAdmin module services
-├── Infrastructure.Repositories/ → Repository implementations
-├── Infrastructure.Sql/       → EF Core DbContext (CrmContext)
-├── Presentation.Controller/  → Controllers (BaseApiController)
-├── bdDevs.Shared/
-│   ├── Records/Core/         → C# Records (Create/Update/Delete)
-│   ├── Constants/            → RouteConstants.cs
-│   ├── DataTransferObjects/  → DTOs
-│   └── Grid/                 → GridEntity, GridOptions
+├── Domain.Entities/              # Core business entities (93 files)
+├── Domain.Contracts/             # Service interfaces (81 files)
+├── Domain.Exceptions/            # Custom exceptions
+│
+├── Application.Services/         # Business logic (SINGLE project)
+│   ├── Core/SystemAdmin/         # System admin services
+│   ├── Core/HR/                  # HR services
+│   ├── CRM/                      # CRM services
+│   ├── DMS/                      # Document services
+│   ├── Authentication/           # Auth services
+│   ├── Mappings/                 # Mapster profiles
+│   └── Validators/               # FluentValidation validators
+│
+├── Infrastructure.Repositories/  # Data access implementations
+├── Infrastructure.Sql/           # EF Core, DbContext, Migrations
+├── Infrastructure.Security/      # Authentication, Encryption
+├── Infrastructure.Utilities/     # Helper functions
+│
+├── Presentation.Controller/      # Shared controllers (78 files)
+├── Presentation.Api/             # RESTful Web API
+├── Presentation.Mvc/             # MVC + Razor frontend
+│
+├── bdDevs.Shared/                # Shared Kernel
+│   ├── Records/                  # C# record types (90 files)
+│   ├── ApiResponse/              # Unified response format
+│   ├── DataTransferObjects/      # DTOs
+│   └── Grid/                     # Grid utilities
+│
+└── Tests/
+    ├── bdDevsCrm.UnitTests/
+    └── bdDevsCrm.IntegrationTests/
 ```
 
 ---

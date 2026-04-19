@@ -36,10 +36,11 @@ public class CrmStatementOfPurposeController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.StatementOfPurposes.CrmStatementOfPurposesSummaryAsync(options, cancellationToken);
+        //var summaryGrid = await _serviceManager.StatementOfPurposes.CrmStatementOfPurposesSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.StatementOfPurposes.StatementOfPurposesSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmStatementOfPurposeDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<StatementOfPurposeDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,10 +52,10 @@ public class CrmStatementOfPurposeController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmStatementOfPurposeRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmStatementOfPurposeDto>();
+        var dto = record.MapTo<StatementOfPurposeDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.StatementOfPurposes.CreateCrmStatementOfPurposeAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.StatementOfPurposes.CreateStatementOfPurposeAsync(dto, currentUser, cancellationToken);
 
         if (created.StatementOfPurposeId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +73,8 @@ public class CrmStatementOfPurposeController : BaseApiController
         if (key != record.StatementOfPurposeId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmStatementOfPurposeRecord));
 
-        var dto = record.MapTo<CrmStatementOfPurposeDto>();
-        var updated = await _serviceManager.StatementOfPurposes.UpdateCrmStatementOfPurposeAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<StatementOfPurposeDto>();
+        var updated = await _serviceManager.StatementOfPurposes.UpdateStatementOfPurposeAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +86,8 @@ public class CrmStatementOfPurposeController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmStatementOfPurposeRecord(key);
-        var dto = new CrmStatementOfPurposeDto { StatementOfPurposeId = key };
-        await _serviceManager.StatementOfPurposes.DeleteCrmStatementOfPurposeAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = new StatementOfPurposeDto { StatementOfPurposeId = key };
+        await _serviceManager.StatementOfPurposes.DeleteStatementOfPurposeAsync(key, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +100,7 @@ public class CrmStatementOfPurposeController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.StatementOfPurposes.CrmStatementOfPurposeAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.StatementOfPurposes.StatementOfPurposeAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +111,10 @@ public class CrmStatementOfPurposeController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmStatementOfPurposes)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.StatementOfPurposes.CrmStatementOfPurposesAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.StatementOfPurposes.StatementOfPurposesAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmStatementOfPurposeDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<StatementOfPurposeDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

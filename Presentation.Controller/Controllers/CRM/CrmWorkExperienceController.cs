@@ -36,10 +36,11 @@ public class CrmWorkExperienceController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.WorkExperiences.CrmWorkExperiencesSummaryAsync(options, cancellationToken);
+        //var summaryGrid = await _serviceManager.WorkExperiences.CrmWorkExperiencesSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.WorkExperiences.WorkExperiencesSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmWorkExperienceDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<WorkExperienceHistoryDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,10 +52,10 @@ public class CrmWorkExperienceController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmWorkExperienceRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmWorkExperienceDto>();
+        var dto = record.MapTo<WorkExperienceHistoryDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.WorkExperiences.CreateCrmWorkExperienceAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.WorkExperiences.CreateWorkExperienceAsync(dto, currentUser, cancellationToken);
 
         if (created.WorkExperienceId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +73,8 @@ public class CrmWorkExperienceController : BaseApiController
         if (key != record.WorkExperienceId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmWorkExperienceRecord));
 
-        var dto = record.MapTo<CrmWorkExperienceDto>();
-        var updated = await _serviceManager.WorkExperiences.UpdateCrmWorkExperienceAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<WorkExperienceHistoryDto>();
+        var updated = await _serviceManager.WorkExperiences.UpdateWorkExperienceAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +86,8 @@ public class CrmWorkExperienceController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmWorkExperienceRecord(key);
-        var dto = new CrmWorkExperienceDto { WorkExperienceId = key };
-        await _serviceManager.WorkExperiences.DeleteCrmWorkExperienceAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = new WorkExperienceHistoryDto { WorkExperienceId = key };
+        await _serviceManager.WorkExperiences.DeleteWorkExperienceAsync(key, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +100,7 @@ public class CrmWorkExperienceController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.WorkExperiences.CrmWorkExperienceAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.WorkExperiences.WorkExperienceAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +111,10 @@ public class CrmWorkExperienceController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmWorkExperiences)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.WorkExperiences.CrmWorkExperiencesAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.WorkExperiences.WorkExperiencesAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmWorkExperienceDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<WorkExperienceHistoryDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

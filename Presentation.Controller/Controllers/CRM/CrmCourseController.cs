@@ -69,7 +69,8 @@ public class CrmCourseController : BaseApiController
         var dto = record.MapTo<CrmCourseDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var createdCourse = await _serviceManager.CrmCourses.CreateCourseAsync(dto, currentUser, cancellationToken);
+        //var createdCourse = await _serviceManager.CrmCourses.CreateCourseAsync(dto, currentUser, cancellationToken);
+        var createdCourse = await _serviceManager.CrmCourses.CreateAsync(record, currentUser, cancellationToken);
 
         if (createdCourse.CourseId <= 0)
             throw new InvalidCreateOperationException("Failed to create course record.");
@@ -88,7 +89,7 @@ public class CrmCourseController : BaseApiController
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmCourseRecord));
 
         var dto = record.MapTo<CrmCourseDto>();
-        var updatedCourse = await _serviceManager.CrmCourses.UpdateCourseAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var updatedCourse = await _serviceManager.CrmCourses.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updatedCourse, "Course updated successfully."));
     }
@@ -100,7 +101,7 @@ public class CrmCourseController : BaseApiController
     public async Task<IActionResult> DeleteCourseAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmCourseRecord(key);
-        await _serviceManager.CrmCourses.DeleteCourseAsync(key, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.CrmCourses.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Course deleted successfully"));
     }
 

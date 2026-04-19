@@ -69,7 +69,7 @@ public class CrmInstituteController : BaseApiController
         var dto = record.MapTo<CrmInstituteDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var createdInstitute = await _serviceManager.CrmInstitutes.CreateInstituteAsync(dto, currentUser, cancellationToken);
+        var createdInstitute = await _serviceManager.CrmInstitutes.CreateAsync(record, currentUser, cancellationToken);
 
         if (createdInstitute.InstituteId <= 0)
             throw new InvalidCreateOperationException("Failed to create institute record.");
@@ -88,7 +88,8 @@ public class CrmInstituteController : BaseApiController
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmInstituteRecord));
 
         var dto = record.MapTo<CrmInstituteDto>();
-        var updatedInstitute = await _serviceManager.CrmInstitutes.UpdateInstituteAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var currentUser = await GetCurrentUserAsync();
+        var updatedInstitute = await _serviceManager.CrmInstitutes.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updatedInstitute, "Institute updated successfully."));
     }
@@ -100,7 +101,7 @@ public class CrmInstituteController : BaseApiController
     public async Task<IActionResult> DeleteInstituteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmInstituteRecord(key);
-        await _serviceManager.CrmInstitutes.DeleteInstituteAsync(key, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.CrmInstitutes.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Institute deleted successfully"));
     }
 

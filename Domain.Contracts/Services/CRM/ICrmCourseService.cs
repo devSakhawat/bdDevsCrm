@@ -18,7 +18,7 @@ public interface ICrmCourseService
 	/// <param name="record">The Record containing data for the new course.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
 	/// <returns>The created <see cref="CrmCourseDto"/> with the newly assigned ID.</returns>
-	Task<CrmCourseDto> CreateAsync(CreateCrmCourseRecord record, CancellationToken cancellationToken = default);
+	Task<CrmCourseDto> CreateAsync(CreateCrmCourseRecord record, UsersDto currentUser, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Updates an existing course record using CRUD Record pattern.

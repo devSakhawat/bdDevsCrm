@@ -36,7 +36,8 @@ public class CrmIntakeMonthController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.CrmIntakeMonths.CrmIntakeMonthsSummaryAsync(options, cancellationToken);
+        //var summaryGrid = await _serviceManager.CrmIntakeMonths.CrmIntakeMonthsSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.CrmIntakeMonths.IntakeMonthsSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
             return Ok(ApiResponseHelper.Success(new GridEntity<CrmIntakeMonthDto>(), "No records found."));
@@ -54,7 +55,7 @@ public class CrmIntakeMonthController : BaseApiController
         var dto = record.MapTo<CrmIntakeMonthDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.CrmIntakeMonths.CreateCrmIntakeMonthAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.CrmIntakeMonths.CreateAsync(record, cancellationToken);
 
         if (created.IntakeMonthId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -73,7 +74,7 @@ public class CrmIntakeMonthController : BaseApiController
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmIntakeMonthRecord));
 
         var dto = record.MapTo<CrmIntakeMonthDto>();
-        var updated = await _serviceManager.CrmIntakeMonths.UpdateCrmIntakeMonthAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var updated = await _serviceManager.CrmIntakeMonths.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -86,7 +87,7 @@ public class CrmIntakeMonthController : BaseApiController
     {
         var deleteRecord = new DeleteCrmIntakeMonthRecord(key);
         var dto = new CrmIntakeMonthDto { IntakeMonthId = key };
-        await _serviceManager.CrmIntakeMonths.DeleteCrmIntakeMonthAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.CrmIntakeMonths.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +100,7 @@ public class CrmIntakeMonthController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.CrmIntakeMonths.CrmIntakeMonthAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.CrmIntakeMonths.IntakeMonthAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,7 +111,7 @@ public class CrmIntakeMonthController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmIntakeMonths)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.CrmIntakeMonths.CrmIntakeMonthsAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.CrmIntakeMonths.IntakeMonthsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmIntakeMonthDto>(), "No records found."));

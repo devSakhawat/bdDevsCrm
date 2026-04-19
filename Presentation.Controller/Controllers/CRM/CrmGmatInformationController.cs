@@ -36,10 +36,10 @@ public class CrmGmatInformationController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.GMATInformations.CrmGmatInformationsSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.GMATInformations.GMATInformationsSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmGmatInformationDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<GmatInformationDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,12 +51,12 @@ public class CrmGmatInformationController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmGmatInformationRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmGmatInformationDto>();
+        var dto = record.MapTo<GmatInformationDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.GMATInformations.CreateCrmGmatInformationAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.GMATInformations.CreateGMATInformationAsync(dto, currentUser, cancellationToken);
 
-        if (created.GmatInformationId <= 0)
+        if (created.GMATInformationId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
 
         return Ok(ApiResponseHelper.Created(created, "Record created successfully."));
@@ -69,11 +69,11 @@ public class CrmGmatInformationController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> UpdateAsync([FromRoute] int key, [FromBody] UpdateCrmGmatInformationRecord record, CancellationToken cancellationToken = default)
     {
-        if (key != record.GmatInformationId)
+        if (key != record.GMATInformationId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmGmatInformationRecord));
 
-        var dto = record.MapTo<CrmGmatInformationDto>();
-        var updated = await _serviceManager.GMATInformations.UpdateCrmGmatInformationAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<GmatInformationDto>();
+        var updated = await _serviceManager.GMATInformations.UpdateGMATInformationAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +85,8 @@ public class CrmGmatInformationController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmGmatInformationRecord(key);
-        var dto = new CrmGmatInformationDto { GmatInformationId = key };
-        await _serviceManager.GMATInformations.DeleteCrmGmatInformationAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = new GmatInformationDto { GMATInformationId = key };
+        await _serviceManager.GMATInformations.DeleteGMATInformationAsync(key, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +99,7 @@ public class CrmGmatInformationController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.GMATInformations.CrmGmatInformationAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.GMATInformations.GMATInformationAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +110,10 @@ public class CrmGmatInformationController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmGmatInformations)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.GMATInformations.CrmGmatInformationsAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.GMATInformations.GMATInformationsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmGmatInformationDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<GmatInformationDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

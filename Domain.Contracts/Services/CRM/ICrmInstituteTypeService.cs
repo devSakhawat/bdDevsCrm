@@ -15,17 +15,17 @@ public interface ICrmInstituteTypeService
 	/// <summary>
 	/// Creates a new institute type record using CRUD Record pattern.
 	/// </summary>
-	Task<CrmInstituteTypeDto> CreateAsync(CreateCrmInstituteTypeRecord record, CancellationToken cancellationToken = default);
+	Task<CrmInstituteTypeDto> CreateAsync(CreateCrmInstituteTypeRecord record, UsersDto currentUser, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Updates an existing institute type record using CRUD Record pattern.
 	/// </summary>
-	Task<CrmInstituteTypeDto> UpdateAsync(UpdateCrmInstituteTypeRecord record, bool trackChanges, CancellationToken cancellationToken = default);
+	Task<CrmInstituteTypeDto> UpdateAsync(UpdateCrmInstituteTypeRecord record, UsersDto currentUser, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Deletes an institute type record using CRUD Record pattern.
 	/// </summary>
-	Task DeleteAsync(DeleteCrmInstituteTypeRecord record, bool trackChanges, CancellationToken cancellationToken = default);
+	Task DeleteAsync(DeleteCrmInstituteTypeRecord record, UsersDto currentUser, bool trackChanges, CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Retrieves all institute type records from the database.
@@ -57,7 +57,7 @@ public interface ICrmInstituteTypeService
 	/// <param name="modelDto">The DTO containing institute type data.</param>
 	/// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
 	/// <returns>A message indicating the result of the operation.</returns>
-	Task<string> SaveOrUpdateInstituteTypeAsync(int instituteTypeId, CrmInstituteTypeDto modelDto, CancellationToken cancellationToken = default);
+	Task<string> SaveOrUpdateInstituteTypeAsync(int instituteTypeId,UsersDto currentUser, CrmInstituteTypeDto modelDto, CancellationToken cancellationToken = default);
 }
 
 

@@ -36,10 +36,11 @@ public class CrmOthersInformationController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.OTHERSInformations.CrmOthersInformationsSummaryAsync(options, cancellationToken);
+        //var summaryGrid = await _serviceManager.OTHERSInformations.CrmOthersInformationsSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.OTHERSInformations.OthersInformationsSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmOthersInformationDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<OthersInformationDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,12 +52,12 @@ public class CrmOthersInformationController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmOthersInformationRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmOthersInformationDto>();
+        var dto = record.MapTo<OthersInformationDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.OTHERSInformations.CreateCrmOthersInformationAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.OTHERSInformations.CreateOthersInformationAsync(dto, currentUser,cancellationToken);
 
-        if (created.OtherInformationId <= 0)
+        if (created.OthersInformationId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
 
         return Ok(ApiResponseHelper.Created(created, "Record created successfully."));
@@ -69,11 +70,11 @@ public class CrmOthersInformationController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> UpdateAsync([FromRoute] int key, [FromBody] UpdateCrmOthersInformationRecord record, CancellationToken cancellationToken = default)
     {
-        if (key != record.OtherInformationId)
+        if (key != record.OthersInformationId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmOthersInformationRecord));
 
-        var dto = record.MapTo<CrmOthersInformationDto>();
-        var updated = await _serviceManager.OTHERSInformations.UpdateCrmOthersInformationAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<OthersInformationDto>();
+        var updated = await _serviceManager.OTHERSInformations.UpdateOthersInformationAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +86,8 @@ public class CrmOthersInformationController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmOthersInformationRecord(key);
-        var dto = new CrmOthersInformationDto { OtherInformationId = key };
-        await _serviceManager.OTHERSInformations.DeleteCrmOthersInformationAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = new OthersInformationDto { OthersInformationId = key };
+        await _serviceManager.OTHERSInformations.DeleteOthersInformationAsync(key,trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +100,8 @@ public class CrmOthersInformationController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.OTHERSInformations.CrmOthersInformationAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        //var record = await _serviceManager.OTHERSInformations.CrmOthersInformationAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.OTHERSInformations.OthersInformationAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +112,10 @@ public class CrmOthersInformationController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmOthersInformations)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.OTHERSInformations.CrmOthersInformationsAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.OTHERSInformations.OthersInformationsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmOthersInformationDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<OthersInformationDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

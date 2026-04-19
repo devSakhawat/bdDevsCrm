@@ -36,10 +36,10 @@ public class CrmApplicantReferenceController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.ApplicantReferences.CrmApplicantReferencesSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.ApplicantReferences.ApplicantReferencesSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmApplicantReferenceDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<ApplicantReferenceDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,10 +51,11 @@ public class CrmApplicantReferenceController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmApplicantReferenceRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmApplicantReferenceDto>();
+        //var dto = record.MapTo<CrmApplicantReferenceDto>();
+        var dto = record.MapTo<ApplicantReferenceDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.ApplicantReferences.CreateCrmApplicantReferenceAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.ApplicantReferences.CreateApplicantReferenceAsync(dto, currentUser, cancellationToken);
 
         if (created.ApplicantReferenceId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +73,8 @@ public class CrmApplicantReferenceController : BaseApiController
         if (key != record.ApplicantReferenceId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmApplicantReferenceRecord));
 
-        var dto = record.MapTo<CrmApplicantReferenceDto>();
-        var updated = await _serviceManager.ApplicantReferences.UpdateCrmApplicantReferenceAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<ApplicantReferenceDto>();
+        var updated = await _serviceManager.ApplicantReferences.UpdateApplicantReferenceAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +86,8 @@ public class CrmApplicantReferenceController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmApplicantReferenceRecord(key);
-        var dto = new CrmApplicantReferenceDto { ApplicantReferenceId = key };
-        await _serviceManager.ApplicantReferences.DeleteCrmApplicantReferenceAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = new ApplicantReferenceDto { ApplicantReferenceId = key };
+        await _serviceManager.ApplicantReferences.DeleteApplicantReferenceAsync(key, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +100,7 @@ public class CrmApplicantReferenceController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.ApplicantReferences.CrmApplicantReferenceAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.ApplicantReferences.ApplicantReferenceAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +111,10 @@ public class CrmApplicantReferenceController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmApplicantReferences)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.ApplicantReferences.CrmApplicantReferencesAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.ApplicantReferences.ApplicantReferencesAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmApplicantReferenceDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApplicantReferenceDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

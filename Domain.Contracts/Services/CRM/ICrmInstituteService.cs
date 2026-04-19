@@ -15,7 +15,7 @@ public interface ICrmInstituteService
 	/// <summary>
 	/// Creates a new institute record using CRUD Record pattern.
 	/// </summary>
-	Task<CrmInstituteDto> CreateAsync(CreateCrmInstituteRecord record, CancellationToken cancellationToken = default);
+	Task<CrmInstituteDto> CreateAsync(CreateCrmInstituteRecord record, UsersDto currentuser,CancellationToken cancellationToken = default);
 
 	/// <summary>
 	/// Updates an existing institute record using CRUD Record pattern.

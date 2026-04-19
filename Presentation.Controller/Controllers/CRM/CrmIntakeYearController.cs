@@ -36,7 +36,8 @@ public class CrmIntakeYearController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.CrmIntakeYears.CrmIntakeYearsSummaryAsync(options, cancellationToken);
+        //var summaryGrid = await _serviceManager.CrmIntakeYears.CrmIntakeYearsSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.CrmIntakeYears.IntakeYearsSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
             return Ok(ApiResponseHelper.Success(new GridEntity<CrmIntakeYearDto>(), "No records found."));
@@ -54,7 +55,7 @@ public class CrmIntakeYearController : BaseApiController
         var dto = record.MapTo<CrmIntakeYearDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.CrmIntakeYears.CreateCrmIntakeYearAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.CrmIntakeYears.CreateAsync(record, cancellationToken);
 
         if (created.IntakeYearId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -73,7 +74,7 @@ public class CrmIntakeYearController : BaseApiController
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmIntakeYearRecord));
 
         var dto = record.MapTo<CrmIntakeYearDto>();
-        var updated = await _serviceManager.CrmIntakeYears.UpdateCrmIntakeYearAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var updated = await _serviceManager.CrmIntakeYears.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -86,7 +87,7 @@ public class CrmIntakeYearController : BaseApiController
     {
         var deleteRecord = new DeleteCrmIntakeYearRecord(key);
         var dto = new CrmIntakeYearDto { IntakeYearId = key };
-        await _serviceManager.CrmIntakeYears.DeleteCrmIntakeYearAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.CrmIntakeYears.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +100,7 @@ public class CrmIntakeYearController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.CrmIntakeYears.CrmIntakeYearAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.CrmIntakeYears.IntakeYearAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,7 +111,7 @@ public class CrmIntakeYearController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmIntakeYears)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.CrmIntakeYears.CrmIntakeYearsAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.CrmIntakeYears.IntakeYearsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmIntakeYearDto>(), "No records found."));

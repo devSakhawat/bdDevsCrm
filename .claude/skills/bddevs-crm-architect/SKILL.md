@@ -22,8 +22,8 @@ Enterprise-grade CRM system designed to support 60,000+ employees with:
 ### Technology Stack
 
 **Backend:**
-- .NET Core 8/10 Web API
-- Entity Framework Core 8.0
+- .NET Core 10 Web API
+- Entity Framework Core 10.0
 - MS SQL Server (primary database)
 - JWT Bearer Authentication
 - Multi-tier caching with Redis and PostgreSQL fallback

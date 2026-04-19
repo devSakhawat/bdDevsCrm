@@ -1,5 +1,20 @@
 <Solution>
-  <Folder Name="/docs/" />
+  <Folder Name="/docs/">
+    <File Path="doc/agenda_and_notes.md" />
+    <File Path="doc/ARCHITECTURE_FIXES_REPORT.md" />
+    <File Path="doc/backend_design.md" />
+    <File Path="doc/coding_architecture.md" />
+    <File Path="doc/crud_records_implementation_progress.md" />
+    <File Path="doc/ENTERPRISE_ARCHITECTURE_ASSESSMENT.md" />
+    <File Path="doc/ENTITY_COMPLETENESS_ANALYSIS.md" />
+    <File Path="doc/form_and_grid_design.md" />
+    <File Path="doc/frontend_design.md" />
+    <File Path="doc/HRIS_UIDesign_Documentation.docx" />
+    <File Path="doc/HRIS_UIDesign_Documentation.md" />
+    <File Path="doc/naming_conventions.md" />
+    <File Path="doc/PROJECT_VISION.md" />
+    <File Path="doc/SESSION_SUMMARY.md" />
+  </Folder>
   <Folder Name="/localPackages/" />
   <Folder Name="/src/" />
   <Folder Name="/src/Application/">

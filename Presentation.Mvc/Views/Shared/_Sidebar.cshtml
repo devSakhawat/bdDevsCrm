@@ -1,0 +1,57 @@
+@{
+    var currentPath = Context.Request.Path.Value ?? string.Empty;
+    var isDashboard = currentPath.StartsWith("/", StringComparison.OrdinalIgnoreCase) || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
+}
+
+<aside class="app-sidebar" id="appSidebar" aria-label="Primary navigation">
+    <div class="app-sidebar__section">
+        <p class="app-sidebar__caption">Main</p>
+        <a class="nav-link @(isDashboard ? "is-active" : string.Empty)" asp-controller="Home" asp-action="Index">
+            <span class="nav-link__icon">▣</span>
+            <span class="nav-link__text">Dashboard</span>
+        </a>
+    </div>
+
+    <div class="app-sidebar__section">
+        <p class="app-sidebar__caption">Modules</p>
+
+        <button class="nav-group" type="button" data-nav-toggle aria-expanded="true">
+            <span class="nav-group__lead">
+                <span class="nav-link__icon">👥</span>
+                <span class="nav-link__text">HR Operations</span>
+            </span>
+            <span class="nav-group__chevron">⌄</span>
+        </button>
+        <div class="nav-group__items is-open">
+            <a class="nav-sublink is-active" href="javascript:void(0)">Employee Management</a>
+            <a class="nav-sublink" href="javascript:void(0)">Attendance & Leave</a>
+            <a class="nav-sublink" href="javascript:void(0)">Performance Review</a>
+        </div>
+
+        <button class="nav-group" type="button" data-nav-toggle aria-expanded="false">
+            <span class="nav-group__lead">
+                <span class="nav-link__icon">💳</span>
+                <span class="nav-link__text">Bonus & Payroll</span>
+            </span>
+            <span class="nav-group__chevron">⌄</span>
+        </button>
+        <div class="nav-group__items">
+            <a class="nav-sublink" href="javascript:void(0)">Bonus Setup</a>
+            <a class="nav-sublink" href="javascript:void(0)">Payment Approval</a>
+            <a class="nav-sublink" href="javascript:void(0)">Export Center</a>
+        </div>
+
+        <button class="nav-group" type="button" data-nav-toggle aria-expanded="false">
+            <span class="nav-group__lead">
+                <span class="nav-link__icon">⚙</span>
+                <span class="nav-link__text">System Setup</span>
+            </span>
+            <span class="nav-group__chevron">⌄</span>
+        </button>
+        <div class="nav-group__items">
+            <a class="nav-sublink" href="javascript:void(0)">Role & Permission</a>
+            <a class="nav-sublink" href="javascript:void(0)">Master Data</a>
+            <a class="nav-sublink" href="javascript:void(0)">Audit Trail</a>
+        </div>
+    </div>
+</aside>

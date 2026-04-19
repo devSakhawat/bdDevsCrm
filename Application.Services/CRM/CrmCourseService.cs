@@ -41,7 +41,7 @@ internal sealed class CrmCourseService : ICrmCourseService
 	/// <summary>
 	/// Creates a new course record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmCourseDto> CreateAsync(CreateCrmCourseRecord record, CancellationToken cancellationToken = default)
+	public async Task<CrmCourseDto> CreateAsync(CreateCrmCourseRecord record, UsersDto currentUser, CancellationToken cancellationToken = default)
 	{
 		if (record == null)
 			throw new BadRequestException(nameof(CreateCrmCourseRecord));

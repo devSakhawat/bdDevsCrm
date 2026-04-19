@@ -1,16 +1,13 @@
-using Presentation.AuthorizeAttributes;
-using Domain.Contracts.Services;
+using Application.Shared.Grid;
 using bdDevs.Shared;
+using bdDevs.Shared.Constants;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.Records.CRM;
+using Domain.Contracts.Services;
 using Domain.Exceptions;
-using bdDevs.Shared.Constants;
-using Application.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
-using Presentation.ActionFilters;
-using bdDevs.Shared.Extensions;
-using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
+using Presentation.AuthorizeAttributes;
 
 namespace Presentation.Controllers.CRM;
 
@@ -20,106 +17,97 @@ namespace Presentation.Controllers.CRM;
 [AuthorizeUser]
 public class CrmPaymentMethodController : BaseApiController
 {
-    private readonly IMemoryCache _cache;
+  private readonly IMemoryCache _cache;
 
-    public CrmPaymentMethodController(IServiceManager serviceManager, IMemoryCache cache) : base(serviceManager)
-    {
-        _cache = cache;
-    }
+  public CrmPaymentMethodController(IServiceManager serviceManager, IMemoryCache cache) : base(serviceManager)
+  {
+    _cache = cache;
+  }
 
-    /// <summary>
-    /// Retrieves paginated summary grid.
-    /// </summary>
-    [HttpPost(RouteConstants.CrmPaymentMethodSummary)]
-    public async Task<IActionResult> SummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken = default)
-    {
-        if (options == null)
-            throw new NullModelBadRequestException(nameof(GridOptions));
+  /// <summary>
+  /// Retrieves paginated summary grid.
+  /// </summary>
+  [HttpPost(RouteConstants.CrmPaymentMethodSummary)]
+  public async Task<IActionResult> SummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken = default)
+  {
+    if (options == null)
+      throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.CrmPaymentMethods.PaymentMethodsSummaryAsync(options, cancellationToken);
+    //var summaryGrid = await _serviceManager.CrmPaymentMethods.PaymentMethodsSummaryAsync(options, cancellationToken);
+    var summaryGrid = await _serviceManager.CrmPaymentMethods.PaymentMethodsSummaryAsync(options, cancellationToken);
 
-        if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmPaymentMethodDto>(), "No records found."));
+    if (!summaryGrid.Items.Any())
+      return Ok(ApiResponseHelper.Success(new GridEntity<CrmPaymentMethodDto>(), "No records found."));
 
-        return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
-    }
+    return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
+  }
 
-    /// <summary>
-    /// Creates a new record using CRUD Record pattern.
-    /// </summary>
-    [HttpPost(RouteConstants.CreateCrmPaymentMethod)]
-    [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
-    public async Task<IActionResult> CreateAsync([FromBody] CreateCrmPaymentMethodRecord record, CancellationToken cancellationToken = default)
-    {
-        var created = await _serviceManager.CrmPaymentMethods.CreateAsync(record, cancellationToken);
+  /// <summary>
+  /// Creates a new record using CRUD Record pattern.
+  /// </summary>
+  [HttpPost(RouteConstants.CreateCrmPaymentMethod)]
+  [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
+  public async Task<IActionResult> CreateAsync([FromBody] CreateCrmPaymentMethodRecord record, CancellationToken cancellationToken = default)
+  {
+    var created = await _serviceManager.CrmPaymentMethods.CreateAsync(record, cancellationToken);
 
-        if (created.PaymentMethodId <= 0)
-            throw new InvalidCreateOperationException("Failed to create record.");
+    if (created.PaymentMethodId <= 0)
+      throw new InvalidCreateOperationException("Failed to create record.");
 
-        return Ok(ApiResponseHelper.Created(created, "Record created successfully."));
-    }
+    return Ok(ApiResponseHelper.Created(created, "Record created successfully."));
+  }
 
-    /// <summary>
-    /// Updates an existing record using CRUD Record pattern.
-    /// </summary>
-    [HttpPut(RouteConstants.UpdateCrmPaymentMethod)]
-    [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
-    public async Task<IActionResult> UpdateAsync([FromRoute] int key, [FromBody] UpdateCrmPaymentMethodRecord record, CancellationToken cancellationToken = default)
-    {
-        if (key != record.PaymentMethodId)
-            throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmPaymentMethodRecord));
+  /// <summary>
+  /// Updates an existing record using CRUD Record pattern.
+  /// </summary>
+  [HttpPut(RouteConstants.UpdateCrmPaymentMethod)]
+  [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
+  public async Task<IActionResult> UpdateAsync([FromRoute] int key, [FromBody] UpdateCrmPaymentMethodRecord record, CancellationToken cancellationToken = default)
+  {
+    if (key != record.PaymentMethodId)
+      throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmPaymentMethodRecord));
 
-        var updated = await _serviceManager.CrmPaymentMethods.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
+    var updated = await _serviceManager.CrmPaymentMethods.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
-        return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
-    }
+    return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
+  }
 
-    /// <summary>
-    /// Deletes a record using CRUD Record pattern.
-    /// </summary>
-    [HttpDelete(RouteConstants.DeleteCrmPaymentMethod)]
-    public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
-    {
-        var deleteRecord = new DeleteCrmPaymentMethodRecord(key);
-        await _serviceManager.CrmPaymentMethods.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
-        return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
-    }
+  /// <summary>
+  /// Deletes a record using CRUD Record pattern.
+  /// </summary>
+  [HttpDelete(RouteConstants.DeleteCrmPaymentMethod)]
+  public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
+  {
+    var deleteRecord = new DeleteCrmPaymentMethodRecord(key);
+    await _serviceManager.CrmPaymentMethods.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
+    return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
+  }
 
-    /// <summary>
-    /// Retrieves a record by ID.
-    /// </summary>
-    [HttpGet(RouteConstants.ReadCrmPaymentMethod)]
-    public async Task<IActionResult> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken = default)
-    {
-        if (id <= 0)
-            throw new IdParametersBadRequestException();
+  /// <summary>
+  /// Retrieves a record by ID.
+  /// </summary>
+  [HttpGet(RouteConstants.ReadCrmPaymentMethod)]
+  public async Task<IActionResult> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken = default)
+  {
+    if (id <= 0)
+      throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.CrmPaymentMethods.PaymentMethodAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+    var record = await _serviceManager.CrmPaymentMethods.PaymentMethodAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
-        return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
-    }
+    return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
+  }
 
-    /// <summary>
-    /// Retrieves all records.
-    /// </summary>
-    [HttpGet(RouteConstants.ReadCrmPaymentMethods)]
-    public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        var records = await _serviceManager.CrmPaymentMethods.PaymentMethodsAsync(trackChanges: false, cancellationToken: cancellationToken);
+  /// <summary>
+  /// Retrieves all records.
+  /// </summary>
+  [HttpGet(RouteConstants.ReadCrmPaymentMethods)]
+  public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
+  {
+    var records = await _serviceManager.CrmPaymentMethods.PaymentMethodsAsync(trackChanges: false, cancellationToken: cancellationToken);
 
-        if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmPaymentMethodDto>(), "No records found."));
+    if (!records.Any())
+      return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmPaymentMethodDto>(), "No records found."));
 
-        return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
-    }
-
-    private async Task<UsersDto> GetCurrentUserAsync()
-    {
-        var userId = User?.FindFirst("UserId")?.Value;
-        if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int parsedUserId))
-        {
-            return new UsersDto { UserId = 1, Username = "system" };
-        }
-        return new UsersDto { UserId = parsedUserId };
-    }
+    return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
+  }
 }

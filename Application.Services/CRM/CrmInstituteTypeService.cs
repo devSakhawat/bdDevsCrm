@@ -39,7 +39,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	/// <summary>
 	/// Creates a new institute type record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmInstituteTypeDto> CreateAsync(CreateCrmInstituteTypeRecord record, CancellationToken cancellationToken = default)
+	public async Task<CrmInstituteTypeDto> CreateAsync(CreateCrmInstituteTypeRecord record, UsersDto currentUser, CancellationToken cancellationToken = default)
 	{
 		if (record == null)
 			throw new BadRequestException(nameof(CreateCrmInstituteTypeRecord));
@@ -72,7 +72,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	/// <summary>
 	/// Updates an existing institute type record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmInstituteTypeDto> UpdateAsync(UpdateCrmInstituteTypeRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task<CrmInstituteTypeDto> UpdateAsync(UpdateCrmInstituteTypeRecord record, UsersDto currentUser, bool trackChanges, CancellationToken cancellationToken = default)
 	{
 		if (record == null)
 			throw new BadRequestException(nameof(UpdateCrmInstituteTypeRecord));
@@ -108,7 +108,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	/// <summary>
 	/// Deletes an institute type record using CRUD Record pattern.
 	/// </summary>
-	public async Task DeleteAsync(DeleteCrmInstituteTypeRecord record, bool trackChanges, CancellationToken cancellationToken = default)
+	public async Task DeleteAsync(DeleteCrmInstituteTypeRecord record, UsersDto currentUser, bool trackChanges, CancellationToken cancellationToken = default)
 	{
 		if (record == null || record.InstituteTypeId <= 0)
 			throw new BadRequestException("Invalid delete request!");
@@ -192,7 +192,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 	/// <summary>
 	/// Saves an institute type record (create or update).
 	/// </summary>
-	public async Task<string> SaveOrUpdateInstituteTypeAsync(int instituteTypeId, CrmInstituteTypeDto modelDto, CancellationToken cancellationToken = default)
+	public async Task<string> SaveOrUpdateInstituteTypeAsync(int instituteTypeId, UsersDto currentUser, CrmInstituteTypeDto modelDto, CancellationToken cancellationToken = default)
 	{
 		if (modelDto is null)
 			throw new BadRequestException(nameof(CrmInstituteTypeDto));
@@ -203,7 +203,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 		if (instituteTypeId == 0)
 		{
 			var record = new CreateCrmInstituteTypeRecord(modelDto.InstituteTypeName);
-			var created = await CreateAsync(record, cancellationToken);
+			var created = await CreateAsync(record, currentUser, cancellationToken);
 			return created.InstituteTypeId > 0
 					? OperationMessage.Success
 					: "Failed to create institute type.";
@@ -211,7 +211,7 @@ internal sealed class CrmInstituteTypeService : ICrmInstituteTypeService
 		else
 		{
 			var record = new UpdateCrmInstituteTypeRecord(modelDto.InstituteTypeId, modelDto.InstituteTypeName);
-			await UpdateAsync(record, false, cancellationToken);
+			await UpdateAsync(record, currentUser, false, cancellationToken);
 			return OperationMessage.Success;
 		}
 	}

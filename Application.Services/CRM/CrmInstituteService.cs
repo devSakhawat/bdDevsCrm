@@ -42,7 +42,7 @@ internal sealed class CrmInstituteService : ICrmInstituteService
 	/// <summary>
 	/// Creates a new institute record using CRUD Record pattern.
 	/// </summary>
-	public async Task<CrmInstituteDto> CreateAsync(CreateCrmInstituteRecord record, CancellationToken cancellationToken = default)
+	public async Task<CrmInstituteDto> CreateAsync(CreateCrmInstituteRecord record, UsersDto currentUser,CancellationToken cancellationToken = default)
 	{
 		if (record == null)
 			throw new BadRequestException(nameof(CreateCrmInstituteRecord));

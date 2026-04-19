@@ -36,10 +36,11 @@ public class CrmEducationHistoryController : BaseApiController
         if (options == null)
             throw new NullModelBadRequestException(nameof(GridOptions));
 
-        var summaryGrid = await _serviceManager.EducationHistories.CrmEducationHistorysSummaryAsync(options, cancellationToken);
+        //var summaryGrid = await _serviceManager.EducationHistories.CrmEducationHistorysSummaryAsync(options, cancellationToken);
+        var summaryGrid = await _serviceManager.EducationHistories.EducationHistoriesSummaryAsync(options, cancellationToken);
 
         if (!summaryGrid.Items.Any())
-            return Ok(ApiResponseHelper.Success(new GridEntity<CrmEducationHistoryDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(new GridEntity<EducationHistoryDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
@@ -51,10 +52,10 @@ public class CrmEducationHistoryController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmEducationHistoryRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmEducationHistoryDto>();
+        var dto = record.MapTo<EducationHistoryDto>();
         var currentUser = await GetCurrentUserAsync();
 
-        var created = await _serviceManager.EducationHistories.CreateCrmEducationHistoryAsync(dto, currentUser, cancellationToken);
+        var created = await _serviceManager.EducationHistories.CreateEducationHistoryAsync(dto, currentUser, cancellationToken);
 
         if (created.EducationHistoryId <= 0)
             throw new InvalidCreateOperationException("Failed to create record.");
@@ -72,8 +73,8 @@ public class CrmEducationHistoryController : BaseApiController
         if (key != record.EducationHistoryId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmEducationHistoryRecord));
 
-        var dto = record.MapTo<CrmEducationHistoryDto>();
-        var updated = await _serviceManager.EducationHistories.UpdateCrmEducationHistoryAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        var dto = record.MapTo<EducationHistoryDto>();
+        var updated = await _serviceManager.EducationHistories.UpdateEducationHistoryAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
@@ -85,8 +86,7 @@ public class CrmEducationHistoryController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmEducationHistoryRecord(key);
-        var dto = new CrmEducationHistoryDto { EducationHistoryId = key };
-        await _serviceManager.EducationHistories.DeleteCrmEducationHistoryAsync(key, dto, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.EducationHistories.DeleteEducationHistoryAsync(key, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
@@ -99,7 +99,7 @@ public class CrmEducationHistoryController : BaseApiController
         if (id <= 0)
             throw new IdParametersBadRequestException();
 
-        var record = await _serviceManager.EducationHistories.CrmEducationHistoryAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.EducationHistories.EducationHistoryAsync(id, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
@@ -110,10 +110,10 @@ public class CrmEducationHistoryController : BaseApiController
     [HttpGet(RouteConstants.ReadCrmEducationHistories)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.EducationHistories.CrmEducationHistorysAsync(trackChanges: false, cancellationToken: cancellationToken);
+        var records = await _serviceManager.EducationHistories.EducationHistoriesAsync(trackChanges: false, cancellationToken: cancellationToken);
 
         if (!records.Any())
-            return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmEducationHistoryDto>(), "No records found."));
+            return Ok(ApiResponseHelper.Success(Enumerable.Empty<EducationHistoryDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }

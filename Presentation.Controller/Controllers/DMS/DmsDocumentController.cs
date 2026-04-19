@@ -1,12 +1,13 @@
-using Presentation.AuthorizeAttributes;
-using Domain.Contracts.Services;
-using bdDevs.Shared;
-using bdDevs.Shared.DataTransferObjects.DMS;
-using Domain.Exceptions;
-using bdDevs.Shared.Constants;
 using Application.Shared.Grid;
-using Microsoft.AspNetCore.Mvc;
+using bdDevs.Shared;
+using bdDevs.Shared.Constants;
+using bdDevs.Shared.DataTransferObjects.DMS;
+using Domain.Contracts.Services;
+using Domain.Entities.Entities.System;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Presentation.AuthorizeAttributes;
 
 namespace Presentation.Controllers.DMS;
 
@@ -133,6 +134,6 @@ public class DmsDocumentController : BaseApiController
 
         var result = await _serviceManager.DmsDocuments.SaveFileAndDocumentWithAllDmsAsync(file, allAboutDMS, cancellationToken);
 
-        return Ok(ApiResponseHelper.Success(result, "File and document saved successfully"));
-    }
+    return Ok(ApiResponseHelper.Success<string>(result, "File and document saved successfully"));
+  }
 }

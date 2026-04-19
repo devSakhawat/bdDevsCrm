@@ -1102,3 +1102,486 @@ searchInput.addEventListener('input', (e) => {
 **Last Updated**: 2026-04-14
 **Version**: 2.0.0
 **Status**: ✅ Complete UI/UX Design System
+
+---
+
+## 🧭 Recommended UI Design Context for HRIS + BonusPayment + Multi-Module System
+
+এই section-এ HRIS + BonusPayment + 30+ module ভিত্তিক enterprise application-এর জন্য recommended UI design context define করা হলো। এটি existing frontend design guideline-এর extension হিসেবে কাজ করবে এবং নতুন design decision নেওয়ার সময় reference হিসেবে ব্যবহার করা যাবে।
+
+### 1. Overall Design Direction
+
+এই project-এর জন্য best-fit UI direction হবে:
+
+- **Hybrid Enterprise Kendo-First Design System**
+- **Corporate + Modern SaaS style**
+- **Data-heavy friendly interface**
+- **Consistency-first approach**
+- **Light theme first**
+
+এই system-এর মূল লক্ষ্য হবে:
+
+- module-to-module consistency বজায় রাখা
+- Kendo UI component ভিত্তিক reusable design system তৈরি করা
+- HR, finance, approval, reporting এবং admin workflow-কে একই visual language-এর মধ্যে আনা
+- high-volume data screen-এ readability ও productivity নিশ্চিত করা
+
+### 2. UI Identity
+
+এই application-এর design identity হবে:
+
+> **Structured, calm, reusable enterprise UI for HR and financial operations**
+
+UI-এর overall feel হবে:
+
+- clean
+- structured
+- professional
+- easy to scan
+- function-first, decoration-light
+
+### 3. Core Design Philosophy
+
+এই UI system-এর core principle হবে ৫টি:
+
+1. **Consistency First** – সব module-এ same interaction pattern থাকবে
+2. **Kendo-First** – custom control-এর পরিবর্তে Kendo component preferred হবে
+3. **Form Clarity** – form-heavy workflow-এ readability এবং error handling clear হতে হবে
+4. **Grid Efficiency** – list, search, filter, sort এবং action execution fast হতে হবে
+5. **Low Cognitive Load** – user যেন কম effort-এ দ্রুত কাজ শেষ করতে পারে
+
+### 4. Layout Context
+
+এই project-এর main layout structure হবে fixed enterprise shell based:
+
+- **Header**: fixed top bar, 70px
+- **Sidebar**: left navigation, 260px, collapsible to ~50px
+- **Main Content**: responsive work area
+- **Footer**: fixed bottom, 20px
+
+#### Header
+
+Header-এ থাকবে:
+
+- application logo / name
+- global search
+- notification
+- user profile dropdown
+
+Header সব page-এ fixed থাকবে এবং top-level navigation identity maintain করবে।
+
+#### Sidebar
+
+Sidebar-এর behavior হবে:
+
+- default expanded
+- icon + text based menu
+- collapsible
+- multi-level navigation support
+- active state clearly highlighted
+- mobile-এ collapsed-first behavior
+
+30+ module থাকার কারণে sidebar navigation structure অত্যন্ত গুরুত্বপূর্ণ। User যেন সবসময় বুঝতে পারে সে কোন module, submenu বা page-এ আছে।
+
+#### Main Content
+
+Main content area-এ প্রতি page-এ সাধারণত থাকবে:
+
+- page title
+- breadcrumb
+- page action bar
+- primary content area
+
+Primary content area-এর মধ্যে form, grid, card, tabs, summary block বা modal-triggered action থাকতে পারে।
+
+#### Footer
+
+Footer minimal হবে এবং only informational content বহন করবে:
+
+- version
+- copyright
+- optional environment label
+
+### 5. Theme Context
+
+Recommended theme strategy:
+
+- **Light Theme Only (Phase 1)**
+- Dark mode optional future enhancement
+
+Reason:
+
+- enterprise HR user base সাধারণত light UI-তে বেশি comfortable
+- Kendo customization effort কম হবে
+- consistency maintain করা সহজ হবে
+- readability বেশি stable থাকবে
+
+### 6. Color System Context
+
+HRIS এবং BonusPayment module-এর মতো business-critical system-এর জন্য color system হবে calm, professional এবং readable।
+
+#### Recommended Color Role
+
+- **Primary**: Blue / Indigo tone
+- **Secondary**: Slate / Deep gray
+- **Background**: very light gray / off-white
+- **Success**: green
+- **Warning**: orange
+- **Danger**: red
+- **Info**: cyan / light blue
+
+#### Color Usage Rule
+
+- primary color only high-priority action এবং active state-এ ব্যবহার হবে
+- এক screen-এ অনেক accent color ব্যবহার করা যাবে না
+- module-wise আলাদা visual identity তৈরি করা যাবে না
+- semantic color সব module-এ একই অর্থ বহন করবে
+
+### 7. Typography Context
+
+Typography হবে readability-first, enterprise-friendly এবং compact।
+
+#### Recommended Font Stack
+
+- `Inter`
+- `Segoe UI`
+- `Roboto`
+
+#### Hierarchy
+
+- **H1** → Page title
+- **H2** → Section title
+- **H3** → Card / form block title
+- **Body text** → readable, compact, neutral
+
+Typography decorative হবে না। Visual emphasis hierarchy-এর মাধ্যমে আসবে, style effect-এর মাধ্যমে না।
+
+### 8. Spacing System Context
+
+Spacing inconsistency enterprise UI-কে দ্রুত messy করে ফেলে। তাই fixed spacing system follow করতে হবে।
+
+#### Recommended Base Unit
+
+- **8px spacing system**
+
+#### Common Values
+
+- `8px`
+- `16px`
+- `24px`
+- `32px`
+
+#### Usage Rule
+
+- form field gap fixed হবে
+- card padding fixed হবে
+- page section spacing consistent হবে
+- header / sidebar / content alignment একই scale follow করবে
+
+### 9. Component Strategy
+
+এই project-এ component strategy হবে:
+
+- **Kendo UI component first**
+- custom styling allowed
+- custom replacement discouraged
+
+Rule:
+
+> **Kendo কে override করা যাবে, replace করা যাবে না — unless business need absolutely requires it**
+
+### 10. Button System
+
+Button hierarchy হবে action priority অনুযায়ী।
+
+#### Button Types
+
+- **Primary** → Save / Submit / Confirm
+- **Secondary** → Cancel / Back / Close
+- **Outline** → less important action
+- **Danger** → Delete / Remove / Reset
+- **Text/Icon Button** → utility action / grid row action
+
+#### Button Rules
+
+- এক page-এ একটাই dominant primary action থাকবে
+- destructive action primary button style নেবে না
+- icon-only button only তখনই ব্যবহার হবে যখন meaning universally clear
+- button label action-oriented হবে
+
+### 11. Form Design Context
+
+এই application form-heavy হওয়ায় form design হবে design system-এর central part।
+
+#### Standard Form Strategy
+
+এই project-এ ৩ ধরনের form pattern officially supported হবে:
+
+##### 1. Inline Form
+
+ব্যবহার হবে:
+
+- search area
+- filter area
+- small update
+- grid inline edit
+
+##### 2. Modal Form
+
+ব্যবহার হবে:
+
+- medium size create/edit screen
+- 5–15 fields
+- quick maintenance workflow
+
+##### 3. Complex Tabbed Form
+
+ব্যবহার হবে:
+
+- employee profile
+- bonus configuration
+- payroll / policy setup
+- 15+ fields
+- multiple business section
+
+#### Default Recommendation
+
+- small/medium module → modal form
+- large business module → tabbed form
+- filter/search panel → inline form
+
+### 12. Form Field Context
+
+Most cases-এ form field হিসেবে Kendo UI component ব্যবহার করা হবে।
+
+#### Recommended Mapping
+
+- Text input → **Kendo TextBox**
+- Numeric input → **Kendo NumericTextBox**
+- Date input → **Kendo DatePicker**
+- Standard dropdown → **Kendo DropDownList**
+- Searchable dropdown → **Kendo ComboBox**
+- Multi selection → **Kendo MultiSelect**
+- Checkbox / toggle → Kendo-compatible styled control
+- Long text → textarea with consistent Kendo-aligned styling
+
+#### Form Field Rules
+
+- label top aligned হবে
+- required field visibly marked থাকবে
+- help text থাকলে consistent placement follow করবে
+- validation message field-এর নিচে দেখাবে
+- error state visually obvious হবে
+- read-only এবং disabled state clearly distinguishable হবে
+
+### 13. Validation UX Context
+
+Validation behavior সব module-এ consistent হতে হবে।
+
+#### Validation Rule
+
+- invalid field → red border
+- error message → field-এর নিচে
+- required indicator → clear visual marker
+- validation trigger → blur + submit
+- summary message → optional notification
+
+Validation message user-friendly হবে; technical language ব্যবহার করা যাবে না।
+
+### 14. Dropdown / ComboBox Context
+
+HRIS এবং admin workflow-এ dropdown-heavy interaction থাকবে। তাই standard behavior define করা জরুরি।
+
+#### DropDownList ব্যবহার হবে যখন:
+
+- option count কম
+- fixed selection list
+- search দরকার নেই
+
+#### ComboBox ব্যবহার হবে যখন:
+
+- option count বেশি
+- user search করে খুঁজবে
+- branch, employee, department, designation, account head-এর মতো large dataset থাকবে
+
+#### Rule
+
+- large dataset-এ plain dropdown ব্যবহার করা যাবে না
+- searchable input performance-friendly হতে হবে
+- remote data binding হলে server-side filtering preferred
+
+### 15. Kendo Grid Context
+
+এই system-এ grid হলো প্রধান operational component।
+
+#### Grid Role
+
+Grid ব্যবহার হবে:
+
+- master list
+- transactional list
+- approval list
+- bonus/payment records
+- employee/search result
+- audit/report preview
+
+#### Grid Standard
+
+Major grid-এ থাকবে:
+
+- server-side paging
+- sorting
+- filtering
+- action column
+- column resize
+- optional column reorder
+- export where needed
+
+#### Grid Placement
+
+- normal module → card/container based grid
+- data-heavy module → near full-width grid area
+
+#### Grid Action Column
+
+Standard action pattern:
+
+- View
+- Edit
+- Delete
+- More
+
+#### Grid Rule
+
+- overcrowded column avoid করতে হবে
+- action icon predictable হতে হবে
+- filters standardized হতে হবে
+- important column left side-এ রাখতে হবে
+
+### 16. Modal / Popup Context
+
+Modal-এর জন্য **Kendo Window** standard হবে।
+
+#### Modal Use Case
+
+- quick create/edit
+- short data entry
+- confirmation dialog
+- approval / note capture
+
+#### Modal Rule
+
+- large complex form modal-এ না
+- nested modal avoid করতে হবে
+- footer action predictable হবে
+- modal title action-specific হবে
+
+### 17. Card and Section Context
+
+Card UI ব্যবহার হবে grouped content, summary block এবং structured information display-এর জন্য।
+
+#### Card Use Case
+
+- dashboard summary
+- section wrapper
+- form block
+- informational panel
+
+#### Card Style
+
+- minimal shadow
+- light border
+- clean header
+- consistent padding
+
+### 18. Navigation UX Context
+
+Navigation structure enterprise usage-friendly হতে হবে।
+
+#### Standard Navigation Elements
+
+- sidebar = main navigation
+- breadcrumb = path indicator
+- page title = current screen identity
+- active menu state = current module indicator
+
+30+ module environment-এ navigation clarity productivity-এর জন্য critical।
+
+### 19. Page Action Area Context
+
+প্রতি operational page-এ action area predictable থাকবে।
+
+#### Common Actions
+
+- Add New
+- Save
+- Export
+- Refresh
+- Filter
+- Approve / Reject
+
+#### Rule
+
+- action placement consistent হবে
+- primary action visually strongest হবে
+- secondary action grouped থাকবে
+
+### 20. State Design Context
+
+সব major component-এর জন্য state pattern define করতে হবে।
+
+#### Mandatory UI States
+
+- **Loading**
+- **Empty**
+- **Error**
+- **Success**
+
+#### Example
+
+- grid loading spinner
+- empty list message
+- form save success notification
+- data load error block
+
+### 21. Notification and Feedback Context
+
+User action-এর পর system feedback clear হতে হবে।
+
+#### Feedback Type
+
+- success notification
+- warning notification
+- error notification
+- confirmation dialog
+
+#### Rule
+
+- feedback immediate হবে
+- tone polite হবে
+- ambiguous message avoid করতে হবে
+
+### 22. Performance-Oriented UI Context
+
+UI শুধু সুন্দর হলেই হবে না; fast ও scalable হতে হবে।
+
+#### Recommended Performance Strategy
+
+- lazy loading in tabbed form
+- server-side data operation in grid
+- searchable remote combo for large datasets
+- unnecessary DOM re-render কমানো
+- fetch-based async communication
+
+#### Important Rule
+
+- `jQuery.ajax()` ব্যবহার করা যাবে না
+- API call standard Fetch-based client-এর মাধ্যমে হবে
+
+### 23. Design Decision Summary
+
+এই project-এর জন্য final recommended UI direction হলো:
+
+> **A Kendo-first, corporate, clean, light-theme, data-heavy enterprise UI system যেখানে sidebar-header-main-content fixed structure থাকবে, forms 3 pattern follow করবে, Kendo Grid হবে central component, আর সব module একই spacing/color/validation/button rules follow করবে।**
+
+এই context follow করলে project-wide consistency, maintainability এবং developer alignment অনেক বেশি শক্তিশালী হবে।

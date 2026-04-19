@@ -1,6 +1,7 @@
 @{
     var currentPath = Context.Request.Path.Value ?? string.Empty;
-    var isDashboard = currentPath.StartsWith("/", StringComparison.OrdinalIgnoreCase) || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
+    var isDashboard = string.Equals(currentPath, "/", StringComparison.OrdinalIgnoreCase)
+        || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
 }
 
 <aside class="app-sidebar" id="appSidebar" aria-label="Primary navigation">

@@ -10,7 +10,11 @@ window.AppApi = (() => {
             return url;
         }
 
-        return new URL(url.replace(/^\//, string.Empty), getBaseUrl() + window.location.origin).toString();
+        if (url.startsWith("/")) {
+            return url;
+        }
+
+        return `${getBaseUrl().replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
     };
 
     const parseResponse = async (response) => {

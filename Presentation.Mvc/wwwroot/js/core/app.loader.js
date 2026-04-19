@@ -4,11 +4,15 @@ window.AppLoader = (() => {
 
     const show = (message = "Loading...") => {
         const element = overlay();
+        const messageText = text();
         if (!element) {
             return;
         }
 
-        text().textContent = message;
+        if (messageText) {
+            messageText.textContent = message;
+        }
+
         element.classList.remove("is-hidden");
         element.setAttribute("aria-hidden", "false");
     };

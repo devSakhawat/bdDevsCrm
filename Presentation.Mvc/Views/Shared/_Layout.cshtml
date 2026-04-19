@@ -1,50 +1,150 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Presentation.Mvc</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Presentation.Mvc.styles.css" asp-append-version="true" />
+    <meta name="description" content="bdDevsCrm - Enterprise CRM & HRIS" />
+    <title>@(ViewData["Title"] != null ? ViewData["Title"] + " | bdDevsCrm" : "bdDevsCrm")</title>
+
+    <!-- =====================================================================
+         CSS: Kendo UI (local)
+         ===================================================================== -->
+    <link rel="stylesheet" href="~/lib/kendo/css/web/kendo.common.min.css" />
+    <link rel="stylesheet" href="~/lib/kendo/css/web/kendo.default.min.css" />
+
+    <!-- =====================================================================
+         CSS: Application Design System
+         ===================================================================== -->
+    <link rel="stylesheet" href="~/css/_layout.css" asp-append-version="true" />
+
+    <!-- Page-level styles injected by child views -->
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Presentation.Mvc</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+    <!-- ===========================================================
+         Loading Overlay (managed by AppLoader)
+         =========================================================== -->
+    <div id="loading-overlay" class="loading-overlay is-hidden">
+        <div class="loading-spinner"></div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - Presentation.Mvc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- ===========================================================
+         Toast Container (managed by AppToast)
+         =========================================================== -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ===========================================================
+         HEADER
+         =========================================================== -->
+    <header class="app-header">
+        <!-- Left: Toggle + Brand -->
+        <div class="app-header__left">
+            <button id="sidebar-toggle" class="app-header__toggle" aria-label="Toggle sidebar">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="app-header__brand">
+                <div class="app-header__logo">bd</div>
+                <div class="app-header__title">
+                    bdDevsCrm <span>Enterprise</span>
+                </div>
+            </div>
         </div>
+
+        <!-- Right: Icons + User -->
+        <div class="app-header__right">
+            <!-- Notifications -->
+            <button class="app-header__icon-btn" title="Notifications" aria-label="Notifications">
+                🔔
+                <span class="app-header__badge"></span>
+            </button>
+
+            <!-- Settings -->
+            <button class="app-header__icon-btn" title="Settings" aria-label="Settings">
+                ⚙
+            </button>
+
+            <!-- User -->
+            <div class="app-header__user" id="user-dropdown-trigger">
+                <div class="app-header__avatar" id="user-avatar">--</div>
+                <div class="app-header__user-info">
+                    <span class="app-header__user-name" id="user-name">Loading...</span>
+                    <span class="app-header__user-role" id="user-role">--</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===========================================================
+         BODY: Sidebar + Main
+         =========================================================== -->
+    <div class="app-body">
+
+        <!-- -----------------------------------------------------------
+             SIDEBAR
+             ----------------------------------------------------------- -->
+        <aside class="app-sidebar" id="app-sidebar">
+
+            <!-- Nav (populated dynamically by AppCore) -->
+            <nav class="sidebar-nav" id="sidebar-nav" aria-label="Main navigation">
+                <!-- Dynamic menu items injected here by app.core.js -->
+                <div class="nav-group">
+                    <div class="nav-group__label">Loading...</div>
+                </div>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer">
+                <div class="sidebar-footer__version">v1.0.0 &nbsp;|&nbsp; bdDevsCrm</div>
+            </div>
+
+        </aside>
+
+        <!-- -----------------------------------------------------------
+             MAIN CONTENT
+             ----------------------------------------------------------- -->
+        <main class="app-main" id="app-main" role="main">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <!-- ===========================================================
+         FOOTER
+         =========================================================== -->
+    <footer class="app-footer">
+        <span class="app-footer__copy">
+            &copy; @DateTime.Now.Year bdDevs — All rights reserved.
+        </span>
+        <span class="app-footer__version">
+            bdDevsCrm v1.0.0 &nbsp;|&nbsp; .NET 10
+        </span>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- ===========================================================
+         SCRIPTS: jQuery (required by Kendo UI)
+         =========================================================== -->
+    <script src="~/lib/kendo/js/jquery.min.js"></script>
+
+    <!-- ===========================================================
+         SCRIPTS: Kendo UI Core
+         =========================================================== -->
+    <script src="~/lib/kendo/js/kendo.all.min.js"></script>
+
+    <!-- ===========================================================
+         SCRIPTS: Core Application Layer
+         (ORDER MATTERS: api → loader → toast → core)
+         =========================================================== -->
+    <script src="~/js/core/app.api.js"    asp-append-version="true"></script>
+    <script src="~/js/core/app.loader.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.toast.js"  asp-append-version="true"></script>
+    <script src="~/js/core/app.core.js"   asp-append-version="true"></script>
+
+    <!-- Page-level scripts injected by child views -->
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

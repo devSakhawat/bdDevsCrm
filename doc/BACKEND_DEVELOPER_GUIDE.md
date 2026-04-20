@@ -927,6 +927,143 @@ Code Quality
 
 ---
 
+## 12. Logging & CORS Configuration
+
+### Serilog Configuration
+
+We use **Serilog** for structured logging with multi-sink output (Console + File) and enrichment for better observability.
+
+#### Installed Package
+
+```
+Serilog.Sinks.File v7.0.0
+```
+
+#### Configuration (`appsettings.json`)
+
+```json
+{
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.Console", "Serilog.Sinks.File" ],
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Warning",
+        "Microsoft.AspNetCore": "Warning",
+        "System": "Warning"
+      }
+    },
+    "WriteTo": [
+      {
+        "Name": "Console",
+        "Args": {
+          "outputTemplate": "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties:j}{NewLine}{Exception}"
+        }
+      },
+      {
+        "Name": "File",
+        "Args": {
+          "path": "Logs/bdDevsCrm-.log",
+          "rollingInterval": "Day",
+          "retainedFileCountLimit": 30,
+          "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}] [{Level:u3}] [{CorrelationId}] {Message:lj} {Properties:j}{NewLine}{Exception}"
+        }
+      }
+    ],
+    "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ]
+  }
+}
+```
+
+#### Log File Details
+
+| Property | Value |
+|---|---|
+| **Location** | `Presentation.Api/Logs/` |
+| **File Pattern** | `bdDevsCrm-{Date}.log` |
+| **Example** | `bdDevsCrm-20260420.log` |
+| **Rolling Interval** | Daily |
+| **Retention** | 30 days |
+| **Enrichment** | CorrelationId, MachineName, ThreadId |
+
+#### Log Levels
+
+| Environment | Level |
+|---|---|
+| **Production** | Information |
+| **Development** | Debug |
+
+#### Enriched Log Format Example
+
+```
+[2026-04-20 15:30:45.123 +06:00] [INF] [abc-123-def] User login successful {"UserId": 5, "LoginId": "admin"}
+```
+
+- **Timestamp**: Full datetime with milliseconds and timezone
+- **Level**: INF (Information), WRN (Warning), ERR (Error), DBG (Debug)
+- **CorrelationId**: Unique request tracking ID (set by `CorrelationIdMiddleware`)
+- **Structured Properties**: JSON object format for searchability
+
+### CORS Configuration
+
+Cross-Origin Resource Sharing (CORS) is configured to allow requests from the **Presentation.Mvc** frontend application.
+
+#### Configuration (`appsettings.json`)
+
+```json
+{
+  "Cors": {
+    "AllowedOrigins": [
+      "http://localhost:5086",
+      "https://localhost:7274"
+    ],
+    "AllowCredentials": true,
+    "PreflightMaxAge": 3600
+  }
+}
+```
+
+#### CORS Policy Details
+
+| Property | Value | Purpose |
+|---|---|---|
+| **AllowedOrigins** | `http://localhost:5086`, `https://localhost:7274` | MVC frontend URLs (HTTP + HTTPS) |
+| **AllowCredentials** | `true` | Allows cookies, authorization headers, and TLS client certificates |
+| **PreflightMaxAge** | `3600` seconds (1 hour) | Browser caches preflight OPTIONS request for 1 hour |
+
+#### CORS Registration (in `Program.cs`)
+
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins(builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()!)
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .SetPreflightMaxAge(TimeSpan.FromSeconds(builder.Configuration.GetValue<int>("Cors:PreflightMaxAge")));
+    });
+});
+
+// In middleware pipeline
+app.UseCors();  // Must be before UseAuthorization()
+```
+
+#### Security Notes
+
+> ⚠️ **Production Update Required:**
+> In production, replace `localhost` URLs with actual domain names (e.g., `https://app.bddevscrm.com`).
+>
+> ⚠️ **AllowCredentials:**
+> When `AllowCredentials: true`, you **must** specify exact origins. Using `AllowAnyOrigin()` will cause a CORS policy error.
+
+### Build Status
+
+✅ **Last Build:** Successful (0 errors, 78 warnings — nullable reference warnings ignored)
+
+---
+
 ## Related Documentation
 
 | Document | Path | Contents |
@@ -936,7 +1073,8 @@ Code Quality
 | Coding Architecture | `doc/coding_architecture.md` | SOLID principles, layer diagrams |
 | Naming Conventions | `doc/naming_conventions.md` | Full naming rules with examples |
 | Frontend Design | `doc/frontend_design.md` | UI/UX, Kendo, JS patterns |
+| UI Design Documentation | `doc/HRIS_UIDesign_Documentation.md` | Complete UI/UX design system + frontend implementation plan |
 
 ---
 
-*Last updated: 2026-04-19 | Maintainer: bdDevs team*
+*Last updated: 2026-04-20 | Maintainer: bdDevs team*

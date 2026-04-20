@@ -953,7 +953,1133 @@ Module form JS শুধু init call করবে। Validation logic core এ 
 
 
 
-*— End of UI/UX Design Documentation —*
+|**20  Frontend Implementation Plan & Progress Tracking**|
+| :- |
+
+---
+
+# 🎯 bdDevsCrm Frontend Implementation Plan
+
+> **Status:** Planning Complete ✅ | Implementation: Not Started
+> **Tech Stack:** ASP.NET Core MVC + Kendo UI 2024 Q4 + jQuery + Fetch API
+> **Architecture:** Clean Architecture (Backend) + 3-File JS Pattern (Frontend)
+
+---
+
+## Implementation Overview
+
+This section tracks the **complete frontend implementation** from core infrastructure to the first CRUD module (Country). Each phase is broken down into specific steps with success criteria and file locations.
+
+**Key Principles:**
+- ✅ Backend API is complete and tested
+- ✅ Use Fetch API for all HTTP calls (NEVER jQuery Ajax)
+- ✅ Follow existing UI/UX design system (sections 1-19 above)
+- ✅ Token-based authentication with in-memory storage
+- ✅ Kendo UI 2024 Q4 for grid, forms, and widgets
+
+---
+
+## 📋 Phase 1: Core Infrastructure Setup
+
+### Step 1.1: API Configuration & Constants
+
+**Status:** ☐ Not Started
+
+**Files to Create/Update:**
+```
+Presentation.Mvc/wwwroot/js/core/
+├── app.config.js          ← API base URL, timeout, default headers
+└── app.constants.js       ← Route constants, cache keys, message constants
+```
+
+**Implementation Details:**
+
+```javascript
+// app.config.js
+const AppConfig = {
+    apiBaseUrl: 'https://localhost:7001/api',  // Presentation.Api URL
+    timeout: 30000,  // 30 seconds
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    auth: {
+        tokenKey: 'accessToken',        // In-memory storage key
+        refreshTokenKey: 'refreshToken'  // HTTP-only cookie
+    }
+};
+
+// app.constants.js
+const ApiRoutes = {
+    // Auth
+    login: '/authentication/login',
+    refreshToken: '/authentication/refresh-token',
+    logout: '/authentication/logout',
+
+    // Country (first module)
+    countries: '/core/systemadmin/countries',
+    countrySummary: '/core/systemadmin/country-summary',
+    createCountry: '/core/systemadmin/create-country',
+    updateCountry: (id) => `/core/systemadmin/update-country/${id}`,
+    deleteCountry: (id) => `/core/systemadmin/delete-country/${id}`
+};
+
+const Messages = {
+    success: {
+        created: 'Record created successfully!',
+        updated: 'Record updated successfully!',
+        deleted: 'Record deleted successfully!'
+    },
+    errors: {
+        network: 'Network error. Please check your connection.',
+        unauthorized: 'Session expired. Please login again.',
+        serverError: 'Server error. Please try again later.'
+    }
+};
+```
+
+**Success Criteria:**
+- [ ] `AppConfig` and `ApiRoutes` constants defined
+- [ ] File loaded in `_Layout.cshtml` before other scripts
+- [ ] `console.log(AppConfig.apiBaseUrl)` works in browser console
+
+---
+
+### Step 1.2: Enhanced API Client (Fetch Wrapper)
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/wwwroot/js/core/
+└── app.api.js              ← Centralized Fetch API wrapper with auth, error handling
+```
+
+**Implementation Details:**
+
+```javascript
+// app.api.js
+const ApiClient = (function() {
+    let accessToken = null;  // In-memory token storage
+
+    function setToken(token) {
+        accessToken = token;
+    }
+
+    function getToken() {
+        return accessToken;
+    }
+
+    function clearToken() {
+        accessToken = null;
+    }
+
+    async function request(url, options = {}) {
+        const config = {
+            method: options.method || 'GET',
+            headers: {
+                ...AppConfig.headers,
+                ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {}),
+                ...options.headers
+            }
+        };
+
+        if (options.body) {
+            config.body = JSON.stringify(options.body);
+        }
+
+        try {
+            const response = await fetch(`${AppConfig.apiBaseUrl}${url}`, config);
+
+            // Handle 401 Unauthorized - token expired
+            if (response.status === 401) {
+                clearToken();
+                window.location.href = '/Account/Login';
+                return;
+            }
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || `HTTP ${response.status}`);
+            }
+
+            return data;  // Returns ApiResponse<T>
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error;
+        }
+    }
+
+    // Convenience methods
+    async function get(url) {
+        return request(url, { method: 'GET' });
+    }
+
+    async function post(url, body) {
+        return request(url, { method: 'POST', body });
+    }
+
+    async function put(url, body) {
+        return request(url, { method: 'PUT', body });
+    }
+
+    async function del(url) {
+        return request(url, { method: 'DELETE' });
+    }
+
+    return {
+        setToken,
+        getToken,
+        clearToken,
+        get,
+        post,
+        put,
+        delete: del
+    };
+})();
+```
+
+**Success Criteria:**
+- [ ] `ApiClient.get()`, `ApiClient.post()`, `ApiClient.put()`, `ApiClient.delete()` work
+- [ ] Token is stored in memory (not localStorage)
+- [ ] 401 response redirects to login page
+- [ ] Network errors are caught and logged
+
+---
+
+### Step 1.3: Authentication & Session Management
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/wwwroot/js/core/
+└── app.auth.js             ← Login, token refresh, logout logic
+```
+
+**Implementation Details:**
+
+```javascript
+// app.auth.js
+const AuthManager = (function() {
+    async function login(loginId, password) {
+        try {
+            const response = await ApiClient.post(ApiRoutes.login, {
+                loginId,
+                password
+            });
+
+            if (response.success && response.data) {
+                // Store access token in memory
+                ApiClient.setToken(response.data.accessToken);
+
+                // RefreshToken is automatically stored in HTTP-only cookie by server
+
+                return response.data;
+            } else {
+                throw new Error(response.message || 'Login failed');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            throw error;
+        }
+    }
+
+    async function logout() {
+        try {
+            await ApiClient.post(ApiRoutes.logout);
+        } catch (error) {
+            console.error('Logout error:', error);
+        } finally {
+            ApiClient.clearToken();
+            window.location.href = '/Account/Login';
+        }
+    }
+
+    async function refreshToken() {
+        try {
+            // RefreshToken is sent automatically via HTTP-only cookie
+            const response = await ApiClient.post(ApiRoutes.refreshToken);
+
+            if (response.success && response.data) {
+                ApiClient.setToken(response.data.accessToken);
+                return true;
+            }
+            return false;
+        } catch (error) {
+            console.error('Token refresh failed:', error);
+            return false;
+        }
+    }
+
+    function isAuthenticated() {
+        return ApiClient.getToken() !== null;
+    }
+
+    return {
+        login,
+        logout,
+        refreshToken,
+        isAuthenticated
+    };
+})();
+```
+
+**Success Criteria:**
+- [ ] `AuthManager.login()` stores token in memory
+- [ ] `AuthManager.logout()` clears token and redirects
+- [ ] `AuthManager.isAuthenticated()` returns correct status
+- [ ] RefreshToken is stored in HTTP-only cookie (check DevTools > Application > Cookies)
+
+---
+
+## 📋 Phase 2: Login Page Implementation
+
+### Step 2.1: Login View (Razor Page)
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/Views/Account/
+└── Login.cshtml            ← Login page HTML
+```
+
+**Implementation:**
+
+```html
+@{
+    Layout = null;  // No master layout for login page
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - HRIS System</title>
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>HRIS System</h1>
+                <p>Please login to continue</p>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="loginId">Login ID <span class="required-star">*</span></label>
+                    <input type="text" id="loginId" name="loginId" class="k-input"
+                           placeholder="Enter your login ID"
+                           data-val="true"
+                           data-required-msg="Login ID is required." />
+                    <span class="field-error-msg" id="err_loginId"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password <span class="required-star">*</span></label>
+                    <input type="password" id="password" name="password" class="k-input"
+                           placeholder="Enter your password"
+                           data-val="true"
+                           data-required-msg="Password is required." />
+                    <span class="field-error-msg" id="err_password"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="rememberMe" name="rememberMe" />
+                        <span>Remember me</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="k-button btn-primary btn-lg btn-block">
+                    Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/kendo_2024_q4/js/kendo.all.min.js"></script>
+    <script src="~/js/core/app.config.js"></script>
+    <script src="~/js/core/app.constants.js"></script>
+    <script src="~/js/core/app.api.js"></script>
+    <script src="~/js/core/app.auth.js"></script>
+    <script src="~/js/core/app.toast.js"></script>
+    <script src="~/js/core/app.loader.js"></script>
+    <script src="~/js/modules/account/login.js"></script>
+</body>
+</html>
+```
+
+**Success Criteria:**
+- [ ] Login page renders without layout
+- [ ] Form fields use Kendo UI styles
+- [ ] All core JS files load without errors
+
+---
+
+### Step 2.2: Login JavaScript
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/wwwroot/js/modules/account/
+└── login.js                ← Login form validation & submit logic
+```
+
+**Implementation:**
+
+```javascript
+// login.js
+$(function() {
+    const $form = $('#loginForm');
+    const $loginBtn = $form.find('button[type="submit"]');
+
+    $form.on('submit', async function(e) {
+        e.preventDefault();
+
+        // Validate
+        if (!validateLoginForm()) {
+            return;
+        }
+
+        const loginId = $('#loginId').val().trim();
+        const password = $('#password').val().trim();
+
+        // Show loading state
+        $loginBtn.prop('disabled', true).text('Logging in...');
+        AppLoader.show();
+
+        try {
+            const user = await AuthManager.login(loginId, password);
+
+            AppToast.success('Login successful!');
+
+            // Redirect to dashboard
+            setTimeout(() => {
+                window.location.href = '/Dashboard/Index';
+            }, 500);
+
+        } catch (error) {
+            AppToast.error(error.message || 'Login failed. Please check your credentials.');
+            $loginBtn.prop('disabled', false).text('Login');
+        } finally {
+            AppLoader.hide();
+        }
+    });
+
+    function validateLoginForm() {
+        let isValid = true;
+
+        const loginId = $('#loginId').val().trim();
+        const password = $('#password').val().trim();
+
+        if (!loginId) {
+            showError('loginId', 'Login ID is required.');
+            isValid = false;
+        } else {
+            clearError('loginId');
+        }
+
+        if (!password) {
+            showError('password', 'Password is required.');
+            isValid = false;
+        } else {
+            clearError('password');
+        }
+
+        return isValid;
+    }
+
+    function showError(fieldId, message) {
+        $(`#${fieldId}`).closest('.form-group').addClass('has-error');
+        $(`#err_${fieldId}`).html(`<i class="fa fa-exclamation-circle"></i> ${message}`).fadeIn(150);
+    }
+
+    function clearError(fieldId) {
+        $(`#${fieldId}`).closest('.form-group').removeClass('has-error');
+        $(`#err_${fieldId}`).fadeOut(150, function() { $(this).html(''); });
+    }
+});
+```
+
+**Success Criteria:**
+- [ ] Form validates before submission
+- [ ] Login button shows loading state during API call
+- [ ] Success redirects to dashboard
+- [ ] Error shows toast notification
+- [ ] Token is stored in memory (check via `ApiClient.getToken()`)
+
+---
+
+### Step 2.3: Account Controller (MVC)
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/Controllers/
+└── AccountController.cs    ← Login, Logout actions
+```
+
+**Implementation:**
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+
+namespace Presentation.Mvc.Controllers;
+
+public class AccountController : Controller
+{
+    [HttpGet]
+    public IActionResult Login()
+    {
+        // If already authenticated, redirect to dashboard
+        if (User.Identity?.IsAuthenticated == true)
+            return RedirectToAction("Index", "Dashboard");
+
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult Logout()
+    {
+        // Frontend handles token clearing via AuthManager.logout()
+        return RedirectToAction("Login");
+    }
+}
+```
+
+**Success Criteria:**
+- [ ] `/Account/Login` route works
+- [ ] Already authenticated users redirect to dashboard
+- [ ] Logout action redirects to login
+
+---
+
+## 📋 Phase 3: Layout & Navigation Enhancement
+
+### Step 3.1: Update Master Layout
+
+**Status:** ☐ Not Started
+
+**Files to Update:**
+```
+Presentation.Mvc/Views/Shared/
+└── _Layout.cshtml          ← Add auth check, logout button, user info
+```
+
+**Changes:**
+1. Add auth check at top of layout
+2. Display current user info in header
+3. Add logout button
+4. Load all core JS files
+
+**Success Criteria:**
+- [ ] Layout shows user info when logged in
+- [ ] Logout button calls `AuthManager.logout()`
+- [ ] Unauthenticated users are redirected to login
+
+---
+
+### Step 3.2: Protected Routes Middleware
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/Middleware/
+└── AuthenticationCheckMiddleware.cs    ← Redirect unauthenticated requests
+```
+
+**Success Criteria:**
+- [ ] All routes except `/Account/Login` require authentication
+- [ ] Unauthenticated requests redirect to login page
+
+---
+
+## 📋 Phase 4: Kendo UI Integration
+
+### Step 4.1: Kendo UI File Structure
+
+**Status:** ☐ Not Started (User will manually add Kendo files)
+
+**Expected Structure:**
+```
+Presentation.Mvc/wwwroot/lib/kendo_2024_q4/
+├── js/
+│   └── kendo.all.min.js
+├── css/
+│   ├── kendo.common.min.css
+│   └── kendo.default.min.css
+└── styles/
+    └── (theme resources)
+```
+
+**Action Required:**
+> **User Task:** Manually copy Kendo UI 2024 Q4 files to `wwwroot/lib/kendo_2024_q4/`
+
+**Success Criteria:**
+- [ ] Kendo files are present in `wwwroot/lib/kendo_2024_q4/`
+- [ ] `kendo.all.min.js` loads without errors
+- [ ] Kendo CSS files load and apply correct styles
+
+---
+
+### Step 4.2: Kendo UI Theme Override
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/wwwroot/scss/kendo-override/
+└── _kendo-theme.scss       ← Custom Kendo theme overrides
+```
+
+**Implementation:**
+
+```scss
+// _kendo-theme.scss
+$kendo-color-primary: #1E5FA8;
+$kendo-border-radius: 4px;
+$kendo-grid-header-bg: #1E5FA8;
+$kendo-grid-header-text: #ffffff;
+
+.k-button.k-primary {
+    background: #1E5FA8;
+    border-color: #1E5FA8;
+    &:hover {
+        background: #1E3A5F;
+    }
+}
+
+.k-grid {
+    border-color: #CBD5E1;
+    th {
+        background: #1E5FA8 !important;
+        color: #fff !important;
+        font-weight: 600;
+    }
+    tr:hover {
+        background: #EFF6FF;
+    }
+}
+
+.k-input, .k-dropdown, .k-datepicker {
+    height: 36px;
+    border: 1px solid #CBD5E1;
+    &:focus {
+        border-color: #2563EB;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+}
+```
+
+**Success Criteria:**
+- [ ] Kendo grid headers use primary blue color (#1E5FA8)
+- [ ] Buttons match design system
+- [ ] Input fields have correct height (36px)
+
+---
+
+## 📋 Phase 5: First Module - Country CRUD
+
+### Step 5.1: Backend Verification
+
+**Status:** ✅ Already Complete
+
+The Country module backend is **already implemented**:
+- ✅ `CrmCountry` entity
+- ✅ `ICrmCountryRepository` + implementation
+- ✅ `ICrmCountryService` + implementation
+- ✅ `CountryController` with all CRUD endpoints
+- ✅ CRUD Records (`CreateCountryRecord`, `UpdateCountryRecord`, `DeleteCountryRecord`)
+- ✅ `CrmCountryDto`
+
+**Verified Endpoints:**
+```
+GET    /api/core/systemadmin/countries
+POST   /api/core/systemadmin/country-summary
+POST   /api/core/systemadmin/create-country
+PUT    /api/core/systemadmin/update-country/{key}
+DELETE /api/core/systemadmin/delete-country/{key}
+```
+
+---
+
+### Step 5.2: Country View (Razor Page)
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/Views/SystemAdmin/
+└── Country.cshtml          ← Country list page with Kendo Grid
+```
+
+**Implementation:**
+
+```html
+@{
+    ViewBag.PageTitle = "Country Management";
+    ViewBag.Breadcrumb = new[] { "Home", "System Admin", "Country Management" };
+}
+
+<div class="content-zone">
+    <!-- Toolbar -->
+    <div class="grid-toolbar">
+        <button id="btnAddCountry" class="k-button btn-primary">
+            <i class="fa fa-plus"></i> Add New Country
+        </button>
+        <button id="btnRefresh" class="k-button btn-outline">
+            <i class="fa fa-refresh"></i> Refresh
+        </button>
+    </div>
+
+    <!-- Kendo Grid -->
+    <div id="gridCountry"></div>
+</div>
+
+<!-- Country Form Modal (will be loaded via AJAX) -->
+<div id="modalCountry"></div>
+
+@section Scripts {
+    <script src="~/js/modules/systemadmin/country.settings.js"></script>
+    <script src="~/js/modules/systemadmin/country.details.js"></script>
+    <script src="~/js/modules/systemadmin/country.summary.js"></script>
+}
+```
+
+**Success Criteria:**
+- [ ] Page renders with toolbar and grid container
+- [ ] Add button and refresh button visible
+- [ ] Modal container ready for dynamic content
+
+---
+
+### Step 5.3: Country JavaScript (3-File Pattern)
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/wwwroot/js/modules/systemadmin/
+├── country.settings.js     ← Constants, API routes
+├── country.details.js      ← Create/Edit form logic
+└── country.summary.js      ← Grid initialization, delete logic
+```
+
+**File 1: country.settings.js**
+
+```javascript
+// Settings - Constants and configuration
+const CountrySettings = {
+    gridSelector: '#gridCountry',
+    modalSelector: '#modalCountry',
+
+    routes: {
+        summary: ApiRoutes.countrySummary,
+        create: ApiRoutes.createCountry,
+        update: ApiRoutes.updateCountry,
+        delete: ApiRoutes.deleteCountry
+    },
+
+    columns: [
+        { field: "countryId", title: "ID", width: 80 },
+        { field: "countryName", title: "Country Name", width: 200 },
+        { field: "countryCode", title: "Code", width: 100 },
+        { field: "statusName", title: "Status", width: 120,
+          template: "<span class='badge badge-#=statusClass#'>#=statusName#</span>" }
+    ]
+};
+```
+
+**File 2: country.summary.js**
+
+```javascript
+// Grid initialization and delete logic
+$(function() {
+    initCountryGrid();
+
+    $('#btnAddCountry').on('click', function() {
+        CountryDetails.openCreateModal();
+    });
+
+    $('#btnRefresh').on('click', function() {
+        refreshGrid();
+    });
+});
+
+function initCountryGrid() {
+    $(CountrySettings.gridSelector).kendoGrid({
+        dataSource: {
+            transport: {
+                read: {
+                    url: `${AppConfig.apiBaseUrl}${CountrySettings.routes.summary}`,
+                    type: 'POST',
+                    dataType: 'json',
+                    beforeSend: function(xhr) {
+                        const token = ApiClient.getToken();
+                        if (token) {
+                            xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+                        }
+                    }
+                }
+            },
+            schema: {
+                data: function(response) {
+                    return response.data.items || [];
+                },
+                total: function(response) {
+                    return response.data.totalCount || 0;
+                }
+            },
+            serverPaging: true,
+            serverSorting: true,
+            serverFiltering: true,
+            pageSize: 20
+        },
+        columns: [
+            ...CountrySettings.columns,
+            {
+                title: "Actions",
+                width: 160,
+                filterable: false,
+                sortable: false,
+                template: function(dataItem) {
+                    return `
+                        <button class="k-button btn-sm btn-secondary btn-edit"
+                                data-id="${dataItem.countryId}" title="Edit">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                        <button class="k-button btn-sm btn-danger btn-delete"
+                                data-id="${dataItem.countryId}" title="Delete">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    `;
+                }
+            }
+        ],
+        pageable: {
+            pageSizes: [10, 20, 50, 100]
+        },
+        sortable: true,
+        filterable: {
+            mode: 'row'
+        },
+        resizable: true,
+        noRecords: {
+            template: '<div class="grid-empty">No countries found.</div>'
+        }
+    });
+
+    // Event delegation for action buttons
+    $(document).on('click', `${CountrySettings.gridSelector} .btn-edit`, function() {
+        const id = $(this).data('id');
+        CountryDetails.openEditModal(id);
+    });
+
+    $(document).on('click', `${CountrySettings.gridSelector} .btn-delete`, function() {
+        const id = $(this).data('id');
+        deleteCountry(id);
+    });
+}
+
+function refreshGrid() {
+    $(CountrySettings.gridSelector).data('kendoGrid').dataSource.read();
+}
+
+async function deleteCountry(id) {
+    if (!confirm('Are you sure you want to delete this country?')) {
+        return;
+    }
+
+    AppLoader.show();
+    try {
+        const response = await ApiClient.delete(CountrySettings.routes.delete(id));
+
+        if (response.success) {
+            AppToast.success('Country deleted successfully!');
+            refreshGrid();
+        } else {
+            AppToast.error(response.message || 'Failed to delete country.');
+        }
+    } catch (error) {
+        AppToast.error(error.message || 'Error deleting country.');
+    } finally {
+        AppLoader.hide();
+    }
+}
+```
+
+**File 3: country.details.js**
+
+```javascript
+// Create/Edit form logic
+const CountryDetails = (function() {
+
+    function openCreateModal() {
+        // Show modal with empty form
+        const $modal = $(CountrySettings.modalSelector);
+        $modal.html(`
+            <div class="modal-overlay">
+                <div class="modal-box" style="width: 600px;">
+                    <div class="modal-header">
+                        <h3>Add New Country</h3>
+                        <button class="btn-close" onclick="CountryDetails.closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formCountry" class="form-layout form-layout--single">
+                            <div class="form-group">
+                                <label for="countryName">Country Name <span class="required-star">*</span></label>
+                                <input type="text" id="countryName" name="countryName" class="k-input"
+                                       data-val="true"
+                                       data-required-msg="Country name is required." />
+                                <span class="field-error-msg" id="err_countryName"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="countryCode">Country Code</label>
+                                <input type="text" id="countryCode" name="countryCode" class="k-input" />
+                            </div>
+
+                            <div class="form-group">
+                                <label for="statusId">Status <span class="required-star">*</span></label>
+                                <select id="statusId" name="statusId" class="k-input"
+                                        data-val="true"
+                                        data-required-msg="Status is required.">
+                                    <option value="">-- Select --</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">Inactive</option>
+                                </select>
+                                <span class="field-error-msg" id="err_statusId"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="k-button btn-outline" onclick="CountryDetails.closeModal()">Cancel</button>
+                        <button class="k-button btn-primary" onclick="CountryDetails.saveCountry()">Save</button>
+                    </div>
+                </div>
+            </div>
+        `).fadeIn(200);
+
+        // Initialize Kendo widgets
+        $('#statusId').kendoDropDownList();
+    }
+
+    function openEditModal(id) {
+        // TODO: Load country data and populate form
+        // Similar to openCreateModal but with data pre-filled
+    }
+
+    function closeModal() {
+        $(CountrySettings.modalSelector).fadeOut(200, function() {
+            $(this).html('');
+        });
+    }
+
+    async function saveCountry() {
+        // Validate
+        if (!validateForm()) {
+            return;
+        }
+
+        const formData = {
+            countryName: $('#countryName').val().trim(),
+            countryCode: $('#countryCode').val().trim(),
+            statusId: parseInt($('#statusId').val())
+        };
+
+        AppLoader.show();
+        try {
+            const response = await ApiClient.post(CountrySettings.routes.create, formData);
+
+            if (response.success) {
+                AppToast.success('Country created successfully!');
+                closeModal();
+                refreshGrid();
+            } else {
+                AppToast.error(response.message || 'Failed to create country.');
+            }
+        } catch (error) {
+            AppToast.error(error.message || 'Error creating country.');
+        } finally {
+            AppLoader.hide();
+        }
+    }
+
+    function validateForm() {
+        let isValid = true;
+        // Simple validation - can be enhanced with AppForm.init() pattern
+        const countryName = $('#countryName').val().trim();
+        if (!countryName) {
+            isValid = false;
+            AppToast.warning('Country name is required.');
+        }
+        return isValid;
+    }
+
+    return {
+        openCreateModal,
+        openEditModal,
+        closeModal,
+        saveCountry
+    };
+})();
+```
+
+**Success Criteria:**
+- [ ] Grid loads with pagination, sorting, filtering
+- [ ] Add button opens create modal
+- [ ] Edit button loads existing data
+- [ ] Delete button shows confirmation and deletes record
+- [ ] All API calls use `ApiClient` with Bearer token
+- [ ] Success/error messages shown via toast
+
+---
+
+### Step 5.4: Country Controller (MVC)
+
+**Status:** ☐ Not Started
+
+**Files to Create:**
+```
+Presentation.Mvc/Controllers/
+└── SystemAdminController.cs    ← Render Country view
+```
+
+**Implementation:**
+
+```csharp
+using Microsoft.AspNetCore.Mvc;
+
+namespace Presentation.Mvc.Controllers;
+
+public class SystemAdminController : Controller
+{
+    [HttpGet]
+    public IActionResult Country()
+    {
+        ViewBag.PageTitle = "Country Management";
+        ViewBag.Breadcrumb = new[] { "Home", "System Admin", "Country Management" };
+        return View();
+    }
+}
+```
+
+**Success Criteria:**
+- [ ] `/SystemAdmin/Country` route works
+- [ ] Page renders with correct title and breadcrumb
+
+---
+
+## 📋 Phase 6: Session Management Strategy
+
+### Token-Based Session Management (Recommended)
+
+**Architecture:**
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                      User Login                         │
+└─────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────┐
+│  Backend API returns:                                   │
+│  - AccessToken (short-lived, 15 min)                    │
+│  - RefreshToken (long-lived, 7 days, HTTP-only cookie)  │
+└─────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────┐
+│  Frontend stores:                                       │
+│  - AccessToken → In-memory variable (XSS protection)    │
+│  - RefreshToken → HTTP-only cookie (CSRF protection)    │
+└─────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────┐
+│  On API call:                                           │
+│  - Send AccessToken in Authorization header             │
+│  - If 401 Unauthorized → Call /refresh-token            │
+│  - Get new AccessToken → Retry original request         │
+└─────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────┐
+│  On page refresh / close:                               │
+│  - AccessToken lost (in-memory cleared)                 │
+│  - RefreshToken persists (HTTP-only cookie)             │
+│  - Auto-refresh on next page load                       │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Security Benefits:**
+- ✅ **XSS Protection:** AccessToken in memory (not localStorage/sessionStorage)
+- ✅ **CSRF Protection:** RefreshToken in HTTP-only cookie (no JavaScript access)
+- ✅ **Auto-logout:** AccessToken expires after 15 min of inactivity
+- ✅ **Persistent Session:** RefreshToken allows seamless re-authentication
+
+**Implementation Status:** ☐ Not Started (Core logic ready in Phase 1.3)
+
+---
+
+## 🎯 Implementation Progress Checklist
+
+### Phase 1: Core Infrastructure
+- [ ] Step 1.1: API Configuration & Constants
+- [ ] Step 1.2: Enhanced API Client (Fetch Wrapper)
+- [ ] Step 1.3: Authentication & Session Management
+
+### Phase 2: Login Page
+- [ ] Step 2.1: Login View (Razor Page)
+- [ ] Step 2.2: Login JavaScript
+- [ ] Step 2.3: Account Controller (MVC)
+
+### Phase 3: Layout & Navigation
+- [ ] Step 3.1: Update Master Layout
+- [ ] Step 3.2: Protected Routes Middleware
+
+### Phase 4: Kendo UI Integration
+- [ ] Step 4.1: Kendo UI File Structure (Manual)
+- [ ] Step 4.2: Kendo UI Theme Override
+
+### Phase 5: Country Module (First CRUD)
+- [x] Step 5.1: Backend Verification (Already Complete ✅)
+- [ ] Step 5.2: Country View (Razor Page)
+- [ ] Step 5.3: Country JavaScript (3-File Pattern)
+- [ ] Step 5.4: Country Controller (MVC)
+
+### Phase 6: Session Management
+- [ ] Token-Based Session (Implementation verification)
+
+---
+
+## 📝 Notes for Future Implementation
+
+**As we progress with implementation, this section will be updated with:**
+1. ✅ Completed tasks (with commit hashes)
+2. 🐛 Issues encountered and solutions
+3. 🔄 Deviations from the original plan
+4. 📌 New tasks added during development
+5. 💡 Lessons learned and best practices
+
+**Update Format:**
+```
+[Date] - [Phase.Step] - [Status]
+Description of what was implemented or changed.
+Commit: [hash]
+```
+
+---
+
+*— End of UI/UX Design Documentation + Frontend Implementation Plan —*
 
 HRIS + BonusPayment System  |  v1.0  |  2025
-© 2025 HRIS System   |   Page 
+© 2025 HRIS System
+**Last Updated:** 2026-04-20

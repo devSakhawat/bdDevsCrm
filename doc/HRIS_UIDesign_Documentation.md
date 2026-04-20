@@ -2049,11 +2049,11 @@ public class SystemAdminController : Controller
 - [x] Step 4.1: Kendo UI File Structure (Manual - Ready for user to add files)
 - [x] Step 4.2: Kendo UI Theme Override
 
-### Phase 5: Country Module (First CRUD)
+### Phase 5: Country Module (First CRUD) ✅ COMPLETED
 - [x] Step 5.1: Backend Verification (Already Complete ✅)
-- [ ] Step 5.2: Country View (Razor Page)
-- [ ] Step 5.3: Country JavaScript (3-File Pattern)
-- [ ] Step 5.4: Country Controller (MVC)
+- [x] Step 5.2: Country View (Razor Page)
+- [x] Step 5.3: Country JavaScript (3-File Pattern)
+- [x] Step 5.4: Country Controller (MVC)
 
 ### Phase 6: Session Management
 - [x] Token-Based Session (Core implementation complete ✅)
@@ -2191,6 +2191,121 @@ Presentation.Mvc/Views/Shared/_Layout.cshtml  (UPDATED - Added commented Kendo U
 2. Uncomment Kendo UI references in _Layout.cshtml
 3. Compile SCSS to CSS (if using SCSS compiler)
 4. Proceed to Phase 5: Country CRUD Module
+
+---
+
+### [2026-04-20] Session 3: Phase 5 Complete ✅
+
+**Completed Work:**
+
+#### Phase 5: Country Module (First CRUD Implementation)
+- ✅ **Country.cshtml**: Complete Razor page with grid layout, form modal, responsive design
+- ✅ **countrySettings.js**: Module initialization with config, auth check, event handlers
+- ✅ **countryDetails.js**: Form CRUD operations (Create, Update, validation)
+- ✅ **countrySummary.js**: Grid operations (List, Delete, server-side paging/sorting/filtering)
+- ✅ **CountryController.cs**: MVC controller rendering Country management page
+
+**Files Created:**
+```
+Presentation.Mvc/
+├── Views/Core/SystemAdmin/
+│   └── Country.cshtml                          (NEW - 270+ lines)
+├── Controllers/Core/SystemAdmin/
+│   └── CountryController.cs                    (NEW - MVC controller)
+└── wwwroot/js/modules/core/country/
+    ├── countrySettings.js                      (NEW - Initialization)
+    ├── countryDetails.js                       (NEW - Form CRUD)
+    └── countrySummary.js                       (NEW - Grid operations)
+```
+
+**Files Updated:**
+```
+Presentation.Mvc/wwwroot/css/app.css  (UPDATED - Added grid action buttons & badges styling)
+```
+
+**Implementation Features:**
+
+**Country.cshtml (Razor Page):**
+- Page header with breadcrumb navigation
+- Action buttons (Add New, Refresh)
+- Kendo Grid container
+- Modal form window with validation
+- Form fields: CountryName, CountryCode, SortOrder, Remarks, IsActive
+- Inline CSS with responsive design
+- References to 3 JavaScript modules
+
+**countrySettings.js (Initialization):**
+- Module configuration with API endpoints
+- Grid options (pageSize: 20, sortable, filterable, pageable)
+- Window options (600px width, modal, closeable)
+- Authentication check on DOM ready
+- Event handlers for Add/Refresh buttons
+
+**countryDetails.js (Form CRUD):**
+- Kendo Window initialization
+- Kendo Validator with custom rules
+- `openAddForm()` - Clear form and open for new entry
+- `openEditForm(id)` - Load country data and populate form
+- `saveCountry()` - Create or Update with validation
+- Form validation rules (required, 2-100 characters)
+- Auto-refresh grid after save
+
+**countrySummary.js (Grid Operations):**
+- Kendo Grid with DataSource
+- Server-side paging, sorting, filtering
+- Grid columns: ID, Name, Code, Sort Order, Status, Remarks, Actions
+- Bearer token authentication for API calls
+- Edit/Delete action buttons in grid rows
+- Status badges (Active/Inactive)
+- Confirm dialog before delete
+- Auto-refresh after delete
+
+**CountryController.cs (MVC):**
+- Single GET action returning Country view
+- Route: `/Country/Index`
+- Authentication handled by middleware
+
+**CSS Enhancements:**
+- Grid action buttons (Edit: Blue, Delete: Red)
+- Status badges (Active: Green, Inactive: Gray)
+- Hover effects with smooth transitions
+- Responsive button sizing
+
+**Backend Integration:**
+Backend API already complete from previous work:
+- ✅ CountryController (API) in Presentation.Controller
+- ✅ CrmCountryService in Application.Services
+- ✅ Repository pattern with EF Core
+- ✅ CRUD Record pattern (CreateCountryRecord, UpdateCountryRecord, DeleteCountryRecord)
+- ✅ API Endpoints: `/core/systemadmin/country-summary` (POST), `/core/systemadmin/country` (POST/PUT/DELETE), `/core/systemadmin/country/{id}` (GET)
+
+**Build Status:**
+- ✅ Build: Successful (0 errors, 0 warnings)
+- ✅ All files compiled without issues
+- ✅ MVC controller registered correctly
+
+**Key Patterns Demonstrated:**
+1. **3-File JavaScript Pattern**: Settings (init) → Details (form) → Summary (grid)
+2. **Kendo UI Integration**: Grid, Window, Validator components
+3. **Server-Side Operations**: Paging, sorting, filtering handled by API
+4. **Bearer Token Auth**: All API calls include Authorization header
+5. **Unified API Response**: Consistent ApiResponse<T> structure
+6. **CRUD Record Pattern**: Backend uses CreateCountryRecord, UpdateCountryRecord
+7. **Clean Separation**: View (Razor) → Controller (MVC) → API (Web API) → Service → Repository
+
+**User Experience:**
+- ✅ Click "Add New Country" → Modal opens with empty form
+- ✅ Fill form and click Save → API creates country, grid refreshes
+- ✅ Click Edit in grid row → Modal opens with populated form
+- ✅ Modify and Save → API updates country, grid refreshes
+- ✅ Click Delete → Confirm dialog → API deletes, grid refreshes
+- ✅ Click Refresh → Grid reloads from server
+- ✅ All operations show loading overlay and toast notifications
+
+**Next Steps:**
+- User can access Country module at `/Country/Index`
+- Country module serves as template for other CRUD modules
+- Can replicate pattern for Branch, Department, Designation, etc.
 
 ---
 

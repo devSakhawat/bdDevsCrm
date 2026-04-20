@@ -1,0 +1,447 @@
+// =========================================
+// Kendo UI Theme Override - bdDevsCrm
+// =========================================
+// Override Kendo UI Default theme with custom colors and styles
+// matching the application's design system
+
+// =========================================
+// Color Palette
+// =========================================
+$kendo-color-primary: #1E5FA8;           // Primary Blue
+$kendo-color-primary-hover: #1E3A5F;     // Darker Blue (hover)
+$kendo-color-primary-active: #153047;    // Even Darker Blue (active)
+$kendo-color-secondary: #64748B;         // Secondary Gray
+$kendo-color-success: #16A34A;           // Success Green
+$kendo-color-warning: #F59E0B;           // Warning Orange
+$kendo-color-error: #DC2626;             // Error Red
+$kendo-color-info: #3B82F6;              // Info Blue
+
+// Border & Background Colors
+$kendo-border-color: #CBD5E1;            // Light Gray Border
+$kendo-border-radius: 4px;               // Border Radius
+$kendo-bg-light: #F8FAFC;                // Light Background
+$kendo-bg-hover: #EFF6FF;                // Hover Background
+
+// Text Colors
+$kendo-text-primary: #1E293B;            // Primary Text
+$kendo-text-secondary: #64748B;          // Secondary Text
+$kendo-text-white: #FFFFFF;              // White Text
+
+// =========================================
+// Grid Styling
+// =========================================
+.k-grid {
+    border-color: $kendo-border-color;
+    border-radius: $kendo-border-radius;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    // Grid Header
+    th, .k-grid-header {
+        background: $kendo-color-primary !important;
+        color: $kendo-text-white !important;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 12px 16px;
+        border-color: darken($kendo-color-primary, 5%);
+
+        .k-link {
+            color: $kendo-text-white !important;
+
+            &:hover {
+                color: rgba(255, 255, 255, 0.9) !important;
+            }
+        }
+    }
+
+    // Grid Rows
+    tr {
+        &:hover {
+            background: $kendo-bg-hover;
+        }
+
+        &.k-alt {
+            background: $kendo-bg-light;
+
+            &:hover {
+                background: $kendo-bg-hover;
+            }
+        }
+
+        &.k-state-selected {
+            background: lighten($kendo-color-primary, 45%);
+            color: $kendo-text-primary;
+        }
+    }
+
+    // Grid Cells
+    td {
+        padding: 10px 16px;
+        font-size: 13px;
+        color: $kendo-text-primary;
+        border-color: $kendo-border-color;
+    }
+
+    // Pager
+    .k-pager-wrap {
+        background: $kendo-bg-light;
+        border-color: $kendo-border-color;
+        padding: 8px;
+
+        .k-pager-numbers .k-link {
+            &.k-state-selected {
+                background: $kendo-color-primary;
+                color: $kendo-text-white;
+                border-color: $kendo-color-primary;
+            }
+        }
+    }
+}
+
+// =========================================
+// Button Styling
+// =========================================
+.k-button {
+    border-radius: $kendo-border-radius;
+    font-weight: 500;
+    font-size: 13px;
+    padding: 8px 16px;
+    transition: all 0.2s ease;
+
+    // Primary Button
+    &.k-primary {
+        background: $kendo-color-primary;
+        border-color: $kendo-color-primary;
+        color: $kendo-text-white;
+
+        &:hover {
+            background: $kendo-color-primary-hover;
+            border-color: $kendo-color-primary-hover;
+        }
+
+        &:active {
+            background: $kendo-color-primary-active;
+            border-color: $kendo-color-primary-active;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 3px rgba(30, 95, 168, 0.2);
+        }
+    }
+
+    // Secondary Button
+    &.k-secondary {
+        background: $kendo-color-secondary;
+        border-color: $kendo-color-secondary;
+        color: $kendo-text-white;
+
+        &:hover {
+            background: darken($kendo-color-secondary, 10%);
+        }
+    }
+
+    // Icon Buttons
+    &.k-icon-button {
+        padding: 8px;
+        min-width: 36px;
+        min-height: 36px;
+    }
+}
+
+// =========================================
+// Input Field Styling
+// =========================================
+.k-input,
+.k-textbox,
+.k-dropdown,
+.k-datepicker,
+.k-numerictextbox,
+.k-autocomplete,
+.k-combobox,
+.k-multiselect {
+    height: 36px;
+    border: 1px solid $kendo-border-color;
+    border-radius: $kendo-border-radius;
+    font-size: 13px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: darken($kendo-border-color, 10%);
+    }
+
+    &:focus,
+    &.k-state-focused {
+        border-color: $kendo-color-info;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        outline: none;
+    }
+
+    &.k-invalid,
+    &.k-state-invalid {
+        border-color: $kendo-color-error;
+
+        &:focus {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+        }
+    }
+}
+
+// Textarea
+.k-textarea {
+    min-height: 80px;
+    padding: 8px 12px;
+    border: 1px solid $kendo-border-color;
+    border-radius: $kendo-border-radius;
+
+    &:focus {
+        border-color: $kendo-color-info;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+}
+
+// =========================================
+// Window/Modal Styling
+// =========================================
+.k-window {
+    border-radius: $kendo-border-radius;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+    .k-window-titlebar {
+        background: $kendo-color-primary;
+        color: $kendo-text-white;
+        font-weight: 600;
+        padding: 12px 16px;
+        border-top-left-radius: $kendo-border-radius;
+        border-top-right-radius: $kendo-border-radius;
+
+        .k-window-title {
+            color: $kendo-text-white;
+        }
+
+        .k-window-actions .k-button {
+            color: $kendo-text-white;
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+        }
+    }
+
+    .k-window-content {
+        padding: 20px;
+    }
+}
+
+// =========================================
+// TabStrip Styling
+// =========================================
+.k-tabstrip {
+    .k-tabstrip-items {
+        background: $kendo-bg-light;
+        border-color: $kendo-border-color;
+
+        .k-item {
+            border-color: transparent;
+
+            .k-link {
+                color: $kendo-text-secondary;
+                font-weight: 500;
+                padding: 10px 20px;
+
+                &:hover {
+                    color: $kendo-color-primary;
+                    background: rgba(30, 95, 168, 0.05);
+                }
+            }
+
+            &.k-state-active {
+                background: $kendo-text-white;
+                border-color: $kendo-border-color;
+                border-bottom-color: $kendo-text-white;
+
+                .k-link {
+                    color: $kendo-color-primary;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+    .k-content {
+        background: $kendo-text-white;
+        border-color: $kendo-border-color;
+        padding: 20px;
+    }
+}
+
+// =========================================
+// Dropdown/ComboBox/AutoComplete
+// =========================================
+.k-list-container,
+.k-popup {
+    border-radius: $kendo-border-radius;
+    border-color: $kendo-border-color;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    .k-list-item {
+        padding: 8px 12px;
+        font-size: 13px;
+
+        &:hover,
+        &.k-state-hover {
+            background: $kendo-bg-hover;
+            color: $kendo-text-primary;
+        }
+
+        &.k-state-selected {
+            background: $kendo-color-primary;
+            color: $kendo-text-white;
+        }
+    }
+}
+
+// =========================================
+// Notification/Toast Styling
+// =========================================
+.k-notification {
+    border-radius: $kendo-border-radius;
+    padding: 12px 16px;
+    font-size: 13px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    &.k-notification-success {
+        background: $kendo-color-success;
+        color: $kendo-text-white;
+        border-color: darken($kendo-color-success, 10%);
+    }
+
+    &.k-notification-error {
+        background: $kendo-color-error;
+        color: $kendo-text-white;
+        border-color: darken($kendo-color-error, 10%);
+    }
+
+    &.k-notification-warning {
+        background: $kendo-color-warning;
+        color: $kendo-text-white;
+        border-color: darken($kendo-color-warning, 10%);
+    }
+
+    &.k-notification-info {
+        background: $kendo-color-info;
+        color: $kendo-text-white;
+        border-color: darken($kendo-color-info, 10%);
+    }
+}
+
+// =========================================
+// Validator Styling
+// =========================================
+.k-invalid-msg {
+    color: $kendo-color-error;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.k-tooltip-validation {
+    background: $kendo-color-error;
+    color: $kendo-text-white;
+    border-radius: $kendo-border-radius;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+// =========================================
+// Loading/Spinner
+// =========================================
+.k-loading-mask {
+    background: rgba(255, 255, 255, 0.8);
+
+    .k-loading-image {
+        color: $kendo-color-primary;
+    }
+}
+
+// =========================================
+// Toolbar Styling
+// =========================================
+.k-toolbar {
+    background: $kendo-bg-light;
+    border-color: $kendo-border-color;
+    padding: 8px;
+
+    .k-button {
+        margin: 0 4px;
+    }
+}
+
+// =========================================
+// Filter Menu
+// =========================================
+.k-filter-menu {
+    .k-filter-selected-items {
+        background: $kendo-bg-light;
+        border-color: $kendo-border-color;
+    }
+}
+
+// =========================================
+// Upload Widget
+// =========================================
+.k-upload {
+    .k-dropzone {
+        border: 2px dashed $kendo-border-color;
+        border-radius: $kendo-border-radius;
+        padding: 20px;
+
+        &:hover {
+            border-color: $kendo-color-primary;
+            background: $kendo-bg-hover;
+        }
+    }
+}
+
+// =========================================
+// DatePicker/TimePicker Calendar
+// =========================================
+.k-calendar {
+    .k-calendar-header {
+        background: $kendo-color-primary;
+        color: $kendo-text-white;
+
+        .k-title {
+            color: $kendo-text-white;
+        }
+    }
+
+    .k-today {
+        color: $kendo-color-primary;
+        font-weight: 600;
+    }
+
+    .k-state-selected {
+        background: $kendo-color-primary;
+        color: $kendo-text-white;
+    }
+}
+
+// =========================================
+// Responsive Adjustments
+// =========================================
+@media (max-width: 768px) {
+    .k-grid {
+        th, td {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+    }
+
+    .k-button {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .k-window {
+        max-width: 95%;
+    }
+}

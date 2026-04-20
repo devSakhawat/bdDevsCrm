@@ -4,147 +4,45 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="bdDevsCrm - Enterprise CRM & HRIS" />
+    <meta name="app-base-url" content="@Url.Content("~/")" />
     <title>@(ViewData["Title"] != null ? ViewData["Title"] + " | bdDevsCrm" : "bdDevsCrm")</title>
-
-    <!-- =====================================================================
-         CSS: Kendo UI (local)
-         ===================================================================== -->
-    <link rel="stylesheet" href="~/lib/kendo/css/web/kendo.common.min.css" />
-    <link rel="stylesheet" href="~/lib/kendo/css/web/kendo.default.min.css" />
-
-    <!-- =====================================================================
-         CSS: Application Design System
-         ===================================================================== -->
-    <link rel="stylesheet" href="~/css/_layout.css" asp-append-version="true" />
-
-    <!-- Page-level styles injected by child views -->
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
-
-    <!-- ===========================================================
-         Loading Overlay (managed by AppLoader)
-         =========================================================== -->
-    <div id="loading-overlay" class="loading-overlay is-hidden">
-        <div class="loading-spinner"></div>
+<body class="app-shell">
+    <div id="loading-overlay" class="loading-overlay is-hidden" aria-live="polite" aria-hidden="true">
+        <div class="loading-overlay__content">
+            <div class="spinner"></div>
+            <p class="loading-overlay__text">Loading...</p>
+        </div>
     </div>
 
-    <!-- ===========================================================
-         Toast Container (managed by AppToast)
-         =========================================================== -->
-    <div id="toast-container" class="toast-container"></div>
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-    <!-- ===========================================================
-         HEADER
-         =========================================================== -->
-    <header class="app-header">
-        <!-- Left: Toggle + Brand -->
-        <div class="app-header__left">
-            <button id="sidebar-toggle" class="app-header__toggle" aria-label="Toggle sidebar">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+    @await Html.PartialAsync("_Header")
+    <div class="app-shell__frame">
+        @await Html.PartialAsync("_Sidebar")
 
-            <div class="app-header__brand">
-                <div class="app-header__logo">bd</div>
-                <div class="app-header__title">
-                    bdDevsCrm <span>Enterprise</span>
-                </div>
+        <main class="app-shell__main" id="mainContent" role="main">
+            @await Html.PartialAsync("_PageHeader")
+            <div class="content-zone">
+                @RenderBody()
             </div>
-        </div>
-
-        <!-- Right: Icons + User -->
-        <div class="app-header__right">
-            <!-- Notifications -->
-            <button class="app-header__icon-btn" title="Notifications" aria-label="Notifications">
-                🔔
-                <span class="app-header__badge"></span>
-            </button>
-
-            <!-- Settings -->
-            <button class="app-header__icon-btn" title="Settings" aria-label="Settings">
-                ⚙
-            </button>
-
-            <!-- User -->
-            <div class="app-header__user" id="user-dropdown-trigger">
-                <div class="app-header__avatar" id="user-avatar">--</div>
-                <div class="app-header__user-info">
-                    <span class="app-header__user-name" id="user-name">Loading...</span>
-                    <span class="app-header__user-role" id="user-role">--</span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- ===========================================================
-         BODY: Sidebar + Main
-         =========================================================== -->
-    <div class="app-body">
-
-        <!-- -----------------------------------------------------------
-             SIDEBAR
-             ----------------------------------------------------------- -->
-        <aside class="app-sidebar" id="app-sidebar">
-
-            <!-- Nav (populated dynamically by AppCore) -->
-            <nav class="sidebar-nav" id="sidebar-nav" aria-label="Main navigation">
-                <!-- Dynamic menu items injected here by app.core.js -->
-                <div class="nav-group">
-                    <div class="nav-group__label">Loading...</div>
-                </div>
-            </nav>
-
-            <!-- Sidebar Footer -->
-            <div class="sidebar-footer">
-                <div class="sidebar-footer__version">v1.0.0 &nbsp;|&nbsp; bdDevsCrm</div>
-            </div>
-
-        </aside>
-
-        <!-- -----------------------------------------------------------
-             MAIN CONTENT
-             ----------------------------------------------------------- -->
-        <main class="app-main" id="app-main" role="main">
-            @RenderBody()
+            @await Html.PartialAsync("_Footer")
         </main>
-
     </div>
 
-    <!-- ===========================================================
-         FOOTER
-         =========================================================== -->
-    <footer class="app-footer">
-        <span class="app-footer__copy">
-            &copy; @DateTime.Now.Year bdDevs — All rights reserved.
-        </span>
-        <span class="app-footer__version">
-            bdDevsCrm v1.0.0 &nbsp;|&nbsp; .NET 10
-        </span>
-    </footer>
+    @await Html.PartialAsync("_ModalConfirm")
+    @await Html.PartialAsync("_ModalDynamic")
 
-    <!-- ===========================================================
-         SCRIPTS: jQuery (required by Kendo UI)
-         =========================================================== -->
-    <script src="~/lib/kendo/js/jquery.min.js"></script>
-
-    <!-- ===========================================================
-         SCRIPTS: Kendo UI Core
-         =========================================================== -->
-    <script src="~/lib/kendo/js/kendo.all.min.js"></script>
-
-    <!-- ===========================================================
-         SCRIPTS: Core Application Layer
-         (ORDER MATTERS: api → loader → toast → core)
-         =========================================================== -->
-    <script src="~/js/core/app.api.js"    asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/core/app.api.js" asp-append-version="true"></script>
     <script src="~/js/core/app.loader.js" asp-append-version="true"></script>
-    <script src="~/js/core/app.toast.js"  asp-append-version="true"></script>
-    <script src="~/js/core/app.core.js"   asp-append-version="true"></script>
-
-    <!-- Page-level scripts injected by child views -->
+    <script src="~/js/core/app.toast.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.modal.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.grid.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.form.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.core.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-
 </body>
 </html>

@@ -1,0 +1,17 @@
+<div id="modalConfirm" class="app-modal" hidden aria-hidden="true">
+    <div class="app-modal__backdrop" data-modal-close></div>
+    <div class="app-modal__dialog app-modal__dialog--small" role="dialog" aria-modal="true" aria-labelledby="modalConfirmTitle">
+        <div class="app-modal__header">
+            <h2 id="modalConfirmTitle">Confirm action</h2>
+            <button class="app-modal__close" type="button" data-modal-close aria-label="Close">×</button>
+        </div>
+        <div class="app-modal__body">
+            <p id="modalConfirmMessage">Are you sure you want to continue?</p>
+            <p id="modalConfirmDetail" class="text-muted">This action may affect live HRIS data.</p>
+        </div>
+        <div class="app-modal__footer">
+            <button class="btn btn--ghost" type="button" data-modal-close>Cancel</button>
+            <button id="modalConfirmAction" class="btn btn--danger" type="button">Confirm</button>
+        </div>
+    </div>
+</div>

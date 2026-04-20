@@ -81,6 +81,12 @@
             // Success
             window.AppToast?.success(window.AppConstants.messages.success.loginSuccess);
 
+            // Initialize session manager after successful login
+            if (window.SessionManager) {
+                window.SessionManager.init();
+                console.log('Session manager initialized after login');
+            }
+
             // Redirect to dashboard after short delay
             setTimeout(() => {
                 window.location.href = '/Home/Index';

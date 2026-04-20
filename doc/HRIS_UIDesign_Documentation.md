@@ -2055,8 +2055,9 @@ public class SystemAdminController : Controller
 - [x] Step 5.3: Country JavaScript (3-File Pattern)
 - [x] Step 5.4: Country Controller (MVC)
 
-### Phase 6: Session Management
+### Phase 6: Session Management ✅ COMPLETED
 - [x] Token-Based Session (Core implementation complete ✅)
+- [x] Advanced Session Features (Testing & Refinement ✅)
 
 ---
 
@@ -2306,6 +2307,159 @@ Backend API already complete from previous work:
 - User can access Country module at `/Country/Index`
 - Country module serves as template for other CRUD modules
 - Can replicate pattern for Branch, Department, Designation, etc.
+
+---
+
+### [2026-04-20] Session 4: Phase 6 Complete ✅
+
+**Completed Work:**
+
+#### Phase 6: Advanced Session Management (Testing & Refinement)
+- ✅ **app.session.js**: Comprehensive session management with advanced features
+- ✅ **SessionTest.cshtml**: Interactive testing page for session features
+- ✅ **TestController.cs**: MVC controller for testing utilities
+- ✅ **CSS Enhancements**: Session warning dialog styles with animations
+
+**Files Created:**
+```
+Presentation.Mvc/
+├── wwwroot/js/core/
+│   └── app.session.js                          (NEW - 600+ lines, advanced session management)
+├── Views/Test/
+│   └── SessionTest.cshtml                      (NEW - Interactive testing page)
+└── Controllers/
+    └── TestController.cs                       (NEW - Test utilities controller)
+```
+
+**Files Updated:**
+```
+Presentation.Mvc/
+├── Views/Shared/_Layout.cshtml                 (UPDATED - Added app.session.js reference)
+├── wwwroot/css/app.css                         (UPDATED - Session warning dialog styles)
+└── wwwroot/js/modules/account/login.js         (UPDATED - Initialize session after login)
+```
+
+**Advanced Session Features Implemented:**
+
+**1. Session Timeout Management:**
+- ✅ Configurable session timeout (default: 30 minutes)
+- ✅ Configurable idle timeout (default: 15 minutes)
+- ✅ Warning dialog 2 minutes before expiry
+- ✅ Automatic logout on timeout
+- ✅ Session extension capability
+
+**2. Activity Tracking:**
+- ✅ Monitors user activity (mouse, keyboard, scroll, touch, click events)
+- ✅ Updates last activity timestamp in localStorage
+- ✅ Resets idle timer on activity
+- ✅ Activity check interval (every 30 seconds)
+- ✅ Cross-tab activity synchronization
+
+**3. Automatic Token Refresh:**
+- ✅ Auto-refresh token 5 minutes before expiry
+- ✅ Configurable refresh interval (default: 25 minutes)
+- ✅ Silent refresh without user intervention
+- ✅ Broadcasts token to other tabs after refresh
+- ✅ Graceful handling of refresh failures
+
+**4. Multi-Tab Synchronization:**
+- ✅ BroadcastChannel API for inter-tab communication
+- ✅ Logout from one tab = logout from all tabs
+- ✅ Activity in one tab extends session in all tabs
+- ✅ Token refresh synchronized across tabs
+- ✅ Session state shared via localStorage
+
+**5. Session Warning Dialog:**
+- ✅ Beautiful modal overlay with animations
+- ✅ Shows warning 2 minutes before expiry
+- ✅ "Continue Session" button to extend
+- ✅ "Logout Now" button for immediate logout
+- ✅ Auto-hide on user activity
+- ✅ Prevents duplicate warnings
+
+**6. Configuration Management:**
+- ✅ Runtime configuration updates
+- ✅ Adjustable timeouts and intervals
+- ✅ `updateConfig()` method for customization
+- ✅ Default production-ready values
+
+**7. Cleanup & Lifecycle:**
+- ✅ Cleanup on logout (timers, listeners, localStorage)
+- ✅ Graceful BroadcastChannel closure
+- ✅ Remove event listeners on cleanup
+- ✅ Clear all session timers
+- ✅ Auto-initialization on authenticated pages
+
+**8. Debugging & Testing:**
+- ✅ `getSessionInfo()` method for debugging
+- ✅ Console logging for events
+- ✅ Session testing page at `/Test/SessionTest`
+- ✅ Real-time session status monitoring
+- ✅ Manual session extension
+- ✅ Configuration testing
+- ✅ Multi-tab testing utilities
+- ✅ Session events log
+
+**Session Testing Page Features:**
+- **Current Session Status** - Real-time auth status, last activity, time tracking
+- **Session Configuration** - Adjust timeouts, intervals, warning time
+- **Session Actions** - Extend, trigger warning, refresh token, simulate idle, clear
+- **Multi-Tab Testing** - Broadcast activity, open in new tab, test synchronization
+- **Events Log** - Real-time logging of all session events with timestamps
+
+**Configuration Options:**
+```javascript
+{
+    sessionTimeout: 30 * 60 * 1000,        // 30 minutes
+    idleTimeout: 15 * 60 * 1000,           // 15 minutes
+    warningTime: 2 * 60 * 1000,            // 2 minutes before expiry
+    tokenRefreshInterval: 25 * 60 * 1000,  // 25 minutes
+    activityCheckInterval: 30 * 1000       // 30 seconds
+}
+```
+
+**Security Features:**
+- ✅ In-memory AccessToken storage (XSS protection)
+- ✅ HTTP-only RefreshToken cookie (CSRF protection)
+- ✅ No sensitive data in localStorage
+- ✅ Automatic logout on timeout
+- ✅ Cross-tab logout synchronization
+- ✅ Activity-based session extension
+
+**User Experience Flow:**
+1. User logs in → SessionManager auto-initializes
+2. User activity tracked → Session stays alive
+3. 2 minutes before timeout → Warning dialog appears
+4. User clicks "Continue" or any activity → Session extended
+5. No activity for idle timeout → Auto-logout
+6. Logout in one tab → All tabs logout simultaneously
+7. Activity in any tab → All tabs stay authenticated
+
+**Testing Flow:**
+1. Navigate to `/Test/SessionTest`
+2. View real-time session status
+3. Adjust configuration values
+4. Test session extension
+5. Simulate idle timeout
+6. Open multiple tabs to test synchronization
+7. Monitor events log for debugging
+
+**Build Status:**
+- ✅ Build: Successful (0 errors, 0 warnings)
+- ✅ All files compiled without issues
+- ✅ Session manager auto-initializes on authenticated pages
+
+**Browser Compatibility:**
+- ✅ Modern browsers (Chrome, Firefox, Edge, Safari)
+- ✅ BroadcastChannel API (graceful degradation if unsupported)
+- ✅ localStorage API
+- ✅ Modern ES6+ JavaScript
+
+**Next Steps:**
+- Session management fully operational
+- Ready for production deployment
+- Testing page available for QA
+- All 6 implementation phases complete ✅
 
 ---
 

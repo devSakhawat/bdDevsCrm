@@ -1,0 +1,226 @@
+@{
+    ViewData["Title"] = "Course Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Course Management</h1>
+        <div class="breadcrumb">CRM / Course</div>
+    </div>
+    <div class="page-actions">
+        <button id="btnAddCourse" class="btn-primary">
+            <i class="k-icon k-i-plus"></i> Add Course
+        </button>
+        <button id="btnRefresh" class="btn-secondary">
+            <i class="k-icon k-i-reload"></i> Refresh
+        </button>
+    </div>
+</div>
+
+<div class="grid-container">
+    <div id="courseGrid"></div>
+</div>
+
+<!-- Course Form Window -->
+<div id="courseWindow" style="display:none;">
+    <form id="courseForm">
+        <input type="hidden" id="courseId" name="courseId" value="0" />
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="courseTitle" class="required">Course Title</label>
+                <input type="text" id="courseTitle" name="courseTitle" required />
+            </div>
+
+            <div class="form-group">
+                <label for="courseLevel">Course Level</label>
+                <input type="text" id="courseLevel" name="courseLevel" />
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="instituteId" class="required">Institute</label>
+                <select id="instituteId" name="instituteId" required></select>
+            </div>
+
+            <div class="form-group">
+                <label for="courseCategory">Course Category</label>
+                <input type="text" id="courseCategory" name="courseCategory" />
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="courseDuration">Course Duration</label>
+                <input type="text" id="courseDuration" name="courseDuration" placeholder="e.g., 2 Years" />
+            </div>
+
+            <div class="form-group">
+                <label for="awardingBody">Awarding Body</label>
+                <input type="text" id="awardingBody" name="awardingBody" />
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="courseFee">Course Fee</label>
+                <input type="number" id="courseFee" name="courseFee" step="0.01" />
+            </div>
+
+            <div class="form-group">
+                <label for="applicationFee">Application Fee</label>
+                <input type="number" id="applicationFee" name="applicationFee" step="0.01" />
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" name="startDate" />
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" name="endDate" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="generalEligibility">General Eligibility</label>
+            <textarea id="generalEligibility" name="generalEligibility" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="languagesRequirement">Languages Requirement</label>
+            <textarea id="languagesRequirement" name="languagesRequirement" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="status" name="status" checked />
+                Active
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" id="btnSaveCourse" class="btn-primary">
+                <i class="k-icon k-i-check"></i> Save
+            </button>
+            <button type="button" id="btnCancelCourse" class="btn-secondary">
+                <i class="k-icon k-i-cancel"></i> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/course/courseSettings.js"></script>
+    <script src="~/js/modules/crm/course/courseSummary.js"></script>
+    <script src="~/js/modules/crm/course/courseDetails.js"></script>
+}

@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Institute Type Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Institute Type Management</h1>
+        <p class="page-header__subtitle">Phase 1 CRM setup module for managing institute type records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Institute Type</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddInstituteType" class="btn btn--primary">Add Institute Type</button>
+        <button type="button" id="btnRefreshInstituteType" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="instituteTypeGrid"></div>
+</section>
+
+<div id="instituteTypeWindow" style="display:none;">
+    <form id="instituteTypeForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelInstituteType" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveInstituteType" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/institutetype/instituteTypeSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/institutetype/instituteTypeSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/institutetype/instituteTypeDetails.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "TOEFL Information Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">TOEFL Information Management</h1>
+        <p class="page-header__subtitle">Phase 4 test score module for TOEFL information maintenance.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">TOEFL Information</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddToeflInformation" class="btn btn--primary">Add TOEFL Information</button>
+        <button type="button" id="btnRefreshToeflInformation" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="toeflInformationGrid"></div>
+</section>
+
+<div id="toeflInformationWindow" style="display:none;">
+    <form id="toeflInformationForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelToeflInformation" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveToeflInformation" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/toeflinformation/toeflInformationSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/toeflinformation/toeflInformationSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/toeflinformation/toeflInformationDetails.js" asp-append-version="true"></script>
+}

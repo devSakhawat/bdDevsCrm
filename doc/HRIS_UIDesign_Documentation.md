@@ -3051,6 +3051,186 @@ RouteConstants.DmsDocumentUpload → "dms-document-upload"
 
 **Core - System Admin (9 modules):**
 - [x] Authentication (Login, Logout, Token Management)
+
+- [x] Module Management (CRUD + Grid)
+- [x] Menu Management (CRUD + Grid + User Permissions)
+- [x] Country Management (CRUD + Grid + CRUD Records)
+- [x] Group Management (CRUD + Grid + Permissions)
+- [x] User Management (CRUD + Grid)
+- [x] Company Management (CRUD + CRUD Records)
+- [x] Thana Management (CRUD + Grid + CRUD Records)
+- [x] Workflow Management (States + Actions)
+- [x] Access Control Management (CRUD + Grid)
+- [x] CRM Institute (CRUD + Grid + CRUD Records)
+- [x] CRM Course (CRUD + Grid + CRUD Records)
+- [x] CRM Application (CRUD + Grid + CRUD Records)
+- [x] CRM Applicant Info (CRUD + Grid + CRUD Records)
+- [x] CRM Education History (CRUD + Grid + CRUD Records)
+- [x] CRM Applicant Course (CRUD + Grid + CRUD Records)
+- [x] CRM Work Experience (CRUD + Grid + CRUD Records)
+- [x] DMS Document Management (CRUD + Grid + File Upload)
+
+#### **⚠️ Partially Implemented Modules**
+- [ ] HR Employee Management (Types implemented, full CRUD pending)
+- [ ] HR Department Management (Read-only, full CRUD pending)
+- [ ] HR Branch Management (Read-only, full CRUD pending)
+
+#### **📋 Pending Frontend Implementation**
+- [ ] Module Summary Grid + Modal Form
+- [ ] Menu Summary Grid + Modal Form
+- [ ] Group Summary Grid + Modal Form + Permission Assignment
+- [ ] User Summary Grid + Modal Form
+- [ ] Company Summary Grid + Modal Form
+- [ ] Thana Summary Grid + Modal Form
+- [ ] Workflow Management UI
+- [ ] Access Control Management UI
+- [x] CRM Institute UI (Grid + Modal)
+- [x] CRM Course UI (Grid + Modal)
+- [x] CRM Application UI (Grid + Tabbed Form)
+- [x] CRM Applicant Info UI (Grid + Tabbed Form)
+- [ ] DMS Document UI (Grid + Upload Modal)
+- [ ] HR Employee UI (Grid + Tabbed Form)
+- [ ] HR Department UI (Grid + Modal)
+- [ ] HR Branch UI (Grid + Modal)
+- [ ] CRM remaining 20 controller UIs (see CRM UI completion task list below)
+
+### **📌 CRM UI Completion Task List (Remaining 20 Controllers)**
+
+**Current CRM UI Coverage Summary**
+- Total CRM controllers in `Presentation.Controller/Controllers/CRM`: **24**
+- UI already completed in `Presentation.Mvc/wwwroot/js/modules/crm`: **4 modules**
+  - `institute`
+  - `course`
+  - `application`
+  - `applicantinfo`
+- **Remaining CRM controllers requiring UI completion:** **20**
+
+**Implementation Standard for Every Remaining CRM UI**
+- Follow the existing **3-file JS pattern**: `*Settings.js`, `*Details.js`, `*Summary.js`
+- Create a matching Razor page under `Presentation.Mvc/Views/CRM/{Module}/Index.cshtml`
+- Use **Fetch API / ApiClient** for all endpoint calls
+- Reuse Kendo Grid + Kendo Window for simple CRUD modules, and embed grid/form sections inside Application tabs for applicant detail modules
+- Map routes directly from `bdDevs.Shared/Constants/RouteConstants.cs`
+
+#### **A. CRM Reference / Setup Modules (Grid + Modal)**
+
+| Status | Controller | Main Endpoints to Wire | UI Deliverables |
+|------|------|------|------|
+| [ ] | `CrmInstituteTypeController` | `crm-institute-type-summary`, `crm-institute-type`, `crm-institute-type/{key}`, `crm-institute-types`, `crm-institute-type/{id:int}` | `Views/CRM/InstituteType/Index.cshtml`, `wwwroot/js/modules/crm/institutetype/instituteTypeSettings.js`, `instituteTypeDetails.js`, `instituteTypeSummary.js` |
+| [ ] | `CrmPaymentMethodController` | `crm-payment-method-summary`, `crm-payment-method`, `crm-payment-method/{key}`, `crm-payment-methods`, `crm-payment-method/{id:int}` | `Views/CRM/PaymentMethod/Index.cshtml`, `wwwroot/js/modules/crm/paymentmethod/paymentMethodSettings.js`, `paymentMethodDetails.js`, `paymentMethodSummary.js` |
+| [ ] | `CrmMonthController` | `crm-month-summary`, `crm-month`, `crm-month/{key}`, `crm-months`, `crm-month/{id:int}` | `Views/CRM/Month/Index.cshtml`, `wwwroot/js/modules/crm/month/monthSettings.js`, `monthDetails.js`, `monthSummary.js` |
+| [ ] | `CrmYearController` | `crm-year-summary`, `crm-year`, `crm-year/{key}`, `crm-years`, `crm-year/{id:int}` | `Views/CRM/Year/Index.cshtml`, `wwwroot/js/modules/crm/year/yearSettings.js`, `yearDetails.js`, `yearSummary.js` |
+| [ ] | `CrmIntakeMonthController` | `crm-intake-month-summary`, `crm-intake-month`, `crm-intake-month/{key}`, `crm-intake-months`, `crm-intake-month/{id:int}` | `Views/CRM/IntakeMonth/Index.cshtml`, `wwwroot/js/modules/crm/intakemonth/intakeMonthSettings.js`, `intakeMonthDetails.js`, `intakeMonthSummary.js` |
+| [ ] | `CrmIntakeYearController` | `crm-intake-year-summary`, `crm-intake-year`, `crm-intake-year/{key}`, `crm-intake-years`, `crm-intake-year/{id:int}` | `Views/CRM/IntakeYear/Index.cshtml`, `wwwroot/js/modules/crm/intakeyear/intakeYearSettings.js`, `intakeYearDetails.js`, `intakeYearSummary.js` |
+
+**Task Checklist — Reference / Setup Modules**
+- [ ] Add menu entries / navigation targets for the 6 setup modules
+- [ ] Build Kendo Grid summary screens for each module
+- [ ] Build modal create/edit forms and validation rules
+- [ ] Wire create, update, delete, get-by-id, and read-all endpoints
+- [ ] Reuse these modules as dropdown data sources inside Application-related screens
+
+#### **B. CRM Relationship Modules (Grid + Modal / Child Grid)**
+
+| Status | Controller | Main Endpoints to Wire | UI Deliverables |
+|------|------|------|------|
+| [ ] | `CrmCourseIntakeController` | `crm-course-intakes-ddl`, `crm-course-intake-summary`, `crm-course-intake`, `crm-course-intake/{key}`, `crm-course-intakes`, `crm-course-intake/{id:int}`, `crm-course-intakes-by-course/{courseId:int}` | `Views/CRM/CourseIntake/Index.cshtml`, `wwwroot/js/modules/crm/courseintake/courseIntakeSettings.js`, `courseIntakeDetails.js`, `courseIntakeSummary.js` |
+| [ ] | `CrmApplicantCourseController` | `crm-applicant-course-summary`, `crm-applicant-course`, `crm-applicant-course/{key}`, `crm-applicant-courses`, `crm-applicant-course/{id:int}`, `crm-applicant-courses-by-application/{applicationId:int}` | `Views/CRM/ApplicantCourse/Index.cshtml`, `wwwroot/js/modules/crm/applicantcourse/applicantCourseSettings.js`, `applicantCourseDetails.js`, `applicantCourseSummary.js` |
+
+**Task Checklist — Relationship Modules**
+- [ ] Build standalone list/grid pages for admin maintenance
+- [ ] Expose child-grid versions inside Course/Application screens
+- [ ] Support course/application filtered loading by foreign key
+- [ ] Add create/edit/delete actions from both standalone page and parent workflow
+
+#### **C. CRM Applicant Detail Modules (Application Subsections / Tab Content)**
+
+| Status | Controller | Main Endpoints to Wire | UI Deliverables |
+|------|------|------|------|
+| [ ] | `CrmPresentAddressController` | `crm-present-address-summary`, `crm-present-address`, `crm-present-address/{key}`, `crm-present-addresses`, `crm-present-address/{id:int}` | `Views/CRM/PresentAddress/Index.cshtml`, `wwwroot/js/modules/crm/presentaddress/presentAddressSettings.js`, `presentAddressDetails.js`, `presentAddressSummary.js` |
+| [ ] | `CrmPermanentAddressController` | `crm-permanent-address-summary`, `crm-permanent-address`, `crm-permanent-address/{key}`, `crm-permanent-addresses`, `crm-permanent-address/{id:int}` | `Views/CRM/PermanentAddress/Index.cshtml`, `wwwroot/js/modules/crm/permanentaddress/permanentAddressSettings.js`, `permanentAddressDetails.js`, `permanentAddressSummary.js` |
+| [ ] | `CrmEducationHistoryController` | `crm-education-history-summary`, `crm-education-history`, `crm-education-history/{key}`, `crm-education-histories`, `crm-education-history/{id:int}` | `Views/CRM/EducationHistory/Index.cshtml`, `wwwroot/js/modules/crm/educationhistory/educationHistorySettings.js`, `educationHistoryDetails.js`, `educationHistorySummary.js` |
+| [ ] | `CrmWorkExperienceController` | `crm-work-experience-summary`, `crm-work-experience`, `crm-work-experience/{key}`, `crm-work-experiences`, `crm-work-experience/{id:int}` | `Views/CRM/WorkExperience/Index.cshtml`, `wwwroot/js/modules/crm/workexperience/workExperienceSettings.js`, `workExperienceDetails.js`, `workExperienceSummary.js` |
+| [ ] | `CrmApplicantReferenceController` | `crm-applicant-reference-summary`, `crm-applicant-reference`, `crm-applicant-reference/{key}`, `crm-applicant-references`, `crm-applicant-reference/{id:int}` | `Views/CRM/ApplicantReference/Index.cshtml`, `wwwroot/js/modules/crm/applicantreference/applicantReferenceSettings.js`, `applicantReferenceDetails.js`, `applicantReferenceSummary.js` |
+| [ ] | `CrmIeltsInformationController` | `crm-ielts-information-summary`, `crm-ielts-information`, `crm-ielts-information/{key}`, `crm-ielts-informations`, `crm-ielts-information/{id:int}` | `Views/CRM/IeltsInformation/Index.cshtml`, `wwwroot/js/modules/crm/ieltsinformation/ieltsInformationSettings.js`, `ieltsInformationDetails.js`, `ieltsInformationSummary.js` |
+| [ ] | `CrmToeflInformationController` | `crm-toefl-information-summary`, `crm-toefl-information`, `crm-toefl-information/{key}`, `crm-toefl-informations`, `crm-toefl-information/{id:int}` | `Views/CRM/ToeflInformation/Index.cshtml`, `wwwroot/js/modules/crm/toeflinformation/toeflInformationSettings.js`, `toeflInformationDetails.js`, `toeflInformationSummary.js` |
+| [ ] | `CrmGmatInformationController` | `crm-gmat-information-summary`, `crm-gmat-information`, `crm-gmat-information/{key}`, `crm-gmat-informations`, `crm-gmat-information/{id:int}` | `Views/CRM/GmatInformation/Index.cshtml`, `wwwroot/js/modules/crm/gmatinformation/gmatInformationSettings.js`, `gmatInformationDetails.js`, `gmatInformationSummary.js` |
+| [ ] | `CrmOthersInformationController` | `crm-others-information-summary`, `crm-others-information`, `crm-others-information/{key}`, `crm-others-informations`, `crm-others-information/{id:int}` | `Views/CRM/OthersInformation/Index.cshtml`, `wwwroot/js/modules/crm/othersinformation/othersInformationSettings.js`, `othersInformationDetails.js`, `othersInformationSummary.js` |
+| [ ] | `CrmStatementOfPurposeController` | `crm-statement-of-purpose-summary`, `crm-statement-of-purpose`, `crm-statement-of-purpose/{key}`, `crm-statement-of-purposes`, `crm-statement-of-purpose/{id:int}` | `Views/CRM/StatementOfPurpose/Index.cshtml`, `wwwroot/js/modules/crm/statementofpurpose/statementOfPurposeSettings.js`, `statementOfPurposeDetails.js`, `statementOfPurposeSummary.js` |
+| [ ] | `CrmAdditionalInfoController` | `crm-additional-info-summary`, `crm-additional-info`, `crm-additional-info/{key}`, `crm-additional-infos`, `crm-additional-info/{id:int}` | `Views/CRM/AdditionalInfo/Index.cshtml`, `wwwroot/js/modules/crm/additionalinfo/additionalInfoSettings.js`, `additionalInfoDetails.js`, `additionalInfoSummary.js` |
+| [ ] | `CrmAdditionalDocumentController` | `crm-additional-document-summary`, `crm-additional-document`, `crm-additional-document/{key}`, `crm-additional-documents`, `crm-additional-document/{id:int}` | `Views/CRM/AdditionalDocument/Index.cshtml`, `wwwroot/js/modules/crm/additionaldocument/additionalDocumentSettings.js`, `additionalDocumentDetails.js`, `additionalDocumentSummary.js` |
+
+**Task Checklist — Applicant Detail Modules**
+- [ ] Split Application UI into reusable sub-sections so these 12 modules can be loaded independently
+- [ ] Create child grids or embedded forms per module under Application / Applicant workflow
+- [ ] Support save-by-parent-context (applicationId / applicantId where applicable)
+- [ ] Add client-side validation for addresses, test scores, references, SOP, and supporting notes
+- [ ] Ensure Additional Document UI supports document metadata plus file-selection workflow already used by the main application screen
+
+#### **Suggested Delivery Sequence for the Remaining 20 CRM UIs**
+1. **Foundation first:** `InstituteType`, `PaymentMethod`, `Month`, `Year`, `IntakeMonth`, `IntakeYear`
+2. **Course relationship next:** `CourseIntake`
+3. **Application child modules:** `PresentAddress`, `PermanentAddress`, `EducationHistory`, `WorkExperience`, `ApplicantCourse`, `ApplicantReference`
+4. **Test score modules:** `IeltsInformation`, `ToeflInformation`, `GmatInformation`, `OthersInformation`
+5. **Final review modules:** `StatementOfPurpose`, `AdditionalInfo`, `AdditionalDocument`
+
+**Definition of Done for Each CRM Module**
+- [ ] Razor `Index.cshtml` created and linked from CRM navigation
+- [ ] Settings / Details / Summary JS files created under `wwwroot/js/modules/crm/{module}/`
+- [ ] Grid, modal, validation, and CRUD actions working against controller endpoints
+- [ ] Foreign-key based filtering wired where controller exposes dependent endpoints
+- [ ] Smoke-tested from UI against summary, create, update, delete, and read-by-id flows
+
+#### **D. Bengali Priority Checklist for the Remaining 20 CRM Controller UIs**
+
+নিচের checklist-টি documentation, sprint planning, এবং delivery sequencing-এর জন্য বাংলা priority order reference হিসেবে ব্যবহার করা যাবে।
+
+**১) Foundation / Setup Modules**
+- [ ] `CrmInstituteTypeController` UI complete করা
+- [ ] `CrmPaymentMethodController` UI complete করা
+- [ ] `CrmMonthController` UI complete করা
+- [ ] `CrmYearController` UI complete করা
+- [ ] `CrmIntakeMonthController` UI complete করা
+- [ ] `CrmIntakeYearController` UI complete করা
+
+**২) Relationship Modules**
+- [ ] `CrmCourseIntakeController` UI complete করা
+- [ ] `CrmApplicantCourseController` UI complete করা
+
+**৩) Applicant Core Detail Modules**
+- [ ] `CrmPresentAddressController` UI complete করা
+- [ ] `CrmPermanentAddressController` UI complete করা
+- [ ] `CrmEducationHistoryController` UI complete করা
+- [ ] `CrmWorkExperienceController` UI complete করা
+- [ ] `CrmApplicantReferenceController` UI complete করা
+
+**৪) Test Score / Qualification Modules**
+- [ ] `CrmIeltsInformationController` UI complete করা
+- [ ] `CrmToeflInformationController` UI complete করা
+- [ ] `CrmGmatInformationController` UI complete করা
+- [ ] `CrmOthersInformationController` UI complete করা
+
+**৫) Final Review / Supporting Modules**
+- [ ] `CrmStatementOfPurposeController` UI complete করা
+- [ ] `CrmAdditionalInfoController` UI complete করা
+- [ ] `CrmAdditionalDocumentController` UI complete করা
+
+**প্রতিটি module-এর জন্য common checklist**
+- [ ] `Views/CRM/{Module}/Index.cshtml` তৈরি
+- [ ] `Settings.js`, `Details.js`, `Summary.js` 3-file pattern follow করা
+- [ ] summary/grid endpoint wire করা
+- [ ] create/update/delete/get-by-id endpoint wire করা
+- [ ] প্রয়োজন হলে foreign key filter / cascading load যোগ করা
+- [ ] Kendo Grid + Modal / Tabbed section integrate করা
+- [ ] Fetch API / ApiClient দিয়ে CRUD flow test করা
+
+**Suggested rollout**
+- [ ] **Phase 1:** Setup modules শেষ করা
+- [ ] **Phase 2:** Relationship modules শেষ করা
+- [ ] **Phase 3:** Applicant detail modules শেষ করা
+- [ ] **Phase 4:** Test score modules শেষ করা
+- [ ] **Phase 5:** SOP / Additional Info / Document modules শেষ করা
+=======
 - [x] Module Management (CRUD + Grid + 3-file pattern)
 - [x] Menu Management (CRUD + Grid + Hierarchical structure + 3-file pattern)
 - [x] Company Management (CRUD + Grid + 3-file pattern)
@@ -3165,6 +3345,8 @@ This section outlines the phased approach for frontend implementation, following
 #### **Phase 2: CRM Foundation (Week 3)** 🎓
 **Estimated Time:** 20-28 hours | **Priority:** HIGH
 
+**Status Update:** `Institute`, `Course`, and `ApplicantInfo` UI files already exist in the repository. Treat the checklist below as baseline reference; the active backlog is the **CRM UI Completion Task List (Remaining 20 Controllers)** above.
+
 **Modules:**
 7. **CRM Institute** (6-8 hours)
    - [ ] Create `Views/CRM/Institute/Index.cshtml`
@@ -3196,6 +3378,8 @@ This section outlines the phased approach for frontend implementation, following
 
 #### **Phase 3: Advanced CRM (Week 4)** 📝
 **Estimated Time:** 12-16 hours | **Priority:** HIGH
+
+**Status Update:** `Application` UI files already exist in the repository. Use the **CRM UI Completion Task List (Remaining 20 Controllers)** above for the current CRM frontend backlog.
 
 **Modules:**
 10. **CRM Application (Complex Tabbed Form)** (12-16 hours)

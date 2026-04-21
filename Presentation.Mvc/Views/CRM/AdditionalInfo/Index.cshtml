@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Additional Info Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Additional Info Management</h1>
+        <p class="page-header__subtitle">Phase 5 final review module for additional info maintenance.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Additional Info</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddAdditionalInfo" class="btn btn--primary">Add Additional Info</button>
+        <button type="button" id="btnRefreshAdditionalInfo" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="additionalInfoGrid"></div>
+</section>
+
+<div id="additionalInfoWindow" style="display:none;">
+    <form id="additionalInfoForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelAdditionalInfo" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveAdditionalInfo" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/additionalinfo/additionalInfoSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/additionalinfo/additionalInfoSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/additionalinfo/additionalInfoDetails.js" asp-append-version="true"></script>
+}

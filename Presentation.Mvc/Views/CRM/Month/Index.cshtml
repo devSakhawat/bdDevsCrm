@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Month Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Month Management</h1>
+        <p class="page-header__subtitle">Phase 1 CRM setup module for managing month records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Month</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddMonth" class="btn btn--primary">Add Month</button>
+        <button type="button" id="btnRefreshMonth" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="monthGrid"></div>
+</section>
+
+<div id="monthWindow" style="display:none;">
+    <form id="monthForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelMonth" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveMonth" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/month/monthSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/month/monthSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/month/monthDetails.js" asp-append-version="true"></script>
+}

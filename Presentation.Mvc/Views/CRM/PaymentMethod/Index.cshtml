@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Payment Method Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Payment Method Management</h1>
+        <p class="page-header__subtitle">Phase 1 CRM setup module for managing payment method records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Payment Method</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddPaymentMethod" class="btn btn--primary">Add Payment Method</button>
+        <button type="button" id="btnRefreshPaymentMethod" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="paymentMethodGrid"></div>
+</section>
+
+<div id="paymentMethodWindow" style="display:none;">
+    <form id="paymentMethodForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelPaymentMethod" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSavePaymentMethod" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/paymentmethod/paymentMethodSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/paymentmethod/paymentMethodSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/paymentmethod/paymentMethodDetails.js" asp-append-version="true"></script>
+}

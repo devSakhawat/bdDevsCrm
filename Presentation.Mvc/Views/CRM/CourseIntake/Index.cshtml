@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Course Intake Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Course Intake Management</h1>
+        <p class="page-header__subtitle">Phase 2 relationship module for mapping courses with intake cycles.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Course Intake</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddCourseIntake" class="btn btn--primary">Add Course Intake</button>
+        <button type="button" id="btnRefreshCourseIntake" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="courseIntakeGrid"></div>
+</section>
+
+<div id="courseIntakeWindow" style="display:none;">
+    <form id="courseIntakeForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelCourseIntake" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveCourseIntake" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/courseintake/courseIntakeSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/courseintake/courseIntakeSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/courseintake/courseIntakeDetails.js" asp-append-version="true"></script>
+}

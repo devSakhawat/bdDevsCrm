@@ -363,7 +363,7 @@
     }
 
     function renderField(field, data) {
-        const value = data[field.name] ?? field.defaultValue ?? '';
+        const value = getFieldSourceValue(field, data);
 
         if (field.type === 'hidden') {
             return `<input type="hidden" id="${field.name}" name="${field.name}" value="${escapeHtml(value)}" />`;
@@ -424,7 +424,7 @@
                     min: field.min,
                     step: field.step || 1
                 });
-                setFieldValue(field.name, data[field.name] ?? field.defaultValue ?? null);
+                setFieldValue(field.name, getFieldSourceValue(field, data, null));
                 continue;
             }
 
@@ -432,7 +432,7 @@
                 $(selector).kendoDatePicker({
                     format: 'yyyy-MM-dd'
                 });
-                setFieldValue(field.name, data[field.name] ?? null);
+                setFieldValue(field.name, getFieldSourceValue(field, data, null));
                 continue;
             }
 
@@ -493,7 +493,7 @@
         widget.setDataSource(new kendo.data.DataSource({ data: items }));
         widget.enable(true);
 
-        const desiredValue = preserveCurrentValue ? (context?.[field.name] ?? getFieldValue(field.name) ?? field.defaultValue ?? '') : '';
+        const desiredValue = preserveCurrentValue ? (getFieldSourceValue(field, context, undefined) ?? getFieldValue(field.name) ?? field.defaultValue ?? '') : '';
         if (desiredValue !== null && desiredValue !== undefined && desiredValue !== '') {
             widget.value(String(desiredValue));
         } else if (field.autoSelectSingle && items.length === 1) {
@@ -695,5 +695,10 @@
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    }
+
+    function getFieldSourceValue(field, data, fallback = '') {
+        const sourceName = field.sourceName || field.name;
+        return data?.[sourceName] ?? field.defaultValue ?? fallback;
     }
 })();

@@ -42,7 +42,7 @@
             columns: [{field: 'accessRestrictionId', title: 'ID', width: 90, dataType: 'number', filterable: false}, {field: 'hrRecordId', title: 'HR Record', width: 130, dataType: 'number'}, {field: 'referenceId', title: 'Reference', width: 130, dataType: 'number'}, {field: 'referenceType', title: 'Reference Type', width: 150, dataType: 'number'}, {field: 'accessDate', title: 'Access Date', width: 160}, {field: 'accessBy', title: 'Access By', width: 120, dataType: 'number'}, {field: 'groupId', title: 'Group', width: 120, dataType: 'number'}]
         },
         form: {
-            fields: [{name: 'accessRestrictionId', label: 'Access Restriction Id', type: 'hidden'}, {name: 'hrRecordId', label: 'HR Record Id', type: 'number', required: true, min: 1, placeholder: 'Enter HR record id'}, {name: 'referenceId', label: 'Reference Id', type: 'number', required: true, min: 1, placeholder: 'Enter reference id'}, {name: 'referenceType', label: 'Reference Type', type: 'number', required: true, min: 1, placeholder: 'Enter reference type'}, {name: 'accessDate', label: 'Access Date', type: 'date'}, {name: 'accessBy', label: 'Access By', type: 'number', min: 1, placeholder: 'Enter user id'}, {name: 'parentReference', label: 'Parent Reference', type: 'number', min: 0, placeholder: 'Enter parent reference'}, {name: 'chiledParentReference', label: 'Child Parent Reference', type: 'number', min: 0, placeholder: 'Enter child parent reference'}, {name: 'restrictionType', label: 'Restriction Type', type: 'number', min: 0, placeholder: 'Enter restriction type'}, {name: 'groupId', label: 'Group Id', type: 'number', min: 1, placeholder: 'Enter group id'}],
+            fields: [{name: 'accessRestrictionId', label: 'Access Restriction Id', type: 'hidden'}, {name: 'hrRecordId', label: 'HR Record Id', type: 'number', required: true, min: 1, placeholder: 'Enter HR record id'}, {name: 'referenceId', label: 'Reference Id', type: 'number', required: true, min: 1, placeholder: 'Enter reference id'}, {name: 'referenceType', label: 'Reference Type', type: 'number', required: true, min: 1, placeholder: 'Enter reference type'}, {name: 'accessDate', label: 'Access Date', type: 'date'}, {name: 'accessBy', label: 'Access By', type: 'number', min: 1, placeholder: 'Enter user id'}, {name: 'parentReference', label: 'Parent Reference', type: 'number', min: 0, placeholder: 'Enter parent reference'}, {name: 'childParentReference', sourceName: 'chiledParentReference', label: 'Child Parent Reference', type: 'number', min: 0, placeholder: 'Enter child parent reference'}, {name: 'restrictionType', label: 'Restriction Type', type: 'number', min: 0, placeholder: 'Enter restriction type'}, {name: 'groupId', label: 'Group Id', type: 'number', min: 1, placeholder: 'Enter group id'}],
             buildPayload: function (values) {
                 function toInteger(value) {
                     const parsed = parseInt(value || 0, 10);
@@ -69,7 +69,7 @@
                     accessDate: toDateOnly(values.accessDate),
                     accessBy: toNullableInteger(values.accessBy),
                     parentReference: toNullableInteger(values.parentReference),
-                    chiledParentReference: toNullableInteger(values.chiledParentReference),
+                    'chiledParentReference': toNullableInteger(values.childParentReference),
                     restrictionType: toNullableInteger(values.restrictionType),
                     groupId: toNullableInteger(values.groupId)
                 };

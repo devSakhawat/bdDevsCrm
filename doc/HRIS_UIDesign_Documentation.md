@@ -2463,6 +2463,647 @@ Presentation.Mvc/
 
 ---
 
+## **API Endpoints Reference**
+
+This section provides comprehensive documentation of all API endpoints in the bdDevsCrm system, mapping `RouteConstants` to their corresponding controller methods.
+
+### **Base Route**
+All API endpoints are prefixed with: `/bdDevs-crm`
+
+---
+
+### **1. AUTHENTICATION ENDPOINTS**
+
+**Controller:** `AuthenticationController`
+**File:** `Presentation.Controller/Controllers/Authentication/AuthenticationController.cs`
+
+| HTTP | Route | Method Signature | Description | Auth |
+|------|-------|------------------|-------------|------|
+| POST | `login` | `Task<IActionResult> Authenticate([FromBody] UserForAuthenticationDto user)` | User login - returns access/refresh tokens | Anonymous |
+| POST | `refresh-token` | `Task<IActionResult> RefreshToken()` | Refresh access token using refresh token cookie | Anonymous |
+| POST | `revoke-token` | `Task<IActionResult> RevokeToken()` | Revoke current refresh token | Anonymous |
+| GET | `user-info` | `IActionResult UserInfo()` | Get current authenticated user info | Required |
+| POST | `logout` | `Task<IActionResult> Logout()` | Logout user and revoke all tokens | Anonymous |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.Login → "login"
+RouteConstants.RefreshToken → "refresh-token"
+RouteConstants.RevokeToken → "revoke-token"
+RouteConstants.UserInfo → "user-info"
+RouteConstants.Logout → "logout"
+```
+
+---
+
+### **2. SYSTEM ADMIN ENDPOINTS**
+
+#### **2.1 Module Management**
+
+**Controller:** `ModuleController`
+**File:** `Presentation.Controller/Controllers/Core/SystemAdmin/ModuleController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `module` | `Task<IActionResult> CreateModuleAsync([FromBody] ModuleDto modelDto, CancellationToken cancellationToken)` | Create new module |
+| PUT | `module/{key}` | `Task<IActionResult> UpdateModuleAsync([FromRoute] int key, [FromBody] ModuleDto modelDto, CancellationToken cancellationToken)` | Update existing module |
+| DELETE | `module/{key}` | `Task<IActionResult> DeleteModuleAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete module by ID |
+| POST | `module-summary` | `Task<IActionResult> ModuleSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated module grid |
+| GET | `modules` | `Task<IActionResult> ModulesAsync(CancellationToken cancellationToken)` | Get all modules |
+| GET | `module/{id:int}` | `Task<IActionResult> ModuleAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get module by ID |
+| GET | `modules-ddl` | `Task<IActionResult> ModulesForDDLAsync(CancellationToken cancellationToken)` | Get modules dropdown list |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CreateModule → "module"
+RouteConstants.UpdateModule → "module/{key}"
+RouteConstants.DeleteModule → "module/{key}"
+RouteConstants.ModuleSummary → "module-summary"
+RouteConstants.ReadModules → "modules"
+RouteConstants.ReadModule → "module/{id:int}"
+RouteConstants.ModuleDDL → "modules-ddl"
+```
+
+#### **2.2 Menu Management**
+
+**Controller:** `MenuController`
+**File:** `Presentation.Controller/Controllers/Core/SystemAdmin/MenuController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `menu` | `Task<IActionResult> CreateMenu([FromBody] MenuDto modelDto, CancellationToken cancellationToken)` | Create new menu |
+| PUT | `menu/{key}` | `Task<IActionResult> UpdateMenuAsync([FromRoute] int key, [FromBody] MenuDto modelDto, CancellationToken cancellationToken)` | Update existing menu |
+| DELETE | `menu/{key}` | `Task<IActionResult> DeleteMenuAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete menu by ID |
+| POST | `menu-summary` | `Task<IActionResult> MenuSummary([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated menu grid with HATEOAS |
+| GET | `menus` | `Task<IActionResult> ReadMenus(CancellationToken cancellationToken)` | Get all menus |
+| GET | `menus-ddl` | `Task<IActionResult> MenusDDL(CancellationToken cancellationToken)` | Get menus dropdown list |
+| GET | `menus-user-permission` | `Task<IActionResult> MenusByUserPermission(CancellationToken cancellationToken)` | Get menus by current user permission |
+| GET | `menus-moduleId/{moduleId:int}` | `Task<IActionResult> MenusByModuleId([FromRoute] int moduleId, CancellationToken cancellationToken)` | Get menus by module ID |
+| GET | `parent-by-menu/{parentMenuId:int}` | `Task<IActionResult> ParentMenuByMenu(int menuId, CancellationToken cancellationToken)` | Get parent menus by menu ID |
+| GET | `menu/{menuId:int}` | `Task<IActionResult> ReadMenu(int menuId, CancellationToken cancellationToken)` | Get menu by ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CreateMenu → "menu"
+RouteConstants.UpdateMenu → "menu/{key}"
+RouteConstants.DeleteMenu → "menu/{key}"
+RouteConstants.MenuSummary → "menu-summary"
+RouteConstants.ReadMenus → "menus"
+RouteConstants.MenuDDL → "menus-ddl"
+RouteConstants.ReadMenusByUserPermission → "menus-user-permission"
+RouteConstants.ReadMenusByModuleId → "menus-moduleId/{moduleId:int}"
+RouteConstants.ReadParentMenuByMenu → "parent-by-menu/{parentMenuId:int}"
+RouteConstants.ReadMenu → "menu/{menuId:int}"
+```
+
+#### **2.3 Country Management**
+
+**Controller:** `CountryController`
+**File:** `Presentation.Controller/Controllers/Core/SystemAdmin/CountryController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `countryddl` | `Task<IActionResult> CountriesForDDLAsync(CancellationToken cancellationToken)` | Get countries dropdown list |
+| POST | `country-summary` | `Task<IActionResult> CountrySummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated country grid |
+| POST | `country` | `Task<IActionResult> CreateCountryAsync([FromBody] CreateCountryRecord record, CancellationToken cancellationToken)` | Create new country (CRUD Record pattern) |
+| PUT | `country/{key}` | `Task<IActionResult> UpdateCountryAsync([FromRoute] int key, [FromBody] UpdateCountryRecord record, CancellationToken cancellationToken)` | Update existing country (CRUD Record pattern) |
+| DELETE | `country/{key}` | `Task<IActionResult> DeleteCountryAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete country (CRUD Record pattern) |
+| GET | `countries` | `Task<IActionResult> CountryAsync([FromRoute] int countryId, CancellationToken cancellationToken)` | Get country by ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CountryDDL → "countryddl"
+RouteConstants.CountrySummary → "country-summary"
+RouteConstants.CreateCountry → "country"
+RouteConstants.UpdateCountry → "country/{key}"
+RouteConstants.DeleteCountry → "country/{key}"
+RouteConstants.ReadCountries → "countries"
+```
+
+#### **2.4 Group Management**
+
+**Controller:** `GroupController`
+**File:** `Presentation.Controller/Controllers/Core/SystemAdmin/GroupController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `group` | `Task<IActionResult> CreateGroupAsync([FromBody] GroupDto modelDto, CancellationToken cancellationToken)` | Create new group |
+| PUT | `group/{key}` | `Task<IActionResult> UpdateGroupAsync([FromRoute] int key, [FromBody] GroupDto modelDto, CancellationToken cancellationToken)` | Update existing group |
+| DELETE | `group/{key}` | `Task<IActionResult> DeleteGroupAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete group by ID |
+| POST | `group-summary` | `Task<IActionResult> GroupSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated group grid |
+| GET | `group-permissions/{groupId:int}` | `Task<IActionResult> GroupPermissionsByGroupIdAsync([FromRoute] int groupId, CancellationToken cancellationToken)` | Get all permissions for specific group |
+| GET | `access-controls` | `Task<IActionResult> AccessControlsAsync(CancellationToken cancellationToken)` | Get all available access controls |
+| GET | `groups-ddl` | `Task<IActionResult> GroupsForDDLAsync(CancellationToken cancellationToken)` | Get groups dropdown list |
+| GET | `group/{groupId:int}` | `Task<IActionResult> GroupAsync([FromRoute] int groupId, CancellationToken cancellationToken)` | Get group by ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CreateGroup → "group"
+RouteConstants.UpdateGroup → "group/{key}"
+RouteConstants.DeleteGroup → "group/{key}"
+RouteConstants.GroupSummary → "group-summary"
+RouteConstants.ReadGroupPermissionsByGroupId → "group-permissions/{groupId:int}"
+RouteConstants.ReadAccessControls → "access-controls"
+RouteConstants.GroupDDL → "groups-ddl"
+RouteConstants.ReadGroup → "group/{groupId:int}"
+```
+
+#### **2.5 User Management**
+
+**Controller:** `UsersController`
+**File:** `Presentation.Controller/Controllers/Core/SystemAdmin/UsersController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `user` | `Task<IActionResult> CreateUserAsync([FromBody] UsersDto modelDto, CancellationToken cancellationToken)` | Create new user |
+| PUT | `user/{key}` | `Task<IActionResult> UpdateUserAsync([FromRoute] int key, [FromBody] UsersDto modelDto, CancellationToken cancellationToken)` | Update existing user |
+| DELETE | `user/{key}` | `Task<IActionResult> DeleteUserAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete user by ID |
+| POST | `user-summary` | `Task<IActionResult> UserSummaryAsync([FromBody] GridOptions options, [FromQuery] int companyId, CancellationToken cancellationToken)` | Get paginated user grid |
+| GET | `users` | `Task<IActionResult> ReadUsersAsync(CancellationToken cancellationToken)` | Get all users |
+| GET | `user/{id:int}` | `Task<IActionResult> UserAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get user by ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CreateUser → "user"
+RouteConstants.UpdateUser → "user/{key}"
+RouteConstants.DeleteUser → "user/{key}"
+RouteConstants.UserSummary → "user-summary"
+RouteConstants.ReadUsers → "users"
+RouteConstants.ReadUser → "user/{id:int}"
+```
+
+#### **2.6 Company Management**
+
+**Controller:** `CompanyController`
+**File:** `Presentation.Controller/Controllers/Core/SystemAdmin/CompanyController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `companies-ddl` | `Task<IActionResult> CompaniesForDDLAsync(CancellationToken cancellationToken)` | Get companies dropdown list |
+| POST | `company` | `Task<IActionResult> CreateCompanyAsync([FromBody] CreateCompanyRecord record, CancellationToken cancellationToken)` | Create new company (CRUD Record pattern) |
+| PUT | `company/{key}` | `Task<IActionResult> UpdateCompanyAsync([FromRoute] int key, [FromBody] UpdateCompanyRecord record, CancellationToken cancellationToken)` | Update company (CRUD Record pattern) |
+| DELETE | `company/{key}` | `Task<IActionResult> DeleteCompanyAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete company (CRUD Record pattern) |
+| GET | `company/key/{key}` | `Task<IActionResult> CompanyAsync([FromRoute] int key, CancellationToken cancellationToken)` | Get company by ID |
+| GET | `companies` | `Task<IActionResult> CompaniesAsync(CancellationToken cancellationToken)` | Get all companies |
+| POST | `companies-by-ids` | `Task<IActionResult> CompaniesByIdsAsync([FromBody] IEnumerable<int> ids, CancellationToken cancellationToken)` | Get companies by collection of IDs |
+| GET | `mother-company/{companyId:int}` | `Task<IActionResult> MotherCompanyAsync([FromRoute] int companyId, CancellationToken cancellationToken)` | Get mother company for current user |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CompaniesDDL → "companies-ddl"
+RouteConstants.CreateCompany → "company"
+RouteConstants.UpdateCompany → "company/{key}"
+RouteConstants.DeleteCompany → "company/{key}"
+RouteConstants.ReadCompany → "company/key/{key}"
+RouteConstants.ReadCompanies → "companies"
+RouteConstants.ReadCompaniesCollection → "companies-by-ids"
+RouteConstants.ReadMotherCompany → "mother-company/{companyId:int}"
+```
+
+#### **2.7 Thana Management**
+
+**Controller:** `ThanaController`
+**File:** `Presentation.Controller/Controllers/Core/SystemAdmin/ThanaController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `thanas-ddl` | `Task<IActionResult> ThanasForDDLAsync(CancellationToken cancellationToken)` | Get thanas dropdown list |
+| POST | `thana-summary` | `Task<IActionResult> ThanaSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated thana grid |
+| POST | `thana` | `Task<IActionResult> CreateThanaAsync([FromBody] CreateThanaRecord record, CancellationToken cancellationToken)` | Create new thana (CRUD Record pattern) |
+| PUT | `thana/{key}` | `Task<IActionResult> UpdateThanaAsync([FromRoute] int key, [FromBody] UpdateThanaRecord record, CancellationToken cancellationToken)` | Update thana (CRUD Record pattern) |
+| DELETE | `thana/{key}` | `Task<IActionResult> DeleteThanaAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete thana (CRUD Record pattern) |
+| GET | `thana/{id:int}` | `Task<IActionResult> ThanaAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get thana by ID |
+| GET | `thanas` | `Task<IActionResult> ThanasAsync(CancellationToken cancellationToken)` | Get all thanas |
+| GET | `thanas-by-district/{districtId:int}` | `Task<IActionResult> ThanasByDistrictAsync([FromRoute] int districtId, CancellationToken cancellationToken)` | Get thanas by district ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.ThanasDDL → "thanas-ddl"
+RouteConstants.ThanaSummary → "thana-summary"
+RouteConstants.CreateThana → "thana"
+RouteConstants.UpdateThana → "thana/{key}"
+RouteConstants.DeleteThana → "thana/{key}"
+RouteConstants.ReadThana → "thana/{id:int}"
+RouteConstants.ReadThanas → "thanas"
+RouteConstants.ReadThanasByDistrict → "thanas-by-district/{districtId:int}"
+```
+
+---
+
+### **3. WORKFLOW ENDPOINTS**
+
+**Controller:** `WorkFlowController`
+**File:** `Presentation.Controller/Controllers/Core/SystemAdmin/WorkFlowController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `workflow-state` | `Task<IActionResult> CreateWorkflowStateAsync([FromBody] WfStateDto modelDto, CancellationToken cancellationToken)` | Create new workflow state |
+| PUT | `workflow-state/{key}` | `Task<IActionResult> UpdateWorkflowStateAsync([FromRoute] int key, [FromBody] WfStateDto modelDto, CancellationToken cancellationToken)` | Update workflow state |
+| DELETE | `workflow-state/{key}` | `Task<IActionResult> DeleteWorkflowStateAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete workflow state |
+| POST | `workflow-summary` | `Task<IActionResult> WorkflowSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated workflow grid |
+| GET | `statuses-by-menu/{menuId:int}` | `Task<IActionResult> StatusesByMenuIdAsync([FromRoute] int menuId, CancellationToken cancellationToken)` | Get workflow statuses by menu ID |
+| GET | `actions-by-status/{statusId:int}` | `Task<IActionResult> ActionsByStatusIdForGroupAsync([FromRoute] int statusId, CancellationToken cancellationToken)` | Get workflow actions by status ID for group |
+| POST | `workflow-action` | `Task<IActionResult> CreateWorkflowActionAsync([FromBody] WfActionDto modelDto, CancellationToken cancellationToken)` | Create new workflow action |
+| PUT | `workflow-action/{key}` | `Task<IActionResult> UpdateWorkflowActionAsync([FromRoute] int key, [FromBody] WfActionDto modelDto, CancellationToken cancellationToken)` | Update workflow action |
+| DELETE | `workflow-action/{key}` | `Task<IActionResult> DeleteWorkflowActionAsync([FromRoute] int key, WfActionDto wfActionDto, CancellationToken cancellation)` | Delete workflow action |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CreateWorkflowState → "workflow-state"
+RouteConstants.UpdateWorkflowState → "workflow-state/{key}"
+RouteConstants.DeleteWorkflowState → "workflow-state/{key}"
+RouteConstants.WorkflowSummary → "workflow-summary"
+RouteConstants.ReadStatusesByMenuId → "statuses-by-menu/{menuId:int}"
+RouteConstants.ReadActionsByStatusIdForGroup → "actions-by-status/{statusId:int}"
+RouteConstants.CreateWorkflowAction → "workflow-action"
+RouteConstants.UpdateWorkflowAction → "workflow-action/{key}"
+RouteConstants.DeleteWorkflowAction → "workflow-action/{key}"
+```
+
+---
+
+### **4. ACCESS CONTROL ENDPOINTS**
+
+**Controller:** `AccessControlController`
+**File:** `Presentation.Controller/Controllers/Core/SystemAdmin/AccessControlController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `access-control-summary` | `Task<IActionResult> AccessControlSummaryAsync([FromBody] GridOptions options)` | Get paginated access control grid |
+| POST | `access-control` | `Task<IActionResult> CreateAccessControlAsync([FromBody] AccessControlDto modelDto)` | Create new access control record |
+| PUT | `access-control/{key}` | `Task<IActionResult> UpdateAccessControlAsync([FromRoute] int key, [FromBody] AccessControlDto modelDto, CancellationToken cancellationToken)` | Update access control record |
+| DELETE | `access-control/{key}` | `Task<IActionResult> DeleteAccessControlAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete access control record |
+| GET | `access-control/key/{key:int}` | `Task<IActionResult> AccessControlAsync([FromRoute] int id)` | Get access control by ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.AccessControlSummary → "access-control-summary"
+RouteConstants.CreateAccessControl → "access-control"
+RouteConstants.UpdateAccessControl → "access-control/{key}"
+RouteConstants.DeleteAccessControl → "access-control/{key}"
+RouteConstants.ReadAccessControl → "access-control/key/{key:int}"
+```
+
+---
+
+### **5. CRM ENDPOINTS**
+
+#### **5.1 Institute Management**
+
+**Controller:** `CrmInstituteController`
+**File:** `Presentation.Controller/Controllers/CRM/CrmInstituteController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `crm-institute-ddl` | `Task<IActionResult> InstitutesForDDLAsync(CancellationToken cancellationToken)` | Get institutes dropdown list |
+| POST | `crm-institute-summary` | `Task<IActionResult> InstituteSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated institute grid |
+| POST | `crm-institute` | `Task<IActionResult> CreateInstituteAsync([FromBody] CreateCrmInstituteRecord record, CancellationToken cancellationToken)` | Create new institute (CRUD Record pattern) |
+| PUT | `crm-institute/{key:int}` | `Task<IActionResult> UpdateInstituteAsync([FromRoute] int key, [FromBody] UpdateCrmInstituteRecord record, CancellationToken cancellationToken)` | Update institute (CRUD Record pattern) |
+| DELETE | `crm-institute/{key:int}` | `Task<IActionResult> DeleteInstituteAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete institute (CRUD Record pattern) |
+| GET | `crm-institute/{id:int}` | `Task<IActionResult> InstituteAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get institute by ID |
+| GET | `crm-institutes` | `Task<IActionResult> InstitutesAsync(CancellationToken cancellationToken)` | Get all institutes |
+| GET | `crm-institut-by-countryid-ddl/{countryId:int}` | `Task<IActionResult> InstitutesByCountryIdAsync([FromRoute] int countryId, CancellationToken cancellationToken)` | Get institutes by country ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CrmInstituteDDL → "crm-institute-ddl"
+RouteConstants.CrmInstituteSummary → "crm-institute-summary"
+RouteConstants.CreateCrmInstitute → "crm-institute"
+RouteConstants.UpdateCrmInstitute → "crm-institute/{key:int}"
+RouteConstants.DeleteCrmInstitute → "crm-institute/{key:int}"
+RouteConstants.ReadCrmInstitute → "crm-institute/{id:int}"
+RouteConstants.ReadCrmInstitutes → "crm-institutes"
+RouteConstants.ReadCrmInstitutesByCountryId → "crm-institut-by-countryid-ddl/{countryId:int}"
+```
+
+#### **5.2 Course Management**
+
+**Controller:** `CrmCourseController`
+**File:** `Presentation.Controller/Controllers/CRM/CrmCourseController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `crm-course-ddl` | `Task<IActionResult> CoursesForDDLAsync(CancellationToken cancellationToken)` | Get courses dropdown list |
+| POST | `crm-course-summary` | `Task<IActionResult> CourseSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated course grid |
+| POST | `crm-course` | `Task<IActionResult> CreateCourseAsync([FromBody] CreateCrmCourseRecord record, CancellationToken cancellationToken)` | Create new course (CRUD Record pattern) |
+| PUT | `crm-course/{key:int}` | `Task<IActionResult> UpdateCourseAsync([FromRoute] int key, [FromBody] UpdateCrmCourseRecord record, CancellationToken cancellationToken)` | Update course (CRUD Record pattern) |
+| DELETE | `crm-course/{key:int}` | `Task<IActionResult> DeleteCourseAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete course (CRUD Record pattern) |
+| GET | `crm-course/{id:int}` | `Task<IActionResult> CourseAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get course by ID |
+| GET | `crm-courses` | `Task<IActionResult> CoursesAsync(CancellationToken cancellationToken)` | Get all courses |
+| GET | `crm-course-by-instituteid-ddl/{instituteId:int}` | `Task<IActionResult> CoursesByInstituteIdAsync([FromRoute] int instituteId, CancellationToken cancellationToken)` | Get courses by institute ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CrmCourseDDL → "crm-course-ddl"
+RouteConstants.CrmCourseSummary → "crm-course-summary"
+RouteConstants.CreateCrmCourse → "crm-course"
+RouteConstants.UpdateCrmCourse → "crm-course/{key:int}"
+RouteConstants.DeleteCrmCourse → "crm-course/{key:int}"
+RouteConstants.ReadCrmCourse → "crm-course/{id:int}"
+RouteConstants.ReadCrmCourses → "crm-courses"
+RouteConstants.ReadCrmCoursesByInstituteId → "crm-course-by-instituteid-ddl/{instituteId:int}"
+```
+
+#### **5.3 Application Management**
+
+**Controller:** `CrmApplicationController`
+**File:** `Presentation.Controller/Controllers/CRM/CrmApplicationController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `crm-application-summary` | `Task<IActionResult> ApplicationSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated application grid |
+| POST | `crm-application` | `Task<IActionResult> CreateApplicationAsync([FromBody] CreateCrmApplicationRecord record, CancellationToken cancellationToken)` | Create new application (CRUD Record pattern) |
+| PUT | `crm-Application/{key:int}` | `Task<IActionResult> UpdateApplicationAsync([FromRoute] int key, [FromBody] UpdateCrmApplicationRecord record, CancellationToken cancellationToken)` | Update application (CRUD Record pattern) |
+| GET | `crm-application/key/{key}` | `Task<IActionResult> ApplicationAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get application by ID |
+| GET | `crm-applications` | `Task<IActionResult> ApplicationsAsync(int applicationId, CancellationToken cancellationToken)` | Get all applications |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CrmApplicationSummary → "crm-application-summary"
+RouteConstants.CreateCrmApplication → "crm-application"
+RouteConstants.UpdateCrmApplication → "crm-Application/{key:int}"
+RouteConstants.ReadCrmApplication → "crm-application/key/{key}"
+RouteConstants.ReadCrmApplications → "crm-applications"
+```
+
+#### **5.4 Applicant Info Management**
+
+**Controller:** `CrmApplicantInfoController`
+**File:** `Presentation.Controller/Controllers/CRM/CrmApplicantInfoController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `applicant-info-ddl` | `Task<IActionResult> ApplicantInfosForDDLAsync(CancellationToken cancellationToken)` | Get applicant infos dropdown list |
+| POST | `applicant-info-summary` | `Task<IActionResult> ApplicantInfoSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated applicant info grid |
+| POST | `applicant-info` | `Task<IActionResult> CreateApplicantInfoAsync([FromBody] CreateCrmApplicantInfoRecord record, CancellationToken cancellationToken)` | Create new applicant info (CRUD Record pattern) |
+| PUT | `applicant-info/{key:int}` | `Task<IActionResult> UpdateApplicantInfoAsync([FromRoute] int key, [FromBody] UpdateCrmApplicantInfoRecord record, CancellationToken cancellationToken)` | Update applicant info (CRUD Record pattern) |
+| DELETE | `applicant-info/{key:int}` | `Task<IActionResult> DeleteApplicantInfoAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete applicant info (CRUD Record pattern) |
+| GET | `applicant-info/{id:int}` | `Task<IActionResult> ApplicantInfoAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get applicant info by ID |
+| GET | `applicant-infos` | `Task<IActionResult> ApplicantInfosAsync(CancellationToken cancellationToken)` | Get all applicant infos |
+| GET | `applicant-info-by-applicationid/{applicationId:int}` | `Task<IActionResult> ApplicantInfoByApplicationIdAsync([FromRoute] int applicationId, CancellationToken cancellationToken)` | Get applicant info by application ID |
+| GET | `applicant-info-by-email` | `Task<IActionResult> ApplicantInfoByEmailAsync([FromQuery] string email, CancellationToken cancellationToken)` | Get applicant info by email |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CrmApplicantInfoDDL → "applicant-info-ddl"
+RouteConstants.CrmApplicantInfoSummary → "applicant-info-summary"
+RouteConstants.CreateCrmApplicantInfo → "applicant-info"
+RouteConstants.UpdateCrmApplicantInfo → "applicant-info/{key:int}"
+RouteConstants.DeleteCrmApplicantInfo → "applicant-info/{key:int}"
+RouteConstants.ReadCrmApplicantInfo → "applicant-info/{id:int}"
+RouteConstants.ReadCrmApplicantInfos → "applicant-infos"
+RouteConstants.ReadCrmApplicantInfoByApplicationId → "applicant-info-by-applicationid/{applicationId:int}"
+RouteConstants.ReadCrmApplicantInfoByEmail → "applicant-info-by-email"
+```
+
+#### **5.5 Education History Management**
+
+**Controller:** `CrmEducationHistoryController`
+**File:** `Presentation.Controller/Controllers/CRM/CrmEducationHistoryController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `education-history-summary` | `Task<IActionResult> SummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated education history grid |
+| POST | `education-history` | `Task<IActionResult> CreateAsync([FromBody] CreateCrmEducationHistoryRecord record, CancellationToken cancellationToken)` | Create new education history (CRUD Record pattern) |
+| PUT | `education-history/{key:int}` | `Task<IActionResult> UpdateAsync([FromRoute] int key, [FromBody] UpdateCrmEducationHistoryRecord record, CancellationToken cancellationToken)` | Update education history (CRUD Record pattern) |
+| DELETE | `education-history/{key:int}` | `Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete education history (CRUD Record pattern) |
+| GET | `education-history/{id:int}` | `Task<IActionResult> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get education history by ID |
+| GET | `education-histories` | `Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)` | Get all education histories |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CrmEducationHistorySummary → "education-history-summary"
+RouteConstants.CreateCrmEducationHistory → "education-history"
+RouteConstants.UpdateCrmEducationHistory → "education-history/{key:int}"
+RouteConstants.DeleteCrmEducationHistory → "education-history/{key:int}"
+RouteConstants.ReadCrmEducationHistory → "education-history/{id:int}"
+RouteConstants.ReadCrmEducationHistories → "education-histories"
+```
+
+#### **5.6 Applicant Course Management**
+
+**Controller:** `CrmApplicantCourseController`
+**File:** `Presentation.Controller/Controllers/CRM/CrmApplicantCourseController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `applicant-course-summary` | `Task<IActionResult> ApplicantCourseSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated applicant course grid |
+| POST | `applicant-course` | `Task<IActionResult> CreateApplicantCourseAsync([FromBody] CreateCrmApplicantCourseRecord record, CancellationToken cancellationToken)` | Create new applicant course (CRUD Record pattern) |
+| PUT | `applicant-course/{key:int}` | `Task<IActionResult> UpdateApplicantCourseAsync([FromRoute] int key, [FromBody] UpdateCrmApplicantCourseRecord record, CancellationToken cancellationToken)` | Update applicant course (CRUD Record pattern) |
+| DELETE | `applicant-course/{key:int}` | `Task<IActionResult> DeleteApplicantCourseAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete applicant course (CRUD Record pattern) |
+| GET | `applicant-course/{id:int}` | `Task<IActionResult> ApplicantCourseAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get applicant course by ID |
+| GET | `applicant-courses` | `Task<IActionResult> ApplicantCoursesAsync(CancellationToken cancellationToken)` | Get all applicant courses |
+| GET | `applicant-courses-by-applicationid/{applicationId:int}` | `Task<IActionResult> ApplicantCoursesByApplicationIdAsync([FromRoute] int applicationId, CancellationToken cancellationToken)` | Get applicant courses by application ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CrmApplicantCourseSummary → "applicant-course-summary"
+RouteConstants.CreateCrmApplicantCourse → "applicant-course"
+RouteConstants.UpdateCrmApplicantCourse → "applicant-course/{key:int}"
+RouteConstants.DeleteCrmApplicantCourse → "applicant-course/{key:int}"
+RouteConstants.ReadCrmApplicantCourse → "applicant-course/{id:int}"
+RouteConstants.ReadCrmApplicantCourses → "applicant-courses"
+RouteConstants.ReadCrmApplicantCoursesByApplicationId → "applicant-courses-by-applicationid/{applicationId:int}"
+```
+
+#### **5.7 Work Experience Management**
+
+**Controller:** `CrmWorkExperienceController`
+**File:** `Presentation.Controller/Controllers/CRM/CrmWorkExperienceController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| POST | `work-experience-summary` | `Task<IActionResult> SummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated work experience grid |
+| POST | `work-experience` | `Task<IActionResult> CreateAsync([FromBody] CreateCrmWorkExperienceRecord record, CancellationToken cancellationToken)` | Create new work experience (CRUD Record pattern) |
+| PUT | `work-experience/{key:int}` | `Task<IActionResult> UpdateAsync([FromRoute] int key, [FromBody] UpdateCrmWorkExperienceRecord record, CancellationToken cancellationToken)` | Update work experience (CRUD Record pattern) |
+| DELETE | `work-experience/{key:int}` | `Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete work experience (CRUD Record pattern) |
+| GET | `work-experience/{id:int}` | `Task<IActionResult> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken)` | Get work experience by ID |
+| GET | `work-experiences` | `Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)` | Get all work experiences |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.CrmWorkExperienceSummary → "work-experience-summary"
+RouteConstants.CreateCrmWorkExperience → "work-experience"
+RouteConstants.UpdateCrmWorkExperience → "work-experience/{key:int}"
+RouteConstants.DeleteCrmWorkExperience → "work-experience/{key:int}"
+RouteConstants.ReadCrmWorkExperience → "work-experience/{id:int}"
+RouteConstants.ReadCrmWorkExperiences → "work-experiences"
+```
+
+---
+
+### **6. HR ENDPOINTS**
+
+#### **6.1 Employee Management**
+
+**Controller:** `EmployeeController`
+**File:** `Presentation.Controller/Controllers/Core/HR/EmployeeController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `employeetypes` | `Task<IActionResult> EmployeeTypes()` | Get employee types |
+| GET | `employees-by-indentities` | `Task<IActionResult> EmployeeByCompanyIdAndBranchIdAndDepartmentId(int companyid, int branchId, int departmentId)` | Get employees by company, branch, and department ID |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.EmployeeTypes → "employeetypes"
+RouteConstants.EmployeeByIdentities → "employees-by-indentities"
+```
+
+#### **6.2 Department Management**
+
+**Controller:** `DepartmentController`
+**File:** `Presentation.Controller/Controllers/Core/HR/DepartmentController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `departments-by-compnayId/companyId/` | `Task<IActionResult> DepartmentByCompanyIdForCombo([FromQuery] int companyId, CancellationToken cancellationToken)` | Get departments by company ID for combo box |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.DepartmentByCompanyId → "departments-by-compnayId/companyId/"
+```
+
+#### **6.3 Branch Management**
+
+**Controller:** `BranchController`
+**File:** `Presentation.Controller/Controllers/Core/HR/BranchController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `branches/{companyId:int}` | `Task<IActionResult> BranchByCompanyIdForCombo([FromQuery] int companyId, CancellationToken cancellationToken)` | Get branches by company ID for combo box |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.BranchByCompanyId → "branches/{companyId:int}"
+```
+
+---
+
+### **7. DMS (DOCUMENT MANAGEMENT) ENDPOINTS**
+
+**Controller:** `DmsDocumentController`
+**File:** `Presentation.Controller/Controllers/DMS/DmsDocumentController.cs`
+
+| HTTP | Route | Method Signature | Description |
+|------|-------|------------------|-------------|
+| GET | `dms-document-ddl` | `Task<IActionResult> DocumentsForDDLAsync(CancellationToken cancellationToken)` | Get documents dropdown list |
+| POST | `dms-document-summary` | `Task<IActionResult> DocumentSummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken)` | Get paginated document grid |
+| POST | `dms-document` | `Task<IActionResult> CreateDocumentAsync([FromBody] DmsDocumentDto dto, CancellationToken cancellationToken)` | Create new document record |
+| PUT | `dms-document/{key}` | `Task<IActionResult> UpdateDocumentAsync([FromRoute] int key, [FromBody] DmsDocumentDto dto, CancellationToken cancellationToken)` | Update document record |
+| DELETE | `dms-document/{key}` | `Task<IActionResult> DeleteDocumentAsync([FromRoute] int key, CancellationToken cancellationToken)` | Delete document record |
+| GET | `dms-document/{documentId:int}` | `Task<IActionResult> DocumentAsync([FromRoute] int documentId, CancellationToken cancellationToken)` | Get document by ID |
+| POST | `dms-document-upload` | `Task<IActionResult> SaveFileAndDocumentAsync(IFormFile file, [FromForm] string allAboutDMS, CancellationToken cancellationToken)` | Save file and document with metadata |
+
+**RouteConstants Mapping:**
+```csharp
+RouteConstants.DmsDocumentDDL → "dms-document-ddl"
+RouteConstants.DmsDocumentSummary → "dms-document-summary"
+RouteConstants.CreateDmsDocument → "dms-document"
+RouteConstants.UpdateDmsDocument → "dms-document/{key}"
+RouteConstants.DeleteDmsDocument → "dms-document/{key}"
+RouteConstants.ReadDmsDocument → "dms-document/{documentId:int}"
+RouteConstants.DmsDocumentUpload → "dms-document-upload"
+```
+
+---
+
+### **API Endpoint Naming Conventions**
+
+**Standard Patterns:**
+- **Summary/Grid**: `{entity}-summary` (POST with GridOptions)
+- **Create**: `{entity}` (POST)
+- **Update**: `{entity}/{key}` (PUT)
+- **Delete**: `{entity}/{key}` (DELETE)
+- **Read Single**: `{entity}/{id:int}` (GET)
+- **Read All**: `{entities}` (GET)
+- **Dropdown Lists**: `{entities}-ddl` (GET)
+- **By Foreign Key**: `{entities}-by-{fkname}/{fkId:int}` (GET)
+
+**CRUD Record Pattern:**
+- Many modern controllers use CRUD Records (`CreateXxxRecord`, `UpdateXxxRecord`, `DeleteXxxRecord`) instead of DTOs
+- This pattern provides better separation of concerns and immutability
+
+**Response Format:**
+- All endpoints return unified `ApiResponse<T>` structure
+- Success responses include: `StatusCode`, `Success`, `Message`, `Data`, `Timestamp`, `CorrelationId`
+- Error responses include: `StatusCode`, `Success`, `Message`, `Errors[]`, `Timestamp`, `CorrelationId`
+
+**Authorization:**
+- Most endpoints require `[AuthorizeUser]` attribute (JWT Bearer token)
+- Authentication endpoints marked with `[AllowAnonymous]`
+- Current user info available via `HttpContext.CurrentUser()` extension method
+
+**Caching:**
+- Dropdown lists and read-only endpoints use `[ResponseCache]` (60-300 seconds)
+- Memory caching for user data (5-hour sliding expiration)
+- Multi-tier caching: L1 (Memory) → L2 (Redis) → L3 (PostgreSQL)
+
+---
+
+### **Implementation Status Task List**
+
+#### **✅ Fully Implemented Modules**
+- [x] Authentication (Login, Logout, Token Management)
+- [x] Module Management (CRUD + Grid)
+- [x] Menu Management (CRUD + Grid + User Permissions)
+- [x] Country Management (CRUD + Grid + CRUD Records)
+- [x] Group Management (CRUD + Grid + Permissions)
+- [x] User Management (CRUD + Grid)
+- [x] Company Management (CRUD + CRUD Records)
+- [x] Thana Management (CRUD + Grid + CRUD Records)
+- [x] Workflow Management (States + Actions)
+- [x] Access Control Management (CRUD + Grid)
+- [x] CRM Institute (CRUD + Grid + CRUD Records)
+- [x] CRM Course (CRUD + Grid + CRUD Records)
+- [x] CRM Application (CRUD + Grid + CRUD Records)
+- [x] CRM Applicant Info (CRUD + Grid + CRUD Records)
+- [x] CRM Education History (CRUD + Grid + CRUD Records)
+- [x] CRM Applicant Course (CRUD + Grid + CRUD Records)
+- [x] CRM Work Experience (CRUD + Grid + CRUD Records)
+- [x] DMS Document Management (CRUD + Grid + File Upload)
+
+#### **⚠️ Partially Implemented Modules**
+- [ ] HR Employee Management (Types implemented, full CRUD pending)
+- [ ] HR Department Management (Read-only, full CRUD pending)
+- [ ] HR Branch Management (Read-only, full CRUD pending)
+
+#### **📋 Pending Frontend Implementation**
+- [ ] Module Summary Grid + Modal Form
+- [ ] Menu Summary Grid + Modal Form
+- [ ] Group Summary Grid + Modal Form + Permission Assignment
+- [ ] User Summary Grid + Modal Form
+- [ ] Company Summary Grid + Modal Form
+- [ ] Thana Summary Grid + Modal Form
+- [ ] Workflow Management UI
+- [ ] Access Control Management UI
+- [ ] CRM Institute UI (Grid + Modal)
+- [ ] CRM Course UI (Grid + Modal)
+- [ ] CRM Application UI (Grid + Tabbed Form)
+- [ ] CRM Applicant Info UI (Grid + Tabbed Form)
+- [ ] DMS Document UI (Grid + Upload Modal)
+- [ ] HR Employee UI (Grid + Tabbed Form)
+- [ ] HR Department UI (Grid + Modal)
+- [ ] HR Branch UI (Grid + Modal)
+
+#### **🔧 Technical Debt & Improvements**
+- [ ] Add comprehensive XML documentation comments to all endpoints
+- [ ] Implement rate limiting for API endpoints
+- [ ] Add API versioning support
+- [ ] Implement request/response logging middleware
+- [ ] Add OpenAPI/Swagger documentation
+- [ ] Implement HATEOAS links for all grid endpoints
+- [ ] Add comprehensive integration tests for all endpoints
+- [ ] Implement health check endpoints
+- [ ] Add API metrics and monitoring
+- [ ] Implement GraphQL endpoint (optional)
+
+---
+
+*— End of API Endpoints Reference —*
+
+---
+
 *— End of UI/UX Design Documentation + Frontend Implementation Plan —*
 
 HRIS + BonusPayment System  |  v1.0  |  2025

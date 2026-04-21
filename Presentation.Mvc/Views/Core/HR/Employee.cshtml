@@ -1,0 +1,744 @@
+@{
+    ViewData["Title"] = "Employee Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .badge-inactive {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        #employeeTabStrip {
+            margin-top: 15px;
+        }
+
+        .k-tabstrip > .k-content {
+            padding: 15px;
+            min-height: 400px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #007bff;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Employee Management</h1>
+        <div class="breadcrumb">Core / HR / Employee Management</div>
+    </div>
+    <div class="page-actions">
+        <button type="button" class="btn-primary" id="btnAddEmployee">
+            <span class="k-icon k-i-plus"></span> New Employee
+        </button>
+        <button type="button" class="btn-secondary" id="btnRefresh">
+            <span class="k-icon k-i-reload"></span> Refresh
+        </button>
+    </div>
+</div>
+
+<div class="grid-container">
+    <div id="employeeGrid"></div>
+</div>
+
+<!-- Employee Form Window -->
+<div id="employeeFormWindow" style="display:none;">
+    <form id="employeeForm">
+        <input type="hidden" id="employeeId" name="employeeId" value="0" />
+
+        <!-- 12-Tab Interface -->
+        <div id="employeeTabStrip">
+            <ul>
+                <li class="k-state-active">Basic Information</li>
+                <li>Personal Details</li>
+                <li>Contact Information</li>
+                <li>Employment Details</li>
+                <li>Department & Designation</li>
+                <li>Salary Information</li>
+                <li>Bank Details</li>
+                <li>Emergency Contact</li>
+                <li>Education</li>
+                <li>Experience</li>
+                <li>Documents</li>
+                <li>Additional Info</li>
+            </ul>
+
+            <!-- Tab 1: Basic Information -->
+            <div>
+                <div class="section-title">Employee Basic Information</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeeCode" class="required">Employee Code</label>
+                        <input type="text" id="employeeCode" name="employeeCode" class="k-textbox" required maxlength="50" />
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeType">Employee Type</label>
+                        <select id="employeeType" name="employeeType">
+                            <option value="">Select Type...</option>
+                            <option value="Permanent">Permanent</option>
+                            <option value="Contract">Contract</option>
+                            <option value="Temporary">Temporary</option>
+                            <option value="Intern">Intern</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="firstName" class="required">First Name</label>
+                        <input type="text" id="firstName" name="firstName" class="k-textbox" required maxlength="100" />
+                    </div>
+                    <div class="form-group">
+                        <label for="middleName">Middle Name</label>
+                        <input type="text" id="middleName" name="middleName" class="k-textbox" maxlength="100" />
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="required">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" class="k-textbox" required maxlength="100" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email" class="required">Official Email</label>
+                        <input type="email" id="email" name="email" class="k-textbox" required maxlength="150" />
+                    </div>
+                    <div class="form-group">
+                        <label for="mobileNumber" class="required">Mobile Number</label>
+                        <input type="text" id="mobileNumber" name="mobileNumber" class="k-textbox" required maxlength="20" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="joinDate" class="required">Join Date</label>
+                        <input type="date" id="joinDate" name="joinDate" class="k-textbox" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmationDate">Confirmation Date</label>
+                        <input type="date" id="confirmationDate" name="confirmationDate" class="k-textbox" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Personal Details -->
+            <div>
+                <div class="section-title">Personal Details</div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of Birth</label>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" class="k-textbox" />
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="maritalStatus">Marital Status</label>
+                        <select id="maritalStatus" name="maritalStatus"></select>
+                    </div>
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="nationality">Nationality</label>
+                        <input type="text" id="nationality" name="nationality" class="k-textbox" maxlength="100" />
+                    </div>
+                    <div class="form-group">
+                        <label for="religion">Religion</label>
+                        <select id="religion" name="religion"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bloodGroup">Blood Group</label>
+                        <select id="bloodGroup" name="bloodGroup"></select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="nidNumber">NID Number</label>
+                        <input type="text" id="nidNumber" name="nidNumber" class="k-textbox" maxlength="50" />
+                    </div>
+                    <div class="form-group">
+                        <label for="passportNumber">Passport Number</label>
+                        <input type="text" id="passportNumber" name="passportNumber" class="k-textbox" maxlength="50" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="tinNumber">TIN Number</label>
+                        <input type="text" id="tinNumber" name="tinNumber" class="k-textbox" maxlength="50" />
+                    </div>
+                    <div class="form-group">
+                        <label for="drivingLicenseNumber">Driving License</label>
+                        <input type="text" id="drivingLicenseNumber" name="drivingLicenseNumber" class="k-textbox" maxlength="50" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Contact Information -->
+            <div>
+                <div class="section-title">Contact Information</div>
+
+                <div class="form-group">
+                    <label for="presentAddress">Present Address</label>
+                    <textarea id="presentAddress" name="presentAddress" class="k-textarea" rows="3" maxlength="500"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="permanentAddress">Permanent Address</label>
+                    <textarea id="permanentAddress" name="permanentAddress" class="k-textarea" rows="3" maxlength="500"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="personalEmail">Personal Email</label>
+                        <input type="email" id="personalEmail" name="personalEmail" class="k-textbox" maxlength="150" />
+                    </div>
+                    <div class="form-group">
+                        <label for="alternatePhoneNumber">Alternate Phone</label>
+                        <input type="text" id="alternatePhoneNumber" name="alternatePhoneNumber" class="k-textbox" maxlength="20" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Employment Details -->
+            <div>
+                <div class="section-title">Employment Information</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="probationPeriodMonths">Probation Period (Months)</label>
+                        <input type="number" id="probationPeriodMonths" name="probationPeriodMonths" class="k-textbox" min="0" max="24" />
+                    </div>
+                    <div class="form-group">
+                        <label for="noticePeriodDays">Notice Period (Days)</label>
+                        <input type="number" id="noticePeriodDays" name="noticePeriodDays" class="k-textbox" min="0" max="365" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contractStartDate">Contract Start Date</label>
+                        <input type="date" id="contractStartDate" name="contractStartDate" class="k-textbox" />
+                    </div>
+                    <div class="form-group">
+                        <label for="contractEndDate">Contract End Date</label>
+                        <input type="date" id="contractEndDate" name="contractEndDate" class="k-textbox" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employmentStatus">Employment Status</label>
+                        <select id="employmentStatus" name="employmentStatus">
+                            <option value="">Select Status...</option>
+                            <option value="Active">Active</option>
+                            <option value="OnLeave">On Leave</option>
+                            <option value="Suspended">Suspended</option>
+                            <option value="Terminated">Terminated</option>
+                            <option value="Resigned">Resigned</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="resignationDate">Resignation Date</label>
+                        <input type="date" id="resignationDate" name="resignationDate" class="k-textbox" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="employmentRemarks">Employment Remarks</label>
+                    <textarea id="employmentRemarks" name="employmentRemarks" class="k-textarea" rows="3" maxlength="500"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 5: Department & Designation -->
+            <div>
+                <div class="section-title">Department & Designation Assignment</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="companyId" class="required">Company</label>
+                        <select id="companyId" name="companyId" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="branchId" class="required">Branch</label>
+                        <select id="branchId" name="branchId" required></select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="departmentId" class="required">Department</label>
+                        <select id="departmentId" name="departmentId" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="designationId" class="required">Designation</label>
+                        <select id="designationId" name="designationId" required></select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="shiftId">Shift</label>
+                        <select id="shiftId" name="shiftId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reportingManagerId">Reporting Manager</label>
+                        <select id="reportingManagerId" name="reportingManagerId"></select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gradeId">Grade</label>
+                        <select id="gradeId" name="gradeId"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="locationId">Location</label>
+                        <select id="locationId" name="locationId"></select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 6: Salary Information -->
+            <div>
+                <div class="section-title">Salary & Compensation</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="basicSalary">Basic Salary</label>
+                        <input type="number" id="basicSalary" name="basicSalary" class="k-textbox" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label for="houseRent">House Rent</label>
+                        <input type="number" id="houseRent" name="houseRent" class="k-textbox" min="0" step="0.01" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="medicalAllowance">Medical Allowance</label>
+                        <input type="number" id="medicalAllowance" name="medicalAllowance" class="k-textbox" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label for="transportAllowance">Transport Allowance</label>
+                        <input type="number" id="transportAllowance" name="transportAllowance" class="k-textbox" min="0" step="0.01" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="otherAllowances">Other Allowances</label>
+                        <input type="number" id="otherAllowances" name="otherAllowances" class="k-textbox" min="0" step="0.01" />
+                    </div>
+                    <div class="form-group">
+                        <label for="grossSalary">Gross Salary (Auto-calculated)</label>
+                        <input type="number" id="grossSalary" name="grossSalary" class="k-textbox" readonly />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paymentMode">Payment Mode</label>
+                        <select id="paymentMode" name="paymentMode">
+                            <option value="">Select Mode...</option>
+                            <option value="Bank">Bank Transfer</option>
+                            <option value="Cash">Cash</option>
+                            <option value="Cheque">Cheque</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="salaryEffectiveDate">Salary Effective Date</label>
+                        <input type="date" id="salaryEffectiveDate" name="salaryEffectiveDate" class="k-textbox" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 7: Bank Details -->
+            <div>
+                <div class="section-title">Bank Account Information</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bankName">Bank Name</label>
+                        <input type="text" id="bankName" name="bankName" class="k-textbox" maxlength="100" />
+                    </div>
+                    <div class="form-group">
+                        <label for="branchName">Branch Name</label>
+                        <input type="text" id="branchName" name="branchName" class="k-textbox" maxlength="100" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="accountNumber">Account Number</label>
+                        <input type="text" id="accountNumber" name="accountNumber" class="k-textbox" maxlength="50" />
+                    </div>
+                    <div class="form-group">
+                        <label for="accountHolderName">Account Holder Name</label>
+                        <input type="text" id="accountHolderName" name="accountHolderName" class="k-textbox" maxlength="150" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ifscCode">IFSC/SWIFT Code</label>
+                        <input type="text" id="ifscCode" name="ifscCode" class="k-textbox" maxlength="50" />
+                    </div>
+                    <div class="form-group">
+                        <label for="accountType">Account Type</label>
+                        <select id="accountType" name="accountType">
+                            <option value="">Select Type...</option>
+                            <option value="Savings">Savings</option>
+                            <option value="Current">Current</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 8: Emergency Contact -->
+            <div>
+                <div class="section-title">Emergency Contact Information</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="emergencyContactName">Contact Name</label>
+                        <input type="text" id="emergencyContactName" name="emergencyContactName" class="k-textbox" maxlength="150" />
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContactRelation">Relation</label>
+                        <input type="text" id="emergencyContactRelation" name="emergencyContactRelation" class="k-textbox" maxlength="100" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="emergencyContactPhone">Phone Number</label>
+                        <input type="text" id="emergencyContactPhone" name="emergencyContactPhone" class="k-textbox" maxlength="20" />
+                    </div>
+                    <div class="form-group">
+                        <label for="emergencyContactEmail">Email</label>
+                        <input type="email" id="emergencyContactEmail" name="emergencyContactEmail" class="k-textbox" maxlength="150" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="emergencyContactAddress">Address</label>
+                    <textarea id="emergencyContactAddress" name="emergencyContactAddress" class="k-textarea" rows="3" maxlength="500"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 9: Education -->
+            <div>
+                <div class="section-title">Educational Qualifications</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="highestQualification">Highest Qualification</label>
+                        <input type="text" id="highestQualification" name="highestQualification" class="k-textbox" maxlength="150" />
+                    </div>
+                    <div class="form-group">
+                        <label for="institutionName">Institution Name</label>
+                        <input type="text" id="institutionName" name="institutionName" class="k-textbox" maxlength="200" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fieldOfStudy">Field of Study</label>
+                        <input type="text" id="fieldOfStudy" name="fieldOfStudy" class="k-textbox" maxlength="150" />
+                    </div>
+                    <div class="form-group">
+                        <label for="yearOfPassing">Year of Passing</label>
+                        <input type="number" id="yearOfPassing" name="yearOfPassing" class="k-textbox" min="1950" max="2100" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gpaOrPercentage">GPA/Percentage</label>
+                        <input type="text" id="gpaOrPercentage" name="gpaOrPercentage" class="k-textbox" maxlength="20" />
+                    </div>
+                    <div class="form-group">
+                        <label for="certificationsCourses">Certifications/Courses</label>
+                        <input type="text" id="certificationsCourses" name="certificationsCourses" class="k-textbox" maxlength="300" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="educationRemarks">Education Remarks</label>
+                    <textarea id="educationRemarks" name="educationRemarks" class="k-textarea" rows="2" maxlength="500"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 10: Experience -->
+            <div>
+                <div class="section-title">Work Experience</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="totalExperienceYears">Total Experience (Years)</label>
+                        <input type="number" id="totalExperienceYears" name="totalExperienceYears" class="k-textbox" min="0" step="0.5" />
+                    </div>
+                    <div class="form-group">
+                        <label for="previousEmployer">Previous Employer</label>
+                        <input type="text" id="previousEmployer" name="previousEmployer" class="k-textbox" maxlength="200" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="previousDesignation">Previous Designation</label>
+                        <input type="text" id="previousDesignation" name="previousDesignation" class="k-textbox" maxlength="150" />
+                    </div>
+                    <div class="form-group">
+                        <label for="previousSalary">Previous Salary</label>
+                        <input type="number" id="previousSalary" name="previousSalary" class="k-textbox" min="0" step="0.01" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="previousEmploymentStartDate">Start Date</label>
+                        <input type="date" id="previousEmploymentStartDate" name="previousEmploymentStartDate" class="k-textbox" />
+                    </div>
+                    <div class="form-group">
+                        <label for="previousEmploymentEndDate">End Date</label>
+                        <input type="date" id="previousEmploymentEndDate" name="previousEmploymentEndDate" class="k-textbox" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="experienceRemarks">Experience Remarks</label>
+                    <textarea id="experienceRemarks" name="experienceRemarks" class="k-textarea" rows="3" maxlength="500"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 11: Documents -->
+            <div>
+                <div class="section-title">Employee Documents</div>
+
+                <div class="form-group">
+                    <label>Upload Documents</label>
+                    <p style="font-size: 12px; color: #666;">Upload relevant documents such as CV, certificates, ID proofs, etc.</p>
+                    <input type="file" id="documentUpload" name="documentUpload" multiple style="margin-top: 10px;" />
+                </div>
+
+                <div id="uploadedDocumentsList" style="margin-top: 20px;">
+                    <!-- Uploaded documents will be displayed here -->
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="documentRemarks">Document Notes</label>
+                    <textarea id="documentRemarks" name="documentRemarks" class="k-textarea" rows="3" maxlength="500"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 12: Additional Info -->
+            <div>
+                <div class="section-title">Additional Information</div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employeePhoto">Photo URL</label>
+                        <input type="text" id="employeePhoto" name="employeePhoto" class="k-textbox" maxlength="500" />
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeSignature">Signature URL</label>
+                        <input type="text" id="employeeSignature" name="employeeSignature" class="k-textbox" maxlength="500" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="isPfApplicable" name="isPfApplicable" class="k-checkbox" />
+                            <span>PF Applicable</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="isEsiApplicable" name="isEsiApplicable" class="k-checkbox" />
+                            <span>ESI Applicable</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pfNumber">PF Number</label>
+                        <input type="text" id="pfNumber" name="pfNumber" class="k-textbox" maxlength="50" />
+                    </div>
+                    <div class="form-group">
+                        <label for="esiNumber">ESI Number</label>
+                        <input type="text" id="esiNumber" name="esiNumber" class="k-textbox" maxlength="50" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="isActive" name="isActive" class="k-checkbox" checked />
+                        <span>Active</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="remarks">General Remarks</label>
+                    <textarea id="remarks" name="remarks" class="k-textarea" rows="4" maxlength="1000"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" id="btnCancelEmployee">Cancel</button>
+            <button type="button" class="btn-primary" id="btnSaveEmployee">Save</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/core/employee/employeeSettings.js"></script>
+    <script src="~/js/modules/core/employee/employeeSummary.js"></script>
+    <script src="~/js/modules/core/employee/employeeDetails.js"></script>
+}

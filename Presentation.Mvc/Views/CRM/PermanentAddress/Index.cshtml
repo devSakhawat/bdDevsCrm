@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Permanent Address Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Permanent Address Management</h1>
+        <p class="page-header__subtitle">Phase 3 applicant detail module for permanent address maintenance.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Permanent Address</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddPermanentAddress" class="btn btn--primary">Add Permanent Address</button>
+        <button type="button" id="btnRefreshPermanentAddress" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="permanentAddressGrid"></div>
+</section>
+
+<div id="permanentAddressWindow" style="display:none;">
+    <form id="permanentAddressForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelPermanentAddress" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSavePermanentAddress" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/permanentaddress/permanentAddressSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/permanentaddress/permanentAddressSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/permanentaddress/permanentAddressDetails.js" asp-append-version="true"></script>
+}

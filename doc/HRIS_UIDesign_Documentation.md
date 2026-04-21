@@ -3174,6 +3174,56 @@ RouteConstants.DmsDocumentUpload → "dms-document-upload"
 - [ ] Foreign-key based filtering wired where controller exposes dependent endpoints
 - [ ] Smoke-tested from UI against summary, create, update, delete, and read-by-id flows
 
+#### **D. Bengali Priority Checklist for the Remaining 20 CRM Controller UIs**
+
+নিচের checklist-টি documentation, sprint planning, এবং delivery sequencing-এর জন্য বাংলা priority order reference হিসেবে ব্যবহার করা যাবে।
+
+**১) Foundation / Setup Modules**
+- [ ] `CrmInstituteTypeController` UI complete করা
+- [ ] `CrmPaymentMethodController` UI complete করা
+- [ ] `CrmMonthController` UI complete করা
+- [ ] `CrmYearController` UI complete করা
+- [ ] `CrmIntakeMonthController` UI complete করা
+- [ ] `CrmIntakeYearController` UI complete করা
+
+**২) Relationship Modules**
+- [ ] `CrmCourseIntakeController` UI complete করা
+- [ ] `CrmApplicantCourseController` UI complete করা
+
+**৩) Applicant Core Detail Modules**
+- [ ] `CrmPresentAddressController` UI complete করা
+- [ ] `CrmPermanentAddressController` UI complete করা
+- [ ] `CrmEducationHistoryController` UI complete করা
+- [ ] `CrmWorkExperienceController` UI complete করা
+- [ ] `CrmApplicantReferenceController` UI complete করা
+
+**৪) Test Score / Qualification Modules**
+- [ ] `CrmIeltsInformationController` UI complete করা
+- [ ] `CrmToeflInformationController` UI complete করা
+- [ ] `CrmGmatInformationController` UI complete করা
+- [ ] `CrmOthersInformationController` UI complete করা
+
+**৫) Final Review / Supporting Modules**
+- [ ] `CrmStatementOfPurposeController` UI complete করা
+- [ ] `CrmAdditionalInfoController` UI complete করা
+- [ ] `CrmAdditionalDocumentController` UI complete করা
+
+**প্রতিটি module-এর জন্য common checklist**
+- [ ] `Views/CRM/{Module}/Index.cshtml` তৈরি
+- [ ] `Settings.js`, `Details.js`, `Summary.js` 3-file pattern follow করা
+- [ ] summary/grid endpoint wire করা
+- [ ] create/update/delete/get-by-id endpoint wire করা
+- [ ] প্রয়োজন হলে foreign key filter / cascading load যোগ করা
+- [ ] Kendo Grid + Modal / Tabbed section integrate করা
+- [ ] Fetch API / ApiClient দিয়ে CRUD flow test করা
+
+**Suggested rollout**
+- [ ] **Phase 1:** Setup modules শেষ করা
+- [ ] **Phase 2:** Relationship modules শেষ করা
+- [ ] **Phase 3:** Applicant detail modules শেষ করা
+- [ ] **Phase 4:** Test score modules শেষ করা
+- [ ] **Phase 5:** SOP / Additional Info / Document modules শেষ করা
+
 ---
 
 ### **📅 Implementation Priority & Timeline**

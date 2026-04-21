@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Statement Of Purpose Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Statement Of Purpose Management</h1>
+        <p class="page-header__subtitle">Phase 5 final review module for statement of purpose maintenance.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Statement Of Purpose</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddStatementOfPurpose" class="btn btn--primary">Add Statement Of Purpose</button>
+        <button type="button" id="btnRefreshStatementOfPurpose" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="statementOfPurposeGrid"></div>
+</section>
+
+<div id="statementOfPurposeWindow" style="display:none;">
+    <form id="statementOfPurposeForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelStatementOfPurpose" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveStatementOfPurpose" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/statementofpurpose/statementOfPurposeSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/statementofpurpose/statementOfPurposeSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/statementofpurpose/statementOfPurposeDetails.js" asp-append-version="true"></script>
+}

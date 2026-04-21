@@ -3086,6 +3086,413 @@ RouteConstants.DmsDocumentUpload → "dms-document-upload"
 - [ ] HR Department UI (Grid + Modal)
 - [ ] HR Branch UI (Grid + Modal)
 
+---
+
+### **📅 Implementation Priority & Timeline**
+
+This section outlines the phased approach for frontend implementation, following the 3-file JavaScript pattern (Settings, Details, Summary) established in the Country module reference implementation.
+
+#### **Phase 1: Core System Admin (Week 1-2)** ⚙️
+**Estimated Time:** 30-40 hours | **Priority:** CRITICAL
+
+**Modules:**
+1. **Module Management** (4-6 hours)
+   - [ ] Create `Views/Core/SystemAdmin/Module/Index.cshtml`
+   - [ ] Implement `moduleSettings.js` (API config, grid columns, validation)
+   - [ ] Implement `moduleSummary.js` (Kendo Grid with server-side paging)
+   - [ ] Implement `moduleDetails.js` (Kendo Window modal, form validation)
+   - [ ] Test CRUD operations end-to-end
+
+2. **Menu Management** (6-8 hours)
+   - [ ] Create `Views/Core/SystemAdmin/Menu/Index.cshtml`
+   - [ ] Implement `menuSettings.js` (hierarchical structure config)
+   - [ ] Implement `menuSummary.js` (hierarchical grid, parent-child display)
+   - [ ] Implement `menuDetails.js` (Module dropdown, Parent Menu cascading, Icon picker)
+   - [ ] Test menu hierarchy and relationships
+
+3. **Group Management + Permissions** (8-10 hours)
+   - [ ] Create `Views/Core/SystemAdmin/Group/Index.cshtml`
+   - [ ] Implement `groupSettings.js` (group + permission assignment config)
+   - [ ] Implement `groupSummary.js` (grid with "Assign Permissions" action)
+   - [ ] Implement `groupDetails.js` (basic form + permission assignment modal)
+   - [ ] Test permission assignment workflow
+
+4. **User Management** (6-8 hours)
+   - [ ] Create `Views/Core/SystemAdmin/User/Index.cshtml`
+   - [ ] Implement `userSettings.js` (user fields, Group/Company dropdowns)
+   - [ ] Implement `userSummary.js` (grid with company filter)
+   - [ ] Implement `userDetails.js` (password field logic, email validation)
+   - [ ] Test user creation and password handling
+
+5. **Company Management** (5-7 hours)
+   - [ ] Create `Views/Core/SystemAdmin/Company/Index.cshtml`
+   - [ ] Implement `companySettings.js` (company fields, contact validation)
+   - [ ] Implement `companySummary.js` (standard CRUD grid)
+   - [ ] Implement `companyDetails.js` (email/phone/website validation)
+   - [ ] Test CRUD operations and validation
+
+6. **Thana Management** (5-7 hours)
+   - [ ] Create `Views/Core/SystemAdmin/Thana/Index.cshtml`
+   - [ ] Implement `thanaSettings.js` (District dropdown, Bangla name)
+   - [ ] Implement `thanaSummary.js` (grid with district filter)
+   - [ ] Implement `thanaDetails.js` (District selection, bilingual support)
+   - [ ] Test district filtering and Bangla rendering
+
+**Phase 1 Deliverables:**
+- ✅ Complete System Admin module suite
+- ✅ User and access management fully functional
+- ✅ Organizational structure (Company, Groups) operational
+- ✅ Geographic data (Thana) ready for use
+
+---
+
+#### **Phase 2: CRM Foundation (Week 3)** 🎓
+**Estimated Time:** 20-28 hours | **Priority:** HIGH
+
+**Modules:**
+7. **CRM Institute** (6-8 hours)
+   - [ ] Create `Views/CRM/Institute/Index.cshtml`
+   - [ ] Implement `instituteSettings.js` (Country dropdown, contact fields)
+   - [ ] Implement `instituteSummary.js` (grid with country filter)
+   - [ ] Implement `instituteDetails.js` (Country selection, contact validation)
+   - [ ] Test institute-country relationship
+
+8. **CRM Course** (6-8 hours)
+   - [ ] Create `Views/CRM/Course/Index.cshtml`
+   - [ ] Implement `courseSettings.js` (cascading Country→Institute dropdowns)
+   - [ ] Implement `courseSummary.js` (grid with institute filter)
+   - [ ] Implement `courseDetails.js` (cascading dropdowns, duration/fees fields)
+   - [ ] Test course-institute relationship and cascading
+
+9. **CRM Applicant Info** (8-10 hours)
+   - [ ] Create `Views/CRM/ApplicantInfo/Index.cshtml`
+   - [ ] Implement `applicantInfoSettings.js` (tabbed form config: Personal, Contact, Education, Documents)
+   - [ ] Implement `applicantInfoSummary.js` (grid with search by email)
+   - [ ] Implement `applicantInfoDetails.js` (Kendo TabStrip, email uniqueness, photo upload)
+   - [ ] Test multi-tab form and photo upload
+
+**Phase 2 Deliverables:**
+- ✅ Institute and Course catalog management
+- ✅ Applicant information capture system
+- ✅ Foundation for CRM application workflow
+
+---
+
+#### **Phase 3: Advanced CRM (Week 4)** 📝
+**Estimated Time:** 12-16 hours | **Priority:** HIGH
+
+**Modules:**
+10. **CRM Application (Complex Tabbed Form)** (12-16 hours)
+    - [ ] Create `Views/CRM/Application/Index.cshtml`
+    - [ ] Implement `applicationSettings.js` (7-tab configuration, all entity APIs)
+    - [ ] Implement `applicationSummary.js` (grid with status filter, quick view)
+    - [ ] Implement `applicationDetails.js` (Kendo TabStrip with lazy loading)
+      - [ ] Tab 1: Basic Information
+      - [ ] Tab 2: Personal Information
+      - [ ] Tab 3: Education History
+      - [ ] Tab 4: Work Experience
+      - [ ] Tab 5: Document Upload
+      - [ ] Tab 6: Course Selection
+      - [ ] Tab 7: Review & Submit
+    - [ ] Implement Save & Continue functionality
+    - [ ] Test end-to-end application flow
+    - [ ] Test document upload integration
+
+**Phase 3 Deliverables:**
+- ✅ Complete application submission workflow
+- ✅ Multi-step form with validation
+- ✅ Document management integration
+
+---
+
+#### **Phase 4: HR & Supporting Modules (Week 5)** 👔
+**Estimated Time:** 25-35 hours | **Priority:** MEDIUM
+
+**Modules:**
+11. **HR Department** (4-5 hours)
+    - [ ] Create `Views/HR/Department/Index.cshtml`
+    - [ ] Implement `departmentSettings.js` (company association)
+    - [ ] Implement `departmentSummary.js` (grid with company filter)
+    - [ ] Implement `departmentDetails.js` (simple form, Company dropdown)
+    - [ ] Test department CRUD
+
+12. **HR Branch** (4-5 hours)
+    - [ ] Create `Views/HR/Branch/Index.cshtml`
+    - [ ] Implement `branchSettings.js` (company association, address)
+    - [ ] Implement `branchSummary.js` (grid with company filter)
+    - [ ] Implement `branchDetails.js` (Company dropdown, address fields)
+    - [ ] Test branch CRUD
+
+13. **HR Employee (Complex)** (14-18 hours)
+    - [ ] Create `Views/HR/Employee/Index.cshtml`
+    - [ ] Implement `employeeSettings.js` (10+ tabs config, organizational structure)
+    - [ ] Implement `employeeSummary.js` (advanced filtering: Company/Department/Branch/Status)
+    - [ ] Implement `employeeDetails.js` (Kendo TabStrip with multiple tabs)
+      - [ ] Tab 1: Personal Information + Photo
+      - [ ] Tab 2: Job Information
+      - [ ] Tab 3: Salary & Benefits
+      - [ ] Tab 4: Documents
+      - [ ] Tab 5: Emergency Contacts
+      - [ ] Tab 6: Education
+      - [ ] Tab 7: Work Experience
+      - [ ] Tab 8: Training
+      - [ ] Tab 9: Performance
+      - [ ] Tab 10: Leave Balance
+    - [ ] Implement cascading dropdowns (Company → Branch → Department)
+    - [ ] Test complex employee data entry
+    - [ ] Test export to Excel functionality
+
+14. **DMS Document Management** (6-8 hours)
+    - [ ] Create `Views/DMS/Document/Index.cshtml`
+    - [ ] Implement `documentSettings.js` (file upload config, allowed types)
+    - [ ] Implement `documentSummary.js` (grid with file preview, download button)
+    - [ ] Implement `documentDetails.js` (Kendo Upload widget, metadata form)
+    - [ ] Test file upload with progress indicator
+    - [ ] Test file download and preview
+
+**Phase 4 Deliverables:**
+- ✅ HR organizational structure fully operational
+- ✅ Employee information management with complex forms
+- ✅ Document management system integrated
+
+---
+
+#### **Phase 5: Workflow & Access Control (Week 6)** 🔄
+**Estimated Time:** 15-20 hours | **Priority:** MEDIUM
+
+**Modules:**
+15. **Workflow Management** (10-12 hours)
+    - [ ] Create `Views/Core/Workflow/Index.cshtml`
+    - [ ] Implement `workflowSettings.js` (States + Actions config)
+    - [ ] Implement `workflowSummary.js` (Kendo TabStrip: States tab + Actions tab)
+    - [ ] Implement `workflowDetails.js` (two forms: State form + Action form)
+    - [ ] Test workflow state creation
+    - [ ] Test workflow action creation and transitions
+
+16. **Access Control Management** (5-7 hours)
+    - [ ] Create `Views/Core/AccessControl/Index.cshtml`
+    - [ ] Implement `accessControlSettings.js` (permissions config)
+    - [ ] Implement `accessControlSummary.js` (standard CRUD grid)
+    - [ ] Implement `accessControlDetails.js` (permission form)
+    - [ ] Test access control CRUD
+    - [ ] Test integration with Group permissions
+
+**Phase 5 Deliverables:**
+- ✅ Workflow engine UI fully functional
+- ✅ Access control management complete
+- ✅ All modules integrated and tested
+
+---
+
+#### **📊 Summary Timeline**
+
+| Phase | Duration | Modules | Total Hours | Status |
+|-------|----------|---------|-------------|--------|
+| **Phase 1** | Week 1-2 | 6 System Admin modules | 30-40 hours | 🔜 Ready to start |
+| **Phase 2** | Week 3 | 3 CRM Foundation modules | 20-28 hours | ⏳ Pending Phase 1 |
+| **Phase 3** | Week 4 | 1 Complex CRM Application | 12-16 hours | ⏳ Pending Phase 2 |
+| **Phase 4** | Week 5 | 4 HR & DMS modules | 25-35 hours | ⏳ Pending Phase 3 |
+| **Phase 5** | Week 6 | 2 Workflow & Access modules | 15-20 hours | ⏳ Pending Phase 4 |
+| **Total** | 6 weeks | 16 modules | **102-139 hours** | 📅 13-18 working days |
+
+---
+
+#### **🎯 Phase 1 Implementation Guide**
+
+**Prerequisites Before Starting:**
+- [ ] Verify API endpoints are functional (all Phase 1 backend APIs tested)
+- [ ] Ensure ApiClient.js is properly configured
+- [ ] Verify Kendo UI license and theme are set up
+- [ ] Test Country module reference implementation
+- [ ] Review frontend coding standards and patterns
+
+**Phase 1 Step-by-Step Approach:**
+
+1. **Day 1-2: Module Management** (Foundation)
+   - Start with simplest module to establish pattern
+   - Verify 3-file structure works correctly
+   - Test grid pagination and filtering
+   - Validate modal form behavior
+
+2. **Day 3-4: Menu Management** (Hierarchical Data)
+   - Build on Module experience
+   - Implement hierarchical grid display
+   - Test cascading dropdown behavior
+   - Validate parent-child relationships
+
+3. **Day 5-7: Group Management + Permissions** (Complex Interaction)
+   - Most complex Phase 1 module
+   - Implement dual-modal system (Group + Permissions)
+   - Test permission assignment workflow
+   - Validate multi-select interactions
+
+4. **Day 8-9: User Management** (Critical Path)
+   - Integrate Group dropdown (depends on Phase 1.3)
+   - Implement password field conditional logic
+   - Test email validation and uniqueness
+   - Validate user-group-company relationships
+
+5. **Day 10-11: Company Management** (Organizational Structure)
+   - Standard CRUD implementation
+   - Focus on contact field validation
+   - Test data integrity
+
+6. **Day 12: Thana Management** (Geographic Data)
+   - Quick implementation (similar to Country)
+   - Test bilingual support
+   - Validate district relationship
+
+7. **Day 13: Phase 1 Integration Testing**
+   - Test all modules together
+   - Verify data relationships across modules
+   - Performance testing with realistic data volumes
+   - Bug fixes and refinements
+
+**Phase 1 Success Criteria:**
+✅ All 6 modules have working CRUD operations
+✅ Grid pagination and filtering functional
+✅ Modal forms validate correctly
+✅ Dropdowns and cascading selects work
+✅ API integration successful for all operations
+✅ Error handling displays user-friendly messages
+✅ No console errors or warnings
+✅ Responsive design works on different screen sizes
+
+---
+
+#### **🛠️ Common Setup Tasks (One-Time Setup)**
+
+Before starting any phase:
+
+- [ ] **Environment Setup**
+  - [ ] Clone repository and ensure all dependencies installed
+  - [ ] Configure database connection strings
+  - [ ] Run database migrations
+  - [ ] Verify API project runs without errors
+  - [ ] Verify MVC project runs and serves static assets
+
+- [ ] **Frontend Configuration**
+  - [ ] Verify `ApiClient.js` base URL configuration
+  - [ ] Test authentication flow (login/logout)
+  - [ ] Verify Kendo UI widgets load correctly
+  - [ ] Test common utilities (appToast, appLoader, etc.)
+  - [ ] Configure browser dev tools for debugging
+
+- [ ] **Reference Implementation**
+  - [ ] Study Country module implementation thoroughly
+  - [ ] Understand Settings → Summary → Details pattern
+  - [ ] Review API response handling patterns
+  - [ ] Understand error handling approach
+  - [ ] Review validation patterns
+
+---
+
+#### **✅ Per-Module Testing Checklist**
+
+After implementing each module, verify:
+
+**Grid Functionality:**
+- [ ] Grid loads data correctly with pagination
+- [ ] Server-side paging works (not loading all data at once)
+- [ ] Grid columns display correctly
+- [ ] Sorting works on all sortable columns
+- [ ] Filtering works (if applicable)
+- [ ] Grid refreshes after CRUD operations
+
+**Create Operation:**
+- [ ] "Add New" button opens modal/form
+- [ ] Form fields render correctly
+- [ ] Required field validation works
+- [ ] Data type validation works (email, phone, etc.)
+- [ ] Create operation saves to database via API
+- [ ] Success toast displays after creation
+- [ ] Grid refreshes with new record
+- [ ] Modal/form closes automatically
+
+**Read/View Operation:**
+- [ ] Grid displays all records
+- [ ] Pagination shows correct page numbers
+- [ ] Record counts are accurate
+- [ ] Data displays in correct format (dates, numbers, etc.)
+
+**Update Operation:**
+- [ ] "Edit" button opens modal/form with existing data
+- [ ] All fields populate correctly
+- [ ] Form validation works on update
+- [ ] Update operation saves changes via API
+- [ ] Success toast displays after update
+- [ ] Grid refreshes with updated data
+- [ ] Changes persist on page reload
+
+**Delete Operation:**
+- [ ] "Delete" button shows confirmation dialog
+- [ ] Confirmation dialog has clear message
+- [ ] Cancel button closes dialog without deleting
+- [ ] Confirm button deletes record via API
+- [ ] Success toast displays after deletion
+- [ ] Grid refreshes without deleted record
+- [ ] Deletion prevents if record has dependencies (optional)
+
+**Validation & Error Handling:**
+- [ ] Required fields show validation message
+- [ ] Field-level validation works (length, format, etc.)
+- [ ] Server-side validation errors display properly
+- [ ] API errors show user-friendly messages
+- [ ] Network errors handled gracefully
+- [ ] Validation clears when corrected
+
+**User Experience:**
+- [ ] Loading indicators show during API calls
+- [ ] No console errors or warnings
+- [ ] Forms are keyboard accessible (Tab navigation)
+- [ ] Enter key submits forms
+- [ ] Escape key closes modals
+- [ ] Success/error messages are clear and actionable
+
+**Integration Testing:**
+- [ ] Dropdown data loads from API
+- [ ] Cascading dropdowns work correctly (if applicable)
+- [ ] Foreign key relationships maintain integrity
+- [ ] Multi-select controls work (if applicable)
+- [ ] File uploads work (if applicable)
+- [ ] Date pickers format dates correctly (if applicable)
+
+---
+
+#### **🚀 Getting Started with Phase 1**
+
+**Recommended Order:**
+1. ✅ Start with **Module Management** (simplest, establishes pattern)
+2. ✅ Progress to **Menu Management** (adds complexity with hierarchy)
+3. ✅ Tackle **Group Management** (most complex Phase 1 module)
+4. ✅ Implement **User Management** (depends on Groups and Companies)
+5. ✅ Add **Company Management** (standalone, straightforward)
+6. ✅ Finish with **Thana Management** (quick win, similar to Country)
+
+**Daily Development Workflow:**
+1. **Morning:** Review module requirements and API endpoints
+2. **Create Files:** Set up View + 3 JS files
+3. **Settings First:** Configure API endpoints and grid columns
+4. **Summary Next:** Implement grid with toolbar
+5. **Details Last:** Implement form with validation
+6. **Test Thoroughly:** Run through complete CRUD cycle
+7. **Commit Progress:** Git commit with clear message
+8. **Update Checklist:** Mark completed items
+
+**Best Practices:**
+- ✅ Follow Country module pattern exactly
+- ✅ Test each operation immediately after implementing
+- ✅ Fix bugs before moving to next feature
+- ✅ Use browser DevTools to debug
+- ✅ Check console for errors after every change
+- ✅ Commit working code frequently
+- ✅ Write clear commit messages
+- ✅ Ask for help when stuck
+
+---
+
+**🎉 Ready to Begin Phase 1 Implementation!**
+
 #### **🔧 Technical Debt & Improvements**
 - [ ] Add comprehensive XML documentation comments to all endpoints
 - [ ] Implement rate limiting for API endpoints

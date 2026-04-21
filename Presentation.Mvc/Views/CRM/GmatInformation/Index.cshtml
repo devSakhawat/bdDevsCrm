@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "GMAT Information Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">GMAT Information Management</h1>
+        <p class="page-header__subtitle">Phase 4 test score module for GMAT information maintenance.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">GMAT Information</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddGmatInformation" class="btn btn--primary">Add GMAT Information</button>
+        <button type="button" id="btnRefreshGmatInformation" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="gmatInformationGrid"></div>
+</section>
+
+<div id="gmatInformationWindow" style="display:none;">
+    <form id="gmatInformationForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelGmatInformation" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveGmatInformation" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/gmatinformation/gmatInformationSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/gmatinformation/gmatInformationSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/gmatinformation/gmatInformationDetails.js" asp-append-version="true"></script>
+}

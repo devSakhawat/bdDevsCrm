@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Others Information Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Others Information Management</h1>
+        <p class="page-header__subtitle">Phase 4 test score module for other qualification information maintenance.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Others Information</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddOthersInformation" class="btn btn--primary">Add Others Information</button>
+        <button type="button" id="btnRefreshOthersInformation" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="othersInformationGrid"></div>
+</section>
+
+<div id="othersInformationWindow" style="display:none;">
+    <form id="othersInformationForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelOthersInformation" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveOthersInformation" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/othersinformation/othersInformationSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/othersinformation/othersInformationSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/othersinformation/othersInformationDetails.js" asp-append-version="true"></script>
+}

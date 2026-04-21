@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "IELTS Information Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">IELTS Information Management</h1>
+        <p class="page-header__subtitle">Phase 4 test score module for IELTS information maintenance.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">IELTS Information</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddIeltsInformation" class="btn btn--primary">Add IELTS Information</button>
+        <button type="button" id="btnRefreshIeltsInformation" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="ieltsInformationGrid"></div>
+</section>
+
+<div id="ieltsInformationWindow" style="display:none;">
+    <form id="ieltsInformationForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelIeltsInformation" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveIeltsInformation" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/ieltsinformation/ieltsInformationSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/ieltsinformation/ieltsInformationSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/ieltsinformation/ieltsInformationDetails.js" asp-append-version="true"></script>
+}

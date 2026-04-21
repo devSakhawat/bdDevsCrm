@@ -2,9 +2,11 @@
     var currentPath = Context.Request.Path.Value ?? string.Empty;
     var isDashboard = string.Equals(currentPath, "/", StringComparison.OrdinalIgnoreCase)
         || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
-    bool IsCurrent(params string[] prefixes) => prefixes.Any(prefix => currentPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
-    var isHrOperations = IsCurrent("/Employee", "/Department", "/Branch", "/Designation", "/Shift");
-    var isSystemSetup = IsCurrent("/Module", "/Menu", "/Group", "/Users", "/Company", "/Country", "/Thana", "/Workflow", "/AccessControl");
+    var hrOperationPaths = new[] { "/Employee", "/Department", "/Branch", "/Designation", "/Shift" };
+    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Country", "/Thana", "/Workflow", "/AccessControl" };
+    bool isCurrent(params string[] prefixes) => prefixes.Any(prefix => currentPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+    var isHrOperations = isCurrent(hrOperationPaths);
+    var isSystemSetup = isCurrent(systemSetupPaths);
 }
 
 <aside class="app-sidebar" id="appSidebar" aria-label="Primary navigation">
@@ -27,11 +29,11 @@
             <span class="nav-group__chevron">⌄</span>
         </button>
         <div class="nav-group__items @(isHrOperations ? "is-open" : string.Empty)">
-            <a class="nav-sublink @(IsCurrent("/Employee") ? "is-active" : string.Empty)" asp-controller="Employee" asp-action="Index">Employee Management</a>
-            <a class="nav-sublink @(IsCurrent("/Department") ? "is-active" : string.Empty)" asp-controller="Department" asp-action="Index">Department Management</a>
-            <a class="nav-sublink @(IsCurrent("/Branch") ? "is-active" : string.Empty)" asp-controller="Branch" asp-action="Index">Branch Management</a>
-            <a class="nav-sublink @(IsCurrent("/Designation") ? "is-active" : string.Empty)" asp-controller="Designation" asp-action="Index">Designation Management</a>
-            <a class="nav-sublink @(IsCurrent("/Shift") ? "is-active" : string.Empty)" asp-controller="Shift" asp-action="Index">Shift Management</a>
+            <a class="nav-sublink @(isCurrent("/Employee") ? "is-active" : string.Empty)" asp-controller="Employee" asp-action="Index">Employee Management</a>
+            <a class="nav-sublink @(isCurrent("/Department") ? "is-active" : string.Empty)" asp-controller="Department" asp-action="Index">Department Management</a>
+            <a class="nav-sublink @(isCurrent("/Branch") ? "is-active" : string.Empty)" asp-controller="Branch" asp-action="Index">Branch Management</a>
+            <a class="nav-sublink @(isCurrent("/Designation") ? "is-active" : string.Empty)" asp-controller="Designation" asp-action="Index">Designation Management</a>
+            <a class="nav-sublink @(isCurrent("/Shift") ? "is-active" : string.Empty)" asp-controller="Shift" asp-action="Index">Shift Management</a>
         </div>
 
         <button class="nav-group" type="button" data-nav-toggle aria-expanded="false">
@@ -55,15 +57,15 @@
             <span class="nav-group__chevron">⌄</span>
         </button>
         <div class="nav-group__items @(isSystemSetup ? "is-open" : string.Empty)">
-            <a class="nav-sublink @(IsCurrent("/Module") ? "is-active" : string.Empty)" asp-controller="Module" asp-action="Index">Module Management</a>
-            <a class="nav-sublink @(IsCurrent("/Menu") ? "is-active" : string.Empty)" asp-controller="Menu" asp-action="Index">Menu Management</a>
-            <a class="nav-sublink @(IsCurrent("/Group") ? "is-active" : string.Empty)" asp-controller="Group" asp-action="Index">Group Management</a>
-            <a class="nav-sublink @(IsCurrent("/Users") ? "is-active" : string.Empty)" asp-controller="Users" asp-action="Index">User Management</a>
-            <a class="nav-sublink @(IsCurrent("/Company") ? "is-active" : string.Empty)" asp-controller="Company" asp-action="Index">Company Management</a>
-            <a class="nav-sublink @(IsCurrent("/Country") ? "is-active" : string.Empty)" asp-controller="Country" asp-action="Index">Country Management</a>
-            <a class="nav-sublink @(IsCurrent("/Thana") ? "is-active" : string.Empty)" asp-controller="Thana" asp-action="Index">Thana Management</a>
-            <a class="nav-sublink @(IsCurrent("/Workflow") ? "is-active" : string.Empty)" asp-controller="Workflow" asp-action="Index">Workflow Management</a>
-            <a class="nav-sublink @(IsCurrent("/AccessControl") ? "is-active" : string.Empty)" asp-controller="AccessControl" asp-action="Index">Access Control</a>
+            <a class="nav-sublink @(isCurrent("/Module") ? "is-active" : string.Empty)" asp-controller="Module" asp-action="Index">Module Management</a>
+            <a class="nav-sublink @(isCurrent("/Menu") ? "is-active" : string.Empty)" asp-controller="Menu" asp-action="Index">Menu Management</a>
+            <a class="nav-sublink @(isCurrent("/Group") ? "is-active" : string.Empty)" asp-controller="Group" asp-action="Index">Group Management</a>
+            <a class="nav-sublink @(isCurrent("/Users") ? "is-active" : string.Empty)" asp-controller="Users" asp-action="Index">User Management</a>
+            <a class="nav-sublink @(isCurrent("/Company") ? "is-active" : string.Empty)" asp-controller="Company" asp-action="Index">Company Management</a>
+            <a class="nav-sublink @(isCurrent("/Country") ? "is-active" : string.Empty)" asp-controller="Country" asp-action="Index">Country Management</a>
+            <a class="nav-sublink @(isCurrent("/Thana") ? "is-active" : string.Empty)" asp-controller="Thana" asp-action="Index">Thana Management</a>
+            <a class="nav-sublink @(isCurrent("/Workflow") ? "is-active" : string.Empty)" asp-controller="Workflow" asp-action="Index">Workflow Management</a>
+            <a class="nav-sublink @(isCurrent("/AccessControl") ? "is-active" : string.Empty)" asp-controller="AccessControl" asp-action="Index">Access Control</a>
         </div>
     </div>
 </aside>

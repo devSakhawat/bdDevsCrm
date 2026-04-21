@@ -1,0 +1,528 @@
+@{
+    ViewData["Title"] = "CRM Application Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .badge-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .badge-inactive {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        #applicationTabStrip {
+            margin-top: 15px;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #ddd;
+            padding: 20px;
+            text-align: center;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+
+        .document-list {
+            margin-top: 15px;
+        }
+
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background: white;
+        }
+
+        .review-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .review-section h3 {
+            margin-top: 0;
+            color: #007bff;
+            font-size: 16px;
+        }
+
+        .review-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .review-item:last-child {
+            border-bottom: none;
+        }
+
+        .review-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .review-value {
+            color: #333;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>CRM Application Management</h1>
+        <div class="breadcrumb">CRM / Application Processing</div>
+    </div>
+    <div class="page-actions">
+        <button type="button" class="btn-primary" id="btnAddApplication">
+            ➕ New Application
+        </button>
+        <button type="button" class="btn-secondary" id="btnRefresh">
+            🔄 Refresh
+        </button>
+    </div>
+</div>
+
+<div class="grid-container">
+    <div id="applicationGrid"></div>
+</div>
+
+<!-- Application Form Window -->
+<div id="applicationFormWindow" style="display:none;">
+    <form id="applicationForm">
+        <input type="hidden" id="applicationId" name="applicationId" value="0" />
+
+        <!-- 7-Tab Interface -->
+        <div id="applicationTabStrip">
+            <ul>
+                <li class="k-state-active">Basic Information</li>
+                <li>Personal Information</li>
+                <li>Education History</li>
+                <li>Work Experience</li>
+                <li>Documents</li>
+                <li>Course Selection</li>
+                <li>Review & Submit</li>
+            </ul>
+
+            <!-- Tab 1: Basic Information -->
+            <div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="applicantId" class="required">Applicant</label>
+                        <select id="applicantId" name="applicantId" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="applicationDate" class="required">Application Date</label>
+                        <input type="date" id="applicationDate" name="applicationDate" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="applicationStatusId" class="required">Status</label>
+                        <select id="applicationStatusId" name="applicationStatusId" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="priorityLevel">Priority Level</label>
+                        <select id="priorityLevel" name="priorityLevel">
+                            <option value="Normal">Normal</option>
+                            <option value="High">High</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="remarks">Remarks</label>
+                    <textarea id="remarks" name="remarks" rows="3"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 2: Personal Information -->
+            <div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="personalFirstName">First Name</label>
+                        <input type="text" id="personalFirstName" name="personalFirstName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="personalLastName">Last Name</label>
+                        <input type="text" id="personalLastName" name="personalLastName" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of Birth</label>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" />
+                    </div>
+                    <div class="form-group">
+                        <label for="nationality">Nationality</label>
+                        <input type="text" id="nationality" name="nationality" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="text" id="phone" name="phone" />
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Education History -->
+            <div>
+                <div class="form-group">
+                    <label for="highestQualification">Highest Qualification</label>
+                    <input type="text" id="highestQualification" name="highestQualification" />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="institutionName">Institution Name</label>
+                        <input type="text" id="institutionName" name="institutionName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="yearOfPassing">Year of Passing</label>
+                        <input type="number" id="yearOfPassing" name="yearOfPassing" min="1900" max="2100" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gpa">GPA/CGPA</label>
+                        <input type="number" id="gpa" name="gpa" step="0.01" min="0" max="5" />
+                    </div>
+                    <div class="form-group">
+                        <label for="fieldOfStudy">Field of Study</label>
+                        <input type="text" id="fieldOfStudy" name="fieldOfStudy" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="educationDetails">Additional Education Details</label>
+                    <textarea id="educationDetails" name="educationDetails" rows="4"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 4: Work Experience -->
+            <div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hasWorkExperience">Has Work Experience?</label>
+                        <select id="hasWorkExperience" name="hasWorkExperience">
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="totalExperienceYears">Total Experience (Years)</label>
+                        <input type="number" id="totalExperienceYears" name="totalExperienceYears" min="0" max="50" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="currentCompany">Current/Last Company</label>
+                        <input type="text" id="currentCompany" name="currentCompany" />
+                    </div>
+                    <div class="form-group">
+                        <label for="currentDesignation">Current/Last Designation</label>
+                        <input type="text" id="currentDesignation" name="currentDesignation" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="workFromDate">Work From Date</label>
+                        <input type="date" id="workFromDate" name="workFromDate" />
+                    </div>
+                    <div class="form-group">
+                        <label for="workToDate">Work To Date</label>
+                        <input type="date" id="workToDate" name="workToDate" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="workExperienceDetails">Work Experience Details</label>
+                    <textarea id="workExperienceDetails" name="workExperienceDetails" rows="4"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 5: Documents -->
+            <div>
+                <div class="file-upload-area">
+                    <p><strong>Upload Required Documents</strong></p>
+                    <p>Drag and drop files here or click to browse</p>
+                    <input type="file" id="documentUpload" name="documentUpload" multiple style="display: none;" />
+                    <button type="button" class="btn-primary" id="btnBrowseDocuments">Browse Files</button>
+                </div>
+
+                <div class="document-list" id="documentList">
+                    <!-- Uploaded documents will appear here dynamically -->
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="documentNotes">Document Notes</label>
+                    <textarea id="documentNotes" name="documentNotes" rows="3" placeholder="Any special notes about the documents..."></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 6: Course Selection -->
+            <div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="countryId" class="required">Destination Country</label>
+                        <select id="countryId" name="countryId" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="instituteId" class="required">Institute</label>
+                        <select id="instituteId" name="instituteId" required></select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="courseId" class="required">Course</label>
+                        <select id="courseId" name="courseId" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="intakeMonth">Intake Month</label>
+                        <select id="intakeMonth" name="intakeMonth"></select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="intakeYear">Intake Year</label>
+                        <input type="number" id="intakeYear" name="intakeYear" min="2024" max="2030" />
+                    </div>
+                    <div class="form-group">
+                        <label for="courseDuration">Course Duration</label>
+                        <input type="text" id="courseDuration" name="courseDuration" placeholder="e.g., 2 Years" readonly />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="courseNotes">Course Selection Notes</label>
+                    <textarea id="courseNotes" name="courseNotes" rows="3"></textarea>
+                </div>
+            </div>
+
+            <!-- Tab 7: Review & Submit -->
+            <div>
+                <h2 style="margin-top: 0;">Application Review</h2>
+                <p style="color: #666; margin-bottom: 20px;">Please review all information before submitting the application.</p>
+
+                <div class="review-section">
+                    <h3>Basic Information</h3>
+                    <div class="review-item">
+                        <span class="review-label">Applicant:</span>
+                        <span class="review-value" id="reviewApplicant">-</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Application Date:</span>
+                        <span class="review-value" id="reviewApplicationDate">-</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Status:</span>
+                        <span class="review-value" id="reviewStatus">-</span>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <h3>Course Selection</h3>
+                    <div class="review-item">
+                        <span class="review-label">Country:</span>
+                        <span class="review-value" id="reviewCountry">-</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Institute:</span>
+                        <span class="review-value" id="reviewInstitute">-</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Course:</span>
+                        <span class="review-value" id="reviewCourse">-</span>
+                    </div>
+                    <div class="review-item">
+                        <span class="review-label">Intake:</span>
+                        <span class="review-value" id="reviewIntake">-</span>
+                    </div>
+                </div>
+
+                <div class="review-section">
+                    <h3>Documents</h3>
+                    <div class="review-item">
+                        <span class="review-label">Total Documents:</span>
+                        <span class="review-value" id="reviewDocumentCount">0</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="confirmReview" name="confirmReview" />
+                        I confirm that all information provided is accurate and complete
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" id="btnCancelApplication">Cancel</button>
+            <button type="button" class="btn-secondary" id="btnSaveDraft">Save as Draft</button>
+            <button type="button" class="btn-primary" id="btnSaveApplication">Save & Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/application/applicationSettings.js"></script>
+    <script src="~/js/modules/crm/application/applicationSummary.js"></script>
+    <script src="~/js/modules/crm/application/applicationDetails.js"></script>
+}

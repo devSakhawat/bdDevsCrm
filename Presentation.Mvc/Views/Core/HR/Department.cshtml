@@ -1,0 +1,77 @@
+@{
+    ViewData["Title"] = "Department Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">@ViewData["Title"]</h1>
+        <div class="page-actions">
+            <button id="btnAddDepartment" class="btn btn-primary">
+                <span class="k-icon k-i-plus"></span> Add Department
+            </button>
+            <button id="btnRefresh" class="btn btn-secondary">
+                <span class="k-icon k-i-reload"></span> Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div id="departmentGrid"></div>
+    </div>
+</div>
+
+<!-- Department Details Window -->
+<div id="departmentWindow" style="display: none;">
+    <form id="departmentForm" class="k-form">
+        <input type="hidden" id="departmentId" name="departmentId" value="0" />
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="departmentName" class="required">Department Name</label>
+                <input type="text" id="departmentName" name="departmentName" class="k-textbox" required
+                       data-required-msg="Department name is required"
+                       maxlength="100" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="departmentCode">Department Code</label>
+                <input type="text" id="departmentCode" name="departmentCode" class="k-textbox"
+                       maxlength="20" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="isCostCentre">
+                    <input type="checkbox" id="isCostCentre" name="isCostCentre" class="k-checkbox" />
+                    <span>Cost Centre</span>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="isActive">
+                    <input type="checkbox" id="isActive" name="isActive" class="k-checkbox" checked />
+                    <span>Active</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" id="btnSaveDepartment" class="btn btn-primary">
+                <span class="k-icon k-i-check"></span> Save
+            </button>
+            <button type="button" id="btnCancelDepartment" class="btn btn-secondary">
+                <span class="k-icon k-i-cancel"></span> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/core/department/departmentSettings.js"></script>
+    <script src="~/js/modules/core/department/departmentSummary.js"></script>
+    <script src="~/js/modules/core/department/departmentDetails.js"></script>
+}

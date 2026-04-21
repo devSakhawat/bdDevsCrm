@@ -1,0 +1,412 @@
+@{
+    ViewData["Title"] = "Session Management Testing";
+}
+
+<div class="page-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header__title">
+            <h1>Session Management Testing</h1>
+            <nav class="breadcrumb">
+                <a href="/">Home</a>
+                <span>/</span>
+                <span>Session Testing</span>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Session Info Card -->
+    <div class="session-test-card">
+        <h2>Current Session Status</h2>
+        <div id="sessionInfo" class="session-info">
+            <div class="info-row">
+                <span class="info-label">Authentication Status:</span>
+                <span id="authStatus" class="info-value">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Last Activity:</span>
+                <span id="lastActivity" class="info-value">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Time Since Last Activity:</span>
+                <span id="timeSinceActivity" class="info-value">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Session Warning Displayed:</span>
+                <span id="warningStatus" class="info-value">-</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Current Token:</span>
+                <span id="tokenPreview" class="info-value token-preview">-</span>
+            </div>
+        </div>
+        <button id="btnRefreshInfo" class="btn btn-secondary">Refresh Info</button>
+    </div>
+
+    <!-- Session Configuration Card -->
+    <div class="session-test-card">
+        <h2>Session Configuration</h2>
+        <div class="config-grid">
+            <div class="config-item">
+                <label>Session Timeout (minutes):</label>
+                <input type="number" id="sessionTimeout" value="30" min="1" max="120" />
+            </div>
+            <div class="config-item">
+                <label>Idle Timeout (minutes):</label>
+                <input type="number" id="idleTimeout" value="15" min="1" max="60" />
+            </div>
+            <div class="config-item">
+                <label>Warning Time (minutes):</label>
+                <input type="number" id="warningTime" value="2" min="1" max="10" />
+            </div>
+            <div class="config-item">
+                <label>Token Refresh Interval (minutes):</label>
+                <input type="number" id="tokenRefreshInterval" value="25" min="5" max="50" />
+            </div>
+        </div>
+        <button id="btnUpdateConfig" class="btn btn-primary">Update Configuration</button>
+    </div>
+
+    <!-- Session Actions Card -->
+    <div class="session-test-card">
+        <h2>Session Actions</h2>
+        <div class="action-buttons">
+            <button id="btnExtendSession" class="btn btn-success">Extend Session</button>
+            <button id="btnTriggerWarning" class="btn btn-warning">Trigger Warning</button>
+            <button id="btnRefreshToken" class="btn btn-info">Refresh Token</button>
+            <button id="btnSimulateIdle" class="btn btn-secondary">Simulate Idle (30s)</button>
+            <button id="btnClearSession" class="btn btn-danger">Clear Session</button>
+        </div>
+    </div>
+
+    <!-- Multi-Tab Testing Card -->
+    <div class="session-test-card">
+        <h2>Multi-Tab Testing</h2>
+        <p class="help-text">Open this page in multiple tabs to test multi-tab synchronization.</p>
+        <div class="action-buttons">
+            <button id="btnBroadcastActivity" class="btn btn-secondary">Broadcast Activity</button>
+            <button id="btnOpenNewTab" class="btn btn-secondary">Open in New Tab</button>
+        </div>
+        <div id="multiTabLog" class="multi-tab-log"></div>
+    </div>
+
+    <!-- Session Events Log -->
+    <div class="session-test-card">
+        <h2>Session Events Log</h2>
+        <button id="btnClearLog" class="btn btn-secondary btn-sm">Clear Log</button>
+        <div id="sessionLog" class="session-log"></div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .session-test-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .session-test-card h2 {
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1E293B;
+        }
+
+        .session-info {
+            background: #F8FAFC;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #64748B;
+        }
+
+        .info-value {
+            color: #1E293B;
+            font-weight: 600;
+        }
+
+        .token-preview {
+            font-family: monospace;
+            font-size: 12px;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .config-item label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .config-item input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #CBD5E1;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .help-text {
+            color: #64748B;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .session-log, .multi-tab-log {
+            background: #1E293B;
+            color: #E2E8F0;
+            border-radius: 6px;
+            padding: 16px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 12px;
+        }
+
+        .session-log .log-entry, .multi-tab-log .log-entry {
+            padding: 4px 0;
+            border-bottom: 1px solid #334155;
+        }
+
+        .session-log .log-entry:last-child, .multi-tab-log .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-time {
+            color: #94A3B8;
+        }
+
+        .log-info {
+            color: #60A5FA;
+        }
+
+        .log-success {
+            color: #34D399;
+        }
+
+        .log-warning {
+            color: #FBBF24;
+        }
+
+        .log-error {
+            color: #F87171;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-success {
+            background: #16A34A;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #15803D;
+        }
+
+        .btn-info {
+            background: #0284C7;
+            color: #fff;
+        }
+
+        .btn-info:hover {
+            background: #0369A1;
+        }
+
+        .btn-warning {
+            background: #D97706;
+            color: #fff;
+        }
+
+        .btn-warning:hover {
+            background: #B45309;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        (function () {
+            let logCounter = 0;
+
+            // Log function
+            function addLog(message, type = 'info') {
+                const logDiv = document.getElementById('sessionLog');
+                const time = new Date().toLocaleTimeString();
+                const entry = document.createElement('div');
+                entry.className = 'log-entry';
+                entry.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-${type}">${message}</span>`;
+                logDiv.insertBefore(entry, logDiv.firstChild);
+                logCounter++;
+
+                // Limit log entries
+                if (logCounter > 100) {
+                    logDiv.removeChild(logDiv.lastChild);
+                    logCounter--;
+                }
+            }
+
+            // Update session info
+            function updateSessionInfo() {
+                if (!window.SessionManager) {
+                    addLog('SessionManager not available', 'error');
+                    return;
+                }
+
+                const info = window.SessionManager.getSessionInfo();
+
+                document.getElementById('authStatus').textContent = info.isAuthenticated ? '✅ Authenticated' : '❌ Not Authenticated';
+                document.getElementById('lastActivity').textContent = new Date(info.lastActivity).toLocaleTimeString();
+                document.getElementById('timeSinceActivity').textContent = Math.floor(info.timeSinceLastActivity / 1000) + ' seconds';
+                document.getElementById('warningStatus').textContent = info.isWarningDisplayed ? '⚠️ Yes' : '✅ No';
+
+                const token = window.AuthManager?.getCurrentToken();
+                if (token) {
+                    document.getElementById('tokenPreview').textContent = token.substring(0, 30) + '...';
+                } else {
+                    document.getElementById('tokenPreview').textContent = 'No token';
+                }
+
+                addLog('Session info updated', 'info');
+            }
+
+            // Initialize
+            document.addEventListener('DOMContentLoaded', function () {
+                addLog('Session testing page loaded', 'success');
+
+                // Refresh info button
+                document.getElementById('btnRefreshInfo').addEventListener('click', updateSessionInfo);
+
+                // Update config button
+                document.getElementById('btnUpdateConfig').addEventListener('click', function () {
+                    const sessionTimeout = parseInt(document.getElementById('sessionTimeout').value) * 60 * 1000;
+                    const idleTimeout = parseInt(document.getElementById('idleTimeout').value) * 60 * 1000;
+                    const warningTime = parseInt(document.getElementById('warningTime').value) * 60 * 1000;
+                    const tokenRefreshInterval = parseInt(document.getElementById('tokenRefreshInterval').value) * 60 * 1000;
+
+                    if (window.SessionManager) {
+                        window.SessionManager.updateConfig({
+                            sessionTimeout,
+                            idleTimeout,
+                            warningTime,
+                            tokenRefreshInterval
+                        });
+                        addLog('Configuration updated successfully', 'success');
+                        window.AppToast?.success('Session configuration updated');
+                    }
+                });
+
+                // Extend session button
+                document.getElementById('btnExtendSession').addEventListener('click', async function () {
+                    if (window.SessionManager) {
+                        await window.SessionManager.extendSession();
+                        addLog('Session extended', 'success');
+                        updateSessionInfo();
+                    }
+                });
+
+                // Trigger warning button (for testing)
+                document.getElementById('btnTriggerWarning').addEventListener('click', function () {
+                    addLog('Manually triggering session warning', 'warning');
+                    // This would require exposing the showSessionWarning function for testing
+                    window.AppToast?.warning('Session warning would appear here in production');
+                });
+
+                // Refresh token button
+                document.getElementById('btnRefreshToken').addEventListener('click', async function () {
+                    if (window.AuthManager) {
+                        const success = await window.AuthManager.refreshToken();
+                        if (success) {
+                            addLog('Token refreshed successfully', 'success');
+                            window.AppToast?.success('Token refreshed');
+                        } else {
+                            addLog('Token refresh failed', 'error');
+                            window.AppToast?.error('Token refresh failed');
+                        }
+                        updateSessionInfo();
+                    }
+                });
+
+                // Simulate idle button
+                document.getElementById('btnSimulateIdle').addEventListener('click', function () {
+                    addLog('Simulating idle state (no activity tracking for 30 seconds)', 'warning');
+                    window.AppToast?.warning('Idle simulation started - do not interact with page for 30 seconds');
+                });
+
+                // Clear session button
+                document.getElementById('btnClearSession').addEventListener('click', function () {
+                    if (confirm('Are you sure you want to clear the session and logout?')) {
+                        if (window.SessionManager) {
+                            window.SessionManager.logout();
+                            addLog('Session cleared, logging out', 'warning');
+                        }
+                    }
+                });
+
+                // Broadcast activity button
+                document.getElementById('btnBroadcastActivity').addEventListener('click', function () {
+                    addLog('Broadcasting activity to other tabs', 'info');
+                    // Trigger activity event
+                    document.dispatchEvent(new Event('mousedown'));
+                });
+
+                // Open new tab button
+                document.getElementById('btnOpenNewTab').addEventListener('click', function () {
+                    window.open(window.location.href, '_blank');
+                    addLog('Opened in new tab', 'info');
+                });
+
+                // Clear log button
+                document.getElementById('btnClearLog').addEventListener('click', function () {
+                    document.getElementById('sessionLog').innerHTML = '';
+                    logCounter = 0;
+                    addLog('Log cleared', 'info');
+                });
+
+                // Auto-refresh session info every 5 seconds
+                setInterval(updateSessionInfo, 5000);
+
+                // Initial update
+                updateSessionInfo();
+            });
+        })();
+    </script>
+}

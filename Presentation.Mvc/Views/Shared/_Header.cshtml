@@ -36,5 +36,22 @@
                 <small>HRIS Control Room</small>
             </span>
         </button>
+        <button class="icon-button" type="button" aria-label="Logout" id="btnLogout" title="Logout">
+            <span aria-hidden="true">🚪</span>
+        </button>
     </div>
 </header>
+
+<script>
+    // Logout button handler
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnLogout = document.getElementById('btnLogout');
+        if (btnLogout && window.AuthManager) {
+            btnLogout.addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    window.AuthManager.logout();
+                }
+            });
+        }
+    });
+</script>

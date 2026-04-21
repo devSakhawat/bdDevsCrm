@@ -1,0 +1,221 @@
+@{
+    ViewData["Title"] = "Institute Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Institute Management</h1>
+        <div class="breadcrumb">CRM / Institute</div>
+    </div>
+    <div class="page-actions">
+        <button id="btnAddInstitute" class="btn-primary">
+            <i class="k-icon k-i-plus"></i> Add Institute
+        </button>
+        <button id="btnRefresh" class="btn-secondary">
+            <i class="k-icon k-i-reload"></i> Refresh
+        </button>
+    </div>
+</div>
+
+<div class="grid-container">
+    <div id="instituteGrid"></div>
+</div>
+
+<!-- Institute Form Window -->
+<div id="instituteWindow" style="display:none;">
+    <form id="instituteForm">
+        <input type="hidden" id="instituteId" name="instituteId" value="0" />
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="instituteName" class="required">Institute Name</label>
+                <input type="text" id="instituteName" name="instituteName" required />
+            </div>
+
+            <div class="form-group">
+                <label for="instituteCode">Institute Code</label>
+                <input type="text" id="instituteCode" name="instituteCode" />
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="countryId" class="required">Country</label>
+                <select id="countryId" name="countryId" required></select>
+            </div>
+
+            <div class="form-group">
+                <label for="campus">Campus</label>
+                <input type="text" id="campus" name="campus" />
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="instituteEmail">Email</label>
+                <input type="email" id="instituteEmail" name="instituteEmail" />
+            </div>
+
+            <div class="form-group">
+                <label for="institutePhoneNo">Phone No</label>
+                <input type="text" id="institutePhoneNo" name="institutePhoneNo" />
+            </div>
+        </div>
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="instituteMobileNo">Mobile No</label>
+                <input type="text" id="instituteMobileNo" name="instituteMobileNo" />
+            </div>
+
+            <div class="form-group">
+                <label for="website">Website</label>
+                <input type="url" id="website" name="website" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="instituteAddress">Address</label>
+            <textarea id="instituteAddress" name="instituteAddress" rows="3"></textarea>
+        </div>
+
+        <div class="two-column">
+            <div class="form-group">
+                <label for="applicationFee">Application Fee</label>
+                <input type="number" id="applicationFee" name="applicationFee" step="0.01" />
+            </div>
+
+            <div class="form-group">
+                <label for="monthlyLivingCost">Monthly Living Cost</label>
+                <input type="number" id="monthlyLivingCost" name="monthlyLivingCost" step="0.01" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="status" name="status" checked />
+                Active
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" id="btnSaveInstitute" class="btn-primary">
+                <i class="k-icon k-i-check"></i> Save
+            </button>
+            <button type="button" id="btnCancelInstitute" class="btn-secondary">
+                <i class="k-icon k-i-cancel"></i> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/institute/instituteSettings.js"></script>
+    <script src="~/js/modules/crm/institute/instituteSummary.js"></script>
+    <script src="~/js/modules/crm/institute/instituteDetails.js"></script>
+}

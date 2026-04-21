@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Designation Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">@ViewData["Title"]</h1>
+        <div class="page-actions">
+            <button id="btnAddDesignation" class="btn btn-primary">
+                <span class="k-icon k-i-plus"></span> Add Designation
+            </button>
+            <button id="btnRefresh" class="btn btn-secondary">
+                <span class="k-icon k-i-reload"></span> Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div id="designationGrid"></div>
+    </div>
+</div>
+
+<!-- Designation Details Window -->
+<div id="designationWindow" style="display: none;">
+    <form id="designationForm" class="k-form">
+        <input type="hidden" id="designationId" name="designationId" value="0" />
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="designationName" class="required">Designation Name</label>
+                <input type="text" id="designationName" name="designationName" class="k-textbox" required
+                       data-required-msg="Designation name is required"
+                       maxlength="100" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="designationCode">Designation Code</label>
+                <input type="text" id="designationCode" name="designationCode" class="k-textbox"
+                       maxlength="20" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="sortOrder">Sort Order</label>
+                <input type="number" id="sortOrder" name="sortOrder" class="k-textbox"
+                       min="0" value="0" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="isActive">
+                    <input type="checkbox" id="isActive" name="isActive" class="k-checkbox" checked />
+                    <span>Active</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" id="btnSaveDesignation" class="btn btn-primary">
+                <span class="k-icon k-i-check"></span> Save
+            </button>
+            <button type="button" id="btnCancelDesignation" class="btn btn-secondary">
+                <span class="k-icon k-i-cancel"></span> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/core/designation/designationSettings.js"></script>
+    <script src="~/js/modules/core/designation/designationSummary.js"></script>
+    <script src="~/js/modules/core/designation/designationDetails.js"></script>
+}

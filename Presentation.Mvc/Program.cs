@@ -1,3 +1,5 @@
+using Presentation.Mvc.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,6 +19,9 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Add authentication check middleware (optional for client-side token-based auth)
+app.UseAuthenticationCheck();
 
 app.MapStaticAssets();
 

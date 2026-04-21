@@ -1,0 +1,255 @@
+@{
+    ViewData["Title"] = "Company Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="url"],
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+
+        .form-group .k-invalid-msg {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .btn-grid-action {
+            padding: 4px 8px;
+            margin: 0 2px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-grid-action:hover {
+            background-color: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .btn-edit {
+            color: #007bff;
+        }
+
+        .btn-delete {
+            color: #dc3545;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .badge-inactive {
+            background-color: #6c757d;
+            color: white;
+        }
+    </style>
+}
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="page-title">
+        <h1>Company Management</h1>
+        <div class="breadcrumb">
+            Core > System Admin > Company
+        </div>
+    </div>
+    <div class="page-actions">
+        <button id="btnAddCompany" class="btn-primary">
+            <span>➕</span> Add New Company
+        </button>
+        <button id="btnRefresh" class="btn-secondary">
+            <span>🔄</span> Refresh
+        </button>
+    </div>
+</div>
+
+<!-- Grid Container -->
+<div class="grid-container">
+    <div id="companyGrid"></div>
+</div>
+
+<!-- Company Form Window -->
+<div id="companyFormWindow" style="display:none;">
+    <form id="companyForm">
+        <input type="hidden" id="companyId" name="companyId" value="0" />
+
+        <div class="form-group">
+            <label for="companyName">Company Name <span style="color: red;">*</span></label>
+            <input type="text" id="companyName" name="companyName" required
+                   data-required-msg="Company name is required"
+                   placeholder="Enter company name" />
+        </div>
+
+        <div class="form-group">
+            <label for="shortName">Short Name <span style="color: red;">*</span></label>
+            <input type="text" id="shortName" name="shortName" required
+                   data-required-msg="Short name is required"
+                   placeholder="Enter short name" />
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address</label>
+            <textarea id="address" name="address" placeholder="Enter company address"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" id="phone" name="phone" placeholder="Enter phone number" />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter email address" />
+        </div>
+
+        <div class="form-group">
+            <label for="website">Website</label>
+            <input type="url" id="website" name="website" placeholder="https://example.com" />
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="isActive" name="isActive" checked />
+                <label for="isActive" style="margin: 0;">Active</label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">
+                <span>💾</span> Save
+            </button>
+            <button type="button" id="btnCancel" class="btn-secondary">
+                <span>✖️</span> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/core/company/companySettings.js"></script>
+    <script src="~/js/modules/core/company/companyDetails.js"></script>
+    <script src="~/js/modules/core/company/companySummary.js"></script>
+}

@@ -1,61 +1,100 @@
-window.AppApi = (() => {
-    const getBaseUrl = () => document.querySelector('meta[name="app-base-url"]')?.content ?? "/";
+// Enhanced API Client with Authentication Support
+window.ApiClient = (() => {
+    let accessToken = null;  // In-memory token storage for security
 
-    const buildUrl = (url) => {
-        if (!url) {
-            return getBaseUrl();
-        }
-
-        if (/^https?:\/\//i.test(url)) {
-            return url;
-        }
-
-        if (url.startsWith("/")) {
-            return url;
-        }
-
-        return `${getBaseUrl().replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
+    // Token management
+    const setToken = (token) => {
+        accessToken = token;
     };
 
-    const parseResponse = async (response) => {
-        const contentType = response.headers.get("content-type") ?? "";
-        if (contentType.includes("application/json")) {
-            return response.json();
-        }
-
-        return response.text();
+    const getToken = () => {
+        return accessToken;
     };
 
+    const clearToken = () => {
+        accessToken = null;
+    };
+
+    // Build full API URL
+    const buildApiUrl = (endpoint) => {
+        if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+            return endpoint;
+        }
+        return `${window.AppConfig.apiBaseUrl}${endpoint}`;
+    };
+
+    // Main request function with auth support
     const request = async (url, options = {}) => {
         const config = {
-            method: options.method ?? "GET",
+            method: options.method || 'GET',
             headers: {
-                Accept: "application/json",
-                ...(options.body ? { "Content-Type": "application/json" } : {}),
-                ...(options.headers ?? {})
+                ...window.AppConfig.headers,
+                ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {}),
+                ...options.headers
             }
         };
 
-        if (options.body !== undefined) {
-            config.body = typeof options.body === "string" ? options.body : JSON.stringify(options.body);
+        if (options.body) {
+            config.body = JSON.stringify(options.body);
         }
 
-        const response = await fetch(buildUrl(url), config);
-        const payload = await parseResponse(response);
+        try {
+            const response = await fetch(buildApiUrl(url), config);
 
-        if (!response.ok) {
-            const message = payload?.message ?? payload?.title ?? `HTTP ${response.status}`;
-            throw new Error(message);
+            // Handle 401 Unauthorized - token expired
+            if (response.status === 401) {
+                clearToken();
+                window.AppToast?.error(window.AppConstants?.messages.errors.unauthorized || 'Session expired');
+                setTimeout(() => {
+                    window.location.href = '/Account/Login';
+                }, 1500);
+                return;
+            }
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                const errorMessage = data.message || data.title || `HTTP ${response.status}`;
+                throw new Error(errorMessage);
+            }
+
+            return data;  // Returns ApiResponse<T> structure
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error;
         }
+    };
 
-        return payload;
+    // Convenience methods
+    const get = async (url) => {
+        return request(url, { method: 'GET' });
+    };
+
+    const post = async (url, body) => {
+        return request(url, { method: 'POST', body });
+    };
+
+    const put = async (url, body) => {
+        return request(url, { method: 'PUT', body });
+    };
+
+    const del = async (url) => {
+        return request(url, { method: 'DELETE' });
     };
 
     return {
+        setToken,
+        getToken,
+        clearToken,
         request,
-        get: (url, options = {}) => request(url, { ...options, method: "GET" }),
-        post: (url, body, options = {}) => request(url, { ...options, method: "POST", body }),
-        put: (url, body, options = {}) => request(url, { ...options, method: "PUT", body }),
-        delete: (url, body, options = {}) => request(url, { ...options, method: "DELETE", body })
+        get,
+        post,
+        put,
+        delete: del
     };
 })();
+
+// Keep backward compatibility with existing AppApi
+if (!window.AppApi) {
+    window.AppApi = window.ApiClient;
+}

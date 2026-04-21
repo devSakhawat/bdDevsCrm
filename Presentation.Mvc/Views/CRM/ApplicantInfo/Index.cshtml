@@ -1,0 +1,373 @@
+@{
+    ViewData["Title"] = "Applicant Information Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group label .required {
+            color: #dc3545;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="date"],
+        .form-group input[type="number"],
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+
+        .form-group .k-invalid-msg {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .badge-inactive {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-grid-action {
+            padding: 4px 8px;
+            margin: 0 2px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-grid-action.btn-edit {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .btn-grid-action.btn-edit:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-grid-action.btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-grid-action.btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .image-upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .image-preview {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #f8f9fa;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .image-preview-placeholder {
+            color: #999;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        #applicantTabStrip {
+            margin-top: 15px;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Applicant Information</h1>
+        <div class="breadcrumb">CRM / Applicant Management</div>
+    </div>
+    <div class="page-actions">
+        <button type="button" class="btn-primary" id="btnAddApplicant">
+            ➕ Add Applicant
+        </button>
+        <button type="button" class="btn-secondary" id="btnRefresh">
+            🔄 Refresh
+        </button>
+    </div>
+</div>
+
+<div class="grid-container">
+    <div id="applicantGrid"></div>
+</div>
+
+<!-- Form Window -->
+<div id="applicantFormWindow" style="display:none;">
+    <form id="applicantForm">
+        <input type="hidden" id="applicantId" name="applicantId" value="0" />
+
+        <!-- Tabbed Interface -->
+        <div id="applicantTabStrip">
+            <ul>
+                <li class="k-state-active">Personal Details</li>
+                <li>Contact Information</li>
+                <li>Passport Information</li>
+            </ul>
+
+            <!-- Tab 1: Personal Details -->
+            <div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name <span class="required">*</span></label>
+                        <input type="text" id="firstName" name="firstName" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name <span class="required">*</span></label>
+                        <input type="text" id="lastName" name="lastName" required />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="genderId">Gender <span class="required">*</span></label>
+                        <select id="genderId" name="genderId" style="width: 100%;" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="maritalStatusId">Marital Status <span class="required">*</span></label>
+                        <select id="maritalStatusId" name="maritalStatusId" style="width: 100%;" required></select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date of Birth <span class="required">*</span></label>
+                        <input type="date" id="dateOfBirth" name="dateOfBirth" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="nationality">Nationality</label>
+                        <input type="text" id="nationality" name="nationality" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Applicant Photo</label>
+                    <div class="image-upload-container">
+                        <div class="image-preview" id="imagePreview">
+                            <div class="image-preview-placeholder">
+                                No photo uploaded
+                            </div>
+                        </div>
+                        <input type="file" id="applicantImageFile" name="applicantImageFile" accept="image/*" style="display:none;" />
+                        <button type="button" class="btn-secondary" id="btnUploadPhoto">Upload Photo</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Contact Information -->
+            <div>
+                <div class="form-group">
+                    <label for="emailAddress">Email Address <span class="required">*</span></label>
+                    <input type="email" id="emailAddress" name="emailAddress" required />
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label for="phoneCountryCode">Country Code</label>
+                        <input type="text" id="phoneCountryCode" name="phoneCountryCode" placeholder="+880" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneAreaCode">Area Code</label>
+                        <input type="text" id="phoneAreaCode" name="phoneAreaCode" placeholder="2" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="text" id="phoneNumber" name="phoneNumber" placeholder="12345678" />
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input type="text" id="mobile" name="mobile" />
+                    </div>
+                    <div class="form-group">
+                        <label for="skypeId">Skype ID</label>
+                        <input type="text" id="skypeId" name="skypeId" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Passport Information -->
+            <div>
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="hasValidPassport" name="hasValidPassport" />
+                        <label for="hasValidPassport" style="margin: 0;">Has Valid Passport</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="passportNumber">Passport Number</label>
+                    <input type="text" id="passportNumber" name="passportNumber" />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="passportIssueDate">Issue Date</label>
+                        <input type="date" id="passportIssueDate" name="passportIssueDate" />
+                    </div>
+                    <div class="form-group">
+                        <label for="passportExpiryDate">Expiry Date</label>
+                        <input type="date" id="passportExpiryDate" name="passportExpiryDate" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" id="btnCancelApplicant">Cancel</button>
+            <button type="button" class="btn-primary" id="btnSaveApplicant">Save</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/applicantinfo/applicantInfoSettings.js"></script>
+    <script src="~/js/modules/crm/applicantinfo/applicantInfoSummary.js"></script>
+    <script src="~/js/modules/crm/applicantinfo/applicantInfoDetails.js"></script>
+}

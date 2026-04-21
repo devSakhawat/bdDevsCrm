@@ -1,0 +1,101 @@
+@{
+    ViewData["Title"] = "Branch Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">@ViewData["Title"]</h1>
+        <div class="page-actions">
+            <button id="btnAddBranch" class="btn btn-primary">
+                <span class="k-icon k-i-plus"></span> Add Branch
+            </button>
+            <button id="btnRefresh" class="btn btn-secondary">
+                <span class="k-icon k-i-reload"></span> Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div id="branchGrid"></div>
+    </div>
+</div>
+
+<!-- Branch Details Window -->
+<div id="branchWindow" style="display: none;">
+    <form id="branchForm" class="k-form">
+        <input type="hidden" id="branchId" name="branchId" value="0" />
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="companyId" class="required">Company</label>
+                <select id="companyId" name="companyId" required
+                        data-required-msg="Company is required"></select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="branchName" class="required">Branch Name</label>
+                <input type="text" id="branchName" name="branchName" class="k-textbox" required
+                       data-required-msg="Branch name is required"
+                       maxlength="100" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="branchCode">Branch Code</label>
+                <input type="text" id="branchCode" name="branchCode" class="k-textbox"
+                       maxlength="20" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group full-width">
+                <label for="branchDescription">Description</label>
+                <textarea id="branchDescription" name="branchDescription" class="k-textarea"
+                          rows="3" maxlength="500"></textarea>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group full-width">
+                <label for="branchAddress">Address</label>
+                <textarea id="branchAddress" name="branchAddress" class="k-textarea"
+                          rows="2" maxlength="300"></textarea>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="isCostCentre">
+                    <input type="checkbox" id="isCostCentre" name="isCostCentre" class="k-checkbox" />
+                    <span>Cost Centre</span>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="isActive">
+                    <input type="checkbox" id="isActive" name="isActive" class="k-checkbox" checked />
+                    <span>Active</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" id="btnSaveBranch" class="btn btn-primary">
+                <span class="k-icon k-i-check"></span> Save
+            </button>
+            <button type="button" id="btnCancelBranch" class="btn btn-secondary">
+                <span class="k-icon k-i-cancel"></span> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/core/branch/branchSettings.js"></script>
+    <script src="~/js/modules/core/branch/branchSummary.js"></script>
+    <script src="~/js/modules/core/branch/branchDetails.js"></script>
+}

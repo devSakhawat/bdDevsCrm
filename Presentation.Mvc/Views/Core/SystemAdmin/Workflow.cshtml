@@ -1,0 +1,313 @@
+@{
+    ViewData["Title"] = "Workflow Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group label .required {
+            color: #dc3545;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"],
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+
+        .form-group .k-invalid-msg {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .badge-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .badge-inactive {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-grid-action {
+            padding: 4px 8px;
+            margin: 0 2px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-grid-action.btn-edit {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .btn-grid-action.btn-edit:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-grid-action.btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-grid-action.btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        #workflowTabStrip {
+            margin-top: 0;
+        }
+
+        .k-tabstrip > .k-content {
+            min-height: 400px;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Workflow Management</h1>
+        <div class="breadcrumb">System Admin / Workflow Configuration</div>
+    </div>
+    <div class="page-actions">
+        <button type="button" class="btn-secondary" id="btnRefresh">
+            🔄 Refresh
+        </button>
+    </div>
+</div>
+
+<div class="grid-container">
+    <!-- TabStrip for States and Actions -->
+    <div id="workflowTabStrip">
+        <ul>
+            <li class="k-state-active">Workflow States</li>
+            <li>Workflow Actions</li>
+        </ul>
+
+        <!-- Tab 1: Workflow States -->
+        <div>
+            <div style="margin-bottom: 15px;">
+                <button type="button" class="btn-primary" id="btnAddState">
+                    ➕ Add State
+                </button>
+            </div>
+            <div id="stateGrid"></div>
+        </div>
+
+        <!-- Tab 2: Workflow Actions -->
+        <div>
+            <div style="margin-bottom: 15px;">
+                <button type="button" class="btn-primary" id="btnAddAction">
+                    ➕ Add Action
+                </button>
+            </div>
+            <div id="actionGrid"></div>
+        </div>
+    </div>
+</div>
+
+<!-- State Form Window -->
+<div id="stateFormWindow" style="display:none;">
+    <form id="stateForm">
+        <input type="hidden" id="stateId" name="wfStateId" value="0" />
+
+        <div class="form-group">
+            <label for="stateName">State Name <span class="required">*</span></label>
+            <input type="text" id="stateName" name="stateName" required />
+        </div>
+
+        <div class="form-group">
+            <label for="menuId">Menu <span class="required">*</span></label>
+            <select id="menuId" name="menuId" style="width: 100%;" required></select>
+        </div>
+
+        <div class="form-group">
+            <label for="stateSequence">Sequence <span class="required">*</span></label>
+            <input type="number" id="stateSequence" name="sequence" min="0" required />
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="isDefaultStart" name="isDefaultStart" />
+                <label for="isDefaultStart" style="margin: 0;">Is Default Start State</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="isClosed" name="isClosed" />
+                <label for="isClosed" style="margin: 0;">Is Closed State</label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" id="btnCancelState">Cancel</button>
+            <button type="button" class="btn-primary" id="btnSaveState">Save</button>
+        </div>
+    </form>
+</div>
+
+<!-- Action Form Window -->
+<div id="actionFormWindow" style="display:none;">
+    <form id="actionForm">
+        <input type="hidden" id="actionId" name="wfActionId" value="0" />
+
+        <div class="form-group">
+            <label for="wfStateId">From State <span class="required">*</span></label>
+            <select id="wfStateId" name="wfStateId" style="width: 100%;" required></select>
+        </div>
+
+        <div class="form-group">
+            <label for="actionName">Action Name <span class="required">*</span></label>
+            <input type="text" id="actionName" name="actionName" required />
+        </div>
+
+        <div class="form-group">
+            <label for="nextStateId">Next State <span class="required">*</span></label>
+            <select id="nextStateId" name="nextStateId" style="width: 100%;" required></select>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="emailAlert" name="emailAlert" />
+                <label for="emailAlert" style="margin: 0;">Send Email Alert</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" id="smsAlert" name="smsAlert" />
+                <label for="smsAlert" style="margin: 0;">Send SMS Alert</label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" id="btnCancelAction">Cancel</button>
+            <button type="button" class="btn-primary" id="btnSaveAction">Save</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/core/workflow/workflowSettings.js"></script>
+    <script src="~/js/modules/core/workflow/workflowSummary.js"></script>
+    <script src="~/js/modules/core/workflow/workflowDetails.js"></script>
+}

@@ -3,7 +3,7 @@
     var isDashboard = string.Equals(currentPath, "/", StringComparison.OrdinalIgnoreCase)
         || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
     var hrOperationPaths = new[] { "/Employee", "/Department", "/Branch", "/Designation", "/Shift" };
-    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Country", "/Thana", "/Workflow", "/AccessControl" };
+    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus" };
     bool IsCurrent(params string[] prefixes) => prefixes.Any(prefix => currentPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
     var isHrOperations = IsCurrent(hrOperationPaths);
     var isSystemSetup = IsCurrent(systemSetupPaths);
@@ -64,6 +64,10 @@
             <a class="nav-sublink @(IsCurrent("/Company") ? "is-active" : string.Empty)" asp-controller="Company" asp-action="Index">Company Management</a>
             <a class="nav-sublink @(IsCurrent("/Country") ? "is-active" : string.Empty)" asp-controller="Country" asp-action="Index">Country Management</a>
             <a class="nav-sublink @(IsCurrent("/Thana") ? "is-active" : string.Empty)" asp-controller="Thana" asp-action="Index">Thana Management</a>
+            <a class="nav-sublink @(IsCurrent("/AccessRestriction") ? "is-active" : string.Empty)" asp-controller="AccessRestriction" asp-action="Index">Access Restriction</a>
+            <a class="nav-sublink @(IsCurrent("/AuditType") ? "is-active" : string.Empty)" asp-controller="AuditType" asp-action="Index">Audit Type</a>
+            <a class="nav-sublink @(IsCurrent("/Holiday") ? "is-active" : string.Empty)" asp-controller="Holiday" asp-action="Index">Holiday Management</a>
+            <a class="nav-sublink @(IsCurrent("/MaritalStatus") ? "is-active" : string.Empty)" asp-controller="MaritalStatus" asp-action="Index">Marital Status</a>
             <a class="nav-sublink @(IsCurrent("/Workflow") ? "is-active" : string.Empty)" asp-controller="Workflow" asp-action="Index">Workflow Management</a>
             <a class="nav-sublink @(IsCurrent("/AccessControl") ? "is-active" : string.Empty)" asp-controller="AccessControl" asp-action="Index">Access Control</a>
         </div>

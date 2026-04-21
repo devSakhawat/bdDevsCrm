@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Applicant Course Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Applicant Course Management</h1>
+        <p class="page-header__subtitle">Phase 2 relationship module for managing applicant course selections and payment details.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Applicant Course</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddApplicantCourse" class="btn btn--primary">Add Applicant Course</button>
+        <button type="button" id="btnRefreshApplicantCourse" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="applicantCourseGrid"></div>
+</section>
+
+<div id="applicantCourseWindow" style="display:none;">
+    <form id="applicantCourseForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelApplicantCourse" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveApplicantCourse" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/applicantcourse/applicantCourseSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/applicantcourse/applicantCourseSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/applicantcourse/applicantCourseDetails.js" asp-append-version="true"></script>
+}

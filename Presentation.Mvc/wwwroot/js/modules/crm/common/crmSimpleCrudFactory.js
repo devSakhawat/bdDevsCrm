@@ -125,7 +125,7 @@
         let isEditMode = false;
         let currentRecord = null;
 
-        function initializeForm() {
+        async function initializeForm() {
             if (!ensureKendo()) {
                 return;
             }
@@ -145,17 +145,17 @@
                 formWindow.close();
             });
 
-            renderForm();
+            await renderForm();
         }
 
-        function openAddForm() {
+        async function openAddForm() {
             if (!formWindow) {
                 return;
             }
 
             isEditMode = false;
             currentRecord = null;
-            renderForm();
+            await renderForm();
             formWindow.title(`Add ${moduleRef.config.moduleTitle}`);
             formWindow.center().open();
         }
@@ -179,7 +179,7 @@
 
                 isEditMode = true;
                 currentRecord = record;
-                renderForm(record);
+                await renderForm(record);
                 formWindow.title(`Edit ${moduleRef.config.moduleTitle}`);
                 formWindow.center().open();
             } catch (error) {
@@ -202,7 +202,7 @@
             const payload = config.form.buildPayload(values, {
                 isEditMode: isEditMode,
                 currentRecord: currentRecord
-            });
+            }, buildPayloadHelpers(config.form.fields));
 
             window.AppLoader?.show(isEditMode ? 'Updating record...' : 'Creating record...');
 
@@ -232,14 +232,14 @@
             renderForm();
         }
 
-        function renderForm(data) {
+        async function renderForm(data) {
             const config = moduleRef.config;
             const html = config.form.fields.map(function (field) {
                 return renderField(field, data || {});
             }).join('');
 
             $(config.dom.form).html(html);
-            initializeInputs(config.form.fields);
+            await initializeInputs(config.form.fields, data || {});
             validator = $(config.dom.form).kendoValidator().data('kendoValidator');
         }
 
@@ -299,8 +299,7 @@
 
             if (column.kind === 'multiline') {
                 definition.template = function (dataItem) {
-                    const value = dataItem[column.field];
-                    return value || '-';
+                    return dataItem[column.field] || '-';
                 };
             }
 
@@ -382,32 +381,40 @@
         const maxLength = field.maxLength ? ` maxlength="${field.maxLength}"` : '';
         const min = field.min !== undefined ? ` min="${field.min}"` : '';
         const step = field.step !== undefined ? ` step="${field.step}"` : '';
+        const readonly = field.readonly ? ' readonly' : '';
+
+        if (field.type === 'select') {
+            return `<div class="${groupClass}">` +
+                `<label for="${field.name}">${field.label}${required}</label>` +
+                `<input id="${field.name}" name="${field.name}" />` +
+                `</div>`;
+        }
 
         if (field.type === 'textarea') {
             return `<div class="${groupClass}">` +
                 `<label for="${field.name}">${field.label}${required}</label>` +
-                `<textarea id="${field.name}" name="${field.name}" class="app-input app-input--textarea"${placeholder}${maxLength}>${escapeHtml(value)}</textarea>` +
+                `<textarea id="${field.name}" name="${field.name}" class="app-input app-input--textarea"${placeholder}${maxLength}${readonly}>${escapeHtml(value)}</textarea>` +
                 `</div>`;
         }
 
         return `<div class="${groupClass}">` +
             `<label for="${field.name}">${field.label}${required}</label>` +
-            `<input type="${field.type}" id="${field.name}" name="${field.name}" class="app-input" value="${escapeHtml(value)}"${placeholder}${maxLength}${min}${step} />` +
+            `<input type="${field.type}" id="${field.name}" name="${field.name}" class="app-input" value="${escapeHtml(value)}"${placeholder}${maxLength}${min}${step}${readonly} />` +
             `</div>`;
     }
 
-    function initializeInputs(fields) {
-        fields.forEach(function (field) {
+    async function initializeInputs(fields, data) {
+        for (const field of fields) {
             const selector = `#${field.name}`;
             if (!document.querySelector(selector)) {
-                return;
+                continue;
             }
 
             if (field.type === 'text' || field.type === 'email' || field.type === 'url' || field.type === 'hidden') {
                 if ($.fn.kendoTextBox && field.type !== 'hidden') {
                     $(selector).kendoTextBox();
                 }
-                return;
+                continue;
             }
 
             if (field.type === 'number' && $.fn.kendoNumericTextBox) {
@@ -417,50 +424,221 @@
                     min: field.min,
                     step: field.step || 1
                 });
-                return;
+                setFieldValue(field.name, data[field.name] ?? field.defaultValue ?? null);
+                continue;
             }
 
             if (field.type === 'date' && $.fn.kendoDatePicker) {
                 $(selector).kendoDatePicker({
                     format: 'yyyy-MM-dd'
                 });
-                return;
+                setFieldValue(field.name, data[field.name] ?? null);
+                continue;
             }
 
             if (field.type === 'checkbox' && $.fn.kendoCheckBox) {
                 $(selector).kendoCheckBox();
+                continue;
             }
+
+            if (field.type === 'select' && $.fn.kendoDropDownList) {
+                const widget = $(selector).kendoDropDownList({
+                    dataTextField: field.dataTextField,
+                    dataValueField: field.dataValueField,
+                    optionLabel: field.optionLabel || `Select ${field.label}...`,
+                    autoBind: false,
+                    enable: !field.dependsOn,
+                    change: async function () {
+                        const dataItem = widget.dataItem();
+                        if (typeof field.onChange === 'function') {
+                            field.onChange({
+                                moduleRef: field.moduleRef,
+                                field: field,
+                                widget: widget,
+                                dataItem: dataItem,
+                                setFieldValue: setFieldValue,
+                                getFieldValue: getFieldValue,
+                                refreshDependentFields: refreshDependentFields
+                            });
+                        }
+
+                        await refreshDependentFields(fields, field.name);
+                    }
+                }).data('kendoDropDownList');
+
+                field.moduleRef = field.moduleRef || null;
+
+                await bindSelectData(field, data, true);
+                continue;
+            }
+        }
+    }
+
+    async function bindSelectData(field, context, preserveCurrentValue) {
+        const selector = `#${field.name}`;
+        const widget = $(selector).data('kendoDropDownList');
+        if (!widget) {
+            return;
+        }
+
+        const parentValue = field.dependsOn ? getFieldValue(field.dependsOn) : null;
+        if (field.dependsOn && !parentValue) {
+            widget.setDataSource(new kendo.data.DataSource({ data: [] }));
+            widget.value('');
+            widget.enable(false);
+            return;
+        }
+
+        const items = await loadSelectItems(field, context);
+        widget.setDataSource(new kendo.data.DataSource({ data: items }));
+        widget.enable(true);
+
+        const desiredValue = preserveCurrentValue ? (context?.[field.name] ?? getFieldValue(field.name) ?? field.defaultValue ?? '') : '';
+        if (desiredValue !== null && desiredValue !== undefined && desiredValue !== '') {
+            widget.value(String(desiredValue));
+        } else if (field.autoSelectSingle && items.length === 1) {
+            widget.value(String(items[0][field.dataValueField]));
+        } else {
+            widget.value('');
+        }
+    }
+
+    async function loadSelectItems(field, context) {
+        const endpointSource = field.dataSourceEndpoint || field.dataSource;
+        if (!endpointSource) {
+            return field.items || [];
+        }
+
+        const values = Object.assign({}, collectCurrentValues(), context || {});
+        const endpoint = typeof endpointSource === 'function'
+            ? endpointSource(values)
+            : endpointSource;
+
+        if (!endpoint) {
+            return [];
+        }
+
+        try {
+            const response = await window.ApiClient.get(endpoint);
+            if (response?.success && Array.isArray(response.data)) {
+                return response.data;
+            }
+        } catch (error) {
+            window.AppToast?.error(error?.message || `Failed to load ${field.label}`);
+        }
+
+        return [];
+    }
+
+    async function refreshDependentFields(fields, changedFieldName) {
+        const directChildren = fields.filter(function (field) {
+            return field.dependsOn === changedFieldName;
         });
+
+        for (const child of directChildren) {
+            await bindSelectData(child, collectCurrentValues(), false);
+            await refreshDependentFields(fields, child.name);
+        }
     }
 
     function collectFormValues(fields) {
         const values = {};
 
         fields.forEach(function (field) {
-            const selector = `#${field.name}`;
-            if (field.type === 'checkbox') {
-                values[field.name] = $(selector).is(':checked');
-                return;
-            }
-
-            if (field.type === 'number') {
-                const widget = $(selector).data('kendoNumericTextBox');
-                const value = widget ? widget.value() : $(selector).val();
-                values[field.name] = value === '' || value === null || value === undefined ? null : Number(value);
-                return;
-            }
-
-            if (field.type === 'date') {
-                const widget = $(selector).data('kendoDatePicker');
-                const value = widget ? widget.value() : $(selector).val();
-                values[field.name] = value instanceof Date ? value.toISOString() : value;
-                return;
-            }
-
-            values[field.name] = $(selector).val();
+            values[field.name] = getFieldValue(field.name);
         });
 
         return values;
+    }
+
+    function collectCurrentValues() {
+        const values = {};
+        document.querySelectorAll('[id]').forEach(function (element) {
+            if (element.id) {
+                values[element.id] = getFieldValue(element.id);
+            }
+        });
+        return values;
+    }
+
+    function getFieldValue(fieldName) {
+        const selector = `#${fieldName}`;
+        const element = document.querySelector(selector);
+        if (!element) {
+            return null;
+        }
+
+        const dropDown = $(selector).data('kendoDropDownList');
+        if (dropDown) {
+            const value = dropDown.value();
+            return value === '' ? null : value;
+        }
+
+        const numeric = $(selector).data('kendoNumericTextBox');
+        if (numeric) {
+            return numeric.value();
+        }
+
+        const datePicker = $(selector).data('kendoDatePicker');
+        if (datePicker) {
+            const value = datePicker.value();
+            return value instanceof Date ? value.toISOString() : value;
+        }
+
+        if (element.type === 'checkbox') {
+            return $(selector).is(':checked');
+        }
+
+        return $(selector).val();
+    }
+
+    function setFieldValue(fieldName, value) {
+        const selector = `#${fieldName}`;
+        if (!document.querySelector(selector)) {
+            return;
+        }
+
+        const dropDown = $(selector).data('kendoDropDownList');
+        if (dropDown) {
+            dropDown.value(value === null || value === undefined ? '' : String(value));
+            return;
+        }
+
+        const numeric = $(selector).data('kendoNumericTextBox');
+        if (numeric) {
+            numeric.value(value);
+            return;
+        }
+
+        const datePicker = $(selector).data('kendoDatePicker');
+        if (datePicker) {
+            datePicker.value(value ? new Date(value) : null);
+            return;
+        }
+
+        const element = document.querySelector(selector);
+        if (element.type === 'checkbox') {
+            $(selector).prop('checked', !!value);
+            return;
+        }
+
+        $(selector).val(value ?? '');
+    }
+
+    function buildPayloadHelpers(fields) {
+        return {
+            getFieldValue: getFieldValue,
+            setFieldValue: setFieldValue,
+            getDataItem: function (fieldName) {
+                return $(`#${fieldName}`).data('kendoDropDownList')?.dataItem() || null;
+            },
+            getText: function (fieldName) {
+                return $(`#${fieldName}`).data('kendoDropDownList')?.text() || '';
+            },
+            refreshDependents: function (fieldName) {
+                return refreshDependentFields(fields, fieldName);
+            }
+        };
     }
 
     function validateValues(fields, values) {

@@ -1,4 +1,5 @@
-﻿using Domain.Contracts.Services.Authentication;
+using Domain.Contracts.Services.Authentication;
+using Domain.Contracts.Services.Core.Infrastructure;
 using Domain.Contracts.Services.Core.HR;
 using Domain.Contracts.Services.Core.SystemAdmin;
 using Domain.Contracts.Services.CRM;
@@ -54,6 +55,7 @@ public interface IServiceManager
   IAppsTokenInfoService AppsTokenInfos { get; }
   IAppsTransactionLogService AppsTransactionLogs { get; }
   IPasswordHistoryService PasswordHistories { get; }
+  IHeaderService Header { get; }
 
   #region HR
   IEmployeeService Employees { get; }
@@ -108,4 +110,3 @@ public interface IServiceManager
 
   T Cache<T>(int key);
 }
-

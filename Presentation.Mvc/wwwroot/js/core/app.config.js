@@ -25,6 +25,7 @@
             refreshToken: `${apiRouteBaseUrl}/refresh-token`,
             logout: `${apiRouteBaseUrl}/logout`,
             userInfo: `${apiRouteBaseUrl}/user-info`,
+            headerSummary: `${apiRouteBaseUrl}/header-summary`,
             menusByUserPermission: `${apiRouteBaseUrl}/menus-user-permission`,
 
             // Existing feature endpoints still use the legacy relative pattern.

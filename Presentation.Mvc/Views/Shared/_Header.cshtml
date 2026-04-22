@@ -1,4 +1,4 @@
-<header class="app-header">
+<header class="app-header" data-app-header>
     <div class="app-header__left">
         <button id="sidebarToggle" class="icon-button icon-button--ghost" type="button" aria-label="Toggle sidebar">
             <span></span>
@@ -15,43 +15,106 @@
     </div>
 
     <div class="app-header__center">
-        <label class="app-search" for="globalSearch">
-            <span class="app-search__icon" aria-hidden="true">⌕</span>
-            <input id="globalSearch" class="app-search__input" type="search" placeholder="Search employee, module or action..." />
-        </label>
+        <nav class="header-quick-links" aria-label="Quick links">
+            <span class="header-quick-links__label">Quick links</span>
+            <div class="header-quick-links__list" data-header-quick-links></div>
+            <span class="header-quick-links__empty" data-header-quick-links-empty>Loading shortcuts...</span>
+        </nav>
+        <div class="header-clock" aria-live="polite">
+            <strong data-header-time>--:--:--</strong>
+            <small data-header-date>Loading date...</small>
+        </div>
     </div>
 
     <div class="app-header__right">
-        <button class="icon-button" type="button" aria-label="Notifications" data-demo-action="notifications">
-            <span aria-hidden="true">🔔</span>
-            <span class="icon-button__badge">5</span>
-        </button>
-        <button class="icon-button" type="button" aria-label="Quick settings" data-demo-action="settings">
-            <span aria-hidden="true">⚙</span>
-        </button>
-        <button class="app-user" type="button" data-demo-action="profile">
-            <span class="app-user__avatar">SA</span>
-            <span class="app-user__meta">
-                <strong>System Admin</strong>
-                <small>HRIS Control Room</small>
-            </span>
-        </button>
+        <div class="header-action">
+            <button class="icon-button" type="button" aria-label="Notifications" aria-expanded="false" data-header-toggle="notifications">
+                <span aria-hidden="true">🔔</span>
+                <span class="icon-button__badge is-hidden" data-header-badge data-key="notifications">0</span>
+            </button>
+            <div class="header-panel" data-header-panel data-key="notifications">
+                <div class="header-panel__header">
+                    <div>
+                        <strong data-header-panel-title>Notifications</strong>
+                        <small><span data-header-panel-count>0</span> item(s)</small>
+                    </div>
+                </div>
+                <div class="header-panel__list" data-header-panel-list></div>
+                <p class="header-panel__empty is-hidden" data-header-panel-empty>No notifications right now.</p>
+            </div>
+        </div>
+        <div class="header-action">
+            <button class="icon-button" type="button" aria-label="Pending approvals" aria-expanded="false" data-header-toggle="approvals">
+                <span aria-hidden="true">📝</span>
+                <span class="icon-button__badge is-hidden" data-header-badge data-key="approvals">0</span>
+            </button>
+            <div class="header-panel" data-header-panel data-key="approvals">
+                <div class="header-panel__header">
+                    <div>
+                        <strong data-header-panel-title>Pending approvals</strong>
+                        <small><span data-header-panel-count>0</span> item(s)</small>
+                    </div>
+                </div>
+                <div class="header-panel__list" data-header-panel-list></div>
+                <p class="header-panel__empty is-hidden" data-header-panel-empty>No pending approvals right now.</p>
+            </div>
+        </div>
+        <div class="header-action">
+            <button class="icon-button" type="button" aria-label="Unread messages" aria-expanded="false" data-header-toggle="messages">
+                <span aria-hidden="true">✉️</span>
+                <span class="icon-button__badge is-hidden" data-header-badge data-key="messages">0</span>
+            </button>
+            <div class="header-panel" data-header-panel data-key="messages">
+                <div class="header-panel__header">
+                    <div>
+                        <strong data-header-panel-title>Unread messages</strong>
+                        <small><span data-header-panel-count>0</span> item(s)</small>
+                    </div>
+                </div>
+                <div class="header-panel__list" data-header-panel-list></div>
+                <p class="header-panel__empty is-hidden" data-header-panel-empty>Unread messaging is not configured yet.</p>
+            </div>
+        </div>
+        <div class="header-action">
+            <button class="icon-button" type="button" aria-label="Today's birthdays" aria-expanded="false" data-header-toggle="birthdays">
+                <span aria-hidden="true">🎂</span>
+                <span class="icon-button__badge is-hidden" data-header-badge data-key="birthdays">0</span>
+            </button>
+            <div class="header-panel" data-header-panel data-key="birthdays">
+                <div class="header-panel__header">
+                    <div>
+                        <strong data-header-panel-title>Today's birthdays</strong>
+                        <small><span data-header-panel-count>0</span> item(s)</small>
+                    </div>
+                </div>
+                <div class="header-panel__list" data-header-panel-list></div>
+                <p class="header-panel__empty is-hidden" data-header-panel-empty>No employee birthdays today.</p>
+            </div>
+        </div>
+        <div class="header-action">
+            <button class="app-user" type="button" aria-label="Profile details" aria-expanded="false" data-header-toggle="profile">
+                <span class="app-user__avatar">
+                    <img class="app-user__avatar-image is-hidden" data-header-avatar-image alt="" />
+                    <span data-header-avatar-initials>U</span>
+                </span>
+                <span class="app-user__meta">
+                    <strong data-header-display-name>User</strong>
+                    <small data-header-display-meta>Workspace access</small>
+                </span>
+            </button>
+            <div class="header-panel header-panel--profile" data-header-panel data-key="profile">
+                <div class="header-profile">
+                    <p class="header-profile__label">Company</p>
+                    <strong data-header-company>Company not available</strong>
+                    <p class="header-profile__label">Role</p>
+                    <strong data-header-designation>Designation not available</strong>
+                    <p class="header-profile__label">Department / Branch</p>
+                    <strong data-header-org-info>Department / branch not available</strong>
+                </div>
+            </div>
+        </div>
         <button class="icon-button" type="button" aria-label="Logout" id="btnLogout" title="Logout">
             <span aria-hidden="true">🚪</span>
         </button>
     </div>
 </header>
-
-<script>
-    // Logout button handler
-    document.addEventListener('DOMContentLoaded', function() {
-        const btnLogout = document.getElementById('btnLogout');
-        if (btnLogout && window.AuthManager) {
-            btnLogout.addEventListener('click', function() {
-                if (confirm('Are you sure you want to logout?')) {
-                    window.AuthManager.logout();
-                }
-            });
-        }
-    });
-</script>

@@ -1,5 +1,6 @@
 using Domain.Exceptions;
-﻿using Application.Services.Authentication;
+using Application.Services.Authentication;
+using Application.Services.Core.Infrastructure;
 using Application.Services.Core.HR;
 using Application.Services.Core.SystemAdmin;
 using Application.Services.CRM;
@@ -10,6 +11,7 @@ using Domain.Contracts.Infrastructure.Security;
 using Domain.Contracts.Repositories;
 using Domain.Contracts.Services;
 using Domain.Contracts.Services.Authentication;
+using Domain.Contracts.Services.Core.Infrastructure;
 using Domain.Contracts.Services.Core.HR;
 using Domain.Contracts.Services.Core.SystemAdmin;
 using Domain.Contracts.Services.CRM;
@@ -76,6 +78,7 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<IAppsTokenInfoService> _appsTokenInfoService;
   private readonly Lazy<IAppsTransactionLogService> _appsTransactionLogService;
   private readonly Lazy<IPasswordHistoryService> _passwordHistoryService;
+  private readonly Lazy<IHeaderService> _headerService;
 
 
   #region HR Area
@@ -183,6 +186,7 @@ public sealed class ServiceManager : IServiceManager
     _appsTokenInfoService = new Lazy<IAppsTokenInfoService>(() => new AppsTokenInfoService(repository, _hybridCache, loggerFactory.CreateLogger<AppsTokenInfoService>(), configuration));
     _appsTransactionLogService = new Lazy<IAppsTransactionLogService>(() => new AppsTransactionLogService(repository, _hybridCache, loggerFactory.CreateLogger<AppsTransactionLogService>(), configuration));
     _passwordHistoryService = new Lazy<IPasswordHistoryService>(() => new PasswordHistoryService(repository, _hybridCache, loggerFactory.CreateLogger<PasswordHistoryService>(), configuration));
+    _headerService = new Lazy<IHeaderService>(() => new HeaderService(repository, loggerFactory.CreateLogger<HeaderService>(), configuration));
 
     // HR Area
     _employeeService = new Lazy<IEmployeeService>(() => new EmployeeService(repository, loggerFactory.CreateLogger<EmployeeService>(), configuration));
@@ -282,6 +286,7 @@ public sealed class ServiceManager : IServiceManager
   public IAppsTokenInfoService AppsTokenInfos => _appsTokenInfoService.Value;
   public IAppsTransactionLogService AppsTransactionLogs => _appsTransactionLogService.Value;
   public IPasswordHistoryService PasswordHistories => _passwordHistoryService.Value;
+  public IHeaderService Header => _headerService.Value;
 
   #region HR Area
   public IEmployeeService Employees => _employeeService.Value;
@@ -352,5 +357,3 @@ public sealed class ServiceManager : IServiceManager
 
 
 }
-
-

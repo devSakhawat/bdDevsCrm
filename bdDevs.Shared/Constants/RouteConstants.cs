@@ -26,6 +26,7 @@ public static class RouteConstants
 	#region Authentication
 	public const string Login = "login";
 	public const string UserInfo = "user-info";
+	public const string HeaderSummary = "header-summary";
 	public const string Logout = "logout";
 	public const string RefreshToken = "refresh-token";
 	public const string RevokeToken = "revoke-token";

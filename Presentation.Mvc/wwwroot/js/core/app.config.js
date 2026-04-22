@@ -15,13 +15,19 @@
             tokenKey: 'accessToken',
             refreshTokenKey: 'refreshToken'
         },
+        routes: {
+            dashboard: '/Home/Index',
+            apiPrefixes: ['/bdDevs-crm', '/api']
+        },
         endpoints: {
+            // Absolute shared/auth endpoints already follow the bdDevs-crm base route.
             login: `${apiRouteBaseUrl}/login`,
             refreshToken: `${apiRouteBaseUrl}/refresh-token`,
             logout: `${apiRouteBaseUrl}/logout`,
             userInfo: `${apiRouteBaseUrl}/user-info`,
             menusByUserPermission: `${apiRouteBaseUrl}/menus-user-permission`,
 
+            // Existing feature endpoints still use the legacy relative pattern.
             countries: '/core/systemadmin/countries',
             countrySummary: '/core/systemadmin/country-summary',
             createCountry: '/core/systemadmin/create-country',

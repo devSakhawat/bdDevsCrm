@@ -14,6 +14,7 @@ window.AppSidebar = (() => {
 
     let elements = null;
     let menuTree = [];
+    const apiPrefixes = window.AppConfig?.routes?.apiPrefixes || ['/bdDevs-crm', '/api'];
 
     const escapeHtml = (value) => String(value ?? '')
         .replace(/&/g, '&amp;')
@@ -25,7 +26,9 @@ window.AppSidebar = (() => {
     const renderIcon = (value) => escapeHtml(String(value || '?').trim().charAt(0).toUpperCase() || '?');
 
     const normalizePath = (menu) => {
-        const fallbackDashboardPath = /^dashboard$/i.test(menu.menuName || '') ? '/Home/Index' : '';
+        const fallbackDashboardPath = /^dashboard$/i.test(menu.menuName || '')
+            ? (window.AppConfig?.routes?.dashboard || '/Home/Index')
+            : '';
         let path = String(menu.menuPath || fallbackDashboardPath || '').trim();
 
         if (!path || /^javascript:/i.test(path)) {
@@ -48,7 +51,7 @@ window.AppSidebar = (() => {
 
         path = path.replace(/\/{2,}/g, '/');
 
-        if (/^\/(bdDevs-crm|api)(\/|$)/i.test(path)) {
+        if (apiPrefixes.some((prefix) => path.toLowerCase() === prefix.toLowerCase() || path.toLowerCase().startsWith(`${prefix.toLowerCase()}/`))) {
             return '';
         }
 
@@ -58,8 +61,8 @@ window.AppSidebar = (() => {
     const normalizeMenus = (menus) => menus
         .filter((menu) => Number(menu?.isActive ?? 1) !== 0)
         .map((menu, index) => ({
-            id: Number(menu.menuId || 0) || -1 * (index + 1),
-            parentId: Number(menu.parentMenu || 0),
+            id: String(menu.menuId || `generated-${index + 1}`),
+            parentId: menu.parentMenu ? String(menu.parentMenu) : '',
             menuName: String(menu.menuName || '').trim(),
             moduleName: String(menu.moduleName || 'General').trim() || 'General',
             menuPath: normalizePath(menu),
@@ -94,7 +97,7 @@ window.AppSidebar = (() => {
         });
 
         nodesById.forEach((node) => {
-            if (node.parentId > 0 && nodesById.has(node.parentId)) {
+            if (node.parentId && nodesById.has(node.parentId)) {
                 nodesById.get(node.parentId).children.push(node);
                 return;
             }
@@ -167,7 +170,7 @@ window.AppSidebar = (() => {
                     <span class="nav-link__icon">${renderIcon(node.menuName)}</span>
                     <span class="nav-link__text">${text}</span>
                 </span>
-                <span class="nav-group__chevron">⌄</span>
+                <span class="nav-group__chevron" aria-hidden="true">⌄</span>
             </button>
             <div class="nav-group__items">
                 ${node.children.map((child) => renderNode(child, depth + 1)).join('')}
@@ -183,6 +186,14 @@ window.AppSidebar = (() => {
         const url = new URL(value, window.location.origin);
         const normalized = url.pathname.replace(/\/+$/, '');
         return normalized || '/';
+    };
+
+    const isPathMatch = (currentPath, candidatePath) => {
+        if (candidatePath === '/') {
+            return currentPath === '/';
+        }
+
+        return currentPath === candidatePath || currentPath.startsWith(`${candidatePath}/`);
     };
 
     const showState = (state, message) => {
@@ -220,7 +231,7 @@ window.AppSidebar = (() => {
                 link,
                 path: normalizeCurrentPath(link.getAttribute('href'))
             }))
-            .filter(({ path }) => path !== '/' ? currentPath === path || currentPath.startsWith(`${path}/`) : currentPath === '/')
+            .filter(({ path }) => isPathMatch(currentPath, path))
             .sort((left, right) => right.path.length - left.path.length)[0];
 
         if (!bestMatch) {

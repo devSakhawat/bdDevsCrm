@@ -11,8 +11,8 @@ window.AuthManager = (() => {
         return false;
     };
 
-    const bootstrapAccessToken = async () => {
-        if (window.ApiClient.getToken()) {
+    const bootstrapAccessToken = async (forceRefresh = false) => {
+        if (!forceRefresh && window.ApiClient.getToken()) {
             return true;
         }
 
@@ -30,6 +30,14 @@ window.AuthManager = (() => {
         }
     };
 
+    const ensureBootstrapPromise = (forceRefresh = false) => {
+        if (!bootstrapPromise || forceRefresh) {
+            bootstrapPromise = bootstrapAccessToken(forceRefresh);
+        }
+
+        return bootstrapPromise;
+    };
+
     // Login function
     const login = async (loginId, password) => {
         try {
@@ -39,6 +47,7 @@ window.AuthManager = (() => {
             });
 
             if (applyTokenResponse(response)) {
+                bootstrapPromise = Promise.resolve(true);
                 console.log('Login successful, token stored in memory');
                 return response.data;
             } else {
@@ -60,6 +69,7 @@ window.AuthManager = (() => {
         } finally {
             // Clear token and redirect
             window.ApiClient.clearToken();
+            bootstrapPromise = Promise.resolve(false);
             window.location.href = '/Account/Login';
         }
     };
@@ -74,12 +84,15 @@ window.AuthManager = (() => {
             );
 
             if (applyTokenResponse(response)) {
+                bootstrapPromise = Promise.resolve(true);
                 console.log('Token refreshed successfully');
                 return true;
             }
+            bootstrapPromise = Promise.resolve(false);
             return false;
         } catch (error) {
             console.error('Token refresh failed:', error);
+            bootstrapPromise = Promise.resolve(false);
             return false;
         }
     };
@@ -94,7 +107,7 @@ window.AuthManager = (() => {
         return window.ApiClient.getToken();
     };
 
-    bootstrapPromise = bootstrapAccessToken();
+    bootstrapPromise = ensureBootstrapPromise();
 
     return {
         login,
@@ -102,6 +115,6 @@ window.AuthManager = (() => {
         refreshToken,
         isAuthenticated,
         getCurrentToken,
-        ready: () => bootstrapPromise
+        ready: (forceRefresh = false) => ensureBootstrapPromise(forceRefresh)
     };
 })();

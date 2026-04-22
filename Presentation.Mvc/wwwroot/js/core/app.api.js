@@ -55,14 +55,14 @@ window.ApiClient = (() => {
                 }
 
                 if (options.suppressUnauthorizedRedirect) {
-                    return undefined;
+                    return null;
                 }
 
                 window.AppToast?.error(window.AppConstants?.messages.errors.unauthorized || 'Session expired');
                 setTimeout(() => {
                     window.location.href = '/Account/Login';
                 }, 1500);
-                return undefined;
+                return null;
             }
 
             const data = await response.json();

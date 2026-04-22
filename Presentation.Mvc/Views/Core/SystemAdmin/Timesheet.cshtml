@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Timesheet Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Timesheet Management</h1>
+        <p class="page-header__subtitle">Capture and maintain timesheet logs with the standard CRUD experience.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Timesheet</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddTimesheet" class="btn btn--primary">Add Timesheet</button>
+        <button type="button" id="btnRefreshTimesheet" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="timesheetGrid"></div>
+</section>
+
+<div id="timesheetWindow" style="display:none;">
+    <form id="timesheetForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelTimesheet" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveTimesheet" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/timesheet/timesheetSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/timesheet/timesheetSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/timesheet/timesheetDetails.js" asp-append-version="true"></script>
+}

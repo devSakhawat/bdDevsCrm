@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Query Analyzer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Query Analyzer</h1>
+        <p class="page-header__subtitle">Read-only report query visibility aligned with the System Admin UI standard.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Query Analyzer</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnRefreshQueryAnalyzer" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<div class="info-card">
+    <div class="form-layout form-layout--inline">
+        <div class="form-group">
+            <label for="queryAnalyzerSearch">Search</label>
+            <input type="text" id="queryAnalyzerSearch" class="app-input" placeholder="Filter by report title or header" />
+        </div>
+    </div>
+</div>
+
+<section class="table-shell">
+    <div id="queryAnalyzerGrid"></div>
+</section>
+
+<div id="queryAnalyzerWindow" style="display:none;">
+    <div id="queryAnalyzerDetails" class="content-stack"></div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/core/queryanalyzer/queryanalyzerSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/queryanalyzer/queryanalyzerSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/queryanalyzer/queryanalyzerDetails.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Token Blacklist Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Token Blacklist Management</h1>
+        <p class="page-header__subtitle">Manage blocked JWT tokens and use security operations from a single standards-compliant page.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Token Blacklist</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddTokenBlacklist" class="btn btn--primary">Add Token</button>
+        <button type="button" id="btnRefreshTokenBlacklist" class="btn btn--secondary">Refresh</button>
+        <button type="button" id="btnCleanupExpired" class="btn btn--secondary">Cleanup Expired</button>
+    </div>
+</section>
+
+<section class="content-stack">
+    <div class="card-grid card-grid--2">
+        <article class="info-card">
+            <div class="info-card__header">
+                <h2 class="info-card__title">Check Token Status</h2>
+                <p class="info-card__text">Validate whether a token has already been blacklisted.</p>
+            </div>
+            <div class="form-layout form-layout--single">
+                <div class="form-group form-group--span-2">
+                    <label for="tokenCheckValue">Token</label>
+                    <textarea id="tokenCheckValue" class="app-input app-input--textarea" rows="5" placeholder="Paste JWT token for validation"></textarea>
+                </div>
+                <div class="form-action-bar form-action-bar--inline">
+                    <button type="button" id="btnCheckToken" class="btn btn--primary">Check Token</button>
+                </div>
+                <p id="tokenCheckResult" class="helper-text"></p>
+            </div>
+        </article>
+        <article class="info-card">
+            <div class="info-card__header">
+                <h2 class="info-card__title">Security Guidance</h2>
+                <ul class="helper-list">
+                    <li>Use the grid for manual maintenance and audit review.</li>
+                    <li>The cleanup action removes expired entries from the blacklist.</li>
+                    <li>New records can be added manually when emergency revocation is required.</li>
+                </ul>
+            </div>
+        </article>
+    </div>
+
+    <section class="table-shell">
+        <div id="tokenBlacklistGrid"></div>
+    </section>
+</section>
+
+<div id="tokenBlacklistWindow" style="display:none;">
+    <form id="tokenBlacklistForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelTokenBlacklist" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveTokenBlacklist" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/tokenblacklist/tokenblacklistSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/tokenblacklist/tokenblacklistSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/tokenblacklist/tokenblacklistDetails.js" asp-append-version="true"></script>
+}

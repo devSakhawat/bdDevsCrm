@@ -3,7 +3,7 @@
     var isDashboard = string.Equals(currentPath, "/", StringComparison.OrdinalIgnoreCase)
         || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
     var hrOperationPaths = new[] { "/Employee", "/Department", "/Branch", "/Designation", "/Shift" };
-    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus", "/Currency", "/CurrencyRate", "/BoardInstitute", "/ApproverType", "/ApproverHistory", "/DocumentTemplate", "/DocumentParameter", "/ApproverTypeToGroupMapping", "/DocumentType", "/PasswordHistory", "/Competencies", "/CompetencyLevel", "/ApproverOrder", "/ApproverDetails", "/AssignApprover", "/DocumentQueryMapping", "/DocumentParameterMapping", "/AuditTrail", "/AuditLog", "/AppsTokenInfo", "/AppsTransactionLog" };
+    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Companies", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus", "/Currency", "/CurrencyRate", "/BoardInstitute", "/ApproverType", "/ApproverHistory", "/DocumentTemplate", "/DocumentParameter", "/ApproverTypeToGroupMapping", "/DocumentType", "/PasswordHistory", "/Competencies", "/CompetencyLevel", "/ApproverOrder", "/ApproverDetails", "/AssignApprover", "/DocumentQueryMapping", "/DocumentParameterMapping", "/AuditTrail", "/AuditLog", "/AppsTokenInfo", "/AppsTransactionLog", "/SystemSettings", "/QueryAnalyzer", "/TokenBlacklist", "/Timesheet", "/Common" };
     bool IsCurrent(params string[] prefixes) => prefixes.Any(prefix => currentPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
     var isHrOperations = IsCurrent(hrOperationPaths);
     var isSystemSetup = IsCurrent(systemSetupPaths);
@@ -61,7 +61,7 @@
             <a class="nav-sublink @(IsCurrent("/Menu") ? "is-active" : string.Empty)" asp-controller="Menu" asp-action="Index">Menu Management</a>
             <a class="nav-sublink @(IsCurrent("/Group") ? "is-active" : string.Empty)" asp-controller="Group" asp-action="Index">Group Management</a>
             <a class="nav-sublink @(IsCurrent("/Users") ? "is-active" : string.Empty)" asp-controller="Users" asp-action="Index">User Management</a>
-            <a class="nav-sublink @(IsCurrent("/Company") ? "is-active" : string.Empty)" asp-controller="Company" asp-action="Index">Company Management</a>
+            <a class="nav-sublink @(IsCurrent("/Company", "/Companies") ? "is-active" : string.Empty)" asp-controller="Companies" asp-action="Index">Company Management</a>
             <a class="nav-sublink @(IsCurrent("/Country") ? "is-active" : string.Empty)" asp-controller="Country" asp-action="Index">Country Management</a>
             <a class="nav-sublink @(IsCurrent("/Thana") ? "is-active" : string.Empty)" asp-controller="Thana" asp-action="Index">Thana Management</a>
             <a class="nav-sublink @(IsCurrent("/AccessRestriction") ? "is-active" : string.Empty)" asp-controller="AccessRestriction" asp-action="Index">Access Restriction</a>
@@ -89,6 +89,11 @@
             <a class="nav-sublink @(IsCurrent("/AuditLog") ? "is-active" : string.Empty)" asp-controller="AuditLog" asp-action="Index">Audit Log</a>
             <a class="nav-sublink @(IsCurrent("/AppsTokenInfo") ? "is-active" : string.Empty)" asp-controller="AppsTokenInfo" asp-action="Index">Apps Token Info</a>
             <a class="nav-sublink @(IsCurrent("/AppsTransactionLog") ? "is-active" : string.Empty)" asp-controller="AppsTransactionLog" asp-action="Index">Apps Transaction Log</a>
+            <a class="nav-sublink @(IsCurrent("/SystemSettings") ? "is-active" : string.Empty)" asp-controller="SystemSettings" asp-action="Index">System Settings</a>
+            <a class="nav-sublink @(IsCurrent("/QueryAnalyzer") ? "is-active" : string.Empty)" asp-controller="QueryAnalyzer" asp-action="Index">Query Analyzer</a>
+            <a class="nav-sublink @(IsCurrent("/TokenBlacklist") ? "is-active" : string.Empty)" asp-controller="TokenBlacklist" asp-action="Index">Token Blacklist</a>
+            <a class="nav-sublink @(IsCurrent("/Timesheet") ? "is-active" : string.Empty)" asp-controller="Timesheet" asp-action="Index">Timesheet</a>
+            <a class="nav-sublink @(IsCurrent("/Common") ? "is-active" : string.Empty)" asp-controller="Common" asp-action="Index">Common Utilities</a>
             <a class="nav-sublink @(IsCurrent("/Workflow") ? "is-active" : string.Empty)" asp-controller="Workflow" asp-action="Index">Workflow Management</a>
             <a class="nav-sublink @(IsCurrent("/AccessControl") ? "is-active" : string.Empty)" asp-controller="AccessControl" asp-action="Index">Access Control</a>
         </div>

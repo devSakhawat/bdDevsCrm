@@ -22,21 +22,31 @@
             }
 
             const config = moduleRef.config;
+            const useSummaryEndpoint = !!config.apiEndpoints.summary;
             const dataSource = new kendo.data.DataSource({
                 transport: {
                     read: function (options) {
                         window.AppLoader?.show('Loading records...');
 
-                        window.ApiClient.post(config.apiEndpoints.summary, mapGridOptions(options.data))
-                            .then(function (response) {
-                                const items = response?.success ? (response.data?.items || []) : [];
-                                const total = response?.success ? (response.data?.totalCount || response.data?.total || items.length || 0) : 0;
-                                options.success({ data: items, total: total });
+                        const request = useSummaryEndpoint
+                            ? window.ApiClient.post(config.apiEndpoints.summary, mapGridOptions(options.data))
+                            : window.ApiClient.get(config.apiEndpoints.list);
 
-                                if (!response?.success) {
-                                    window.AppToast?.error(response?.message || 'Failed to load records');
-                                }
-                            })
+                        request.then(function (response) {
+                            const payload = response?.data;
+                            const items = response?.success
+                                ? (Array.isArray(payload) ? payload : (payload?.items || []))
+                                : [];
+                            const total = response?.success
+                                ? (payload?.totalCount || payload?.total || items.length || 0)
+                                : 0;
+
+                            options.success({ data: items, total: total });
+
+                            if (!response?.success) {
+                                window.AppToast?.error(response?.message || 'Failed to load records');
+                            }
+                        })
                             .catch(function (error) {
                                 options.error(error);
                                 window.AppToast?.error(error?.message || 'Failed to load records');
@@ -52,9 +62,9 @@
                     model: buildModel(config)
                 },
                 pageSize: config.gridOptions.pageSize,
-                serverPaging: true,
-                serverSorting: true,
-                serverFiltering: true
+                serverPaging: config.gridOptions.serverOperations !== false,
+                serverSorting: config.gridOptions.serverOperations !== false,
+                serverFiltering: config.gridOptions.serverOperations !== false
             });
 
             grid = $(config.dom.grid).kendoGrid({
@@ -83,7 +93,7 @@
         }
 
         function deleteRecord(id, name) {
-            if (!id || id <= 0) {
+            if (!isValidId(id)) {
                 window.AppToast?.error(`Invalid ${moduleRef.config.moduleTitle} id`);
                 return;
             }
@@ -161,7 +171,7 @@
         }
 
         async function openEditForm(id) {
-            if (!id || id <= 0) {
+            if (!isValidId(id)) {
                 window.AppToast?.error(`Invalid ${moduleRef.config.moduleTitle} id`);
                 return;
             }
@@ -314,9 +324,10 @@
             template: function (dataItem) {
                 const id = dataItem[config.idField];
                 const name = sanitizeForAttribute(dataItem[config.displayField] || config.moduleTitle);
+                const idValue = sanitizeForAttribute(id);
                 return `<div class="form-actions-inline">` +
-                    `<button type="button" class="btn btn--table-secondary js-edit-record" data-id="${id}">Edit</button>` +
-                    `<button type="button" class="btn btn--table-danger js-delete-record" data-id="${id}" data-name="${name}">Delete</button>` +
+                    `<button type="button" class="btn btn--table-secondary js-edit-record" data-id="${idValue}">Edit</button>` +
+                    `<button type="button" class="btn btn--table-danger js-delete-record" data-id="${idValue}" data-name="${name}">Delete</button>` +
                     `</div>`;
             }
         });
@@ -326,12 +337,12 @@
 
     function bindGridActions(config) {
         $(config.dom.grid).find('.js-edit-record').off('click').on('click', function () {
-            const id = parseInt($(this).data('id'), 10);
+            const id = $(this).attr('data-id');
             config.moduleRef.Details?.openEditForm?.(id);
         });
 
         $(config.dom.grid).find('.js-delete-record').off('click').on('click', function () {
-            const id = parseInt($(this).data('id'), 10);
+            const id = $(this).attr('data-id');
             const name = $(this).data('name');
             config.moduleRef.Summary?.deleteRecord?.(id, name);
         });
@@ -349,13 +360,13 @@
     function normalizeReadResponse(data, id, idField) {
         if (Array.isArray(data)) {
             return data.find(function (item) {
-                return parseInt(item[idField], 10) === parseInt(id, 10);
+                return compareIdentifier(item[idField], id);
             }) || null;
         }
 
         if (data && Array.isArray(data.items)) {
             return data.items.find(function (item) {
-                return parseInt(item[idField], 10) === parseInt(id, 10);
+                return compareIdentifier(item[idField], id);
             }) || null;
         }
 
@@ -363,7 +374,7 @@
     }
 
     function renderField(field, data) {
-        const value = data[field.name] ?? field.defaultValue ?? '';
+        const value = getFieldSourceValue(field, data);
 
         if (field.type === 'hidden') {
             return `<input type="hidden" id="${field.name}" name="${field.name}" value="${escapeHtml(value)}" />`;
@@ -424,7 +435,7 @@
                     min: field.min,
                     step: field.step || 1
                 });
-                setFieldValue(field.name, data[field.name] ?? field.defaultValue ?? null);
+                setFieldValue(field.name, getFieldSourceValue(field, data, null));
                 continue;
             }
 
@@ -432,7 +443,7 @@
                 $(selector).kendoDatePicker({
                     format: 'yyyy-MM-dd'
                 });
-                setFieldValue(field.name, data[field.name] ?? null);
+                setFieldValue(field.name, getFieldSourceValue(field, data, null));
                 continue;
             }
 
@@ -493,7 +504,7 @@
         widget.setDataSource(new kendo.data.DataSource({ data: items }));
         widget.enable(true);
 
-        const desiredValue = preserveCurrentValue ? (context?.[field.name] ?? getFieldValue(field.name) ?? field.defaultValue ?? '') : '';
+        const desiredValue = preserveCurrentValue ? (getFieldSourceValue(field, context, undefined) ?? getFieldValue(field.name) ?? field.defaultValue ?? '') : '';
         if (desiredValue !== null && desiredValue !== undefined && desiredValue !== '') {
             widget.value(String(desiredValue));
         } else if (field.autoSelectSingle && items.length === 1) {
@@ -695,5 +706,18 @@
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    }
+
+    function getFieldSourceValue(field, data, fallback = '') {
+        const sourceName = field.sourceName || field.name;
+        return data?.[sourceName] ?? field.defaultValue ?? fallback;
+    }
+
+    function isValidId(value) {
+        return !(value === null || value === undefined || String(value).trim() === '');
+    }
+
+    function compareIdentifier(left, right) {
+        return String(left ?? '').trim().toLowerCase() === String(right ?? '').trim().toLowerCase();
     }
 })();

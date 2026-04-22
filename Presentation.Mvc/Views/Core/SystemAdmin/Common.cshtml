@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Common Utilities";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Common Utilities</h1>
+        <p class="page-header__subtitle">Placeholder UI for the empty Common API module, kept in standard layout until backend endpoints are implemented.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Common</span>
+        </div>
+    </div>
+</section>
+
+<section class="content-stack">
+    <article class="info-card">
+        <div class="info-card__header">
+            <h2 class="info-card__title">No API Endpoints Yet</h2>
+            <p class="info-card__text">The backend Common controller is currently empty, so this page intentionally documents the gap instead of adding unsupported UI actions.</p>
+        </div>
+        <ul class="helper-list">
+            <li>Create backend endpoints in <code>Presentation.Controller/Controllers/Core/SystemAdmin/CommonController.cs</code>.</li>
+            <li>Add DTOs or record contracts if the module becomes data-driven.</li>
+            <li>After that, replace this placeholder with a factory-backed or custom CRUD page.</li>
+        </ul>
+    </article>
+</section>
+
+@section Scripts {
+    <script src="~/js/modules/core/common/commonSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/common/commonSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/common/commonDetails.js" asp-append-version="true"></script>
+}

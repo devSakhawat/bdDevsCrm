@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Assign Approver Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Assign Approver Management</h1>
+        <p class="page-header__subtitle">Phase 4 System Setup module for managing assign approver records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Assign Approver</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddAssignApprover" class="btn btn--primary">Add Assign Approver</button>
+        <button type="button" id="btnRefreshAssignApprover" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="assignApproverGrid"></div>
+</section>
+
+<div id="assignApproverWindow" style="display:none;">
+    <form id="assignApproverForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelAssignApprover" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveAssignApprover" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/assignapprover/assignapproverSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/assignapprover/assignapproverSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/assignapprover/assignapproverDetails.js" asp-append-version="true"></script>
+}

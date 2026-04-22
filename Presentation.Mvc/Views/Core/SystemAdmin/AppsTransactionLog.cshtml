@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Apps Transaction Log Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Apps Transaction Log Management</h1>
+        <p class="page-header__subtitle">Phase 6 System Setup module for managing apps transaction log records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Apps Transaction Log</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddAppsTransactionLog" class="btn btn--primary">Add Apps Transaction Log</button>
+        <button type="button" id="btnRefreshAppsTransactionLog" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="appsTransactionLogGrid"></div>
+</section>
+
+<div id="appsTransactionLogWindow" style="display:none;">
+    <form id="appsTransactionLogForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelAppsTransactionLog" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveAppsTransactionLog" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/appstransactionlog/appstransactionlogSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/appstransactionlog/appstransactionlogSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/appstransactionlog/appstransactionlogDetails.js" asp-append-version="true"></script>
+}

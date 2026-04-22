@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Currency Rate Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Currency Rate Management</h1>
+        <p class="page-header__subtitle">Phase 1 System Setup module for managing currency rate records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Currency Rate</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddCurrencyRate" class="btn btn--primary">Add Currency Rate</button>
+        <button type="button" id="btnRefreshCurrencyRate" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="currencyRateGrid"></div>
+</section>
+
+<div id="currencyRateWindow" style="display:none;">
+    <form id="currencyRateForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelCurrencyRate" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveCurrencyRate" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/currencyrate/currencyrateSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/currencyrate/currencyrateSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/currencyrate/currencyrateDetails.js" asp-append-version="true"></script>
+}

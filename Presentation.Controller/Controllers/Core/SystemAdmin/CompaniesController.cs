@@ -51,7 +51,7 @@ public class CompaniesController : BaseApiController
     /// Retrieves a specific company by ID.
     /// </summary>
     [HttpGet(RouteConstants.ReadCompany)]
-    public async Task<IActionResult> CompanyAsync([FromRoute] int id, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CompanyAsync([FromRoute(Name = "key")] int id, CancellationToken cancellationToken = default)
     {
         if (id <= 0)
             throw new IdParametersBadRequestException();

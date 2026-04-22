@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Document Folder Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Document Folder Management</h1>
+        <p class="page-header__subtitle">Manage DMS folders, ownership, and reference mapping.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">DMS</span>
+            <span class="breadcrumb__item is-current">Document Folder</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddDocumentFolder" class="btn btn--primary">Add Document Folder</button>
+        <button type="button" id="btnRefreshDocumentFolder" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="documentFolderGrid"></div>
+</section>
+
+<div id="documentFolderWindow" style="display:none;">
+    <form id="documentFolderForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelDocumentFolder" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveDocumentFolder" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/dms/documentfolder/documentFolderSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/dms/documentfolder/documentFolderSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/dms/documentfolder/documentFolderDetails.js" asp-append-version="true"></script>
+}

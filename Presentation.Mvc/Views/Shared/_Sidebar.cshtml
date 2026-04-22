@@ -76,7 +76,12 @@
             <a class="nav-sublink @(IsCurrent("/DocumentTemplate") ? "is-active" : string.Empty)" asp-controller="DocumentTemplate" asp-action="Index">Document Template</a>
             <a class="nav-sublink @(IsCurrent("/DocumentParameter") ? "is-active" : string.Empty)" asp-controller="DocumentParameter" asp-action="Index">Document Parameter</a>
             <a class="nav-sublink @(IsCurrent("/ApproverTypeToGroupMapping") ? "is-active" : string.Empty)" asp-controller="ApproverTypeToGroupMapping" asp-action="Index">Approver Type / Group Mapping</a>
-            <a class="nav-sublink @(IsCurrent("/DocumentType") ? "is-active" : string.Empty)" asp-controller="DocumentType" asp-action="Index">Document Type</a>
+            <a class="nav-sublink @(IsCurrent("/Document") ? "is-active" : string.Empty)" asp-controller="Document" asp-action="Index">DMS Document</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentType") ? "is-active" : string.Empty)" asp-controller="DocumentType" asp-action="Index">DMS Document Type</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentFolder") ? "is-active" : string.Empty)" asp-controller="DocumentFolder" asp-action="Index">DMS Document Folder</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentTag") ? "is-active" : string.Empty)" asp-controller="DocumentTag" asp-action="Index">DMS Document Tag</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentAccessLog") ? "is-active" : string.Empty)" asp-controller="DocumentAccessLog" asp-action="Index">DMS Access Log</a>
+            <a class="nav-sublink @(IsCurrent("/FileUpdateHistory") ? "is-active" : string.Empty)" asp-controller="FileUpdateHistory" asp-action="Index">DMS File Update History</a>
             <a class="nav-sublink @(IsCurrent("/PasswordHistory") ? "is-active" : string.Empty)" asp-controller="PasswordHistory" asp-action="Index">Password History</a>
             <a class="nav-sublink @(IsCurrent("/Competencies") ? "is-active" : string.Empty)" asp-controller="Competencies" asp-action="Index">Competencies</a>
             <a class="nav-sublink @(IsCurrent("/CompetencyLevel") ? "is-active" : string.Empty)" asp-controller="CompetencyLevel" asp-action="Index">Competency Level</a>

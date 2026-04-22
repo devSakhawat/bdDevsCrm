@@ -2,6 +2,11 @@
     var currentPath = Context.Request.Path.Value ?? string.Empty;
     var isDashboard = string.Equals(currentPath, "/", StringComparison.OrdinalIgnoreCase)
         || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
+    var hrOperationPaths = new[] { "/Employee", "/Department", "/Branch", "/Designation", "/Shift" };
+    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Companies", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus", "/Currency", "/CurrencyRate", "/BoardInstitute", "/ApproverType", "/ApproverHistory", "/DocumentTemplate", "/DocumentParameter", "/ApproverTypeToGroupMapping", "/DocumentType", "/PasswordHistory", "/Competencies", "/CompetencyLevel", "/ApproverOrder", "/ApproverDetails", "/AssignApprover", "/DocumentQueryMapping", "/DocumentParameterMapping", "/AuditTrail", "/AuditLog", "/AppsTokenInfo", "/AppsTransactionLog", "/SystemSettings", "/QueryAnalyzer", "/TokenBlacklist", "/Timesheet", "/Common" };
+    bool IsCurrent(params string[] prefixes) => prefixes.Any(prefix => currentPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+    var isHrOperations = IsCurrent(hrOperationPaths);
+    var isSystemSetup = IsCurrent(systemSetupPaths);
 }
 
 <aside class="app-sidebar" id="appSidebar" aria-label="Primary navigation">
@@ -16,17 +21,19 @@
     <div class="app-sidebar__section">
         <p class="app-sidebar__caption">Modules</p>
 
-        <button class="nav-group" type="button" data-nav-toggle aria-expanded="true">
+        <button class="nav-group" type="button" data-nav-toggle aria-expanded="@(isHrOperations.ToString().ToLowerInvariant())">
             <span class="nav-group__lead">
                 <span class="nav-link__icon">👥</span>
                 <span class="nav-link__text">HR Operations</span>
             </span>
             <span class="nav-group__chevron">⌄</span>
         </button>
-        <div class="nav-group__items is-open">
-            <a class="nav-sublink is-active" href="javascript:void(0)">Employee Management</a>
-            <a class="nav-sublink" href="javascript:void(0)">Attendance & Leave</a>
-            <a class="nav-sublink" href="javascript:void(0)">Performance Review</a>
+        <div class="nav-group__items @(isHrOperations ? "is-open" : string.Empty)">
+            <a class="nav-sublink @(IsCurrent("/Employee") ? "is-active" : string.Empty)" asp-controller="Employee" asp-action="Index">Employee Management</a>
+            <a class="nav-sublink @(IsCurrent("/Department") ? "is-active" : string.Empty)" asp-controller="Department" asp-action="Index">Department Management</a>
+            <a class="nav-sublink @(IsCurrent("/Branch") ? "is-active" : string.Empty)" asp-controller="Branch" asp-action="Index">Branch Management</a>
+            <a class="nav-sublink @(IsCurrent("/Designation") ? "is-active" : string.Empty)" asp-controller="Designation" asp-action="Index">Designation Management</a>
+            <a class="nav-sublink @(IsCurrent("/Shift") ? "is-active" : string.Empty)" asp-controller="Shift" asp-action="Index">Shift Management</a>
         </div>
 
         <button class="nav-group" type="button" data-nav-toggle aria-expanded="false">
@@ -42,17 +49,58 @@
             <a class="nav-sublink" href="javascript:void(0)">Export Center</a>
         </div>
 
-        <button class="nav-group" type="button" data-nav-toggle aria-expanded="false">
+        <button class="nav-group" type="button" data-nav-toggle aria-expanded="@(isSystemSetup.ToString().ToLowerInvariant())">
             <span class="nav-group__lead">
                 <span class="nav-link__icon">⚙</span>
                 <span class="nav-link__text">System Setup</span>
             </span>
             <span class="nav-group__chevron">⌄</span>
         </button>
-        <div class="nav-group__items">
-            <a class="nav-sublink" href="javascript:void(0)">Role & Permission</a>
-            <a class="nav-sublink" href="javascript:void(0)">Master Data</a>
-            <a class="nav-sublink" href="javascript:void(0)">Audit Trail</a>
+        <div class="nav-group__items @(isSystemSetup ? "is-open" : string.Empty)">
+            <a class="nav-sublink @(IsCurrent("/Module") ? "is-active" : string.Empty)" asp-controller="Module" asp-action="Index">Module Management</a>
+            <a class="nav-sublink @(IsCurrent("/Menu") ? "is-active" : string.Empty)" asp-controller="Menu" asp-action="Index">Menu Management</a>
+            <a class="nav-sublink @(IsCurrent("/Group") ? "is-active" : string.Empty)" asp-controller="Group" asp-action="Index">Group Management</a>
+            <a class="nav-sublink @(IsCurrent("/Users") ? "is-active" : string.Empty)" asp-controller="Users" asp-action="Index">User Management</a>
+            <a class="nav-sublink @(IsCurrent("/Company", "/Companies") ? "is-active" : string.Empty)" asp-controller="Companies" asp-action="Index">Company Management</a>
+            <a class="nav-sublink @(IsCurrent("/Country") ? "is-active" : string.Empty)" asp-controller="Country" asp-action="Index">Country Management</a>
+            <a class="nav-sublink @(IsCurrent("/Thana") ? "is-active" : string.Empty)" asp-controller="Thana" asp-action="Index">Thana Management</a>
+            <a class="nav-sublink @(IsCurrent("/AccessRestriction") ? "is-active" : string.Empty)" asp-controller="AccessRestriction" asp-action="Index">Access Restriction</a>
+            <a class="nav-sublink @(IsCurrent("/AuditType") ? "is-active" : string.Empty)" asp-controller="AuditType" asp-action="Index">Audit Type</a>
+            <a class="nav-sublink @(IsCurrent("/Holiday") ? "is-active" : string.Empty)" asp-controller="Holiday" asp-action="Index">Holiday Management</a>
+            <a class="nav-sublink @(IsCurrent("/MaritalStatus") ? "is-active" : string.Empty)" asp-controller="MaritalStatus" asp-action="Index">Marital Status</a>
+            <a class="nav-sublink @(IsCurrent("/Currency") ? "is-active" : string.Empty)" asp-controller="Currency" asp-action="Index">Currency Management</a>
+            <a class="nav-sublink @(IsCurrent("/CurrencyRate") ? "is-active" : string.Empty)" asp-controller="CurrencyRate" asp-action="Index">Currency Rate</a>
+            <a class="nav-sublink @(IsCurrent("/BoardInstitute") ? "is-active" : string.Empty)" asp-controller="BoardInstitute" asp-action="Index">Board Institute</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverType") ? "is-active" : string.Empty)" asp-controller="ApproverType" asp-action="Index">Approver Type</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverHistory") ? "is-active" : string.Empty)" asp-controller="ApproverHistory" asp-action="Index">Approver History</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentTemplate") ? "is-active" : string.Empty)" asp-controller="DocumentTemplate" asp-action="Index">Document Template</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentParameter") ? "is-active" : string.Empty)" asp-controller="DocumentParameter" asp-action="Index">Document Parameter</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverTypeToGroupMapping") ? "is-active" : string.Empty)" asp-controller="ApproverTypeToGroupMapping" asp-action="Index">Approver Type / Group Mapping</a>
+            <a class="nav-sublink @(IsCurrent("/Document") ? "is-active" : string.Empty)" asp-controller="Document" asp-action="Index">DMS Document</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentType") ? "is-active" : string.Empty)" asp-controller="DocumentType" asp-action="Index">DMS Document Type</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentFolder") ? "is-active" : string.Empty)" asp-controller="DocumentFolder" asp-action="Index">DMS Document Folder</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentTag") ? "is-active" : string.Empty)" asp-controller="DocumentTag" asp-action="Index">DMS Document Tag</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentAccessLog") ? "is-active" : string.Empty)" asp-controller="DocumentAccessLog" asp-action="Index">DMS Access Log</a>
+            <a class="nav-sublink @(IsCurrent("/FileUpdateHistory") ? "is-active" : string.Empty)" asp-controller="FileUpdateHistory" asp-action="Index">DMS File Update History</a>
+            <a class="nav-sublink @(IsCurrent("/PasswordHistory") ? "is-active" : string.Empty)" asp-controller="PasswordHistory" asp-action="Index">Password History</a>
+            <a class="nav-sublink @(IsCurrent("/Competencies") ? "is-active" : string.Empty)" asp-controller="Competencies" asp-action="Index">Competencies</a>
+            <a class="nav-sublink @(IsCurrent("/CompetencyLevel") ? "is-active" : string.Empty)" asp-controller="CompetencyLevel" asp-action="Index">Competency Level</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverOrder") ? "is-active" : string.Empty)" asp-controller="ApproverOrder" asp-action="Index">Approver Order</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverDetails") ? "is-active" : string.Empty)" asp-controller="ApproverDetails" asp-action="Index">Approver Details</a>
+            <a class="nav-sublink @(IsCurrent("/AssignApprover") ? "is-active" : string.Empty)" asp-controller="AssignApprover" asp-action="Index">Assign Approver</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentQueryMapping") ? "is-active" : string.Empty)" asp-controller="DocumentQueryMapping" asp-action="Index">Document Query Mapping</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentParameterMapping") ? "is-active" : string.Empty)" asp-controller="DocumentParameterMapping" asp-action="Index">Document Parameter Mapping</a>
+            <a class="nav-sublink @(IsCurrent("/AuditTrail") ? "is-active" : string.Empty)" asp-controller="AuditTrail" asp-action="Index">Audit Trail</a>
+            <a class="nav-sublink @(IsCurrent("/AuditLog") ? "is-active" : string.Empty)" asp-controller="AuditLog" asp-action="Index">Audit Log</a>
+            <a class="nav-sublink @(IsCurrent("/AppsTokenInfo") ? "is-active" : string.Empty)" asp-controller="AppsTokenInfo" asp-action="Index">Apps Token Info</a>
+            <a class="nav-sublink @(IsCurrent("/AppsTransactionLog") ? "is-active" : string.Empty)" asp-controller="AppsTransactionLog" asp-action="Index">Apps Transaction Log</a>
+            <a class="nav-sublink @(IsCurrent("/SystemSettings") ? "is-active" : string.Empty)" asp-controller="SystemSettings" asp-action="Index">System Settings</a>
+            <a class="nav-sublink @(IsCurrent("/QueryAnalyzer") ? "is-active" : string.Empty)" asp-controller="QueryAnalyzer" asp-action="Index">Query Analyzer</a>
+            <a class="nav-sublink @(IsCurrent("/TokenBlacklist") ? "is-active" : string.Empty)" asp-controller="TokenBlacklist" asp-action="Index">Token Blacklist</a>
+            <a class="nav-sublink @(IsCurrent("/Timesheet") ? "is-active" : string.Empty)" asp-controller="Timesheet" asp-action="Index">Timesheet</a>
+            <a class="nav-sublink @(IsCurrent("/Common") ? "is-active" : string.Empty)" asp-controller="Common" asp-action="Index">Common Utilities</a>
+            <a class="nav-sublink @(IsCurrent("/Workflow") ? "is-active" : string.Empty)" asp-controller="Workflow" asp-action="Index">Workflow Management</a>
+            <a class="nav-sublink @(IsCurrent("/AccessControl") ? "is-active" : string.Empty)" asp-controller="AccessControl" asp-action="Index">Access Control</a>
         </div>
     </div>
 </aside>

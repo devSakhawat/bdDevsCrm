@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Document Template Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Document Template Management</h1>
+        <p class="page-header__subtitle">Phase 1 System Setup module for managing document template records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Document Template</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddDocumentTemplate" class="btn btn--primary">Add Document Template</button>
+        <button type="button" id="btnRefreshDocumentTemplate" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="documentTemplateGrid"></div>
+</section>
+
+<div id="documentTemplateWindow" style="display:none;">
+    <form id="documentTemplateForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelDocumentTemplate" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveDocumentTemplate" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documenttemplate/documenttemplateSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documenttemplate/documenttemplateSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documenttemplate/documenttemplateDetails.js" asp-append-version="true"></script>
+}

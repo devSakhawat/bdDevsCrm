@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Competency Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Competency Management</h1>
+        <p class="page-header__subtitle">Phase 2 System Setup module for managing competency records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Competency</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddCompetency" class="btn btn--primary">Add Competency</button>
+        <button type="button" id="btnRefreshCompetency" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="competenciesGrid"></div>
+</section>
+
+<div id="competenciesWindow" style="display:none;">
+    <form id="competenciesForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelCompetency" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveCompetency" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/competencies/competenciesSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/competencies/competenciesSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/competencies/competenciesDetails.js" asp-append-version="true"></script>
+}

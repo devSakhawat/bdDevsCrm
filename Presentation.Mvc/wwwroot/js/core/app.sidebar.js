@@ -34,6 +34,8 @@ window.AppSidebar = (() => {
         </span>
     `;
 
+    const getMenuId = (menu, index) => String(menu.menuId || `generated-${index + 1}`);
+
     const normalizePath = (menu) => {
         const fallbackDashboardPath = /^dashboard$/i.test(menu.menuName || '')
             ? (window.AppConfig?.routes?.dashboard || '/Home/Index')
@@ -71,8 +73,8 @@ window.AppSidebar = (() => {
 
     const normalizeMenus = (menus) => menus
         .filter((menu) => Number(menu?.isActive ?? 1) !== 0)
-        .map((menu) => ({
-            id: String(menu.menuId || `generated-${String(menu.moduleName || 'general').trim()}-${String(menu.menuName || 'menu').trim()}-${String(menu.parentMenu || 'root').trim()}`),
+        .map((menu, index) => ({
+            id: getMenuId(menu, index),
             parentId: menu.parentMenu ? String(menu.parentMenu) : '',
             menuName: String(menu.menuName || '').trim(),
             moduleName: String(menu.moduleName || 'General').trim() || 'General',

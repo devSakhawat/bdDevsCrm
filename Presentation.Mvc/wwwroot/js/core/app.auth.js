@@ -107,6 +107,7 @@ window.AuthManager = (() => {
         return window.ApiClient.getToken();
     };
 
+    // Eagerly bootstrap the access token from the refresh cookie before page-level modules run.
     bootstrapPromise = ensureBootstrapPromise();
 
     return {

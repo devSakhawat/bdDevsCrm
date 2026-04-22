@@ -14,7 +14,9 @@ window.AppSidebar = (() => {
 
     let elements = null;
     let menuTree = [];
-    const apiPrefixes = window.AppConfig?.routes?.apiPrefixes || ['/bdDevs-crm', '/api'];
+    const apiPrefixes = Array.isArray(window.AppConfig?.routes?.apiPrefixes)
+        ? window.AppConfig.routes.apiPrefixes
+        : [];
 
     const escapeHtml = (value) => String(value ?? '')
         .replace(/&/g, '&amp;')
@@ -23,7 +25,14 @@ window.AppSidebar = (() => {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
 
-    const renderIcon = (value) => escapeHtml(String(value || '?').trim().charAt(0).toUpperCase() || '?');
+    const renderIcon = (value) => escapeHtml(String(value || '?').trim().charAt(0).toUpperCase());
+
+    const renderLead = (value) => `
+        <span class="nav-group__lead">
+            <span class="nav-link__icon">${renderIcon(value)}</span>
+            <span class="nav-link__text">${escapeHtml(value)}</span>
+        </span>
+    `;
 
     const normalizePath = (menu) => {
         const fallbackDashboardPath = /^dashboard$/i.test(menu.menuName || '')
@@ -51,7 +60,9 @@ window.AppSidebar = (() => {
 
         path = path.replace(/\/{2,}/g, '/');
 
-        if (apiPrefixes.some((prefix) => path.toLowerCase() === prefix.toLowerCase() || path.toLowerCase().startsWith(`${prefix.toLowerCase()}/`))) {
+        const lowerPath = path.toLowerCase();
+
+        if (apiPrefixes.some((prefix) => lowerPath === prefix.toLowerCase() || lowerPath.startsWith(`${prefix.toLowerCase()}/`))) {
             return '';
         }
 
@@ -60,8 +71,8 @@ window.AppSidebar = (() => {
 
     const normalizeMenus = (menus) => menus
         .filter((menu) => Number(menu?.isActive ?? 1) !== 0)
-        .map((menu, index) => ({
-            id: String(menu.menuId || `generated-${index + 1}`),
+        .map((menu) => ({
+            id: String(menu.menuId || `generated-${String(menu.moduleName || 'general').trim()}-${String(menu.menuName || 'menu').trim()}-${String(menu.parentMenu || 'root').trim()}`),
             parentId: menu.parentMenu ? String(menu.parentMenu) : '',
             menuName: String(menu.menuName || '').trim(),
             moduleName: String(menu.moduleName || 'General').trim() || 'General',
@@ -155,7 +166,7 @@ window.AppSidebar = (() => {
         if (!hasChildren && node.menuPath) {
             const linkClass = depth === 0 ? 'nav-link' : 'nav-sublink';
             const linkContent = depth === 0
-                ? `<span class="nav-group__lead"><span class="nav-link__icon">${renderIcon(node.menuName)}</span><span class="nav-link__text">${text}</span></span>`
+                ? renderLead(node.menuName)
                 : text;
             return `<a class="${linkClass}" href="${escapeHtml(node.menuPath)}" data-sidebar-link data-search-text="${searchText}">${linkContent}</a>`;
         }
@@ -166,10 +177,7 @@ window.AppSidebar = (() => {
 
         return `
             <button class="nav-group" type="button" data-nav-toggle aria-expanded="false" data-search-text="${searchText}">
-                <span class="nav-group__lead">
-                    <span class="nav-link__icon">${renderIcon(node.menuName)}</span>
-                    <span class="nav-link__text">${text}</span>
-                </span>
+                ${renderLead(node.menuName)}
                 <span class="nav-group__chevron" aria-hidden="true">⌄</span>
             </button>
             <div class="nav-group__items">

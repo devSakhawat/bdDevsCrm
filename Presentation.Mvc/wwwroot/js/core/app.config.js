@@ -20,7 +20,7 @@
             apiPrefixes: ['/bdDevs-crm', '/api']
         },
         endpoints: {
-            // Absolute shared/auth endpoints already follow the bdDevs-crm base route.
+            // Shared/auth endpoints use the bdDevs-crm base route.
             login: `${apiRouteBaseUrl}/login`,
             refreshToken: `${apiRouteBaseUrl}/refresh-token`,
             logout: `${apiRouteBaseUrl}/logout`,

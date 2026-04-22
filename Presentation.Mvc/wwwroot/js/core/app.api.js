@@ -21,7 +21,7 @@ window.ApiClient = (() => {
             return endpoint;
         }
 
-        if (endpoint.startsWith('/bdDevs-crm/') && window.AppConfig?.apiRouteBaseUrl) {
+        if (endpoint.startsWith('/bdDevs-crm') && window.AppConfig?.apiRouteBaseUrl) {
             return `${window.AppConfig.apiRouteBaseUrl}${endpoint.replace('/bdDevs-crm', '')}`;
         }
 
@@ -49,10 +49,6 @@ window.ApiClient = (() => {
 
             if (response.status === 401) {
                 clearToken();
-
-                if (typeof options.onUnauthorized === 'function') {
-                    options.onUnauthorized(response);
-                }
 
                 if (options.suppressUnauthorizedRedirect) {
                     return null;

@@ -1,5 +1,35 @@
 // Authentication & Session Management
 window.AuthManager = (() => {
+    let bootstrapPromise = null;
+
+    const applyTokenResponse = (response) => {
+        if (response?.success && response.data?.accessToken) {
+            window.ApiClient.setToken(response.data.accessToken);
+            return true;
+        }
+
+        return false;
+    };
+
+    const bootstrapAccessToken = async () => {
+        if (window.ApiClient.getToken()) {
+            return true;
+        }
+
+        try {
+            const response = await window.ApiClient.post(
+                window.AppConfig.endpoints.refreshToken,
+                null,
+                { suppressUnauthorizedRedirect: true }
+            );
+
+            return applyTokenResponse(response);
+        } catch (error) {
+            console.warn('Token bootstrap skipped:', error);
+            return false;
+        }
+    };
+
     // Login function
     const login = async (loginId, password) => {
         try {
@@ -8,13 +38,8 @@ window.AuthManager = (() => {
                 password
             });
 
-            if (response.success && response.data) {
-                // Store access token in memory (XSS protection)
-                window.ApiClient.setToken(response.data.accessToken);
-
-                // RefreshToken is automatically stored in HTTP-only cookie by server
+            if (applyTokenResponse(response)) {
                 console.log('Login successful, token stored in memory');
-
                 return response.data;
             } else {
                 throw new Error(response.message || window.AppConstants.messages.errors.loginFailed);
@@ -42,11 +67,13 @@ window.AuthManager = (() => {
     // Refresh token function
     const refreshToken = async () => {
         try {
-            // RefreshToken is sent automatically via HTTP-only cookie
-            const response = await window.ApiClient.post(window.AppConfig.endpoints.refreshToken);
+            const response = await window.ApiClient.post(
+                window.AppConfig.endpoints.refreshToken,
+                null,
+                { suppressUnauthorizedRedirect: true }
+            );
 
-            if (response.success && response.data) {
-                window.ApiClient.setToken(response.data.accessToken);
+            if (applyTokenResponse(response)) {
                 console.log('Token refreshed successfully');
                 return true;
             }
@@ -67,11 +94,14 @@ window.AuthManager = (() => {
         return window.ApiClient.getToken();
     };
 
+    bootstrapPromise = bootstrapAccessToken();
+
     return {
         login,
         logout,
         refreshToken,
         isAuthenticated,
-        getCurrentToken
+        getCurrentToken,
+        ready: () => bootstrapPromise
     };
 })();

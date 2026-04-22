@@ -496,15 +496,20 @@ window.SessionManager = (() => {
     };
 })();
 
-// Auto-initialize session manager when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        if (window.AuthManager && window.AuthManager.isAuthenticated()) {
-            window.SessionManager.init();
-        }
-    });
-} else {
+const initializeSessionManager = async () => {
+    if (window.AuthManager?.ready) {
+        await window.AuthManager.ready();
+    }
+
     if (window.AuthManager && window.AuthManager.isAuthenticated()) {
         window.SessionManager.init();
     }
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeSessionManager();
+    });
+} else {
+    initializeSessionManager();
 }

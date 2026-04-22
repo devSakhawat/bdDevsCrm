@@ -317,8 +317,90 @@ textarea {
     z-index: 1100;
 }
 
+.app-sidebar__toolbar {
+    margin-bottom: 18px;
+}
+
+.app-sidebar__search {
+    display: grid;
+    gap: 8px;
+}
+
+.app-sidebar__search-label {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.app-sidebar__search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+}
+
+.app-sidebar__search-input::placeholder {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.app-sidebar__search-input:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.app-sidebar__state {
+    display: grid;
+    gap: 12px;
+    padding: 16px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.app-sidebar__state-message {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.app-sidebar__state-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.app-sidebar__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    cursor: pointer;
+}
+
+.app-sidebar__action--link {
+    text-decoration: none;
+}
+
+.app-sidebar__content {
+    display: grid;
+    gap: 24px;
+}
+
 body.sidebar-collapsed .app-sidebar {
     width: var(--sidebar-collapsed-width);
+}
+
+body.sidebar-collapsed .app-sidebar__toolbar {
+    display: none;
 }
 
 .app-sidebar__section + .app-sidebar__section {
@@ -361,7 +443,8 @@ body.sidebar-collapsed .app-sidebar {
 }
 
 .nav-link.is-active,
-.nav-sublink.is-active {
+.nav-sublink.is-active,
+.nav-group.is-active {
     background: rgba(37, 99, 235, 0.18);
     box-shadow: inset 3px 0 0 var(--color-accent);
 }
@@ -372,6 +455,18 @@ body.sidebar-collapsed .app-sidebar {
     gap: 12px;
 }
 
+.nav-link__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+    font-weight: 700;
+}
+
 .nav-group__items {
     display: none;
     padding: 0 0 8px 44px;
@@ -380,6 +475,10 @@ body.sidebar-collapsed .app-sidebar {
 .nav-group__items.is-open {
     display: grid;
     gap: 6px;
+}
+
+.nav-group__items .nav-group {
+    margin-top: 6px;
 }
 
 .nav-sublink {

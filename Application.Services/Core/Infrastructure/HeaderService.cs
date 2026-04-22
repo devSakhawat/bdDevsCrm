@@ -27,7 +27,7 @@ internal sealed class HeaderService : IHeaderService
 
   public async Task<HeaderSummaryDto> GetHeaderSummaryAsync(UsersDto currentUser, CancellationToken cancellationToken = default)
   {
-    if (currentUser.UserId is null or <= 0)
+    if (currentUser.UserId is null || currentUser.UserId <= 0)
       throw new GenericUnauthorizedException("User authentication required. Please log in again.");
 
     var userId = currentUser.UserId.Value;
@@ -65,7 +65,7 @@ internal sealed class HeaderService : IHeaderService
 
   private async Task<string?> GetBranchNameAsync(int? branchId, CancellationToken cancellationToken)
   {
-    if (branchId is null or <= 0)
+    if (branchId is null || branchId <= 0)
       return null;
 
     var branch = await _repository.Branches.ByIdAsync(x => x.Branchid == branchId.Value, trackChanges: false, cancellationToken);

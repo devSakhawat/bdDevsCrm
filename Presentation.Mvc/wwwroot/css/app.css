@@ -625,6 +625,10 @@ body.sidebar-collapsed .app-shell__main {
     gap: 16px;
 }
 
+.form-layout--single {
+    max-width: 720px;
+}
+
 .form-layout--inline {
     grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
     align-items: end;
@@ -788,6 +792,10 @@ body.sidebar-collapsed .app-shell__main {
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
+}
+
+.is-hidden {
+    display: none;
 }
 
 .app-table {

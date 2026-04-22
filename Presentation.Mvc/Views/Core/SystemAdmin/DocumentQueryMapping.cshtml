@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Document Query Mapping Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Document Query Mapping Management</h1>
+        <p class="page-header__subtitle">Phase 4 System Setup module for managing document query mapping records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Document Query Mapping</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddDocumentQueryMapping" class="btn btn--primary">Add Document Query Mapping</button>
+        <button type="button" id="btnRefreshDocumentQueryMapping" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="documentQueryMappingGrid"></div>
+</section>
+
+<div id="documentQueryMappingWindow" style="display:none;">
+    <form id="documentQueryMappingForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelDocumentQueryMapping" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveDocumentQueryMapping" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documentquerymapping/documentquerymappingSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documentquerymapping/documentquerymappingSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documentquerymapping/documentquerymappingDetails.js" asp-append-version="true"></script>
+}

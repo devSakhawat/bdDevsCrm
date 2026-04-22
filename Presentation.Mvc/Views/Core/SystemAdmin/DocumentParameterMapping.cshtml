@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Document Parameter Mapping Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Document Parameter Mapping Management</h1>
+        <p class="page-header__subtitle">Phase 4 System Setup module for managing document parameter mapping records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Document Parameter Mapping</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddDocumentParameterMapping" class="btn btn--primary">Add Document Parameter Mapping</button>
+        <button type="button" id="btnRefreshDocumentParameterMapping" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="documentParameterMappingGrid"></div>
+</section>
+
+<div id="documentParameterMappingWindow" style="display:none;">
+    <form id="documentParameterMappingForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelDocumentParameterMapping" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveDocumentParameterMapping" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documentparametermapping/documentparametermappingSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documentparametermapping/documentparametermappingSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documentparametermapping/documentparametermappingDetails.js" asp-append-version="true"></script>
+}

@@ -3,7 +3,7 @@
     var isDashboard = string.Equals(currentPath, "/", StringComparison.OrdinalIgnoreCase)
         || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
     var hrOperationPaths = new[] { "/Employee", "/Department", "/Branch", "/Designation", "/Shift" };
-    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus", "/Currency", "/CurrencyRate", "/BoardInstitute", "/ApproverType", "/ApproverHistory", "/DocumentTemplate", "/DocumentParameter", "/ApproverTypeToGroupMapping" };
+    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus", "/Currency", "/CurrencyRate", "/BoardInstitute", "/ApproverType", "/ApproverHistory", "/DocumentTemplate", "/DocumentParameter", "/ApproverTypeToGroupMapping", "/DocumentType", "/PasswordHistory", "/Competencies", "/CompetencyLevel", "/ApproverOrder", "/ApproverDetails", "/AssignApprover", "/DocumentQueryMapping", "/DocumentParameterMapping", "/AuditTrail", "/AuditLog", "/AppsTokenInfo", "/AppsTransactionLog" };
     bool IsCurrent(params string[] prefixes) => prefixes.Any(prefix => currentPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
     var isHrOperations = IsCurrent(hrOperationPaths);
     var isSystemSetup = IsCurrent(systemSetupPaths);
@@ -76,6 +76,19 @@
             <a class="nav-sublink @(IsCurrent("/DocumentTemplate") ? "is-active" : string.Empty)" asp-controller="DocumentTemplate" asp-action="Index">Document Template</a>
             <a class="nav-sublink @(IsCurrent("/DocumentParameter") ? "is-active" : string.Empty)" asp-controller="DocumentParameter" asp-action="Index">Document Parameter</a>
             <a class="nav-sublink @(IsCurrent("/ApproverTypeToGroupMapping") ? "is-active" : string.Empty)" asp-controller="ApproverTypeToGroupMapping" asp-action="Index">Approver Type / Group Mapping</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentType") ? "is-active" : string.Empty)" asp-controller="DocumentType" asp-action="Index">Document Type</a>
+            <a class="nav-sublink @(IsCurrent("/PasswordHistory") ? "is-active" : string.Empty)" asp-controller="PasswordHistory" asp-action="Index">Password History</a>
+            <a class="nav-sublink @(IsCurrent("/Competencies") ? "is-active" : string.Empty)" asp-controller="Competencies" asp-action="Index">Competencies</a>
+            <a class="nav-sublink @(IsCurrent("/CompetencyLevel") ? "is-active" : string.Empty)" asp-controller="CompetencyLevel" asp-action="Index">Competency Level</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverOrder") ? "is-active" : string.Empty)" asp-controller="ApproverOrder" asp-action="Index">Approver Order</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverDetails") ? "is-active" : string.Empty)" asp-controller="ApproverDetails" asp-action="Index">Approver Details</a>
+            <a class="nav-sublink @(IsCurrent("/AssignApprover") ? "is-active" : string.Empty)" asp-controller="AssignApprover" asp-action="Index">Assign Approver</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentQueryMapping") ? "is-active" : string.Empty)" asp-controller="DocumentQueryMapping" asp-action="Index">Document Query Mapping</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentParameterMapping") ? "is-active" : string.Empty)" asp-controller="DocumentParameterMapping" asp-action="Index">Document Parameter Mapping</a>
+            <a class="nav-sublink @(IsCurrent("/AuditTrail") ? "is-active" : string.Empty)" asp-controller="AuditTrail" asp-action="Index">Audit Trail</a>
+            <a class="nav-sublink @(IsCurrent("/AuditLog") ? "is-active" : string.Empty)" asp-controller="AuditLog" asp-action="Index">Audit Log</a>
+            <a class="nav-sublink @(IsCurrent("/AppsTokenInfo") ? "is-active" : string.Empty)" asp-controller="AppsTokenInfo" asp-action="Index">Apps Token Info</a>
+            <a class="nav-sublink @(IsCurrent("/AppsTransactionLog") ? "is-active" : string.Empty)" asp-controller="AppsTransactionLog" asp-action="Index">Apps Transaction Log</a>
             <a class="nav-sublink @(IsCurrent("/Workflow") ? "is-active" : string.Empty)" asp-controller="Workflow" asp-action="Index">Workflow Management</a>
             <a class="nav-sublink @(IsCurrent("/AccessControl") ? "is-active" : string.Empty)" asp-controller="AccessControl" asp-action="Index">Access Control</a>
         </div>

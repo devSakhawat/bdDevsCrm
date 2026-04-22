@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Competency Level Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Competency Level Management</h1>
+        <p class="page-header__subtitle">Phase 3 System Setup module for managing competency level records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Competency Level</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddCompetencyLevel" class="btn btn--primary">Add Competency Level</button>
+        <button type="button" id="btnRefreshCompetencyLevel" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="competencyLevelGrid"></div>
+</section>
+
+<div id="competencyLevelWindow" style="display:none;">
+    <form id="competencyLevelForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelCompetencyLevel" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveCompetencyLevel" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/competencylevel/competencylevelSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/competencylevel/competencylevelSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/competencylevel/competencylevelDetails.js" asp-append-version="true"></script>
+}

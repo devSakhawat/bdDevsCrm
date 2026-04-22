@@ -3,7 +3,7 @@
     var isDashboard = string.Equals(currentPath, "/", StringComparison.OrdinalIgnoreCase)
         || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
     var hrOperationPaths = new[] { "/Employee", "/Department", "/Branch", "/Designation", "/Shift" };
-    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus" };
+    var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus", "/Currency", "/CurrencyRate", "/BoardInstitute", "/ApproverType", "/ApproverHistory", "/DocumentTemplate", "/DocumentParameter", "/ApproverTypeToGroupMapping" };
     bool IsCurrent(params string[] prefixes) => prefixes.Any(prefix => currentPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
     var isHrOperations = IsCurrent(hrOperationPaths);
     var isSystemSetup = IsCurrent(systemSetupPaths);
@@ -68,6 +68,14 @@
             <a class="nav-sublink @(IsCurrent("/AuditType") ? "is-active" : string.Empty)" asp-controller="AuditType" asp-action="Index">Audit Type</a>
             <a class="nav-sublink @(IsCurrent("/Holiday") ? "is-active" : string.Empty)" asp-controller="Holiday" asp-action="Index">Holiday Management</a>
             <a class="nav-sublink @(IsCurrent("/MaritalStatus") ? "is-active" : string.Empty)" asp-controller="MaritalStatus" asp-action="Index">Marital Status</a>
+            <a class="nav-sublink @(IsCurrent("/Currency") ? "is-active" : string.Empty)" asp-controller="Currency" asp-action="Index">Currency Management</a>
+            <a class="nav-sublink @(IsCurrent("/CurrencyRate") ? "is-active" : string.Empty)" asp-controller="CurrencyRate" asp-action="Index">Currency Rate</a>
+            <a class="nav-sublink @(IsCurrent("/BoardInstitute") ? "is-active" : string.Empty)" asp-controller="BoardInstitute" asp-action="Index">Board Institute</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverType") ? "is-active" : string.Empty)" asp-controller="ApproverType" asp-action="Index">Approver Type</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverHistory") ? "is-active" : string.Empty)" asp-controller="ApproverHistory" asp-action="Index">Approver History</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentTemplate") ? "is-active" : string.Empty)" asp-controller="DocumentTemplate" asp-action="Index">Document Template</a>
+            <a class="nav-sublink @(IsCurrent("/DocumentParameter") ? "is-active" : string.Empty)" asp-controller="DocumentParameter" asp-action="Index">Document Parameter</a>
+            <a class="nav-sublink @(IsCurrent("/ApproverTypeToGroupMapping") ? "is-active" : string.Empty)" asp-controller="ApproverTypeToGroupMapping" asp-action="Index">Approver Type / Group Mapping</a>
             <a class="nav-sublink @(IsCurrent("/Workflow") ? "is-active" : string.Empty)" asp-controller="Workflow" asp-action="Index">Workflow Management</a>
             <a class="nav-sublink @(IsCurrent("/AccessControl") ? "is-active" : string.Empty)" asp-controller="AccessControl" asp-action="Index">Access Control</a>
         </div>

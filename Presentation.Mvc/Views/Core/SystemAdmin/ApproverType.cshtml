@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Approver Type Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Approver Type Management</h1>
+        <p class="page-header__subtitle">Phase 1 System Setup module for managing approver type records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Approver Type</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddApproverType" class="btn btn--primary">Add Approver Type</button>
+        <button type="button" id="btnRefreshApproverType" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="approverTypeGrid"></div>
+</section>
+
+<div id="approverTypeWindow" style="display:none;">
+    <form id="approverTypeForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelApproverType" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveApproverType" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/approvertype/approvertypeSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/approvertype/approvertypeSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/approvertype/approvertypeDetails.js" asp-append-version="true"></script>
+}

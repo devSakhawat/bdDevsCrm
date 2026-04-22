@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Approver Type To Group Mapping Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Approver Type To Group Mapping Management</h1>
+        <p class="page-header__subtitle">Phase 1 System Setup module for managing approver type and group mapping records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Approver Type To Group Mapping</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddApproverTypeToGroupMapping" class="btn btn--primary">Add Approver Type To Group Mapping</button>
+        <button type="button" id="btnRefreshApproverTypeToGroupMapping" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="approverTypeToGroupMappingGrid"></div>
+</section>
+
+<div id="approverTypeToGroupMappingWindow" style="display:none;">
+    <form id="approverTypeToGroupMappingForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelApproverTypeToGroupMapping" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveApproverTypeToGroupMapping" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/approvertypetogroupmapping/approvertypetogroupmappingSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/approvertypetogroupmapping/approvertypetogroupmappingSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/approvertypetogroupmapping/approvertypetogroupmappingDetails.js" asp-append-version="true"></script>
+}

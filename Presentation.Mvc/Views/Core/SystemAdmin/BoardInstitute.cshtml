@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Board Institute Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Board Institute Management</h1>
+        <p class="page-header__subtitle">Phase 1 System Setup module for managing board and institute records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Board Institute</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddBoardInstitute" class="btn btn--primary">Add Board Institute</button>
+        <button type="button" id="btnRefreshBoardInstitute" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="boardInstituteGrid"></div>
+</section>
+
+<div id="boardInstituteWindow" style="display:none;">
+    <form id="boardInstituteForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelBoardInstitute" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveBoardInstitute" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/boardinstitute/boardinstituteSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/boardinstitute/boardinstituteSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/boardinstitute/boardinstituteDetails.js" asp-append-version="true"></script>
+}

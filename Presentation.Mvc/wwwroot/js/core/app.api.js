@@ -20,6 +20,11 @@ window.ApiClient = (() => {
         if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
             return endpoint;
         }
+
+        if (endpoint.startsWith('/bdDevs-crm') && window.AppConfig?.apiRouteBaseUrl) {
+            return `${window.AppConfig.apiRouteBaseUrl}${endpoint.replace('/bdDevs-crm', '')}`;
+        }
+
         return `${window.AppConfig.apiBaseUrl}${endpoint}`;
     };
 
@@ -27,6 +32,7 @@ window.ApiClient = (() => {
     const request = async (url, options = {}) => {
         const config = {
             method: options.method || 'GET',
+            credentials: options.credentials || 'include',
             headers: {
                 ...window.AppConfig.headers,
                 ...(accessToken ? { 'Authorization': `Bearer ${accessToken}` } : {}),
@@ -41,14 +47,18 @@ window.ApiClient = (() => {
         try {
             const response = await fetch(buildApiUrl(url), config);
 
-            // Handle 401 Unauthorized - token expired
             if (response.status === 401) {
                 clearToken();
+
+                if (options.suppressUnauthorizedRedirect) {
+                    return null;
+                }
+
                 window.AppToast?.error(window.AppConstants?.messages.errors.unauthorized || 'Session expired');
                 setTimeout(() => {
                     window.location.href = '/Account/Login';
                 }, 1500);
-                return;
+                return null;
             }
 
             const data = await response.json();
@@ -66,20 +76,20 @@ window.ApiClient = (() => {
     };
 
     // Convenience methods
-    const get = async (url) => {
-        return request(url, { method: 'GET' });
+    const get = async (url, options = {}) => {
+        return request(url, { ...options, method: 'GET' });
     };
 
-    const post = async (url, body) => {
-        return request(url, { method: 'POST', body });
+    const post = async (url, body, options = {}) => {
+        return request(url, { ...options, method: 'POST', body });
     };
 
-    const put = async (url, body) => {
-        return request(url, { method: 'PUT', body });
+    const put = async (url, body, options = {}) => {
+        return request(url, { ...options, method: 'PUT', body });
     };
 
-    const del = async (url) => {
-        return request(url, { method: 'DELETE' });
+    const del = async (url, options = {}) => {
+        return request(url, { ...options, method: 'DELETE' });
     };
 
     return {

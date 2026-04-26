@@ -7,21 +7,22 @@
     'use strict';
 
     window.ApplicationModule = window.ApplicationModule || {};
+    const apiRouteBaseUrl = window.AppConfig.apiRouteBaseUrl || `${window.location.origin}/bdDevs-crm`;
 
     window.ApplicationModule.config = {
         apiEndpoints: {
-            summary: window.AppConfig.apiBaseUrl + '/crm/application-summary',
-            create: window.AppConfig.apiBaseUrl + '/crm/application',
-            update: (id) => window.AppConfig.apiBaseUrl + `/crm/application/${id}`,
-            delete: (id) => window.AppConfig.apiBaseUrl + `/crm/application/${id}`,
-            read: (id) => window.AppConfig.apiBaseUrl + `/crm/application/${id}`,
-            applicantsDDL: window.AppConfig.apiBaseUrl + '/crm/applicants-ddl',
-            statusesDDL: window.AppConfig.apiBaseUrl + '/core/systemadmin/statuses-ddl',
-            countriesDDL: window.AppConfig.apiBaseUrl + '/core/systemadmin/countries-ddl',
-            institutesDDL: (countryId) => window.AppConfig.apiBaseUrl + `/crm/institutes-by-country/${countryId}`,
-            coursesDDL: (instituteId) => window.AppConfig.apiBaseUrl + `/crm/courses-by-institute/${instituteId}`,
-            intakeMonthsDDL: window.AppConfig.apiBaseUrl + '/crm/intake-months-ddl',
-            uploadDocument: window.AppConfig.apiBaseUrl + '/crm/application/upload-document'
+            summary: `${apiRouteBaseUrl}/crm-application-summary`,
+            create: `${apiRouteBaseUrl}/crm-application`,
+            update: (id) => `${apiRouteBaseUrl}/crm-application/${id}`,
+            delete: (id) => `${apiRouteBaseUrl}/crm-application/${id}`,
+            read: (id) => `${apiRouteBaseUrl}/crm-application/${id}`,
+            applicantsDDL: `${apiRouteBaseUrl}/crm-applicant-infos-ddl`,
+            statusesDDL: `${apiRouteBaseUrl}/statuses-ddl`,
+            countriesDDL: `${apiRouteBaseUrl}/countryddl`,
+            institutesDDL: (countryId) => `${apiRouteBaseUrl}/crm-institut-by-countryid-ddl/${countryId}`,
+            coursesDDL: (instituteId) => `${apiRouteBaseUrl}/crm-course-by-instituteid-ddl/${instituteId}`,
+            intakeMonthsDDL: `${apiRouteBaseUrl}/intake-month-ddl`,
+            uploadDocument: `${apiRouteBaseUrl}/crm-application/upload-document`
         },
         gridOptions: {
             pageSize: 20,

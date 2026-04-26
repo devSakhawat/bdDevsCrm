@@ -6,17 +6,18 @@
     'use strict';
 
     window.ApplicantInfoModule = window.ApplicantInfoModule || {};
+    const apiRouteBaseUrl = window.AppConfig.apiRouteBaseUrl || `${window.location.origin}/bdDevs-crm`;
 
     window.ApplicantInfoModule.config = {
         apiEndpoints: {
-            summary: window.AppConfig.apiBaseUrl + '/crm/crm-applicant-info-summary',
-            create: window.AppConfig.apiBaseUrl + '/crm/crm-applicant-info',
-            update: (id) => window.AppConfig.apiBaseUrl + `/crm/crm-applicant-info/${id}`,
-            delete: (id) => window.AppConfig.apiBaseUrl + `/crm/crm-applicant-info/${id}`,
-            read: (id) => window.AppConfig.apiBaseUrl + `/crm/crm-applicant-info/${id}`,
-            gendersDDL: window.AppConfig.apiBaseUrl + '/core/hr/genders-ddl',
-            maritalStatusesDDL: window.AppConfig.apiBaseUrl + '/core/hr/marital-statuses-ddl',
-            uploadPhoto: window.AppConfig.apiBaseUrl + '/crm/crm-applicant-info/upload-photo'
+            summary: `${apiRouteBaseUrl}/crm-applicant-info-summary`,
+            create: `${apiRouteBaseUrl}/crm-applicant-info`,
+            update: (id) => `${apiRouteBaseUrl}/crm-applicant-info/${id}`,
+            delete: (id) => `${apiRouteBaseUrl}/crm-applicant-info/${id}`,
+            read: (id) => `${apiRouteBaseUrl}/crm-applicant-info/${id}`,
+            gendersDDL: `${apiRouteBaseUrl}/genders-ddl`,
+            maritalStatusesDDL: `${apiRouteBaseUrl}/marital-statuses-ddl`,
+            uploadPhoto: `${apiRouteBaseUrl}/crm-applicant-info/upload-photo`
         },
         gridOptions: {
             pageSize: 20,

@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/docs/">
+    <File Path="../Document/EducationCRM_Technical_Spec_v1.md" />
     <File Path="doc/agenda_and_notes.md" />
     <File Path="doc/ARCHITECTURE_FIXES_REPORT.md" />
     <File Path="doc/backend_design.md" />

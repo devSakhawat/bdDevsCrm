@@ -3,305 +3,46 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] — bdDevCRM</title>
-
-    <!-- ── Kendo UI ── -->
-    <link rel="stylesheet" href="~/lib/kendo/styles/kendo.common.min.css" />
-    <link rel="stylesheet" href="~/lib/kendo/styles/kendo.default.min.css" />
-
-    <!-- ── Font Awesome ── -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-    <!-- ── App Styles ── -->
-    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/components.css" asp-append-version="true" />
+    <meta name="description" content="bdDevsCrm - Enterprise CRM & HRIS" />
+    <meta name="app-base-url" content="@Url.Content("~/")" />
+    <title>@(ViewData["Title"] != null ? ViewData["Title"] + " | bdDevsCrm" : "bdDevsCrm")</title>
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
     @await RenderSectionAsync("Styles", required: false)
 </head>
-<body class="app-body">
-
-    <!-- ════════════════════════════════════════════
-         HEADER  (60px fixed top, #1E5FA8)
-    ════════════════════════════════════════════ -->
-    <header class="app-header" id="appHeader">
-
-        <!-- Left: Toggle + Logo -->
-        <div class="app-header__left">
-            <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar" aria-label="Toggle Sidebar">
-                <i class="fa fa-bars"></i>
-            </button>
-            <a class="app-logo" asp-controller="Home" asp-action="Index">
-                <span class="app-logo__icon">
-                    <i class="fa fa-chart-line"></i>
-                </span>
-                <span class="app-logo__text">bdDev<strong>CRM</strong></span>
-            </a>
-        </div>
-
-        <!-- Center: Global Search / Command Palette -->
-        <div class="app-header__center">
-            <div class="global-search" id="globalSearch">
-                <i class="fa fa-search global-search__icon"></i>
-                <input type="text"
-                       id="globalSearchInput"
-                       class="global-search__input"
-                       placeholder="Search or press Ctrl+K…"
-                       autocomplete="off" />
-                <span class="global-search__shortcut">Ctrl+K</span>
-            </div>
-        </div>
-
-        <!-- Right: Notifications + User Menu -->
-        <div class="app-header__right">
-
-            <!-- Notification Bell -->
-            <div class="header-action" id="notifBtn" title="Notifications">
-                <i class="fa fa-bell"></i>
-                <span class="header-action__badge" id="notifBadge">3</span>
-            </div>
-
-            <!-- Help -->
-            <div class="header-action" title="Help">
-                <i class="fa fa-circle-question"></i>
-            </div>
-
-            <!-- User Avatar / Dropdown -->
-            <div class="user-menu" id="userMenu">
-                <div class="user-menu__trigger" id="userMenuTrigger">
-                    <div class="user-avatar" id="userAvatar">SA</div>
-                    <span class="user-menu__name" id="userDisplayName">System Admin</span>
-                    <i class="fa fa-chevron-down user-menu__caret"></i>
-                </div>
-                <div class="user-menu__dropdown" id="userMenuDropdown">
-                    <div class="user-menu__info">
-                        <div class="user-avatar user-avatar--lg">SA</div>
-                        <div>
-                            <div class="user-menu__fullname" id="userFullName">System Administrator</div>
-                            <div class="user-menu__role" id="userRole">Super Admin</div>
-                        </div>
-                    </div>
-                    <div class="user-menu__divider"></div>
-                    <a class="user-menu__item" asp-controller="Account" asp-action="Profile">
-                        <i class="fa fa-user"></i> My Profile
-                    </a>
-                    <a class="user-menu__item" asp-controller="Account" asp-action="ChangePassword">
-                        <i class="fa fa-lock"></i> Change Password
-                    </a>
-                    <a class="user-menu__item" asp-controller="Account" asp-action="Settings">
-                        <i class="fa fa-gear"></i> Preferences
-                    </a>
-                    <div class="user-menu__divider"></div>
-                    <a class="user-menu__item user-menu__item--danger" asp-controller="Account" asp-action="Logout">
-                        <i class="fa fa-right-from-bracket"></i> Sign Out
-                    </a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- ════════════════════════════════════════════
-         SIDEBAR  (240px | 64px collapsed, #1E293B)
-    ════════════════════════════════════════════ -->
-    <aside class="app-sidebar" id="appSidebar">
-
-        <!-- Sidebar Search -->
-        <div class="sidebar-search">
-            <i class="fa fa-search sidebar-search__icon"></i>
-            <input type="text"
-                   id="sidebarSearchInput"
-                   class="sidebar-search__input"
-                   placeholder="Filter menu…"
-                   autocomplete="off" />
-        </div>
-
-        <!-- Navigation Menu -->
-        <nav class="sidebar-nav" id="sidebarNav">
-
-            <!-- Dashboard -->
-            <div class="nav-item nav-item--single @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "is-active" : "")">
-                <a class="nav-link" asp-controller="Home" asp-action="Index">
-                    <i class="fa fa-house nav-link__icon"></i>
-                    <span class="nav-link__text">Dashboard</span>
-                </a>
-            </div>
-
-            <!-- ── CRM ── -->
-            <div class="nav-group">
-                <div class="nav-group__header" data-group="crm">
-                    <i class="fa fa-handshake nav-link__icon"></i>
-                    <span class="nav-link__text">CRM</span>
-                    <i class="fa fa-chevron-right nav-group__caret"></i>
-                </div>
-                <div class="nav-group__children" id="group-crm">
-                    <a class="nav-child" asp-controller="Lead" asp-action="Index">
-                        <i class="fa fa-user-plus"></i> Leads
-                    </a>
-                    <a class="nav-child" asp-controller="Contact" asp-action="Index">
-                        <i class="fa fa-address-book"></i> Contacts
-                    </a>
-                    <a class="nav-child" asp-controller="Account" asp-action="Index">
-                        <i class="fa fa-building"></i> Accounts
-                    </a>
-                    <a class="nav-child" asp-controller="Opportunity" asp-action="Index">
-                        <i class="fa fa-funnel"></i> Opportunities
-                    </a>
-                    <a class="nav-child" asp-controller="Task" asp-action="Index">
-                        <i class="fa fa-list-check"></i> Tasks
-                    </a>
-                </div>
-            </div>
-
-            <!-- ── HR ── -->
-            <div class="nav-group">
-                <div class="nav-group__header" data-group="hr">
-                    <i class="fa fa-users nav-link__icon"></i>
-                    <span class="nav-link__text">Human Resources</span>
-                    <i class="fa fa-chevron-right nav-group__caret"></i>
-                </div>
-                <div class="nav-group__children" id="group-hr">
-                    <a class="nav-child" asp-controller="Employee" asp-action="Index">
-                        <i class="fa fa-id-card"></i> Employees
-                    </a>
-                    <a class="nav-child" asp-controller="Department" asp-action="Index">
-                        <i class="fa fa-sitemap"></i> Departments
-                    </a>
-                    <a class="nav-child" asp-controller="Designation" asp-action="Index">
-                        <i class="fa fa-briefcase"></i> Designations
-                    </a>
-                    <a class="nav-child" asp-controller="Leave" asp-action="Index">
-                        <i class="fa fa-calendar-days"></i> Leave Management
-                    </a>
-                    <a class="nav-child" asp-controller="Attendance" asp-action="Index">
-                        <i class="fa fa-clock"></i> Attendance
-                    </a>
-                </div>
-            </div>
-
-            <!-- ── Payroll ── -->
-            <div class="nav-group">
-                <div class="nav-group__header" data-group="payroll">
-                    <i class="fa fa-money-bill-wave nav-link__icon"></i>
-                    <span class="nav-link__text">Payroll</span>
-                    <i class="fa fa-chevron-right nav-group__caret"></i>
-                </div>
-                <div class="nav-group__children" id="group-payroll">
-                    <a class="nav-child" asp-controller="SalarySetup" asp-action="Index">
-                        <i class="fa fa-sliders"></i> Salary Setup
-                    </a>
-                    <a class="nav-child" asp-controller="PayrollProcess" asp-action="Index">
-                        <i class="fa fa-gears"></i> Process Payroll
-                    </a>
-                    <a class="nav-child" asp-controller="Payslip" asp-action="Index">
-                        <i class="fa fa-file-invoice-dollar"></i> Pay Slips
-                    </a>
-                    <a class="nav-child" asp-controller="TaxReport" asp-action="Index">
-                        <i class="fa fa-receipt"></i> Tax Reports
-                    </a>
-                </div>
-            </div>
-
-            <!-- ── Reports ── -->
-            <div class="nav-group">
-                <div class="nav-group__header" data-group="reports">
-                    <i class="fa fa-chart-bar nav-link__icon"></i>
-                    <span class="nav-link__text">Reports</span>
-                    <i class="fa fa-chevron-right nav-group__caret"></i>
-                </div>
-                <div class="nav-group__children" id="group-reports">
-                    <a class="nav-child" asp-controller="Report" asp-action="SalarySummary">
-                        <i class="fa fa-table-list"></i> Salary Summary
-                    </a>
-                    <a class="nav-child" asp-controller="Report" asp-action="AuditLog">
-                        <i class="fa fa-clipboard-list"></i> Audit Log
-                    </a>
-                </div>
-            </div>
-
-            <!-- ── System Admin ── -->
-            <div class="nav-group">
-                <div class="nav-group__header" data-group="sysadmin">
-                    <i class="fa fa-shield-halved nav-link__icon"></i>
-                    <span class="nav-link__text">System Admin</span>
-                    <i class="fa fa-chevron-right nav-group__caret"></i>
-                </div>
-                <div class="nav-group__children" id="group-sysadmin">
-                    <a class="nav-child" asp-controller="SystemAdmin" asp-action="Users">
-                        <i class="fa fa-user-gear"></i> User Management
-                    </a>
-                    <a class="nav-child" asp-controller="SystemAdmin" asp-action="Roles">
-                        <i class="fa fa-key"></i> Roles & Permissions
-                    </a>
-                    <a class="nav-child" asp-controller="SystemAdmin" asp-action="Menu">
-                        <i class="fa fa-bars-staggered"></i> Menu Builder
-                    </a>
-                    <a class="nav-child" asp-controller="SystemAdmin" asp-action="Company">
-                        <i class="fa fa-building-flag"></i> Company Setup
-                    </a>
-                </div>
-            </div>
-
-        </nav>
-
-        <!-- Sidebar Footer -->
-        <div class="sidebar-footer">
-            <div class="sidebar-footer__version">bdDevCRM v2.0.0</div>
-        </div>
-    </aside>
-
-    <!-- Sidebar Overlay (mobile) -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- ════════════════════════════════════════════
-         MAIN CONTENT
-    ════════════════════════════════════════════ -->
-    <main class="app-main" id="appMain">
-
-        @* ── Page Body ── *@
-        @RenderBody()
-
-    </main>
-
-    <!-- ════════════════════════════════════════════
-         FOOTER  (48px, border-top, #FFFFFF)
-    ════════════════════════════════════════════ -->
-    <footer class="app-footer">
-        <span class="app-footer__copy">&copy; @DateTime.Now.Year bdDevCRM. All rights reserved.</span>
-        <span class="app-footer__build">Build: v2.0.0 | Powered by ASP.NET Core 8</span>
-    </footer>
-
-    <!-- ════════════════════════════════════════════
-         GLOBAL TOAST CONTAINER
-    ════════════════════════════════════════════ -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- ════════════════════════════════════════════
-         COMMAND PALETTE (Ctrl+K)
-    ════════════════════════════════════════════ -->
-    <div class="cmd-palette-backdrop" id="cmdBackdrop"></div>
-    <div class="cmd-palette" id="cmdPalette" role="dialog" aria-modal="true" aria-label="Command Palette">
-        <div class="cmd-palette__search">
-            <i class="fa fa-search cmd-palette__icon"></i>
-            <input type="text" id="cmdInput" class="cmd-palette__input" placeholder="Type a command or search…" autocomplete="off" />
-            <span class="cmd-palette__esc" onclick="app.cmdPalette.close()">ESC</span>
-        </div>
-        <div class="cmd-palette__results" id="cmdResults">
-            <div class="cmd-palette__empty">Start typing to search…</div>
+<body class="app-shell">
+    <div id="loading-overlay" class="loading-overlay is-hidden" aria-live="polite" aria-hidden="true">
+        <div class="loading-overlay__content">
+            <div class="spinner"></div>
+            <p class="loading-overlay__text">Loading...</p>
         </div>
     </div>
 
-    <!-- ════════════════════════════════════════════
-         SCRIPTS
-    ════════════════════════════════════════════ -->
-    <!-- jQuery (required by Kendo) -->
+    <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    @await Html.PartialAsync("_Header")
+    <div class="app-shell__frame">
+        @await Html.PartialAsync("_Sidebar")
+
+        <main class="app-shell__main" id="mainContent" role="main">
+            @await Html.PartialAsync("_PageHeader")
+            <div class="content-zone">
+                @RenderBody()
+            </div>
+            @await Html.PartialAsync("_Footer")
+        </main>
+    </div>
+
+    @await Html.PartialAsync("_ModalConfirm")
+    @await Html.PartialAsync("_ModalDynamic")
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <!-- Kendo UI -->
-    <script src="~/lib/kendo/js/kendo.all.min.js"></script>
-    <!-- App Core -->
-    <script src="~/js/app/app.core.js" asp-append-version="true"></script>
-    <script src="~/js/app/app.layout.js" asp-append-version="true"></script>
-    <script src="~/js/app/app.toast.js" asp-append-version="true"></script>
-    <script src="~/js/app/app.cmdpalette.js" asp-append-version="true"></script>
-
+    <script src="~/js/core/app.api.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.loader.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.toast.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.modal.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.grid.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.form.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.core.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-
 </body>
 </html>

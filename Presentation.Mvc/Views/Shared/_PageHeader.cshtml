@@ -1,0 +1,42 @@
+@{
+    var pageTitle = ViewBag.PageTitle as string ?? ViewData["Title"]?.ToString() ?? "Dashboard";
+    var pageSubtitle = ViewBag.PageSubtitle as string;
+    var breadcrumbs = (ViewBag.Breadcrumb as IEnumerable<string>)?.ToArray();
+    var pageActions = (ViewBag.PageActions as IEnumerable<PageActionItem>)?.ToArray();
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">@pageTitle</h1>
+        @if (!string.IsNullOrWhiteSpace(pageSubtitle))
+        {
+            <p class="page-header__subtitle">@pageSubtitle</p>
+        }
+
+        @if (breadcrumbs is not null)
+        {
+            <nav class="breadcrumb" aria-label="Breadcrumb">
+                @foreach (var item in breadcrumbs.Select((value, index) => new { value, index }))
+                {
+                    <span class="breadcrumb__item @(item.index == breadcrumbs.Length - 1 ? "is-current" : string.Empty)">@item.value</span>
+                }
+            </nav>
+        }
+    </div>
+
+    @if (pageActions is not null && pageActions.Length > 0)
+    {
+        <div class="page-header__actions">
+            @foreach (var action in pageActions)
+            {
+                <button class="btn btn--@action.Variant" type="button" data-demo-action="@action.ActionName">
+                    @if (!string.IsNullOrWhiteSpace(action.IconSvg))
+                    {
+                        <span class="btn__icon" aria-hidden="true">@Html.Raw(action.IconSvg)</span>
+                    }
+                    <span>@action.Text</span>
+                </button>
+            }
+        </div>
+    }
+</section>

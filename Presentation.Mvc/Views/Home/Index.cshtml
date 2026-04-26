@@ -1,8 +1,215 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="dashboard">
+    <section class="alert-banner alert-banner--info">
+        <div>
+            <strong>Frontend project scaffold is ready.</strong>
+            <p>The shared layout, dashboard cards, filter form, table pattern, toast, modal and JS core layer now follow the HRIS UI document.</p>
+        </div>
+        <button class="btn btn--ghost" type="button" data-demo-action="view-guidelines">View guidelines</button>
+    </section>
+
+    <section class="stats-grid">
+        <article class="summary-card">
+            <span class="summary-card__icon">👤</span>
+            <div>
+                <p class="summary-card__label">Active Employees</p>
+                <h3 class="summary-card__value">12,458</h3>
+                <p class="summary-card__trend is-positive">↑ 4.8% this month</p>
+            </div>
+        </article>
+        <article class="summary-card">
+            <span class="summary-card__icon">📝</span>
+            <div>
+                <p class="summary-card__label">Pending Approvals</p>
+                <h3 class="summary-card__value">87</h3>
+                <p class="summary-card__trend is-warning">24 require same-day action</p>
+            </div>
+        </article>
+        <article class="summary-card">
+            <span class="summary-card__icon">💰</span>
+            <div>
+                <p class="summary-card__label">Bonus Batch</p>
+                <h3 class="summary-card__value">৳ 3.2M</h3>
+                <p class="summary-card__trend is-positive">Ready for finance export</p>
+            </div>
+        </article>
+        <article class="summary-card">
+            <span class="summary-card__icon">📊</span>
+            <div>
+                <p class="summary-card__label">Attendance Variance</p>
+                <h3 class="summary-card__value">1.8%</h3>
+                <p class="summary-card__trend is-danger">↓ Needs branch review</p>
+            </div>
+        </article>
+    </section>
+
+    <section class="app-card">
+        <div class="app-card__header">
+            <div>
+                <h3>Employee quick filter</h3>
+                <p>Inline search/filter pattern prepared for grid-heavy modules.</p>
+            </div>
+        </div>
+        <div class="app-card__body">
+            <form id="formDashboardFilters" class="form-layout form-layout--inline">
+                <div class="form-group">
+                    <label for="inpDepartment">Department</label>
+                    <select id="inpDepartment" class="app-input">
+                        <option>All Departments</option>
+                        <option>Human Resource</option>
+                        <option>Accounts</option>
+                        <option>CRM Operations</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inpStatus">Status</label>
+                    <select id="inpStatus" class="app-input">
+                        <option>All Status</option>
+                        <option>Active</option>
+                        <option>Pending</option>
+                        <option>On Leave</option>
+                    </select>
+                </div>
+                <div class="form-group form-group--wide">
+                    <label for="inpKeyword">Keyword</label>
+                    <input id="inpKeyword" class="app-input" type="text" placeholder="Search by employee ID, name or branch" />
+                </div>
+                <div class="form-actions-inline">
+                    <button class="btn btn--primary" type="submit">Search</button>
+                    <button id="btnResetFilters" class="btn btn--ghost" type="button">Reset</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="dashboard-grid">
+        <article class="app-card">
+            <div class="app-card__header">
+                <div>
+                    <h3>Employee status overview</h3>
+                    <p>Standard table styling aligned with the documented grid palette.</p>
+                </div>
+                <span class="badge badge--info">Live preview</span>
+            </div>
+            <div class="app-card__body app-card__body--flush">
+                <div class="table-shell">
+                    <table class="app-table" id="gridEmployeeOverview">
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Department</th>
+                                <th>Status</th>
+                                <th>Joining</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>EMP-10054</strong>
+                                    <span class="text-muted">Shafiqul Islam</span>
+                                </td>
+                                <td>Human Resource</td>
+                                <td><span class="badge badge--success">Active</span></td>
+                                <td>02 Feb 2025</td>
+                                <td class="text-right">
+                                    <button class="btn btn--table" type="button" data-row-action="view">View</button>
+                                    <button class="btn btn--table-secondary" type="button" data-row-action="edit">Edit</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>EMP-10087</strong>
+                                    <span class="text-muted">Raisa Ahmed</span>
+                                </td>
+                                <td>Accounts</td>
+                                <td><span class="badge badge--warning">Pending</span></td>
+                                <td>12 Mar 2025</td>
+                                <td class="text-right">
+                                    <button class="btn btn--table" type="button" data-row-action="view">View</button>
+                                    <button class="btn btn--table-danger" type="button" data-row-action="delete">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>EMP-10118</strong>
+                                    <span class="text-muted">Mehedi Hasan</span>
+                                </td>
+                                <td>CRM Operations</td>
+                                <td><span class="badge badge--info">On Leave</span></td>
+                                <td>22 Jan 2025</td>
+                                <td class="text-right">
+                                    <button class="btn btn--table" type="button" data-row-action="view">View</button>
+                                    <button class="btn btn--table-secondary" type="button" data-row-action="edit">Edit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </article>
+
+        <article class="app-card">
+            <div class="app-card__header">
+                <div>
+                    <h3>Next rollout steps</h3>
+                    <p>Use this shell to plug in module-specific pages.</p>
+                </div>
+            </div>
+            <div class="app-card__body">
+                <div class="checklist">
+                    <div class="checklist__item is-done">Shared layout with fixed header, collapsible sidebar and footer</div>
+                    <div class="checklist__item is-done">Reusable page header and action area</div>
+                    <div class="checklist__item is-done">Core JS layer for API, toast, loader, modal, form and grid</div>
+                    <div class="checklist__item">Replace demo widgets with actual Kendo UI assets when licensed packages are added</div>
+                    <div class="checklist__item">Create feature modules under <code>wwwroot/js/modules/</code> and matching views</div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="app-card">
+        <div class="app-card__header">
+            <div>
+                <h3>Module-ready form pattern</h3>
+                <p>Two-column input layout for larger HRIS forms.</p>
+            </div>
+        </div>
+        <div class="app-card__body">
+            <form class="form-layout form-layout--grid">
+                <div class="form-group">
+                    <label for="inpFirstName">First Name <span class="required">*</span></label>
+                    <input id="inpFirstName" class="app-input" type="text" placeholder="Enter first name" required />
+                </div>
+                <div class="form-group">
+                    <label for="inpLastName">Last Name <span class="required">*</span></label>
+                    <input id="inpLastName" class="app-input" type="text" placeholder="Enter last name" required />
+                </div>
+                <div class="form-group">
+                    <label for="inpEmail">Official Email</label>
+                    <input id="inpEmail" class="app-input" type="email" placeholder="name@company.com" />
+                </div>
+                <div class="form-group">
+                    <label for="inpDesignation">Designation</label>
+                    <input id="inpDesignation" class="app-input" type="text" placeholder="e.g. Senior Executive" />
+                </div>
+                <div class="form-group form-group--span-2">
+                    <label for="inpRemarks">Remarks</label>
+                    <textarea id="inpRemarks" class="app-input app-input--textarea" placeholder="Reusable notes, onboarding comments and approval remarks."></textarea>
+                </div>
+            </form>
+            <div class="form-action-bar">
+                <button class="btn btn--ghost" type="button" data-demo-action="cancel-form">Cancel</button>
+                <button class="btn btn--secondary" type="button" data-demo-action="reset-form">Reset</button>
+                <button class="btn btn--primary" type="button" data-demo-action="save-form">Save Employee</button>
+            </div>
+        </div>
+    </section>
 </div>
+
+@section Scripts {
+    <script src="~/js/modules/home/homeDashboard.js" asp-append-version="true"></script>
+}

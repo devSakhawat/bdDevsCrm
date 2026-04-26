@@ -94,6 +94,12 @@ public interface IServiceManager
   ICrmIntakeMonthService CrmIntakeMonths { get; }
   ICrmIntakeYearService CrmIntakeYears { get; }
   ICrmPaymentMethodService CrmPaymentMethods { get; }
+  ICrmDocumentTypeService CrmDocumentTypes { get; }
+  ICrmLeadSourceService CrmLeadSources { get; }
+  ICrmLeadStageService CrmLeadStages { get; }
+  ICrmApplicationStatusService CrmApplicationStatuses { get; }
+  ICrmVisaStatusService CrmVisaStatuses { get; }
+  ICrmCommunicationTypeService CrmCommunicationTypes { get; }
   ICrmCourseIntakeService CrmCourseIntakes { get; }
   #endregion Crm
 

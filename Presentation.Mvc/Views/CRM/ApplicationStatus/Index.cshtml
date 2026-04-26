@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Application Status Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Application Status Management</h1>
+        <p class="page-header__subtitle">Education CRM master data module for managing application status records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Application Status</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddApplicationStatus" class="btn btn--primary">Add Application Status</button>
+        <button type="button" id="btnRefreshApplicationStatus" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="applicationStatusGrid"></div>
+</section>
+
+<div id="applicationStatusWindow" style="display:none;">
+    <form id="applicationStatusForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelApplicationStatus" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveApplicationStatus" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/applicationstatus/applicationStatusSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/applicationstatus/applicationStatusSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/applicationstatus/applicationStatusDetails.js" asp-append-version="true"></script>
+}

@@ -118,6 +118,18 @@ public partial class CrmContext : DbContext
 
   public virtual DbSet<CrmPaymentMethod> CrmPaymentMethod { get; set; }
 
+  public virtual DbSet<CrmDocumentType> CrmDocumentType { get; set; }
+
+  public virtual DbSet<CrmLeadSource> CrmLeadSource { get; set; }
+
+  public virtual DbSet<CrmLeadStage> CrmLeadStage { get; set; }
+
+  public virtual DbSet<CrmApplicationStatus> CrmApplicationStatus { get; set; }
+
+  public virtual DbSet<CrmVisaStatus> CrmVisaStatus { get; set; }
+
+  public virtual DbSet<CrmCommunicationType> CrmCommunicationType { get; set; }
+
   public virtual DbSet<CrmPermanentAddress> CrmPermanentAddress { get; set; }
 
   public virtual DbSet<CrmPresentAddress> CrmPresentAddress { get; set; }
@@ -953,7 +965,112 @@ public partial class CrmContext : DbContext
       //    .HasConstraintName("FK__OTHERSInf__Appli__0B5CAFEA");
     });
 
-    modelBuilder.Entity<CrmPaymentMethod>(entity =>
+modelBuilder.Entity<CrmDocumentType>(entity =>
+{
+  entity.HasKey(e => e.DocumentTypeId);
+
+  entity.HasIndex(e => e.DocumentTypeName, "UX_CrmDocumentType_DocumentTypeName").IsUnique();
+  entity.HasIndex(e => e.Code, "UX_CrmDocumentType_Code").IsUnique();
+
+  entity.Property(e => e.Code)
+      .HasMaxLength(50)
+      .IsUnicode(false);
+  entity.Property(e => e.CreatedDate)
+      .HasDefaultValueSql("(getdate())")
+      .HasColumnType("datetime");
+  entity.Property(e => e.DocumentTypeName)
+      .HasMaxLength(150)
+      .IsUnicode(false);
+  entity.Property(e => e.IsActive).HasDefaultValue(true);
+  entity.Property(e => e.IsMandatoryForApplication).HasDefaultValue(false);
+  entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+});
+
+modelBuilder.Entity<CrmLeadSource>(entity =>
+{
+  entity.HasKey(e => e.LeadSourceId);
+
+  entity.HasIndex(e => e.LeadSourceName, "UX_CrmLeadSource_LeadSourceName").IsUnique();
+
+  entity.Property(e => e.CreatedDate)
+      .HasDefaultValueSql("(getdate())")
+      .HasColumnType("datetime");
+  entity.Property(e => e.IsActive).HasDefaultValue(true);
+  entity.Property(e => e.LeadSourceName)
+      .HasMaxLength(100)
+      .IsUnicode(false);
+  entity.Property(e => e.SortOrder).HasDefaultValue(0);
+  entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+});
+
+modelBuilder.Entity<CrmLeadStage>(entity =>
+{
+  entity.HasKey(e => e.LeadStageId);
+
+  entity.HasIndex(e => e.LeadStageName, "UX_CrmLeadStage_LeadStageName").IsUnique();
+
+  entity.Property(e => e.CreatedDate)
+      .HasDefaultValueSql("(getdate())")
+      .HasColumnType("datetime");
+  entity.Property(e => e.IsClosedStage).HasDefaultValue(false);
+  entity.Property(e => e.LeadStageName)
+      .HasMaxLength(100)
+      .IsUnicode(false);
+  entity.Property(e => e.StageType)
+      .HasMaxLength(50)
+      .IsUnicode(false);
+  entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+});
+
+modelBuilder.Entity<CrmApplicationStatus>(entity =>
+{
+  entity.HasKey(e => e.ApplicationStatusId);
+
+  entity.HasIndex(e => e.ApplicationStatusName, "UX_CrmApplicationStatus_ApplicationStatusName").IsUnique();
+
+  entity.Property(e => e.ApplicationStatusName)
+      .HasMaxLength(100)
+      .IsUnicode(false);
+  entity.Property(e => e.CreatedDate)
+      .HasDefaultValueSql("(getdate())")
+      .HasColumnType("datetime");
+  entity.Property(e => e.IsFinalStatus).HasDefaultValue(false);
+  entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+});
+
+modelBuilder.Entity<CrmVisaStatus>(entity =>
+{
+  entity.HasKey(e => e.VisaStatusId);
+
+  entity.HasIndex(e => e.VisaStatusName, "UX_CrmVisaStatus_VisaStatusName").IsUnique();
+
+  entity.Property(e => e.CreatedDate)
+      .HasDefaultValueSql("(getdate())")
+      .HasColumnType("datetime");
+  entity.Property(e => e.IsFinalStatus).HasDefaultValue(false);
+  entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+  entity.Property(e => e.VisaStatusName)
+      .HasMaxLength(100)
+      .IsUnicode(false);
+});
+
+modelBuilder.Entity<CrmCommunicationType>(entity =>
+{
+  entity.HasKey(e => e.CommunicationTypeId);
+
+  entity.HasIndex(e => e.CommunicationTypeName, "UX_CrmCommunicationType_CommunicationTypeName").IsUnique();
+
+  entity.Property(e => e.CommunicationTypeName)
+      .HasMaxLength(100)
+      .IsUnicode(false);
+  entity.Property(e => e.CreatedDate)
+      .HasDefaultValueSql("(getdate())")
+      .HasColumnType("datetime");
+  entity.Property(e => e.IsDigitalChannel).HasDefaultValue(true);
+  entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+});
+
+        modelBuilder.Entity<CrmPaymentMethod>(entity =>
     {
       entity.HasKey(e => e.PaymentMethodId);
 

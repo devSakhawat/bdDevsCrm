@@ -656,6 +656,66 @@ public static class RouteConstants
 	public const string ReadCrmPaymentMethod = "crm-payment-method/{id:int}";
 	#endregion CrmPaymentMethod
 
+	#region CrmDocumentType
+	public const string CreateCrmDocumentType = "crm-document-type";
+	public const string UpdateCrmDocumentType = "crm-document-type/{key}";
+	public const string DeleteCrmDocumentType = "crm-document-type/{key}";
+	public const string CrmDocumentTypeSummary = "crm-document-type-summary";
+	public const string ReadCrmDocumentTypes = "crm-document-types";
+	public const string CrmDocumentTypeDDL = "crm-document-types-ddl";
+	public const string ReadCrmDocumentType = "crm-document-type/{id:int}";
+	#endregion CrmDocumentType
+
+	#region CrmLeadSource
+	public const string CreateCrmLeadSource = "crm-lead-source";
+	public const string UpdateCrmLeadSource = "crm-lead-source/{key}";
+	public const string DeleteCrmLeadSource = "crm-lead-source/{key}";
+	public const string CrmLeadSourceSummary = "crm-lead-source-summary";
+	public const string ReadCrmLeadSources = "crm-lead-sources";
+	public const string CrmLeadSourceDDL = "crm-lead-sources-ddl";
+	public const string ReadCrmLeadSource = "crm-lead-source/{id:int}";
+	#endregion CrmLeadSource
+
+	#region CrmLeadStage
+	public const string CreateCrmLeadStage = "crm-lead-stage";
+	public const string UpdateCrmLeadStage = "crm-lead-stage/{key}";
+	public const string DeleteCrmLeadStage = "crm-lead-stage/{key}";
+	public const string CrmLeadStageSummary = "crm-lead-stage-summary";
+	public const string ReadCrmLeadStages = "crm-lead-stages";
+	public const string CrmLeadStageDDL = "crm-lead-stages-ddl";
+	public const string ReadCrmLeadStage = "crm-lead-stage/{id:int}";
+	#endregion CrmLeadStage
+
+	#region CrmApplicationStatus
+	public const string CreateCrmApplicationStatus = "crm-application-status";
+	public const string UpdateCrmApplicationStatus = "crm-application-status/{key}";
+	public const string DeleteCrmApplicationStatus = "crm-application-status/{key}";
+	public const string CrmApplicationStatusSummary = "crm-application-status-summary";
+	public const string ReadCrmApplicationStatuses = "crm-application-statuses";
+	public const string CrmApplicationStatusDDL = "crm-application-statuses-ddl";
+	public const string ReadCrmApplicationStatus = "crm-application-status/{id:int}";
+	#endregion CrmApplicationStatus
+
+	#region CrmVisaStatus
+	public const string CreateCrmVisaStatus = "crm-visa-status";
+	public const string UpdateCrmVisaStatus = "crm-visa-status/{key}";
+	public const string DeleteCrmVisaStatus = "crm-visa-status/{key}";
+	public const string CrmVisaStatusSummary = "crm-visa-status-summary";
+	public const string ReadCrmVisaStatuses = "crm-visa-statuses";
+	public const string CrmVisaStatusDDL = "crm-visa-statuses-ddl";
+	public const string ReadCrmVisaStatus = "crm-visa-status/{id:int}";
+	#endregion CrmVisaStatus
+
+	#region CrmCommunicationType
+	public const string CreateCrmCommunicationType = "crm-communication-type";
+	public const string UpdateCrmCommunicationType = "crm-communication-type/{key}";
+	public const string DeleteCrmCommunicationType = "crm-communication-type/{key}";
+	public const string CrmCommunicationTypeSummary = "crm-communication-type-summary";
+	public const string ReadCrmCommunicationTypes = "crm-communication-types";
+	public const string CrmCommunicationTypeDDL = "crm-communication-types-ddl";
+	public const string ReadCrmCommunicationType = "crm-communication-type/{id:int}";
+	#endregion CrmCommunicationType
+
 	#region CrmIntakeYear
 	public const string CreateCrmIntakeYear = "crm-intake-year";
 	public const string UpdateCrmIntakeYear = "crm-intake-year/{key}";

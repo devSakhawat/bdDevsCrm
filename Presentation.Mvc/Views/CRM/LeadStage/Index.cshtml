@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Lead Stage Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Lead Stage Management</h1>
+        <p class="page-header__subtitle">Education CRM master data module for managing lead stage records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Lead Stage</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddLeadStage" class="btn btn--primary">Add Lead Stage</button>
+        <button type="button" id="btnRefreshLeadStage" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="leadStageGrid"></div>
+</section>
+
+<div id="leadStageWindow" style="display:none;">
+    <form id="leadStageForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelLeadStage" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveLeadStage" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/leadstage/leadStageSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/leadstage/leadStageSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/leadstage/leadStageDetails.js" asp-append-version="true"></script>
+}

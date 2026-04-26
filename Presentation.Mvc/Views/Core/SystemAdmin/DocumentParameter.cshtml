@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Document Parameter Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Document Parameter Management</h1>
+        <p class="page-header__subtitle">Phase 1 System Setup module for managing document parameter records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Document Parameter</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddDocumentParameter" class="btn btn--primary">Add Document Parameter</button>
+        <button type="button" id="btnRefreshDocumentParameter" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="documentParameterGrid"></div>
+</section>
+
+<div id="documentParameterWindow" style="display:none;">
+    <form id="documentParameterForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelDocumentParameter" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveDocumentParameter" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documentparameter/documentparameterSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documentparameter/documentparameterSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/documentparameter/documentparameterDetails.js" asp-append-version="true"></script>
+}

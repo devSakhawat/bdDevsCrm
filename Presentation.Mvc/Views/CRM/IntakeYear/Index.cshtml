@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Intake Year Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Intake Year Management</h1>
+        <p class="page-header__subtitle">Phase 1 CRM setup module for managing intake year records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Intake Year</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddIntakeYear" class="btn btn--primary">Add Intake Year</button>
+        <button type="button" id="btnRefreshIntakeYear" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="intakeYearGrid"></div>
+</section>
+
+<div id="intakeYearWindow" style="display:none;">
+    <form id="intakeYearForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelIntakeYear" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveIntakeYear" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/intakeyear/intakeYearSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/intakeyear/intakeYearSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/intakeyear/intakeYearDetails.js" asp-append-version="true"></script>
+}

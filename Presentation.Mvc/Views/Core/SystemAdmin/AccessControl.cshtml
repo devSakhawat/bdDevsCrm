@@ -1,0 +1,209 @@
+@{
+    ViewData["Title"] = "Access Control Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group label .required {
+            color: #dc3545;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+
+        .form-group .k-invalid-msg {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .badge-inactive {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-grid-action {
+            padding: 4px 8px;
+            margin: 0 2px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-grid-action.btn-edit {
+            background-color: #ffc107;
+            color: #000;
+        }
+
+        .btn-grid-action.btn-edit:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-grid-action.btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-grid-action.btn-delete:hover {
+            background-color: #c82333;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Access Control Management</h1>
+        <div class="breadcrumb">System Admin / Access Control & Permissions</div>
+    </div>
+    <div class="page-actions">
+        <button type="button" class="btn-primary" id="btnAddAccessControl">
+            ➕ Add Access Control
+        </button>
+        <button type="button" class="btn-secondary" id="btnRefresh">
+            🔄 Refresh
+        </button>
+    </div>
+</div>
+
+<div class="grid-container">
+    <div id="accessControlGrid"></div>
+</div>
+
+<!-- Form Window -->
+<div id="accessControlFormWindow" style="display:none;">
+    <form id="accessControlForm">
+        <input type="hidden" id="accessId" name="accessId" value="0" />
+
+        <div class="form-group">
+            <label for="accessName">Access Name <span class="required">*</span></label>
+            <input type="text" id="accessName" name="accessName" required />
+        </div>
+
+        <div class="form-group">
+            <label for="accessDescription">Description</label>
+            <textarea id="accessDescription" name="accessDescription" rows="3"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn-secondary" id="btnCancel">Cancel</button>
+            <button type="button" class="btn-primary" id="btnSave">Save</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/core/accesscontrol/accessControlSettings.js"></script>
+    <script src="~/js/modules/core/accesscontrol/accessControlSummary.js"></script>
+    <script src="~/js/modules/core/accesscontrol/accessControlDetails.js"></script>
+}

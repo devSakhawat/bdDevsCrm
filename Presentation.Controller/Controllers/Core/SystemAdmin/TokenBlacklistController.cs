@@ -51,7 +51,7 @@ public class TokenBlacklistController : BaseApiController
     {
         var createdTokenBlacklist = await _serviceManager.TokenBlacklist.CreateAsync(record, cancellationToken);
 
-        if (createdTokenBlacklist.TokenId <= 0)
+        if (createdTokenBlacklist.TokenId == Guid.Empty)
             throw new InvalidCreateOperationException("Failed to create token blacklist record.");
 
         return Ok(ApiResponseHelper.Created(createdTokenBlacklist, "Token blacklisted successfully."));

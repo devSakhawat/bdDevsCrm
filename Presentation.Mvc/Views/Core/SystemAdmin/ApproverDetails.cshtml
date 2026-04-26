@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Approver Details Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Approver Details Management</h1>
+        <p class="page-header__subtitle">Phase 3 System Setup module for managing approver detail records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Approver Details</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddApproverDetails" class="btn btn--primary">Add Approver Details</button>
+        <button type="button" id="btnRefreshApproverDetails" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="approverDetailsGrid"></div>
+</section>
+
+<div id="approverDetailsWindow" style="display:none;">
+    <form id="approverDetailsForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelApproverDetails" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveApproverDetails" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/approverdetails/approverdetailsSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/approverdetails/approverdetailsSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/approverdetails/approverdetailsDetails.js" asp-append-version="true"></script>
+}

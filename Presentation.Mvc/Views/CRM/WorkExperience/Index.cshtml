@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Work Experience Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Work Experience Management</h1>
+        <p class="page-header__subtitle">Phase 3 applicant detail module for work experience maintenance.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Work Experience</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddWorkExperience" class="btn btn--primary">Add Work Experience</button>
+        <button type="button" id="btnRefreshWorkExperience" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="workExperienceGrid"></div>
+</section>
+
+<div id="workExperienceWindow" style="display:none;">
+    <form id="workExperienceForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelWorkExperience" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveWorkExperience" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/workexperience/workExperienceSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/workexperience/workExperienceSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/workexperience/workExperienceDetails.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Holiday Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Holiday Management</h1>
+        <p class="page-header__subtitle">Phase 1 System Setup module for managing holiday records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">Core</span>
+            <span class="breadcrumb__item">System Admin</span>
+            <span class="breadcrumb__item is-current">Holiday</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddHoliday" class="btn btn--primary">Add Holiday</button>
+        <button type="button" id="btnRefreshHoliday" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="holidayGrid"></div>
+</section>
+
+<div id="holidayWindow" style="display:none;">
+    <form id="holidayForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelHoliday" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveHoliday" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/holiday/holidaySettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/holiday/holidaySummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/holiday/holidayDetails.js" asp-append-version="true"></script>
+}

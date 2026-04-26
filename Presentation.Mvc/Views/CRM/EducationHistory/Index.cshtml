@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Education History Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Education History Management</h1>
+        <p class="page-header__subtitle">Phase 3 applicant detail module for education history maintenance.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Education History</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddEducationHistory" class="btn btn--primary">Add Education History</button>
+        <button type="button" id="btnRefreshEducationHistory" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="educationHistoryGrid"></div>
+</section>
+
+<div id="educationHistoryWindow" style="display:none;">
+    <form id="educationHistoryForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelEducationHistory" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveEducationHistory" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/educationhistory/educationHistorySettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/educationhistory/educationHistorySummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/educationhistory/educationHistoryDetails.js" asp-append-version="true"></script>
+}

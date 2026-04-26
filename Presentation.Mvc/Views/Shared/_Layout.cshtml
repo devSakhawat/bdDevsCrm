@@ -7,6 +7,12 @@
     <meta name="app-base-url" content="@Url.Content("~/")" />
     <title>@(ViewData["Title"] != null ? ViewData["Title"] + " | bdDevsCrm" : "bdDevsCrm")</title>
     <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+
+    <!-- Kendo UI Styles (Uncomment after adding Kendo UI files to wwwroot/lib/kendo_2024_q4/) -->
+    @* <link rel="stylesheet" href="~/lib/kendo_2024_q4/css/kendo.common.min.css" /> *@
+    @* <link rel="stylesheet" href="~/lib/kendo_2024_q4/css/kendo.default.min.css" /> *@
+    @* <link rel="stylesheet" href="~/css/kendo-override.css" asp-append-version="true" /> *@
+
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="app-shell">
@@ -36,12 +42,22 @@
     @await Html.PartialAsync("_ModalDynamic")
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Kendo UI JavaScript (Uncomment after adding Kendo UI files to wwwroot/lib/kendo_2024_q4/) -->
+    @* <script src="~/lib/kendo_2024_q4/js/kendo.all.min.js"></script> *@
+
+    <script src="~/js/core/app.config.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.constants.js" asp-append-version="true"></script>
     <script src="~/js/core/app.api.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.auth.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.session.js" asp-append-version="true"></script>
     <script src="~/js/core/app.loader.js" asp-append-version="true"></script>
     <script src="~/js/core/app.toast.js" asp-append-version="true"></script>
     <script src="~/js/core/app.modal.js" asp-append-version="true"></script>
     <script src="~/js/core/app.grid.js" asp-append-version="true"></script>
     <script src="~/js/core/app.form.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.sidebar.js" asp-append-version="true"></script>
+    <script src="~/js/core/app.header.js" asp-append-version="true"></script>
     <script src="~/js/core/app.core.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -1,0 +1,270 @@
+@{
+    ViewData["Title"] = "Country Management";
+}
+
+<div class="page-container">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-header__title">
+            <h1>Country Management</h1>
+            <nav class="breadcrumb">
+                <a href="/">Home</a>
+                <span>/</span>
+                <a href="#">Core</a>
+                <span>/</span>
+                <span>Country</span>
+            </nav>
+        </div>
+        <div class="page-header__actions">
+            <button type="button" id="btnAddCountry" class="btn btn-primary">
+                <span class="btn-icon">+</span>
+                Add New Country
+            </button>
+            <button type="button" id="btnRefresh" class="btn btn-secondary">
+                <span class="btn-icon">↻</span>
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <!-- Grid Container -->
+    <div class="grid-container">
+        <div id="countryGrid"></div>
+    </div>
+
+    <!-- Country Form Modal -->
+    <div id="countryFormWindow" style="display: none;">
+        <form id="countryForm" class="k-form">
+            <input type="hidden" id="countryId" name="countryId" value="0" />
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="countryName" class="required">Country Name</label>
+                    <input type="text" id="countryName" name="countryName" class="k-textbox" required
+                           placeholder="Enter country name" maxlength="100" />
+                    <span class="k-invalid-msg" data-for="countryName"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="countryCode">Country Code</label>
+                    <input type="text" id="countryCode" name="countryCode" class="k-textbox"
+                           placeholder="e.g., US, BD" maxlength="10" />
+                    <span class="k-invalid-msg" data-for="countryCode"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="sortOrder">Sort Order</label>
+                    <input type="number" id="sortOrder" name="sortOrder" class="k-textbox"
+                           placeholder="0" min="0" value="0" />
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="remarks">Remarks</label>
+                    <textarea id="remarks" name="remarks" class="k-textarea"
+                              placeholder="Optional remarks" rows="3" maxlength="500"></textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="isActive" name="isActive" checked />
+                        Active
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">
+                    <span id="btnSaveText">Save</span>
+                </button>
+                <button type="button" id="btnCancel" class="btn btn-secondary">
+                    Cancel
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .page-container {
+            padding: 24px;
+            background: #F8FAFC;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #CBD5E1;
+        }
+
+        .page-header__title h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1E293B;
+            margin: 0 0 8px 0;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            color: #64748B;
+        }
+
+        .breadcrumb a {
+            color: #1E5FA8;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb span {
+            margin: 0 8px;
+        }
+
+        .page-header__actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #1E5FA8;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #1E3A5F;
+        }
+
+        .btn-secondary {
+            background: #64748B;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #475569;
+        }
+
+        .btn-icon {
+            font-size: 16px;
+            line-height: 1;
+        }
+
+        .grid-container {
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 16px;
+        }
+
+        #countryGrid {
+            border: 1px solid #CBD5E1;
+        }
+
+        /* Form Styles */
+        .k-form {
+            padding: 20px;
+        }
+
+        .form-row {
+            margin-bottom: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1E293B;
+            margin-bottom: 6px;
+        }
+
+        .form-group label.required::after {
+            content: "*";
+            color: #DC2626;
+            margin-left: 4px;
+        }
+
+        .k-textbox,
+        .k-textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #CBD5E1;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .k-textbox:focus,
+        .k-textarea:focus {
+            outline: none;
+            border-color: #2563EB;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .k-invalid-msg {
+            color: #DC2626;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .page-header__actions {
+                width: 100%;
+            }
+
+            .btn {
+                flex: 1;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="~/js/modules/core/country/countrySettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/country/countryDetails.js" asp-append-version="true"></script>
+    <script src="~/js/modules/core/country/countrySummary.js" asp-append-version="true"></script>
+}

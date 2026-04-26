@@ -1,0 +1,404 @@
+@{
+    ViewData["Title"] = "Document Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles {
+    <style>
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .page-title h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .page-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+
+        .grid-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .required::after {
+            content: " *";
+            color: red;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .tab-content {
+            padding: 20px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-top: none;
+            min-height: 300px;
+        }
+
+        .file-upload-container {
+            border: 2px dashed #ddd;
+            padding: 30px;
+            text-align: center;
+            background: white;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-container:hover {
+            border-color: #007bff;
+            background: #f8f9fa;
+        }
+
+        .file-upload-container.drag-over {
+            border-color: #28a745;
+            background: #e7f5e7;
+        }
+
+        .uploaded-file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-size {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .version-history-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .version-number {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .tag-chip {
+            padding: 4px 10px;
+            background: #007bff;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tag-chip .remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .tag-input-group {
+            display: flex;
+            gap: 5px;
+        }
+
+        .tag-input-group input {
+            flex: 1;
+        }
+
+        .badge-file {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .badge-pdf {
+            background: #dc3545;
+            color: white;
+        }
+
+        .badge-doc {
+            background: #007bff;
+            color: white;
+        }
+
+        .badge-img {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-other {
+            background: #6c757d;
+            color: white;
+        }
+
+        .access-level-public {
+            color: #28a745;
+        }
+
+        .access-level-private {
+            color: #dc3545;
+        }
+
+        .access-level-restricted {
+            color: #ffc107;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <div class="page-title">
+        <h1>Document Management</h1>
+        <div class="breadcrumb">DMS / Documents</div>
+    </div>
+    <div class="page-actions">
+        <button id="btnAddDocument" class="btn-primary">
+            <i class="k-icon k-i-plus"></i> Upload Document
+        </button>
+        <button id="btnRefresh" class="btn-secondary">
+            <i class="k-icon k-i-reload"></i> Refresh
+        </button>
+    </div>
+</div>
+
+<div class="grid-container">
+    <div id="documentGrid"></div>
+</div>
+
+<!-- Document Form Window -->
+<div id="documentFormWindow" style="display:none;">
+    <!-- TabStrip for multi-section form -->
+    <div id="documentTabStrip">
+        <ul>
+            <li class="k-state-active">Basic Info</li>
+            <li>File Upload</li>
+            <li>Access Control</li>
+            <li>Version History</li>
+        </ul>
+
+        <!-- Tab 1: Basic Info -->
+        <div>
+            <form id="documentForm">
+                <input type="hidden" id="documentId" name="documentId" value="0" />
+
+                <div class="form-group">
+                    <label for="documentName" class="required">Document Name</label>
+                    <input type="text" id="documentName" name="documentName" required />
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="documentTypeId" class="required">Document Type</label>
+                        <select id="documentTypeId" name="documentTypeId" required></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="folderId">Folder</label>
+                        <select id="folderId" name="folderId"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    <div class="tag-input-group">
+                        <input type="text" id="tagInput" placeholder="Enter tag and press Enter" />
+                        <button type="button" id="btnAddTag" class="btn-secondary">Add Tag</button>
+                    </div>
+                    <input type="hidden" id="tags" name="tags" />
+                    <div id="tagContainer" class="tag-container"></div>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="isActive" name="isActive" checked />
+                        Active
+                    </label>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tab 2: File Upload -->
+        <div>
+            <div class="file-upload-container" id="fileUploadZone">
+                <i class="k-icon k-i-upload" style="font-size: 48px; color: #007bff;"></i>
+                <h4>Drag & Drop File Here</h4>
+                <p>or</p>
+                <button type="button" id="btnSelectFile" class="btn-primary">Select File</button>
+                <input type="file" id="documentFile" name="documentFile" style="display: none;" />
+                <p class="file-size" style="margin-top: 15px;">Max file size: 50 MB</p>
+            </div>
+
+            <div id="uploadedFileInfo" style="margin-top: 20px;"></div>
+            <div id="uploadProgress" style="display: none; margin-top: 20px;">
+                <div class="progress">
+                    <div id="uploadProgressBar" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Access Control -->
+        <div>
+            <div class="form-group">
+                <label for="accessLevel" class="required">Access Level</label>
+                <select id="accessLevel" name="accessLevel">
+                    <option value="Public">Public - Everyone can view</option>
+                    <option value="Private" selected>Private - Only me</option>
+                    <option value="Restricted">Restricted - Selected users only</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="restrictedUsersGroup" style="display: none;">
+                <label for="restrictedUsers">Restricted Users</label>
+                <select id="restrictedUsers" name="restrictedUsers" multiple="multiple"></select>
+            </div>
+
+            <div class="form-group">
+                <label>Permissions</label>
+                <div>
+                    <label>
+                        <input type="checkbox" id="allowDownload" name="allowDownload" checked />
+                        Allow Download
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" id="allowPrint" name="allowPrint" checked />
+                        Allow Print
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input type="checkbox" id="allowShare" name="allowShare" />
+                        Allow Share
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="expiryDate">Expiry Date (Optional)</label>
+                <input type="date" id="expiryDate" name="expiryDate" />
+            </div>
+        </div>
+
+        <!-- Tab 4: Version History -->
+        <div>
+            <div id="versionHistoryContainer">
+                <p style="color: #999;">No version history available. Upload a document to create the first version.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="button" id="btnSaveDocument" class="btn-primary">
+            <i class="k-icon k-i-check"></i> Save
+        </button>
+        <button type="button" id="btnCancelDocument" class="btn-secondary">
+            <i class="k-icon k-i-cancel"></i> Cancel
+        </button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/dms/document/documentSettings.js"></script>
+    <script src="~/js/modules/dms/document/documentSummary.js"></script>
+    <script src="~/js/modules/dms/document/documentDetails.js"></script>
+}

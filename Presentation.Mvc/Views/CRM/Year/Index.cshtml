@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Year Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Year Management</h1>
+        <p class="page-header__subtitle">Phase 1 CRM setup module for managing year records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Year</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddYear" class="btn btn--primary">Add Year</button>
+        <button type="button" id="btnRefreshYear" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="yearGrid"></div>
+</section>
+
+<div id="yearWindow" style="display:none;">
+    <form id="yearForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelYear" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveYear" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/year/yearSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/year/yearSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/year/yearDetails.js" asp-append-version="true"></script>
+}

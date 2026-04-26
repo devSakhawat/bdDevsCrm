@@ -1,0 +1,114 @@
+@{
+    ViewData["Title"] = "Shift Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">@ViewData["Title"]</h1>
+        <div class="page-actions">
+            <button id="btnAddShift" class="btn btn-primary">
+                <span class="k-icon k-i-plus"></span> Add Shift
+            </button>
+            <button id="btnRefresh" class="btn btn-secondary">
+                <span class="k-icon k-i-reload"></span> Refresh
+            </button>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <div id="shiftGrid"></div>
+    </div>
+</div>
+
+<!-- Shift Details Window -->
+<div id="shiftWindow" style="display: none;">
+    <form id="shiftForm" class="k-form">
+        <input type="hidden" id="shiftId" name="shiftId" value="0" />
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="shiftName" class="required">Shift Name</label>
+                <input type="text" id="shiftName" name="shiftName" class="k-textbox" required
+                       data-required-msg="Shift name is required"
+                       maxlength="100" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="shiftCode">Shift Code</label>
+                <input type="text" id="shiftCode" name="shiftCode" class="k-textbox"
+                       maxlength="20" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="startTime" class="required">Start Time</label>
+                <input type="time" id="startTime" name="startTime" class="k-textbox" required
+                       data-required-msg="Start time is required" />
+            </div>
+
+            <div class="form-group">
+                <label for="endTime" class="required">End Time</label>
+                <input type="time" id="endTime" name="endTime" class="k-textbox" required
+                       data-required-msg="End time is required" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="graceTimeMinutes">Grace Time (Minutes)</label>
+                <input type="number" id="graceTimeMinutes" name="graceTimeMinutes" class="k-textbox"
+                       min="0" max="60" value="0" />
+            </div>
+
+            <div class="form-group">
+                <label for="workHours">Work Hours</label>
+                <input type="number" id="workHours" name="workHours" class="k-textbox"
+                       min="1" max="24" step="0.5" value="8" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="isNightShift">
+                    <input type="checkbox" id="isNightShift" name="isNightShift" class="k-checkbox" />
+                    <span>Night Shift</span>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="isFlexible">
+                    <input type="checkbox" id="isFlexible" name="isFlexible" class="k-checkbox" />
+                    <span>Flexible Shift</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="isActive">
+                    <input type="checkbox" id="isActive" name="isActive" class="k-checkbox" checked />
+                    <span>Active</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" id="btnSaveShift" class="btn btn-primary">
+                <span class="k-icon k-i-check"></span> Save
+            </button>
+            <button type="button" id="btnCancelShift" class="btn btn-secondary">
+                <span class="k-icon k-i-cancel"></span> Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/core/shift/shiftSettings.js"></script>
+    <script src="~/js/modules/core/shift/shiftSummary.js"></script>
+    <script src="~/js/modules/core/shift/shiftDetails.js"></script>
+}

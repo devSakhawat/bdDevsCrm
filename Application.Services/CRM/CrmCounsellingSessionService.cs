@@ -30,9 +30,9 @@ internal sealed class CrmCounsellingSessionService : ICrmCounsellingSessionServi
 
         var entity = record.MapTo<CrmCounsellingSession>();
         await ApplyOutcomeToLeadAsync(record.LeadId, record.Outcome, cancellationToken);
-        await _repository.CrmCounsellingSessions.CreateAsync(entity, cancellationToken);
+        int newId = await _repository.CrmCounsellingSessions.CreateAndIdAsync(entity, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
-        int newId = entity.CounsellingSessionId;
+        entity.CounsellingSessionId = newId;
         _logger.LogInformation("CrmCounsellingSession created. ID: {Id}", newId);
         return entity.MapTo<CrmCounsellingSessionDto>() with { CounsellingSessionId = newId };
     }

@@ -92,7 +92,11 @@ internal sealed class CrmStudentDocumentService : ICrmStudentDocumentService
             ?? throw new NotFoundException("DmsDocumentType", "DocumentTypeId", request.DocumentTypeId.ToString());
         ValidateFile(file, documentType);
 
-        var uploadsRoot = Path.Combine(AppContext.BaseDirectory, "Uploads", "StudentDocuments", request.StudentId.ToString(CultureInfo.InvariantCulture));
+        var baseStoragePath = _config["CrmDocumentStorage:RootPath"];
+        var storageRoot = string.IsNullOrWhiteSpace(baseStoragePath)
+            ? Path.Combine(AppContext.BaseDirectory, "Uploads", "StudentDocuments")
+            : baseStoragePath;
+        var uploadsRoot = Path.Combine(storageRoot, request.StudentId.ToString(CultureInfo.InvariantCulture));
         Directory.CreateDirectory(uploadsRoot);
         var extension = Path.GetExtension(file.FileName);
         var storedFileName = $"{Guid.NewGuid():N}{extension}";
@@ -168,8 +172,12 @@ internal sealed class CrmStudentDocumentService : ICrmStudentDocumentService
     public async Task<int> EscalateRejectedDocumentsAsync(CancellationToken cancellationToken = default)
     {
         var thresholdDays = _config.GetValue<int?>("CrmDocumentJobs:RejectionEscalationDays") ?? 2;
-        var documents = (await _repository.CrmStudentDocuments.StudentDocumentsAsync(false, cancellationToken))
-            .Where(x => x.Status == 4 && !x.IsDeleted && x.VerifiedDate.HasValue && x.VerifiedDate.Value <= DateTime.UtcNow.AddDays(-thresholdDays))
+        var documents = (await _repository.CrmStudentDocuments.ListByConditionAsync(
+                x => x.Status == 4 && !x.IsDeleted && x.VerifiedDate.HasValue && x.VerifiedDate.Value <= DateTime.UtcNow.AddDays(-thresholdDays),
+                x => x.StudentDocumentId,
+                false,
+                false,
+                cancellationToken))
             .ToList();
         foreach (var document in documents)
         {

@@ -14,6 +14,8 @@ namespace Application.Services.CRM;
 
 internal sealed class CrmStudentService : ICrmStudentService
 {
+    private const string InterestedLeadStatusName = "Interested";
+    private const decimal DefaultBudgetThresholdBdt = 50000m;
     private readonly IRepositoryManager _repository;
     private readonly ILogger<CrmStudentService> _logger;
     private readonly IConfiguration _config;
@@ -157,7 +159,7 @@ internal sealed class CrmStudentService : ICrmStudentService
             {
                 LeadId = lead.LeadId,
                 StudentName = lead.LeadName,
-                StudentCode = $"STD-{DateTime.UtcNow:yyyyMMddHHmmss}",
+                StudentCode = $"STD-{DateTime.UtcNow:yyyyMMddHHmmss}-{Guid.NewGuid():N}"[..28],
                 Email = lead.Email,
                 Phone = lead.Phone,
                 CounselorId = lead.AssignedCounselorId,
@@ -231,7 +233,7 @@ internal sealed class CrmStudentService : ICrmStudentService
         var interestedStatus = lead.LeadStatusId.HasValue
             ? await _repository.CrmLeadStatuses.FirstOrDefaultAsync(x => x.LeadStatusId == lead.LeadStatusId.Value, false, cancellationToken)
             : null;
-        if (!string.Equals(interestedStatus?.StatusName, "Interested", StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(interestedStatus?.StatusName, InterestedLeadStatusName, StringComparison.OrdinalIgnoreCase))
             throw new BadRequestException("Only interested leads can be converted to students.");
 
         var sessions = (await _repository.CrmCounsellingSessions.CounsellingSessionsByLeadIdAsync(request.LeadId, false, cancellationToken)).Where(x => !x.IsDeleted).ToList();
@@ -255,7 +257,7 @@ internal sealed class CrmStudentService : ICrmStudentService
         if (!(request.PreferredCountryId ?? lead.InterestedCountryId).HasValue)
             result.SoftWarnings.Add("Preferred country is not set.");
 
-        var budgetThreshold = _config.GetValue<decimal?>("CrmConversion:BudgetThreshold") ?? 50000m;
+        var budgetThreshold = _config.GetValue<decimal?>("CrmConversion:BudgetThreshold") ?? DefaultBudgetThresholdBdt;
         if ((lead.Budget ?? 0m) > 0m && lead.Budget.Value < budgetThreshold)
             result.SoftWarnings.Add($"Lead budget is below the threshold of {budgetThreshold:0.##}.");
 
@@ -266,8 +268,8 @@ internal sealed class CrmStudentService : ICrmStudentService
 
     private async Task GenerateDefaultDocumentChecklistAsyncInternal(CrmStudent student, int requestedBy, CancellationToken cancellationToken)
     {
-        var requirements = (await _repository.CrmCountryDocumentRequirements.CrmCountryDocumentRequirementsAsync(false, cancellationToken))
-            .Where(x => x.CountryId == student.PreferredCountryId && (!student.PreferredDegreeLevelId.HasValue || x.DegreeLevelId == student.PreferredDegreeLevelId.Value))
+        var requirements = (await _repository.CrmCountryDocumentRequirements.RequirementsByCountryIdAsync(student.PreferredCountryId ?? 0, false, cancellationToken))
+            .Where(x => !student.PreferredDegreeLevelId.HasValue || x.DegreeLevelId == student.PreferredDegreeLevelId.Value)
             .ToList();
         var documentTypes = (await _repository.DmsDocumentTypes.DocumentTypesAsync(false, cancellationToken)).ToList();
 

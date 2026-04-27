@@ -129,7 +129,9 @@ internal sealed class CrmApplicationService : ICrmApplicationService
         var branch = await _repository.Branches.FirstOrDefaultAsync(x => x.Branchid == branchId, false, cancellationToken);
         var branchCode = string.IsNullOrWhiteSpace(branch?.Branchcode) ? $"BR{branchId}" : branch.Branchcode!.Trim().ToUpperInvariant();
         var year = appliedDate.Year;
-        var count = (await _repository.CrmApplications.CrmApplicationsAsync(false, cancellationToken)).Count(x => x.BranchId == branchId && (x.AppliedDate ?? x.CreatedDate).Year == year);
+        var count = await _repository.CrmApplications.CountAsync(
+            x => x.BranchId == branchId && (x.AppliedDate ?? x.CreatedDate).Year == year,
+            cancellationToken);
         return $"APP-{branchCode}-{year}-{count + 1:0000}";
     }
 

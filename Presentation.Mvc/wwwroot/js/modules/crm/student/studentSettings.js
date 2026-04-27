@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
     'use strict';
 
     window.StudentModule = window.StudentModule || {};
@@ -27,7 +27,13 @@
             read: function (id) { return `${apiRoot}/crm-student/${id}`; },
             applicationReady: function (id) { return `${apiRoot}/crm-student-application-ready/${id}`; },
             academicByStudent: function (id) { return `${apiRoot}/crm-student-academic-profiles-by-student/${id}`; },
-            statusHistoryByStudent: function (id) { return `${apiRoot}/crm-student-status-histories-by-student/${id}`; }
+            statusHistoryByStudent: function (id) { return `${apiRoot}/crm-student-status-histories-by-student/${id}`; },
+            documentsByStudent: function (id) { return `${apiRoot}/crm-student-documents-by-student/${id}`; },
+            checklistsByStudent: function (id) { return `${apiRoot}/crm-student-document-checklists-by-student/${id}`; },
+            uploadDocument: `${apiRoot}/crm-student-document-upload`,
+            changeDocumentStatus: `${apiRoot}/crm-student-document-status-transition`,
+            applicationsByStudent: function (id) { return `${apiRoot}/crm-applications-by-student/${id}`; },
+            documentTypesDdl: `${apiRoot}/dms-document-type-ddl`
         },
         gridOptions: {
             pageSize: 20,

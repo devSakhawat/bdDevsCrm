@@ -1,30 +1,66 @@
-namespace bdDevs.Shared.Records.CRM;
+﻿namespace bdDevs.Shared.Records.CRM;
 
-/// <summary>
-/// Record for creating a new CRM application.
-/// </summary>
 public record CreateCrmApplicationRecord(
-    DateTime ApplicationDate,
-    int StateId,
+    int StudentId,
+    int BranchId,
+    int? ProcessingOfficerId,
+    int CountryId,
+    int UniversityId,
+    int ProgramId,
+    int IntakeId,
+    string? StudentSnapshotJson,
+    string? ProgramSnapshotJson,
+    string? OfferSnapshotJson,
+    string? ConditionSnapshotJson,
+    string? MetaSnapshotJson,
+    byte Status,
+    byte Priority,
+    DateTime? AppliedDate,
+    DateTime? OfferReceivedDate,
+    DateTime? EnrollmentDate,
+    DateTime? WithdrawnDate,
+    string? OfferDetails,
+    string? WithdrawalReason,
+    string? RejectionReason,
+    string? PortalUsername,
+    string? PortalPassword,
+    bool IsDeleted,
     DateTime CreatedDate,
     int CreatedBy,
     DateTime? UpdatedDate,
     int? UpdatedBy);
 
-/// <summary>
-/// Record for updating an existing CRM application.
-/// </summary>
 public record UpdateCrmApplicationRecord(
     int ApplicationId,
-    DateTime ApplicationDate,
-    int StateId,
+    int StudentId,
+    int BranchId,
+    int? ProcessingOfficerId,
+    int CountryId,
+    int UniversityId,
+    int ProgramId,
+    int IntakeId,
+    string? StudentSnapshotJson,
+    string? ProgramSnapshotJson,
+    string? OfferSnapshotJson,
+    string? ConditionSnapshotJson,
+    string? MetaSnapshotJson,
+    string? InternalRefNo,
+    byte Status,
+    byte Priority,
+    DateTime? AppliedDate,
+    DateTime? OfferReceivedDate,
+    DateTime? EnrollmentDate,
+    DateTime? WithdrawnDate,
+    string? OfferDetails,
+    string? WithdrawalReason,
+    string? RejectionReason,
+    string? PortalUsername,
+    string? PortalPassword,
+    bool IsDeleted,
     DateTime CreatedDate,
     int CreatedBy,
     DateTime? UpdatedDate,
     int? UpdatedBy);
 
-/// <summary>
-/// Record for deleting a CRM application.
-/// </summary>
-/// <param name="ApplicationId">ID of the application to delete.</param>
 public record DeleteCrmApplicationRecord(int ApplicationId);
+public record ChangeCrmApplicationStatusRecord(int ApplicationId, byte NewStatus, int ChangedBy, string? Notes);

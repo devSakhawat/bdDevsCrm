@@ -106,6 +106,8 @@ public sealed class ServiceManager : IServiceManager
 
   // Existing Crm services
   private readonly Lazy<ICrmApplicationService> _crmApplicationService;
+  private readonly Lazy<ICrmApplicationConditionService> _crmApplicationConditionService;
+  private readonly Lazy<ICrmApplicationDocumentService> _crmApplicationDocumentService;
   private readonly Lazy<ICrmApplicantCourseService> _applicantCourseService;
   private readonly Lazy<ICrmApplicantInfoService> _applicantInfoService;
   private readonly Lazy<ICrmPermanentAddressService> _permanentAddressService;
@@ -127,6 +129,9 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ICrmCounselorService> _crmCounselorService;
   private readonly Lazy<ICrmLeadService> _crmLeadService;
   private readonly Lazy<ICrmStudentService> _crmStudentService;
+  private readonly Lazy<ICrmStudentDocumentService> _crmStudentDocumentService;
+  private readonly Lazy<ICrmDocumentVerificationHistoryService> _crmDocumentVerificationHistoryService;
+  private readonly Lazy<ICrmStudentDocumentChecklistService> _crmStudentDocumentChecklistService;
   private readonly Lazy<ICrmStudentAcademicProfileService> _crmStudentAcademicProfileService;
   private readonly Lazy<ICrmStudentStatusHistoryService> _crmStudentStatusHistoryService;
   private readonly Lazy<ICrmEnquiryService> _crmEnquiryService;
@@ -241,6 +246,8 @@ public sealed class ServiceManager : IServiceManager
 
     // Existing Crm services initialization
     _crmApplicationService = new Lazy<ICrmApplicationService>(() => new CrmApplicationService(repository, loggerFactory.CreateLogger<CrmApplicationService>(), configuration, httpContextAccessor));
+    _crmApplicationConditionService = new Lazy<ICrmApplicationConditionService>(() => new CrmApplicationConditionService(repository, loggerFactory.CreateLogger<CrmApplicationConditionService>(), configuration));
+    _crmApplicationDocumentService = new Lazy<ICrmApplicationDocumentService>(() => new CrmApplicationDocumentService(repository, loggerFactory.CreateLogger<CrmApplicationDocumentService>(), configuration));
     _applicantCourseService = new Lazy<ICrmApplicantCourseService>(() => new CrmApplicantCourseService(repository, loggerFactory.CreateLogger<CrmApplicantCourseService>(), configuration, httpContextAccessor));
     _applicantInfoService = new Lazy<ICrmApplicantInfoService>(() => new CrmApplicantInfoService(repository, loggerFactory.CreateLogger<CrmApplicantInfoService>(), configuration, httpContextAccessor));
     _permanentAddressService = new Lazy<ICrmPermanentAddressService>(() => new CrmPermanentAddressService(repository, loggerFactory.CreateLogger<CrmPermanentAddressService>(), configuration, httpContextAccessor));
@@ -262,6 +269,9 @@ public sealed class ServiceManager : IServiceManager
     _crmCounselorService = new Lazy<ICrmCounselorService>(() => new CrmCounselorService(repository, loggerFactory.CreateLogger<CrmCounselorService>(), configuration));
     _crmLeadService = new Lazy<ICrmLeadService>(() => new CrmLeadService(repository, loggerFactory.CreateLogger<CrmLeadService>(), configuration));
     _crmStudentService = new Lazy<ICrmStudentService>(() => new CrmStudentService(repository, loggerFactory.CreateLogger<CrmStudentService>(), configuration));
+    _crmStudentDocumentService = new Lazy<ICrmStudentDocumentService>(() => new CrmStudentDocumentService(repository, loggerFactory.CreateLogger<CrmStudentDocumentService>(), configuration));
+    _crmDocumentVerificationHistoryService = new Lazy<ICrmDocumentVerificationHistoryService>(() => new CrmDocumentVerificationHistoryService(repository, loggerFactory.CreateLogger<CrmDocumentVerificationHistoryService>(), configuration));
+    _crmStudentDocumentChecklistService = new Lazy<ICrmStudentDocumentChecklistService>(() => new CrmStudentDocumentChecklistService(repository, loggerFactory.CreateLogger<CrmStudentDocumentChecklistService>(), configuration));
     _crmStudentAcademicProfileService = new Lazy<ICrmStudentAcademicProfileService>(() => new CrmStudentAcademicProfileService(repository, loggerFactory.CreateLogger<CrmStudentAcademicProfileService>(), configuration));
     _crmStudentStatusHistoryService = new Lazy<ICrmStudentStatusHistoryService>(() => new CrmStudentStatusHistoryService(repository, loggerFactory.CreateLogger<CrmStudentStatusHistoryService>(), configuration));
     _crmEnquiryService = new Lazy<ICrmEnquiryService>(() => new CrmEnquiryService(repository, loggerFactory.CreateLogger<CrmEnquiryService>(), configuration));
@@ -369,6 +379,8 @@ public sealed class ServiceManager : IServiceManager
 
   // Existing Crm service properties
   public ICrmApplicationService CrmApplications => _crmApplicationService.Value;
+  public ICrmApplicationConditionService CrmApplicationConditions => _crmApplicationConditionService.Value;
+  public ICrmApplicationDocumentService CrmApplicationDocuments => _crmApplicationDocumentService.Value;
   public ICrmApplicantCourseService ApplicantCourses => _applicantCourseService.Value;
   public ICrmApplicantInfoService ApplicantInfos => _applicantInfoService.Value;
   public ICrmPermanentAddressService PermanentAddresses => _permanentAddressService.Value;
@@ -390,6 +402,9 @@ public sealed class ServiceManager : IServiceManager
   public ICrmCounselorService CrmCounselors => _crmCounselorService.Value;
   public ICrmLeadService CrmLeads => _crmLeadService.Value;
   public ICrmStudentService CrmStudents => _crmStudentService.Value;
+  public ICrmStudentDocumentService CrmStudentDocuments => _crmStudentDocumentService.Value;
+  public ICrmDocumentVerificationHistoryService CrmDocumentVerificationHistories => _crmDocumentVerificationHistoryService.Value;
+  public ICrmStudentDocumentChecklistService CrmStudentDocumentChecklists => _crmStudentDocumentChecklistService.Value;
   public ICrmStudentAcademicProfileService CrmStudentAcademicProfiles => _crmStudentAcademicProfileService.Value;
   public ICrmStudentStatusHistoryService CrmStudentStatusHistories => _crmStudentStatusHistoryService.Value;
   public ICrmEnquiryService CrmEnquiries => _crmEnquiryService.Value;

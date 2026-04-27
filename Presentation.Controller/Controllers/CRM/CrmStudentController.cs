@@ -4,6 +4,7 @@ using bdDevs.Shared;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.Records.CRM;
 using Domain.Exceptions;
+using Microsoft.AspNetCore.Http;
 using bdDevs.Shared.Constants;
 using Application.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
@@ -100,4 +101,48 @@ public class CrmStudentController : BaseApiController
         var records = await _serviceManager.CrmStudents.StudentForDDLAsync(cancellationToken);
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }
+
+    [HttpPost(RouteConstants.CrmConvertLeadToStudentPreflight)]
+    public async Task<IActionResult> ConvertLeadToStudentPreflightAsync([FromBody] ConvertToStudentRequestDto request, CancellationToken cancellationToken = default)
+    {
+        var result = await _serviceManager.CrmStudents.EvaluateLeadConversionAsync(request, cancellationToken);
+        if (result.HardErrors.Any())
+        {
+            return StatusCode(StatusCodes.Status422UnprocessableEntity, new ApiResponse<ConvertToStudentResultDto>
+            {
+                StatusCode = StatusCodes.Status422UnprocessableEntity,
+                Success = false,
+                Message = "HARD_BLOCK",
+                Data = result,
+                CorrelationId = HttpContext.TraceIdentifier,
+                Timestamp = DateTime.UtcNow
+            });
+        }
+        return Ok(ApiResponseHelper.Success(result, result.SoftWarnings.Any() ? "SOFT_WARNING" : "Lead conversion preflight passed."));
+    }
+
+    [HttpPost(RouteConstants.CrmConvertLeadToStudent)]
+    public async Task<IActionResult> ConvertLeadToStudentAsync([FromBody] ConvertToStudentRequestDto request, CancellationToken cancellationToken = default)
+    {
+        request.RequestedBy = request.RequestedBy is > 0 ? request.RequestedBy : 1;
+        var result = await _serviceManager.CrmStudents.ConvertLeadToStudentAsync(request, cancellationToken);
+        if (result.ResultType == "HARD_BLOCK")
+        {
+            return StatusCode(StatusCodes.Status422UnprocessableEntity, new ApiResponse<ConvertToStudentResultDto>
+            {
+                StatusCode = StatusCodes.Status422UnprocessableEntity,
+                Success = false,
+                Message = "HARD_BLOCK",
+                Data = result,
+                CorrelationId = HttpContext.TraceIdentifier,
+                Timestamp = DateTime.UtcNow
+            });
+        }
+        if (result.ResultType == "SOFT_WARNING")
+        {
+            return Ok(ApiResponseHelper.Success(result, "SOFT_WARNING"));
+        }
+        return Ok(ApiResponseHelper.Success(result, "Lead converted to student successfully."));
+    }
+
 }

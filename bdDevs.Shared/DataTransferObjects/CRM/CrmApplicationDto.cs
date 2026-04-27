@@ -1,74 +1,35 @@
-using System;
+﻿namespace bdDevs.Shared.DataTransferObjects.CRM;
 
-namespace bdDevs.Shared.DataTransferObjects.CRM;
-
-/// <summary>
-/// Complete CRM Application Data Transfer Object
-/// </summary>
 public class CrmApplicationDto
 {
-  public int ApplicationId { get; set; }
-
-  public DateTime? ApplicationDate { get; set; }
-
-  public int StateId { get; set; }
-
-
-  // Existing audit (save)
-  public DateTime CreatedDate { get; set; }
-  public int CreatedBy { get; set; }
-  public DateTime? UpdatedDate { get; set; }
-  public int? UpdatedBy { get; set; }
-
-  // Added to align with ApplicationDto (for read)
-  public DateTime? AppCreatedDate { get; set; }
-  public int AppCreatedBy { get; set; }
-  public DateTime? AppUpdatedDate { get; set; }
-  public int? AppUpdatedBy { get; set; }
-
-  public CourseInformationDto? CourseInformation { get; set; }
-  public EducationInformationDto? EducationInformation { get; set; }
-  public AdditionalInformationDto? AdditionalInformation { get; set; }
-
-  public CrmApplicationDto()
-  {
-    CourseInformation = new CourseInformationDto
-    {
-      ApplicantAddress = new ApplicantAddressDto
-      {
-        PermanentAddress = new PermanentAddressDto(),
-        PresentAddress = new PresentAddressDto()
-      },
-      ApplicantCourse = new ApplicantCourseDto(),
-      PersonalDetails = new ApplicantInfoDto()
-    };
-
-    EducationInformation = new EducationInformationDto
-    {
-      EducationDetails = new EducationDetailsDto(),
-      IELTSInformation = new IeltsInformationDto(),
-      TOEFLInformation = new ToeflInformationDto(),
-      PTEInformation = new PteInformationDto(),
-      GMATInformation = new GmatInformationDto(),
-      OTHERSInformation = new OthersInformationDto(),
-      WorkExperience = new WorkExperienceDto()
-    };
-
-    // Pre-initialize list properties to avoid null errors
-    EducationInformation.EducationDetails.EducationHistory = new List<EducationHistoryDto>();
-    EducationInformation.WorkExperience.WorkExperienceHistory = new List<WorkExperienceHistoryDto>();
-
-    AdditionalInformation = new AdditionalInformationDto
-    {
-      ReferenceDetails = new ReferenceDetailsDto { References = new List<ApplicantReferenceDto>() },
-      StatementOfPurpose = new StatementOfPurposeDto(),
-      AdditionalInformation = new AdditionalInfoDto(),
-      AdditionalDocuments = new AdditionalDocumentsDto { Documents = new List<AdditionalDocumentDto>() }
-    };
-
-    // Pre-initialize list properties to avoid null errors
-    AdditionalInformation.ReferenceDetails.References = new List<ApplicantReferenceDto>();
-    AdditionalInformation.AdditionalDocuments.Documents = new List<AdditionalDocumentDto>();
-  }
-
+    public int ApplicationId { get; set; }
+    public int StudentId { get; set; }
+    public int BranchId { get; set; }
+    public int? ProcessingOfficerId { get; set; }
+    public int CountryId { get; set; }
+    public int UniversityId { get; set; }
+    public int ProgramId { get; set; }
+    public int IntakeId { get; set; }
+    public string? StudentSnapshotJson { get; set; }
+    public string? ProgramSnapshotJson { get; set; }
+    public string? OfferSnapshotJson { get; set; }
+    public string? ConditionSnapshotJson { get; set; }
+    public string? MetaSnapshotJson { get; set; }
+    public string? InternalRefNo { get; set; }
+    public byte Status { get; set; }
+    public byte Priority { get; set; }
+    public DateTime? AppliedDate { get; set; }
+    public DateTime? OfferReceivedDate { get; set; }
+    public DateTime? EnrollmentDate { get; set; }
+    public DateTime? WithdrawnDate { get; set; }
+    public string? OfferDetails { get; set; }
+    public string? WithdrawalReason { get; set; }
+    public string? RejectionReason { get; set; }
+    public string? PortalUsername { get; set; }
+    public string? PortalPassword { get; set; }
+    public bool IsDeleted { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public int CreatedBy { get; set; }
+    public DateTime? UpdatedDate { get; set; }
+    public int? UpdatedBy { get; set; }
 }

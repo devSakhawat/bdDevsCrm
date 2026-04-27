@@ -495,7 +495,31 @@ public static class RouteConstants
 	public const string CrmApplicationSummary = "crm-application-summary";
 	public const string ReadCrmApplications = "crm-applications";
 	public const string ReadCrmApplication = "crm-application/{id:int}";
+	public const string CrmApplicationsByStudentId = "crm-applications-by-student/{studentId:int}";
+	public const string CrmApplicationStatusTransition = "crm-application-status-transition";
+	public const string CrmApplicationBoard = "crm-application-board";
 	#endregion CrmApplication
+
+	#region CrmApplicationCondition
+	public const string CreateCrmApplicationCondition = "crm-application-condition";
+	public const string UpdateCrmApplicationCondition = "crm-application-condition/{key}";
+	public const string DeleteCrmApplicationCondition = "crm-application-condition/{key}";
+	public const string CrmApplicationConditionSummary = "crm-application-condition-summary";
+	public const string ReadCrmApplicationConditions = "crm-application-conditions";
+	public const string ReadCrmApplicationCondition = "crm-application-condition/{id:int}";
+	public const string ApplicationConditionsByApplicationId = "crm-application-conditions-by-application/{applicationId:int}";
+	public const string CrmApplicationConditionStatusTransition = "crm-application-condition-status-transition";
+	#endregion CrmApplicationCondition
+
+	#region CrmApplicationDocument
+	public const string CreateCrmApplicationDocument = "crm-application-document";
+	public const string UpdateCrmApplicationDocument = "crm-application-document/{key}";
+	public const string DeleteCrmApplicationDocument = "crm-application-document/{key}";
+	public const string CrmApplicationDocumentSummary = "crm-application-document-summary";
+	public const string ReadCrmApplicationDocuments = "crm-application-documents";
+	public const string ReadCrmApplicationDocument = "crm-application-document/{id:int}";
+	public const string ApplicationDocumentsByApplicationId = "crm-application-documents-by-application/{applicationId:int}";
+	#endregion CrmApplicationDocument
 
 	#region CrmApplicantCourse
 	public const string CreateCrmApplicantCourse = "crm-applicant-course";
@@ -1021,6 +1045,8 @@ public static class RouteConstants
 	public const string ReadCrmLeads = "crm-leads";
 	public const string CrmLeadDDL = "crm-leads-ddl";
 	public const string ReadCrmLead = "crm-lead/{id:int}";
+	public const string CrmConvertLeadToStudentPreflight = "crm-convert-lead-to-student-preflight";
+	public const string CrmConvertLeadToStudent = "crm-convert-lead-to-student";
 	#endregion CrmLead
 
 	#region CrmStudent
@@ -1036,12 +1062,45 @@ public static class RouteConstants
 	public const string CrmStudentApplicationReadyCheck = "crm-student-application-ready/{studentId:int}";
 	#endregion CrmStudent
 
+	#region CrmStudentDocument
+	public const string CreateCrmStudentDocument = "crm-student-document";
+	public const string UpdateCrmStudentDocument = "crm-student-document/{key}";
+	public const string DeleteCrmStudentDocument = "crm-student-document/{key}";
+	public const string CrmStudentDocumentSummary = "crm-student-document-summary";
+	public const string ReadCrmStudentDocuments = "crm-student-documents";
+	public const string ReadCrmStudentDocument = "crm-student-document/{id:int}";
+	public const string StudentDocumentsByStudentId = "crm-student-documents-by-student/{studentId:int}";
+	public const string CrmStudentDocumentUpload = "crm-student-document-upload";
+	public const string CrmStudentDocumentStatusTransition = "crm-student-document-status-transition";
+	#endregion CrmStudentDocument
+
+	#region CrmDocumentVerificationHistory
+	public const string CreateCrmDocumentVerificationHistory = "crm-document-verification-history";
+	public const string UpdateCrmDocumentVerificationHistory = "crm-document-verification-history/{key}";
+	public const string DeleteCrmDocumentVerificationHistory = "crm-document-verification-history/{key}";
+	public const string CrmDocumentVerificationHistorySummary = "crm-document-verification-history-summary";
+	public const string ReadCrmDocumentVerificationHistories = "crm-document-verification-histories";
+	public const string ReadCrmDocumentVerificationHistory = "crm-document-verification-history/{id:int}";
+	public const string DocumentVerificationHistoriesByDocumentId = "crm-document-verification-histories-by-document/{documentId:int}";
+	#endregion CrmDocumentVerificationHistory
+
+	#region CrmStudentDocumentChecklist
+	public const string CreateCrmStudentDocumentChecklist = "crm-student-document-checklist";
+	public const string UpdateCrmStudentDocumentChecklist = "crm-student-document-checklist/{key}";
+	public const string DeleteCrmStudentDocumentChecklist = "crm-student-document-checklist/{key}";
+	public const string CrmStudentDocumentChecklistSummary = "crm-student-document-checklist-summary";
+	public const string ReadCrmStudentDocumentChecklists = "crm-student-document-checklists";
+	public const string ReadCrmStudentDocumentChecklist = "crm-student-document-checklist/{id:int}";
+	public const string StudentDocumentChecklistsByStudentId = "crm-student-document-checklists-by-student/{studentId:int}";
+	#endregion CrmStudentDocumentChecklist
+
 	#region CrmStudentAcademicProfile
 	public const string CreateCrmStudentAcademicProfile = "crm-student-academic-profile";
 	public const string UpdateCrmStudentAcademicProfile = "crm-student-academic-profile/{key}";
 	public const string DeleteCrmStudentAcademicProfile = "crm-student-academic-profile/{key}";
 	public const string CrmStudentAcademicProfileSummary = "crm-student-academic-profile-summary";
 	public const string ReadCrmStudentAcademicProfiles = "crm-student-academic-profiles";
+	public const string ReadStudentAcademicProfiles = ReadCrmStudentAcademicProfiles;
 	public const string ReadCrmStudentAcademicProfile = "crm-student-academic-profile/{id:int}";
 	public const string StudentAcademicProfilesByStudentId = "crm-student-academic-profiles-by-student/{studentId:int}";
 	#endregion CrmStudentAcademicProfile
@@ -1052,6 +1111,7 @@ public static class RouteConstants
 	public const string DeleteCrmStudentStatusHistory = "crm-student-status-history/{key}";
 	public const string CrmStudentStatusHistorySummary = "crm-student-status-history-summary";
 	public const string ReadCrmStudentStatusHistories = "crm-student-status-histories";
+	public const string ReadStudentStatusHistories = ReadCrmStudentStatusHistories;
 	public const string ReadCrmStudentStatusHistory = "crm-student-status-history/{id:int}";
 	public const string StudentStatusHistoriesByStudentId = "crm-student-status-histories-by-student/{studentId:int}";
 	#endregion CrmStudentStatusHistory
@@ -1086,6 +1146,7 @@ public static class RouteConstants
 	public const string DeleteCrmFollowUpHistory = "crm-followup-history/{key}";
 	public const string CrmFollowUpHistorySummary = "crm-followup-history-summary";
 	public const string ReadCrmFollowUpHistories = "crm-followup-histories";
+	public const string ReadFollowUpHistories = ReadCrmFollowUpHistories;
 	public const string ReadCrmFollowUpHistory = "crm-followup-history/{id:int}";
 	public const string FollowUpHistoriesByFollowUpId = "crm-followup-histories-by-followup/{followUpId:int}";
 	#endregion CrmFollowUpHistory
@@ -1096,6 +1157,7 @@ public static class RouteConstants
 	public const string DeleteCrmCounsellingSession = "crm-counselling-session/{key}";
 	public const string CrmCounsellingSessionSummary = "crm-counselling-session-summary";
 	public const string ReadCrmCounsellingSessions = "crm-counselling-sessions";
+	public const string ReadCounsellingSessions = ReadCrmCounsellingSessions;
 	public const string ReadCrmCounsellingSession = "crm-counselling-session/{id:int}";
 	public const string CounsellingSessionsByLeadId = "crm-counselling-sessions-by-lead/{leadId:int}";
 	public const string CrmCounsellingSessionEligibility = "crm-counselling-session-eligibility/{studentId:int}";
@@ -1107,6 +1169,7 @@ public static class RouteConstants
 	public const string DeleteCrmSessionProgramShortlist = "crm-session-program-shortlist/{key}";
 	public const string CrmSessionProgramShortlistSummary = "crm-session-program-shortlist-summary";
 	public const string ReadCrmSessionProgramShortlists = "crm-session-program-shortlists";
+	public const string ReadSessionProgramShortlists = ReadCrmSessionProgramShortlists;
 	public const string ReadCrmSessionProgramShortlist = "crm-session-program-shortlist/{id:int}";
 	public const string SessionProgramShortlistsBySessionId = "crm-session-program-shortlists-by-session/{sessionId:int}";
 	#endregion CrmSessionProgramShortlist

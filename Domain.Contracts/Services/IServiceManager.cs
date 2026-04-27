@@ -70,6 +70,8 @@ public interface IServiceManager
   
   // Existing Crm services
   ICrmApplicationService CrmApplications { get; }
+  ICrmApplicationConditionService CrmApplicationConditions { get; }
+  ICrmApplicationDocumentService CrmApplicationDocuments { get; }
   ICrmApplicantCourseService ApplicantCourses { get; }
   ICrmApplicantInfoService ApplicantInfos { get; }
   ICrmPermanentAddressService PermanentAddresses { get; }
@@ -103,6 +105,9 @@ public interface IServiceManager
   ICrmCounselorService CrmCounselors { get; }
   ICrmLeadService CrmLeads { get; }
   ICrmStudentService CrmStudents { get; }
+  ICrmStudentDocumentService CrmStudentDocuments { get; }
+  ICrmDocumentVerificationHistoryService CrmDocumentVerificationHistories { get; }
+  ICrmStudentDocumentChecklistService CrmStudentDocumentChecklists { get; }
   ICrmStudentAcademicProfileService CrmStudentAcademicProfiles { get; }
   ICrmStudentStatusHistoryService CrmStudentStatusHistories { get; }
   ICrmEnquiryService CrmEnquiries { get; }

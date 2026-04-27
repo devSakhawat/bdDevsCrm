@@ -1,4 +1,4 @@
-(function () {
+﻿(function () {
     'use strict';
 
     window.LeadModule = window.LeadModule || {};
@@ -28,7 +28,9 @@
             leadSourcesDdl: `${apiRoot}/crm-lead-sources-ddl`,
             leadStatusesDdl: `${apiRoot}/crm-lead-statuses-ddl`,
             counselorsDdl: `${apiRoot}/crm-counselors-ddl`,
-            agentsDdl: `${apiRoot}/crm-agents-ddl`
+            agentsDdl: `${apiRoot}/crm-agents-ddl`,
+            convertPreflight: `${apiRoot}/crm-convert-lead-to-student-preflight`,
+            convert: `${apiRoot}/crm-convert-lead-to-student`
         },
         gridOptions: {
             pageSize: 20,

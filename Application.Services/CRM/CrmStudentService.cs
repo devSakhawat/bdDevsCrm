@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using bdDevs.Shared.Records.CRM;
 using bdDevs.Shared.Extensions;
+using Domain.Entities.Entities.DMS;
 
 namespace Application.Services.CRM;
 
@@ -115,6 +116,187 @@ internal sealed class CrmStudentService : ICrmStudentService
         await _repository.SaveAsync(cancellationToken);
         return entity.MapTo<CrmStudentDto>();
     }
+
+
+    public async Task<ConvertToStudentResultDto> EvaluateLeadConversionAsync(ConvertToStudentRequestDto request, CancellationToken cancellationToken = default)
+    {
+        if (request == null) throw new BadRequestException(nameof(ConvertToStudentRequestDto));
+        return await EvaluateLeadConversionInternalAsync(request, cancellationToken);
+    }
+
+    public async Task<ConvertToStudentResultDto> ConvertLeadToStudentAsync(ConvertToStudentRequestDto request, CancellationToken cancellationToken = default)
+    {
+        if (request == null) throw new BadRequestException(nameof(ConvertToStudentRequestDto));
+        var evaluation = await EvaluateLeadConversionInternalAsync(request, cancellationToken);
+        if (evaluation.HardErrors.Any())
+        {
+            evaluation.ResultType = "HARD_BLOCK";
+            evaluation.CanConvert = false;
+            return evaluation;
+        }
+
+        if (evaluation.SoftWarnings.Any() && !request.ForceProceed)
+        {
+            evaluation.ResultType = "SOFT_WARNING";
+            evaluation.CanConvert = false;
+            evaluation.Message = "Conversion has warnings. Confirm to proceed.";
+            return evaluation;
+        }
+
+        var lead = await _repository.CrmLeads.FirstOrDefaultAsync(x => x.LeadId == request.LeadId, true, cancellationToken)
+            ?? throw new NotFoundException("Lead", "LeadId", request.LeadId.ToString());
+        var requestedBy = request.RequestedBy ?? 1;
+
+        await _repository.CrmStudents.TransactionBeginAsync(cancellationToken);
+        try
+        {
+            var studentStatus = (await _repository.CrmStudentStatuses.ListByConditionAsync(x => x.IsActive && x.StatusName.ToLower().Contains("new"), x => x.StudentStatusId, false, false, cancellationToken)).FirstOrDefault()
+                ?? (await _repository.CrmStudentStatuses.ListAsync(x => x.StudentStatusId, false, cancellationToken)).FirstOrDefault();
+
+            var student = new CrmStudent
+            {
+                LeadId = lead.LeadId,
+                StudentName = lead.LeadName,
+                StudentCode = $"STD-{DateTime.UtcNow:yyyyMMddHHmmss}",
+                Email = lead.Email,
+                Phone = lead.Phone,
+                CounselorId = lead.AssignedCounselorId,
+                AgentId = lead.AgentId,
+                BranchId = lead.BranchId,
+                ProcessingOfficerId = request.ProcessingOfficerId,
+                PreferredCountryId = request.PreferredCountryId ?? lead.InterestedCountryId,
+                PreferredDegreeLevelId = request.PreferredDegreeLevelId ?? lead.InterestedDegreeLevelId,
+                DesiredIntake = string.IsNullOrWhiteSpace(request.DesiredIntake) ? null : request.DesiredIntake,
+                PassportNumber = string.IsNullOrWhiteSpace(request.PassportNumber) ? null : request.PassportNumber,
+                StudentStatusId = studentStatus?.StudentStatusId,
+                IsApplicationReady = false,
+                IsDeleted = false,
+                IsActive = true,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = requestedBy
+            };
+
+            int studentId = await _repository.CrmStudents.CreateAndIdAsync(student, cancellationToken);
+            student.StudentId = studentId;
+
+            await _repository.CrmStudentAcademicProfiles.CreateAsync(new CrmStudentAcademicProfile
+            {
+                StudentId = studentId,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = requestedBy
+            }, cancellationToken);
+
+            var convertedStatus = (await _repository.CrmLeadStatuses.ListByConditionAsync(x => x.IsActive && x.StatusName.ToLower().Contains("converted"), x => x.LeadStatusId, false, false, cancellationToken)).FirstOrDefault();
+            if (convertedStatus != null)
+            {
+                lead.LeadStatusId = convertedStatus.LeadStatusId;
+            }
+            lead.UpdatedBy = requestedBy;
+            lead.UpdatedDate = DateTime.UtcNow;
+            _repository.CrmLeads.UpdateByState(lead);
+
+            await GenerateDefaultDocumentChecklistAsyncInternal(student, requestedBy, cancellationToken);
+            await _repository.SaveAsync(cancellationToken);
+            await _repository.CrmStudents.TransactionCommitAsync(cancellationToken);
+
+            _logger.LogInformation("Welcome notification queued for StudentId {StudentId}", studentId);
+            _logger.LogInformation("Processing officer assignment notification queued for StudentId {StudentId}", studentId);
+
+            evaluation.StudentId = studentId;
+            evaluation.CanConvert = true;
+            evaluation.ResultType = "SUCCESS";
+            evaluation.Message = "Lead converted to student successfully.";
+            return evaluation;
+        }
+        catch
+        {
+            await _repository.CrmStudents.TransactionRollbackAsync(cancellationToken);
+            throw;
+        }
+        finally
+        {
+            await _repository.CrmStudents.TransactionDisposeAsync();
+        }
+    }
+
+    private async Task<ConvertToStudentResultDto> EvaluateLeadConversionInternalAsync(ConvertToStudentRequestDto request, CancellationToken cancellationToken)
+    {
+        var result = new ConvertToStudentResultDto { LeadId = request.LeadId };
+        var lead = await _repository.CrmLeads.FirstOrDefaultAsync(x => x.LeadId == request.LeadId, false, cancellationToken);
+        if (lead == null)
+            throw new NotFoundException("Lead", "LeadId", request.LeadId.ToString());
+        if (lead.IsDeleted)
+            throw new BadRequestException("Lead is deleted and cannot be converted.");
+
+        var interestedStatus = lead.LeadStatusId.HasValue
+            ? await _repository.CrmLeadStatuses.FirstOrDefaultAsync(x => x.LeadStatusId == lead.LeadStatusId.Value, false, cancellationToken)
+            : null;
+        if (!string.Equals(interestedStatus?.StatusName, "Interested", StringComparison.OrdinalIgnoreCase))
+            throw new BadRequestException("Only interested leads can be converted to students.");
+
+        var sessions = (await _repository.CrmCounsellingSessions.CounsellingSessionsByLeadIdAsync(request.LeadId, false, cancellationToken)).Where(x => !x.IsDeleted).ToList();
+        if (sessions.Any(x => x.SessionDate.Date >= DateTime.UtcNow.Date))
+            result.HardErrors.Add("An active counselling session exists for this lead.");
+        if (!sessions.Any(x => x.SessionDate.Date < DateTime.UtcNow.Date && x.Outcome > 0))
+            result.HardErrors.Add("At least one completed counselling session is required before conversion.");
+
+        if (!string.IsNullOrWhiteSpace(lead.Phone))
+        {
+            var duplicateStudent = (await _repository.CrmStudents.CrmStudentsAsync(false, cancellationToken)).FirstOrDefault(x => !x.IsDeleted && x.Phone == lead.Phone);
+            if (duplicateStudent != null)
+            {
+                result.HardErrors.Add("Student phone must be unique across students.");
+                result.ExistingStudentId = duplicateStudent.StudentId;
+            }
+        }
+
+        if (string.IsNullOrWhiteSpace(request.PassportNumber))
+            result.SoftWarnings.Add("Passport information is missing.");
+        if (!(request.PreferredCountryId ?? lead.InterestedCountryId).HasValue)
+            result.SoftWarnings.Add("Preferred country is not set.");
+
+        var budgetThreshold = _config.GetValue<decimal?>("CrmConversion:BudgetThreshold") ?? 50000m;
+        if ((lead.Budget ?? 0m) > 0m && lead.Budget.Value < budgetThreshold)
+            result.SoftWarnings.Add($"Lead budget is below the threshold of {budgetThreshold:0.##}.");
+
+        result.CanConvert = !result.HardErrors.Any() && !result.SoftWarnings.Any();
+        result.Message = result.HardErrors.Any() ? "Conversion is blocked." : result.SoftWarnings.Any() ? "Conversion has warnings." : "Lead is ready for conversion.";
+        return result;
+    }
+
+    private async Task GenerateDefaultDocumentChecklistAsyncInternal(CrmStudent student, int requestedBy, CancellationToken cancellationToken)
+    {
+        var requirements = (await _repository.CrmCountryDocumentRequirements.CrmCountryDocumentRequirementsAsync(false, cancellationToken))
+            .Where(x => x.CountryId == student.PreferredCountryId && (!student.PreferredDegreeLevelId.HasValue || x.DegreeLevelId == student.PreferredDegreeLevelId.Value))
+            .ToList();
+        var documentTypes = (await _repository.DmsDocumentTypes.DocumentTypesAsync(false, cancellationToken)).ToList();
+
+        var selectedDocumentTypes = new List<DmsDocumentType>();
+        foreach (var requirement in requirements)
+        {
+            var docType = documentTypes.FirstOrDefault(x => x.Name.Equals(requirement.DocumentTypeName, StringComparison.OrdinalIgnoreCase));
+            if (docType != null && selectedDocumentTypes.All(x => x.DocumentTypeId != docType.DocumentTypeId))
+                selectedDocumentTypes.Add(docType);
+        }
+        if (!selectedDocumentTypes.Any())
+            selectedDocumentTypes = documentTypes.Where(x => x.IsMandatory).ToList();
+
+        foreach (var docType in selectedDocumentTypes)
+        {
+            await _repository.CrmStudentDocumentChecklists.CreateAsync(new CrmStudentDocumentChecklist
+            {
+                StudentId = student.StudentId,
+                DocumentTypeId = docType.DocumentTypeId,
+                IsMandatory = docType.IsMandatory,
+                IsSubmitted = false,
+                IsVerified = false,
+                CreatedDate = DateTime.UtcNow,
+                CreatedBy = requestedBy
+            }, cancellationToken);
+        }
+        _logger.LogInformation("Generated default document checklist for StudentId {StudentId}", student.StudentId);
+    }
+
 
     public async Task<CrmStudentApplicationReadyCheckDto> ApplicationReadyCheckAsync(int studentId, CancellationToken cancellationToken = default)
     {

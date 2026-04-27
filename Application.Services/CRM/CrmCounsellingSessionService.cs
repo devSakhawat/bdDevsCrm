@@ -89,7 +89,7 @@ internal sealed class CrmCounsellingSessionService : ICrmCounsellingSessionServi
     {
         var student = await _repository.CrmStudents.CrmStudentAsync(studentId, false, cancellationToken)
             ?? throw new NotFoundException("Student", "StudentId", studentId.ToString());
-        var profile = (await _repository.CrmStudentAcademicProfiles.CrmStudentAcademicProfilesByStudentIdAsync(studentId, false, cancellationToken)).FirstOrDefault();
+        var profile = (await _repository.CrmStudentAcademicProfiles.StudentAcademicProfilesByStudentIdAsync(studentId, false, cancellationToken)).FirstOrDefault();
         var courses = await _repository.CrmCourses.CrmCoursesAsync(false, cancellationToken);
         var institutes = await _repository.CrmInstitutes.CrmInstitutesAsync(false, cancellationToken);
 

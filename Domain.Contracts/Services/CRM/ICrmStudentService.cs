@@ -16,4 +16,6 @@ public interface ICrmStudentService
     Task<GridEntity<CrmStudentDto>> StudentsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default);
     Task<CrmStudentDto> ChangeStatusAsync(ChangeCrmStudentStatusRecord record, CancellationToken cancellationToken = default);
     Task<CrmStudentApplicationReadyCheckDto> ApplicationReadyCheckAsync(int studentId, CancellationToken cancellationToken = default);
+    Task<ConvertToStudentResultDto> EvaluateLeadConversionAsync(ConvertToStudentRequestDto request, CancellationToken cancellationToken = default);
+    Task<ConvertToStudentResultDto> ConvertLeadToStudentAsync(ConvertToStudentRequestDto request, CancellationToken cancellationToken = default);
 }

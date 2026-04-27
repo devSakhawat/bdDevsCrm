@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Lead Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Lead Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Lead records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Lead</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddLead" class="btn btn--primary">Add Lead</button>
+        <button type="button" id="btnRefreshLead" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="leadGrid"></div>
+</section>
+
+<div id="leadWindow" style="display:none;">
+    <form id="leadForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelLead" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveLead" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/lead/leadSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/lead/leadSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/lead/leadDetails.js" asp-append-version="true"></script>
+}

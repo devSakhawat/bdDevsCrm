@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Task Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Task Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Task records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Task</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddTask" class="btn btn--primary">Add Task</button>
+        <button type="button" id="btnRefreshTask" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="taskGrid"></div>
+</section>
+
+<div id="taskWindow" style="display:none;">
+    <form id="taskForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelTask" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveTask" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/task/taskSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/task/taskSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/task/taskDetails.js" asp-append-version="true"></script>
+}

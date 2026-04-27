@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Enquiry Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Enquiry Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Enquiry records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Enquiry</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddEnquiry" class="btn btn--primary">Add Enquiry</button>
+        <button type="button" id="btnRefreshEnquiry" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="enquiryGrid"></div>
+</section>
+
+<div id="enquiryWindow" style="display:none;">
+    <form id="enquiryForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelEnquiry" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveEnquiry" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/enquiry/enquirySettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/enquiry/enquirySummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/enquiry/enquiryDetails.js" asp-append-version="true"></script>
+}

@@ -136,6 +136,19 @@ erDiagram
 9. **Communication immutability:** communication log entries are append-only except administrative correction metadata.
 10. **Soft delete only:** v1 records use `IsDeleted` + audit fields; physical delete is restricted to admin cleanup scripts.
 
+### Branch Scope Matrix
+
+| Context | `BranchId` | Rule |
+|---|---|---|
+| **Lead entry** (`CrmLead`) | **Mandatory** | A lead must always be tied to the branch where it was registered. Null `BranchId` must be rejected by the validator. |
+| **Student entry** (`CrmStudent`) | **Mandatory** | A student profile inherits the lead's branch and must retain a non-null `BranchId`. |
+| **Reports / Queries** | **Optional** | All CRM report endpoints accept an optional `BranchId` filter; when omitted the query returns data for all branches the requesting user has access to. |
+
+**Implementation notes:**
+- `CrmLead` and `CrmStudent` validators (FluentValidation) must include `.NotNull()` and `.GreaterThan(0)` on `BranchId`.
+- Report service methods must accept `int? branchId` — `null` means "all permitted branches."
+- The `Branch` master table lives in the shared System layer; `BranchId` is a plain FK (no CRM-specific wrapper).
+
 ---
 
 ## 5. Naming Convention Lock
@@ -291,6 +304,7 @@ erDiagram
 | `FullName` | `nvarchar(200)` | Required |
 | `PrimaryPhone` | `nvarchar(30)` | Required |
 | `Email` | `nvarchar(150)` | Nullable |
+| `BranchId` | `int` | **Required** — FK to system `Branch` (Branch Scope Matrix rule) |
 | `CountryId` | `int` | FK |
 | `InterestedCourseId` | `int` | FK nullable |
 | `LeadSourceId` | `int` | FK |
@@ -338,6 +352,7 @@ erDiagram
 | `StudentId` | `int` | PK |
 | `LeadId` | `int` | Required, FK, unique |
 | `StudentCode` | `nvarchar(50)` | Required, unique |
+| `BranchId` | `int` | **Required** — inherited from `CrmLead.BranchId` (Branch Scope Matrix rule) |
 | `PassportNo` | `nvarchar(50)` | Nullable, unique filtered |
 | `DateOfBirth` | `date` | Nullable |
 | `Gender` | `nvarchar(20)` | Nullable |
@@ -468,7 +483,88 @@ erDiagram
 
 ---
 
-## 7. Workflow-Driven API Contract Lock
+## 6-A. Workflow State & Action Design (WfState / WfAction)
+
+### Design Decision: DB-Driven Status — No Hardcoded Enums
+
+**All module statuses and the action-buttons that drive transitions are stored in the database via two shared system tables — `WfState` and `WfAction`.** C# `enum` values for status must **not** be hardcoded in application code.
+
+### Table Reference
+
+#### `WfState` — one row per workflow state per menu
+| Column | Type | Notes |
+|---|---|---|
+| `WfStateId` | `int` | PK |
+| `StateName` | `nvarchar` | Display name (e.g., "Draft", "Submitted", "Approved") |
+| `MenuId` | `int` | Links state to a specific menu/module |
+| `IsDefaultStart` | `bit` | `true` for the entry state of the workflow |
+| `IsClosed` | `int` | `1` = terminal/closed state |
+| `Sequence` | `int` | Display order |
+
+#### `WfAction` — one row per allowed transition button
+| Column | Type | Notes |
+|---|---|---|
+| `WfActionId` | `int` | PK |
+| `WfStateId` | `int` | FK to `WfState` — the current state |
+| `ActionName` | `nvarchar` | Button label (e.g., "Submit", "Approve", "Reject") |
+| `NextStateId` | `int` | FK to `WfState` — the target state after action |
+| `EmailAlert` | `int` | `1` = send email notification |
+| `SmsAlert` | `int` | `1` = send SMS notification |
+| `AcSortOrder` | `int` | Button display order |
+
+### How Status Works in CRM Modules
+
+```
+CrmLead.WfStateId  ──→  WfState (MenuId = <CRM Lead menu id>)
+                             │
+                             └──→ WfAction rows  (buttons shown to the user)
+                                      │
+                                      └──→ NextStateId (transition target)
+```
+
+1. When a Lead / Application / Visa record is created, its `WfStateId` is set to the row in `WfState` where `IsDefaultStart = 1` for that menu.
+2. The frontend calls `GET /bdDevs-crm/wf-actions?wfStateId={id}` to fetch the list of allowed action-buttons to render.
+3. When the user clicks an action button, the frontend calls the workflow action endpoint (`POST /bdDevs-crm/crm-lead/{id}/wf-action`) passing `WfActionId`.
+4. The service resolves `NextStateId` from `WfAction` and updates the record's `WfStateId`.
+
+### Impact on Existing CRM Status Master Tables
+
+The separate `CrmApplicationStatus` and `CrmVisaStatus` master tables **remain in the schema** for backward compatibility, but new state changes are driven through `WfState`/`WfAction`. Going forward:
+- `CrmApplication.WfStateId` and `CrmVisaApplication.WfStateId` are the **authoritative** status columns.
+- `ApplicationStatusId` / `VisaStatusId` are kept as display-only denormalized fields and are updated when `WfStateId` changes.
+
+### Backend Pattern
+
+```csharp
+// Service method — execute a workflow action
+public async Task ExecuteWorkflowActionAsync(
+    int recordId,
+    int wfActionId,
+    CancellationToken ct)
+{
+    var action = await _repository.WfActions.GetByIdAsync(wfActionId);  // validate action exists
+    var record = await _repository.CrmLeads.GetByIdAsync(recordId);
+
+    if (record.WfStateId != action.WfStateId)
+        throw new BadRequestException("Action is not valid for the current state.");
+
+    record.WfStateId = action.NextStateId;
+    await _repository.SaveAsync(ct);
+}
+```
+
+### Frontend Pattern
+
+```javascript
+// Load action buttons from DB — never hardcode button labels
+async function loadWorkflowButtons(wfStateId) {
+    const res = await fetch(`${AppConfig.apiRouteBaseUrl}/wf-actions?wfStateId=${wfStateId}`);
+    const json = await res.json();
+    renderActionButtons(json.data);  // render dynamically
+}
+```
+
+---
 
 ### API Design Rules
 - Base route stays under `/bdDevs-crm`.
@@ -713,9 +809,10 @@ The following items are now considered locked for the education CRM v1 kickoff:
 - Final v1 module list
 - Master vs transactional data separation
 - Entity relationship model
-- Business rules
-- Naming conventions
+- Business rules (including Branch Scope Matrix)
+- Naming conventions (including `Crm` module prefix — see `doc/naming_conventions.md` § 10)
 - Table-wise schema package
+- Workflow state/action design (WfState / WfAction DB-driven status)
 - Workflow API contract
 - Request/response DTO contract
 - Backend implementation sequence

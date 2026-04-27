@@ -7,6 +7,7 @@ namespace Presentation.Api.BackgroundServices;
 
 public class CrmFollowUpMaintenanceBackgroundService : BackgroundService
 {
+    private const string IntervalHoursConfigKey = "CrmFollowUpJobs:IntervalHours";
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<CrmFollowUpMaintenanceBackgroundService> _logger;
     private readonly IConfiguration _configuration;
@@ -20,7 +21,7 @@ public class CrmFollowUpMaintenanceBackgroundService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var intervalHours = _configuration.GetValue<int?>("CrmFollowUpJobs:IntervalHours") ?? 24;
+        var intervalHours = _configuration.GetValue<int?>(IntervalHoursConfigKey) ?? 24;
         var interval = TimeSpan.FromHours(intervalHours);
 
         while (!stoppingToken.IsCancellationRequested)

@@ -18,7 +18,7 @@ public class CrmAgentLeadRepository : RepositoryBase<CrmAgentLead>, ICrmAgentLea
         => await FirstOrDefaultAsync(x => x.LeadId == leadId, trackChanges, cancellationToken);
 
     public async Task<IEnumerable<CrmAgentLead>> CrmAgentLeadsByAgentIdAsync(int agentId, bool trackChanges, CancellationToken cancellationToken = default)
-        => await ListByIdsAsync(x => x.AgentId == agentId, trackChanges, cancellationToken);
+        => await ListByConditionAsync(x => x.AgentId == agentId, x => x.AgentLeadId, trackChanges, false, cancellationToken);
 
     public async Task<IEnumerable<CrmAgentLead>> CrmAgentLeadsByIdsAsync(IEnumerable<int> ids, bool trackChanges, CancellationToken cancellationToken = default)
         => await ListByIdsAsync(x => ids.Contains(x.AgentLeadId), trackChanges, cancellationToken);

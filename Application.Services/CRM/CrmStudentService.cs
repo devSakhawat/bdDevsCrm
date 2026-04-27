@@ -47,10 +47,11 @@ internal sealed class CrmStudentService : ICrmStudentService
 
         var entity = record.MapTo<CrmStudent>();
         _repository.CrmStudents.UpdateByState(entity);
-        await _repository.SaveAsync(cancellationToken);
 
         if (existing.StudentStatusId != entity.StudentStatusId && entity.StudentStatusId.HasValue)
             await AddStatusHistoryAsync(entity.StudentId, existing.StudentStatusId, entity.StudentStatusId, entity.UpdatedBy ?? entity.CreatedBy, "Status changed from update", cancellationToken);
+
+        await _repository.SaveAsync(cancellationToken);
 
         return entity.MapTo<CrmStudentDto>();
     }

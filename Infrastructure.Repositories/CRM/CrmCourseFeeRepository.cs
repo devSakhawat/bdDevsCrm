@@ -15,7 +15,7 @@ public class CrmCourseFeeRepository : RepositoryBase<CrmCourseFee>, ICrmCourseFe
         => await FirstOrDefaultAsync(x => x.CourseFeeId == id, trackChanges, cancellationToken);
 
     public async Task<IEnumerable<CrmCourseFee>> CrmCourseFeesByCourseIdAsync(int courseId, bool trackChanges, CancellationToken cancellationToken = default)
-        => await ListByIdsAsync(x => x.CourseId == courseId, trackChanges, cancellationToken);
+        => await ListByConditionAsync(x => x.CourseId == courseId, x => x.CourseFeeId, trackChanges, false, cancellationToken);
 
     public async Task<IEnumerable<CrmCourseFee>> CrmCourseFeesByIdsAsync(IEnumerable<int> ids, bool trackChanges, CancellationToken cancellationToken = default)
         => await ListByIdsAsync(x => ids.Contains(x.CourseFeeId), trackChanges, cancellationToken);

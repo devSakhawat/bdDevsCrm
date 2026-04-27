@@ -15,7 +15,7 @@ public class CrmCountryDocumentRequirementRepository : RepositoryBase<CrmCountry
         => await FirstOrDefaultAsync(x => x.RequirementId == id, trackChanges, cancellationToken);
 
     public async Task<IEnumerable<CrmCountryDocumentRequirement>> RequirementsByCountryIdAsync(int countryId, bool trackChanges, CancellationToken cancellationToken = default)
-        => await ListByIdsAsync(x => x.CountryId == countryId, trackChanges, cancellationToken);
+        => await ListByConditionAsync(x => x.CountryId == countryId, x => x.RequirementId, trackChanges, false, cancellationToken);
 
     public async Task<IEnumerable<CrmCountryDocumentRequirement>> CrmCountryDocumentRequirementsByIdsAsync(IEnumerable<int> ids, bool trackChanges, CancellationToken cancellationToken = default)
         => await ListByIdsAsync(x => ids.Contains(x.RequirementId), trackChanges, cancellationToken);

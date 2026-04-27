@@ -28,10 +28,11 @@ internal sealed class CrmCounsellingSessionService : ICrmCounsellingSessionServi
     {
         if (record == null) throw new BadRequestException(nameof(CreateCrmCounsellingSessionRecord));
 
-        await ApplyOutcomeToLeadAsync(record.LeadId, record.Outcome, cancellationToken);
         var entity = record.MapTo<CrmCounsellingSession>();
-        int newId = await _repository.CrmCounsellingSessions.CreateAndIdAsync(entity, cancellationToken);
+        await ApplyOutcomeToLeadAsync(record.LeadId, record.Outcome, cancellationToken);
+        await _repository.CrmCounsellingSessions.CreateAsync(entity, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
+        int newId = entity.CounsellingSessionId;
         _logger.LogInformation("CrmCounsellingSession created. ID: {Id}", newId);
         return entity.MapTo<CrmCounsellingSessionDto>() with { CounsellingSessionId = newId };
     }
@@ -42,8 +43,8 @@ internal sealed class CrmCounsellingSessionService : ICrmCounsellingSessionServi
         _ = await _repository.CrmCounsellingSessions.CrmCounsellingSessionAsync(record.CounsellingSessionId, false, cancellationToken)
             ?? throw new NotFoundException("CrmCounsellingSession", "CounsellingSessionId", record.CounsellingSessionId.ToString());
 
-        await ApplyOutcomeToLeadAsync(record.LeadId, record.Outcome, cancellationToken);
         var entity = record.MapTo<CrmCounsellingSession>();
+        await ApplyOutcomeToLeadAsync(record.LeadId, record.Outcome, cancellationToken);
         _repository.CrmCounsellingSessions.UpdateByState(entity);
         await _repository.SaveAsync(cancellationToken);
         return entity.MapTo<CrmCounsellingSessionDto>();
@@ -175,7 +176,6 @@ internal sealed class CrmCounsellingSessionService : ICrmCounsellingSessionServi
         lead.LeadStatusId = status.LeadStatusId;
         lead.UpdatedDate = DateTime.UtcNow;
         _repository.CrmLeads.UpdateByState(lead);
-        await _repository.SaveAsync(cancellationToken);
     }
 
     private static decimal? ParseAcademicScore(string? value)

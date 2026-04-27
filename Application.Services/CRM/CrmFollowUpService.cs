@@ -48,10 +48,11 @@ internal sealed class CrmFollowUpService : ICrmFollowUpService
 
         var entity = record.MapTo<CrmFollowUp>();
         _repository.CrmFollowUps.UpdateByState(entity);
-        await _repository.SaveAsync(cancellationToken);
 
         if (existing.Status != entity.Status)
             await AddHistoryAsync(entity.FollowUpId, existing.Status, entity.Status, entity.UpdatedBy ?? entity.CreatedBy, entity.Notes, cancellationToken);
+
+        await _repository.SaveAsync(cancellationToken);
 
         return entity.MapTo<CrmFollowUpDto>();
     }
@@ -106,7 +107,7 @@ internal sealed class CrmFollowUpService : ICrmFollowUpService
         if (!IsAllowedTransition(entity.Status, record.NewStatus))
             throw new BadRequestException($"Invalid follow-up status transition from {entity.Status} to {record.NewStatus}.");
 
-        if (record.NewStatus == 2 && string.IsNullOrWhiteSpace(record.Remarks) || (record.NewStatus == 2 && record.Remarks!.Trim().Length < 10))
+        if (record.NewStatus == 2 && (string.IsNullOrWhiteSpace(record.Remarks) || record.Remarks.Trim().Length < 10))
             throw new BadRequestException("Completed transition requires remarks with at least 10 characters.");
 
         byte oldStatus = entity.Status;

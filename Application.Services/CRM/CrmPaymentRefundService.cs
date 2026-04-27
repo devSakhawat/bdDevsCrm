@@ -16,12 +16,14 @@ internal sealed class CrmPaymentRefundService : ICrmPaymentRefundService
     private readonly IRepositoryManager _repository;
     private readonly ILogger<CrmPaymentRefundService> _logger;
     private readonly IConfiguration _configuration;
+    private readonly ICrmCommissionService _commissionService;
 
-    public CrmPaymentRefundService(IRepositoryManager repository, ILogger<CrmPaymentRefundService> logger, IConfiguration configuration)
+    public CrmPaymentRefundService(IRepositoryManager repository, ILogger<CrmPaymentRefundService> logger, IConfiguration configuration, ICrmCommissionService commissionService)
     {
         _repository = repository;
         _logger = logger;
         _configuration = configuration;
+        _commissionService = commissionService;
     }
 
     public async Task<CrmPaymentRefundDto> CreateAsync(CreateCrmPaymentRefundRecord record, CancellationToken cancellationToken = default)
@@ -39,6 +41,7 @@ internal sealed class CrmPaymentRefundService : ICrmPaymentRefundService
         payment.UpdatedDate = DateTime.UtcNow;
         _repository.CrmStudentPayments.UpdateByState(payment);
         await _repository.SaveAsync(cancellationToken);
+        await _commissionService.ReverseByRefundAsync(record.PaymentId, record.RefundAmount, record.RefundDate, record.CreatedBy, record.Reason, cancellationToken);
         entity.PaymentRefundId = newId;
         return entity.MapTo<CrmPaymentRefundDto>();
     }
@@ -59,6 +62,7 @@ internal sealed class CrmPaymentRefundService : ICrmPaymentRefundService
             _repository.CrmStudentPayments.UpdateByState(payment);
         }
         await _repository.SaveAsync(cancellationToken);
+        await _commissionService.ReverseByRefundAsync(record.PaymentId, record.RefundAmount, record.RefundDate, record.UpdatedBy ?? record.CreatedBy, record.Reason, cancellationToken);
         return entity.MapTo<CrmPaymentRefundDto>();
     }
 

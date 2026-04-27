@@ -20,13 +20,15 @@ internal sealed class CrmApplicationService : ICrmApplicationService
     private readonly ILogger<CrmApplicationService> _logger;
     private readonly IConfiguration _config;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ICrmCommissionService _commissionService;
 
-    public CrmApplicationService(IRepositoryManager repository, ILogger<CrmApplicationService> logger, IConfiguration config, IHttpContextAccessor httpContextAccessor)
+    public CrmApplicationService(IRepositoryManager repository, ILogger<CrmApplicationService> logger, IConfiguration config, IHttpContextAccessor httpContextAccessor, ICrmCommissionService commissionService)
     {
         _repository = repository;
         _logger = logger;
         _config = config;
         _httpContextAccessor = httpContextAccessor;
+        _commissionService = commissionService;
     }
 
     public async Task<CrmApplicationDto> CreateAsync(CreateCrmApplicationRecord record, CancellationToken cancellationToken = default)
@@ -58,6 +60,8 @@ internal sealed class CrmApplicationService : ICrmApplicationService
         entity.PortalPassword = string.IsNullOrWhiteSpace(record.PortalPassword) ? null : EncryptDecryptHelper.Encrypt(record.PortalPassword);
         _repository.CrmApplications.UpdateByState(entity);
         await _repository.SaveAsync(cancellationToken);
+        if (record.NewStatus == 9)
+            await _commissionService.EnsureCommissionForEnrollmentAsync(record.ApplicationId, record.ChangedBy, cancellationToken);
         return entity.MapTo<CrmApplicationDto>();
     }
 
@@ -114,6 +118,8 @@ internal sealed class CrmApplicationService : ICrmApplicationService
         if (record.NewStatus is 10 or 11 && !entity.WithdrawnDate.HasValue) entity.WithdrawnDate = DateTime.UtcNow;
         _repository.CrmApplications.UpdateByState(entity);
         await _repository.SaveAsync(cancellationToken);
+        if (record.NewStatus == 9)
+            await _commissionService.EnsureCommissionForEnrollmentAsync(record.ApplicationId, record.ChangedBy, cancellationToken);
         return entity.MapTo<CrmApplicationDto>();
     }
 

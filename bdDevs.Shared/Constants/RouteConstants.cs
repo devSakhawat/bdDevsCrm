@@ -511,6 +511,22 @@ public static class RouteConstants
 	public const string CrmScholarshipCommissionImpact = "crm-scholarship-commission-impact/{applicationId:int}";
 	#endregion CrmScholarshipApplication
 
+	#region CrmCommission
+	public const string CreateCrmCommission = "crm-commission";
+	public const string UpdateCrmCommission = "crm-commission/{key}";
+	public const string DeleteCrmCommission = "crm-commission/{key}";
+	public const string CrmCommissionSummary = "crm-commission-summary";
+	public const string ReadCrmCommissions = "crm-commissions";
+	public const string ReadCrmCommission = "crm-commission/{id:int}";
+	public const string CrmCommissionsByApplicationId = "crm-commissions-by-application/{applicationId:int}";
+	public const string CrmCommissionsByAgentId = "crm-commissions-by-agent/{agentId:int}";
+	public const string CrmCommissionStatusTransition = "crm-commission-status-transition";
+	public const string CrmCommissionInvoice = "crm-commission-invoice/{commissionId:int}";
+	public const string CrmCommissionDashboard = "crm-commission-dashboard";
+	public const string CrmCommissionAgingReport = "crm-commission-aging-report";
+	public const string CrmCommissionAgentSummary = "crm-commission-agent-summary";
+	#endregion CrmCommission
+
 	#region CrmVisaApplication
 	public const string CreateCrmVisaApplication = "crm-visa-application";
 	public const string UpdateCrmVisaApplication = "crm-visa-application/{key}";
@@ -1081,6 +1097,7 @@ public static class RouteConstants
 	public const string ReadCrmAgents = "crm-agents";
 	public const string CrmAgentDDL = "crm-agents-ddl";
 	public const string ReadCrmAgent = "crm-agent/{id:int}";
+	public const string CrmAgentPerformance = "crm-agent-performance/{agentId:int}";
 	#endregion CrmAgent
 
 	#region CrmCounselor
@@ -1330,6 +1347,16 @@ public static class RouteConstants
 	public const string CrmAgentLeadByLeadId = "crm-agent-lead-by-lead/{leadId:int}";
 	public const string CrmAgentLeadsByAgentId = "crm-agent-leads-by-agent/{agentId:int}";
 	#endregion CrmAgentLead
+
+	#region CrmCommunicationLog
+	public const string CreateCrmCommunicationLog = "crm-communication-log";
+	public const string UpdateCrmCommunicationLog = "crm-communication-log/{key}";
+	public const string DeleteCrmCommunicationLog = "crm-communication-log/{key}";
+	public const string CrmCommunicationLogSummary = "crm-communication-log-summary";
+	public const string ReadCrmCommunicationLogs = "crm-communication-logs";
+	public const string ReadCrmCommunicationLog = "crm-communication-log/{id:int}";
+	public const string CrmCommunicationLogsByEntity = "crm-communication-logs-by-entity/{entityType:int}/{entityId:int}";
+	#endregion CrmCommunicationLog
 
 	#region TokenBlacklist
 	public const string CreateTokenBlacklist = "token-blacklist";

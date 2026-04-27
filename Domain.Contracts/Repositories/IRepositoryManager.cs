@@ -80,6 +80,8 @@ public interface IRepositoryManager : IDisposable
   // Existing CRM repositories
   ICrmApplicationRepository CrmApplications { get; }
   ICrmScholarshipApplicationRepository CrmScholarshipApplications { get; }
+  ICrmCommissionRepository CrmCommissions { get; }
+  ICrmCommunicationLogRepository CrmCommunicationLogs { get; }
   ICrmVisaApplicationRepository CrmVisaApplications { get; }
   ICrmVisaStatusHistoryRepository CrmVisaStatusHistories { get; }
   ICrmStudentPaymentRepository CrmStudentPayments { get; }

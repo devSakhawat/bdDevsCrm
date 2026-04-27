@@ -71,6 +71,8 @@ public interface IServiceManager
   // Existing Crm services
   ICrmApplicationService CrmApplications { get; }
   ICrmScholarshipApplicationService CrmScholarshipApplications { get; }
+  ICrmCommissionService CrmCommissions { get; }
+  ICrmCommunicationLogService CrmCommunicationLogs { get; }
   ICrmVisaApplicationService CrmVisaApplications { get; }
   ICrmVisaStatusHistoryService CrmVisaStatusHistories { get; }
   ICrmStudentPaymentService CrmStudentPayments { get; }

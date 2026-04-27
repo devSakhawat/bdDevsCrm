@@ -16,12 +16,14 @@ internal sealed class CrmScholarshipApplicationService : ICrmScholarshipApplicat
     private readonly IRepositoryManager _repository;
     private readonly ILogger<CrmScholarshipApplicationService> _logger;
     private readonly IConfiguration _configuration;
+    private readonly ICrmCommissionService _commissionService;
 
-    public CrmScholarshipApplicationService(IRepositoryManager repository, ILogger<CrmScholarshipApplicationService> logger, IConfiguration configuration)
+    public CrmScholarshipApplicationService(IRepositoryManager repository, ILogger<CrmScholarshipApplicationService> logger, IConfiguration configuration, ICrmCommissionService commissionService)
     {
         _repository = repository;
         _logger = logger;
         _configuration = configuration;
+        _commissionService = commissionService;
     }
 
     public async Task<CrmScholarshipApplicationDto> CreateAsync(CreateCrmScholarshipApplicationRecord record, CancellationToken cancellationToken = default)
@@ -32,6 +34,7 @@ internal sealed class CrmScholarshipApplicationService : ICrmScholarshipApplicat
         var entity = record.MapTo<CrmScholarshipApplication>();
         int newId = await _repository.CrmScholarshipApplications.CreateAndIdAsync(entity, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
+        await _commissionService.RecalculateByApplicationAsync(record.ApplicationId, record.CreatedBy, cancellationToken);
         entity.ScholarshipApplicationId = newId;
         return entity.MapTo<CrmScholarshipApplicationDto>();
     }
@@ -44,14 +47,18 @@ internal sealed class CrmScholarshipApplicationService : ICrmScholarshipApplicat
         var entity = record.MapTo<CrmScholarshipApplication>();
         _repository.CrmScholarshipApplications.UpdateByState(entity);
         await _repository.SaveAsync(cancellationToken);
+        await _commissionService.RecalculateByApplicationAsync(record.ApplicationId, record.UpdatedBy ?? record.CreatedBy, cancellationToken);
         return entity.MapTo<CrmScholarshipApplicationDto>();
     }
 
     public async Task DeleteAsync(DeleteCrmScholarshipApplicationRecord record, bool trackChanges, CancellationToken cancellationToken = default)
     {
         if (record == null || record.ScholarshipApplicationId <= 0) throw new BadRequestException("Invalid delete request!");
+        var existing = await _repository.CrmScholarshipApplications.ScholarshipApplicationAsync(record.ScholarshipApplicationId, false, cancellationToken)
+            ?? throw new NotFoundException("CrmScholarshipApplication", "ScholarshipApplicationId", record.ScholarshipApplicationId.ToString());
         await _repository.CrmScholarshipApplications.DeleteAsync(x => x.ScholarshipApplicationId == record.ScholarshipApplicationId, false, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
+        await _commissionService.RecalculateByApplicationAsync(existing.ApplicationId, 1, cancellationToken);
     }
 
     public async Task<CrmScholarshipApplicationDto> ScholarshipApplicationAsync(int id, bool trackChanges, CancellationToken cancellationToken = default)

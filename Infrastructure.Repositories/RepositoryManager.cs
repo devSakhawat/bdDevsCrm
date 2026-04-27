@@ -103,6 +103,8 @@ public class RepositoryManager : IRepositoryManager
   // Existing CRM repositories
   private readonly Lazy<ICrmApplicationRepository> _crmApplicationRepository;
   private readonly Lazy<ICrmScholarshipApplicationRepository> _crmScholarshipApplicationRepository;
+  private readonly Lazy<ICrmCommissionRepository> _crmCommissionRepository;
+  private readonly Lazy<ICrmCommunicationLogRepository> _crmCommunicationLogRepository;
   private readonly Lazy<ICrmVisaApplicationRepository> _crmVisaApplicationRepository;
   private readonly Lazy<ICrmVisaStatusHistoryRepository> _crmVisaStatusHistoryRepository;
   private readonly Lazy<ICrmStudentPaymentRepository> _crmStudentPaymentRepository;
@@ -235,6 +237,8 @@ public class RepositoryManager : IRepositoryManager
     #region CRM
     _crmApplicationRepository = new Lazy<ICrmApplicationRepository>(() => new CrmApplicationRepository(_repositoryContext));
     _crmScholarshipApplicationRepository = new Lazy<ICrmScholarshipApplicationRepository>(() => new CrmScholarshipApplicationRepository(_repositoryContext));
+    _crmCommissionRepository = new Lazy<ICrmCommissionRepository>(() => new CrmCommissionRepository(_repositoryContext));
+    _crmCommunicationLogRepository = new Lazy<ICrmCommunicationLogRepository>(() => new CrmCommunicationLogRepository(_repositoryContext));
     _crmVisaApplicationRepository = new Lazy<ICrmVisaApplicationRepository>(() => new CrmVisaApplicationRepository(_repositoryContext));
     _crmVisaStatusHistoryRepository = new Lazy<ICrmVisaStatusHistoryRepository>(() => new CrmVisaStatusHistoryRepository(_repositoryContext));
     _crmStudentPaymentRepository = new Lazy<ICrmStudentPaymentRepository>(() => new CrmStudentPaymentRepository(_repositoryContext));
@@ -389,6 +393,8 @@ public class RepositoryManager : IRepositoryManager
   // Existing Crm repository properties
   public ICrmApplicationRepository CrmApplications => _crmApplicationRepository.Value;
   public ICrmScholarshipApplicationRepository CrmScholarshipApplications => _crmScholarshipApplicationRepository.Value;
+  public ICrmCommissionRepository CrmCommissions => _crmCommissionRepository.Value;
+  public ICrmCommunicationLogRepository CrmCommunicationLogs => _crmCommunicationLogRepository.Value;
   public ICrmVisaApplicationRepository CrmVisaApplications => _crmVisaApplicationRepository.Value;
   public ICrmVisaStatusHistoryRepository CrmVisaStatusHistories => _crmVisaStatusHistoryRepository.Value;
   public ICrmStudentPaymentRepository CrmStudentPayments => _crmStudentPaymentRepository.Value;

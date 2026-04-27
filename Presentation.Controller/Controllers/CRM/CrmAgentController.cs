@@ -88,4 +88,11 @@ public class CrmAgentController : BaseApiController
         if (!records.Any()) return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmAgentDto>(), "No records found."));
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }
+
+    [HttpGet(RouteConstants.CrmAgentPerformance)]
+    public async Task<IActionResult> PerformanceAsync([FromRoute] int agentId, CancellationToken cancellationToken = default)
+    {
+        if (agentId <= 0) throw new IdParametersBadRequestException();
+        return Ok(ApiResponseHelper.Success(await _serviceManager.CrmAgents.PerformanceAsync(agentId, cancellationToken), "Agent performance retrieved successfully"));
+    }
 }

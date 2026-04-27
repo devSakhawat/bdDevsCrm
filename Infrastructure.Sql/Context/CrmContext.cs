@@ -90,6 +90,8 @@ public partial class CrmContext : DbContext
 
   public virtual DbSet<CrmApplication> CrmApplication { get; set; }
   public virtual DbSet<CrmScholarshipApplication> CrmScholarshipApplication { get; set; }
+  public virtual DbSet<CrmCommission> CrmCommission { get; set; }
+  public virtual DbSet<CrmCommunicationLog> CrmCommunicationLog { get; set; }
   public virtual DbSet<CrmVisaApplication> CrmVisaApplication { get; set; }
   public virtual DbSet<CrmVisaStatusHistory> CrmVisaStatusHistory { get; set; }
   public virtual DbSet<CrmStudentPayment> CrmStudentPayment { get; set; }
@@ -716,6 +718,39 @@ public partial class CrmContext : DbContext
       entity.Property(e => e.ConfirmedDate).HasColumnType("datetime");
       entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
       entity.Property(e => e.Notes).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmCommission>(entity =>
+    {
+      entity.HasKey(e => e.CommissionId);
+      entity.Property(e => e.StudentNameSnapshot).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.UniversityNameSnapshot).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.TuitionFeeBase).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.CommissionRate).HasColumnType("decimal(18,4)");
+      entity.Property(e => e.GrossAmount).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.ScholarshipDeduction).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.NetAmount).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.Currency).HasMaxLength(20).IsUnicode(false);
+      entity.Property(e => e.ExchangeRate).HasColumnType("decimal(18,6)");
+      entity.Property(e => e.NetAmountBdt).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.DueDate).HasColumnType("datetime");
+      entity.Property(e => e.PaidDate).HasColumnType("datetime");
+      entity.Property(e => e.PaidAmount).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.InvoiceNo).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.Notes).HasMaxLength(2000).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmCommunicationLog>(entity =>
+    {
+      entity.HasKey(e => e.CommunicationLogId);
+      entity.Property(e => e.Direction).HasMaxLength(20).IsUnicode(false);
+      entity.Property(e => e.Subject).HasMaxLength(250).IsUnicode(false);
+      entity.Property(e => e.BodyOrNotes).HasMaxLength(4000).IsUnicode(false);
+      entity.Property(e => e.LoggedDate).HasColumnType("datetime");
       entity.Property(e => e.CreatedDate).HasColumnType("datetime");
       entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
     });

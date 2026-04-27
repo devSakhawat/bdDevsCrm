@@ -51,9 +51,6 @@ public class CrmAgentTypeController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmAgentTypeRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmAgentTypeDto>();
-        var currentUser = await GetCurrentUserAsync();
-
         var created = await _serviceManager.CrmAgentTypes.CreateAsync(record, cancellationToken);
 
         if (created.AgentTypeId <= 0)
@@ -72,7 +69,6 @@ public class CrmAgentTypeController : BaseApiController
         if (key != record.AgentTypeId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmAgentTypeRecord));
 
-        var dto = record.MapTo<CrmAgentTypeDto>();
         var updated = await _serviceManager.CrmAgentTypes.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
@@ -85,7 +81,6 @@ public class CrmAgentTypeController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmAgentTypeRecord(key);
-        var dto = new CrmAgentTypeDto { AgentTypeId = key };
         await _serviceManager.CrmAgentTypes.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }

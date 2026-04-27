@@ -33,7 +33,8 @@ internal sealed class CrmVisaTypeService : ICrmVisaTypeService
         if (record == null)
             throw new BadRequestException(nameof(CreateCrmVisaTypeRecord));
 
-        _logger.LogInformation("Creating new visa type. VisaTypeName: {VisaTypeName}, Time: {Time}", record.VisaTypeName, DateTime.UtcNow);
+        var safeName = record.VisaTypeName?.Replace("\r", "\\r").Replace("\n", "\\n") ?? string.Empty;
+        _logger.LogInformation("Creating new visa type. VisaTypeName: {VisaTypeName}, Time: {Time}", safeName, DateTime.UtcNow);
 
         bool exists = await _repository.CrmVisaTypes.ExistsAsync(
             x => x.VisaTypeName.Trim().ToLower() == record.VisaTypeName.Trim().ToLower(),

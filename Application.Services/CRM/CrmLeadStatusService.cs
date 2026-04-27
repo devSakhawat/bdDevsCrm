@@ -33,7 +33,8 @@ internal sealed class CrmLeadStatusService : ICrmLeadStatusService
         if (record == null)
             throw new BadRequestException(nameof(CreateCrmLeadStatusRecord));
 
-        _logger.LogInformation("Creating new lead status. StatusName: {StatusName}, Time: {Time}", record.StatusName, DateTime.UtcNow);
+        var safeName = record.StatusName?.Replace("\r", "\\r").Replace("\n", "\\n") ?? string.Empty;
+        _logger.LogInformation("Creating new lead status. StatusName: {StatusName}, Time: {Time}", safeName, DateTime.UtcNow);
 
         bool exists = await _repository.CrmLeadStatuses.ExistsAsync(
             x => x.StatusName.Trim().ToLower() == record.StatusName.Trim().ToLower(),

@@ -33,7 +33,8 @@ internal sealed class CrmOfficeService : ICrmOfficeService
         if (record == null)
             throw new BadRequestException(nameof(CreateCrmOfficeRecord));
 
-        _logger.LogInformation("Creating new office. OfficeName: {OfficeName}, Time: {Time}", record.OfficeName, DateTime.UtcNow);
+        var safeName = record.OfficeName?.Replace("\r", "\\r").Replace("\n", "\\n") ?? string.Empty;
+        _logger.LogInformation("Creating new office. OfficeName: {OfficeName}, Time: {Time}", safeName, DateTime.UtcNow);
 
         bool exists = await _repository.CrmOffices.ExistsAsync(
             x => x.OfficeName.Trim().ToLower() == record.OfficeName.Trim().ToLower(),

@@ -51,9 +51,6 @@ public class CrmStudentStatusController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmStudentStatusRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmStudentStatusDto>();
-        var currentUser = await GetCurrentUserAsync();
-
         var created = await _serviceManager.CrmStudentStatuses.CreateAsync(record, cancellationToken);
 
         if (created.StudentStatusId <= 0)
@@ -72,7 +69,6 @@ public class CrmStudentStatusController : BaseApiController
         if (key != record.StudentStatusId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmStudentStatusRecord));
 
-        var dto = record.MapTo<CrmStudentStatusDto>();
         var updated = await _serviceManager.CrmStudentStatuses.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
@@ -85,7 +81,6 @@ public class CrmStudentStatusController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmStudentStatusRecord(key);
-        var dto = new CrmStudentStatusDto { StudentStatusId = key };
         await _serviceManager.CrmStudentStatuses.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }

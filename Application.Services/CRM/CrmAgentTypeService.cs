@@ -33,7 +33,8 @@ internal sealed class CrmAgentTypeService : ICrmAgentTypeService
         if (record == null)
             throw new BadRequestException(nameof(CreateCrmAgentTypeRecord));
 
-        _logger.LogInformation("Creating new agent type. AgentTypeName: {AgentTypeName}, Time: {Time}", record.AgentTypeName, DateTime.UtcNow);
+        var safeName = record.AgentTypeName?.Replace("\r", "\\r").Replace("\n", "\\n") ?? string.Empty;
+        _logger.LogInformation("Creating new agent type. AgentTypeName: {AgentTypeName}, Time: {Time}", safeName, DateTime.UtcNow);
 
         bool exists = await _repository.CrmAgentTypes.ExistsAsync(
             x => x.AgentTypeName.Trim().ToLower() == record.AgentTypeName.Trim().ToLower(),

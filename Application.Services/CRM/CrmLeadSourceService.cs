@@ -33,7 +33,8 @@ internal sealed class CrmLeadSourceService : ICrmLeadSourceService
         if (record == null)
             throw new BadRequestException(nameof(CreateCrmLeadSourceRecord));
 
-        _logger.LogInformation("Creating new lead source. SourceName: {SourceName}, Time: {Time}", record.SourceName, DateTime.UtcNow);
+        var safeName = record.SourceName?.Replace("\r", "\\r").Replace("\n", "\\n") ?? string.Empty;
+        _logger.LogInformation("Creating new lead source. SourceName: {SourceName}, Time: {Time}", safeName, DateTime.UtcNow);
 
         bool exists = await _repository.CrmLeadSources.ExistsAsync(
             x => x.SourceName.Trim().ToLower() == record.SourceName.Trim().ToLower(),

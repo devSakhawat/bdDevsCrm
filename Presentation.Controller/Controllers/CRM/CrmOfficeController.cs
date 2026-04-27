@@ -51,9 +51,6 @@ public class CrmOfficeController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmOfficeRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmOfficeDto>();
-        var currentUser = await GetCurrentUserAsync();
-
         var created = await _serviceManager.CrmOffices.CreateAsync(record, cancellationToken);
 
         if (created.OfficeId <= 0)
@@ -72,7 +69,6 @@ public class CrmOfficeController : BaseApiController
         if (key != record.OfficeId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmOfficeRecord));
 
-        var dto = record.MapTo<CrmOfficeDto>();
         var updated = await _serviceManager.CrmOffices.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
@@ -85,7 +81,6 @@ public class CrmOfficeController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmOfficeRecord(key);
-        var dto = new CrmOfficeDto { OfficeId = key };
         await _serviceManager.CrmOffices.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }

@@ -51,9 +51,6 @@ public class CrmLeadStatusController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmLeadStatusRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmLeadStatusDto>();
-        var currentUser = await GetCurrentUserAsync();
-
         var created = await _serviceManager.CrmLeadStatuses.CreateAsync(record, cancellationToken);
 
         if (created.LeadStatusId <= 0)
@@ -72,7 +69,6 @@ public class CrmLeadStatusController : BaseApiController
         if (key != record.LeadStatusId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmLeadStatusRecord));
 
-        var dto = record.MapTo<CrmLeadStatusDto>();
         var updated = await _serviceManager.CrmLeadStatuses.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
@@ -85,7 +81,6 @@ public class CrmLeadStatusController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmLeadStatusRecord(key);
-        var dto = new CrmLeadStatusDto { LeadStatusId = key };
         await _serviceManager.CrmLeadStatuses.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }

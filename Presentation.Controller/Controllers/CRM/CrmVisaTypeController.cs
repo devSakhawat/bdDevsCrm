@@ -51,9 +51,6 @@ public class CrmVisaTypeController : BaseApiController
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmVisaTypeRecord record, CancellationToken cancellationToken = default)
     {
-        var dto = record.MapTo<CrmVisaTypeDto>();
-        var currentUser = await GetCurrentUserAsync();
-
         var created = await _serviceManager.CrmVisaTypes.CreateAsync(record, cancellationToken);
 
         if (created.VisaTypeId <= 0)
@@ -72,7 +69,6 @@ public class CrmVisaTypeController : BaseApiController
         if (key != record.VisaTypeId)
             throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmVisaTypeRecord));
 
-        var dto = record.MapTo<CrmVisaTypeDto>();
         var updated = await _serviceManager.CrmVisaTypes.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
 
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
@@ -85,7 +81,6 @@ public class CrmVisaTypeController : BaseApiController
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
         var deleteRecord = new DeleteCrmVisaTypeRecord(key);
-        var dto = new CrmVisaTypeDto { VisaTypeId = key };
         await _serviceManager.CrmVisaTypes.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }

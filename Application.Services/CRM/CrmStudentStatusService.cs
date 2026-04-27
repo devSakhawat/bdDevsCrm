@@ -33,7 +33,8 @@ internal sealed class CrmStudentStatusService : ICrmStudentStatusService
         if (record == null)
             throw new BadRequestException(nameof(CreateCrmStudentStatusRecord));
 
-        _logger.LogInformation("Creating new student status. StatusName: {StatusName}, Time: {Time}", record.StatusName, DateTime.UtcNow);
+        var safeName = record.StatusName?.Replace("\r", "\\r").Replace("\n", "\\n") ?? string.Empty;
+        _logger.LogInformation("Creating new student status. StatusName: {StatusName}, Time: {Time}", safeName, DateTime.UtcNow);
 
         bool exists = await _repository.CrmStudentStatuses.ExistsAsync(
             x => x.StatusName.Trim().ToLower() == record.StatusName.Trim().ToLower(),

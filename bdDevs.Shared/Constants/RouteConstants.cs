@@ -484,6 +484,8 @@ public static class RouteConstants
 	public const string CrmApplicantInfoSummary = "crm-applicant-info-summary";
 	public const string ReadCrmApplicantInfos = "crm-applicant-infos";
 	public const string CrmApplicantInfoDDL = "crm-applicant-infos-ddl";
+	public const string GenderDDL = "genders-ddl";
+	public const string UploadCrmApplicantPhoto = "crm-applicant-info/upload-photo";
 	public const string ReadCrmApplicantInfo = "crm-applicant-info/{id:int}";
 	public const string CrmApplicantInfoByApplicationId = "crm-applicant-info-by-application/{applicationId:int}";
 	public const string CrmApplicantInfoByEmail = "crm-applicant-info-by-email";
@@ -496,6 +498,7 @@ public static class RouteConstants
 	public const string CrmApplicationSummary = "crm-application-summary";
 	public const string ReadCrmApplications = "crm-applications";
 	public const string ReadCrmApplication = "crm-application/{id:int}";
+	public const string UploadCrmApplicationDocument = "crm-application/upload-document";
 	#endregion CrmApplication
 
 	#region CrmApplicantCourse

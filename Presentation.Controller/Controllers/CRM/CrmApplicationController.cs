@@ -7,10 +7,13 @@ using bdDevs.Shared.Extensions;
 using bdDevs.Shared.Records.CRM;
 using Domain.Contracts.Services;
 using Domain.Exceptions;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Presentation.AuthorizeAttributes;
 using Presentation.Controllers.BaseController;
+using System.IO;
 
 namespace Presentation.Controllers.CRM;
 
@@ -21,10 +24,14 @@ namespace Presentation.Controllers.CRM;
 public class CrmApplicationController : BaseApiController
 {
   private readonly IMemoryCache _cache;
+  private readonly IWebHostEnvironment _environment;
+  private static readonly HashSet<string> AllowedDocumentExtensions = new(StringComparer.OrdinalIgnoreCase) { ".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png" };
+  private const long MaxUploadFileSizeBytes = 10 * 1024 * 1024;
 
-  public CrmApplicationController(IServiceManager serviceManager, IMemoryCache cache) : base(serviceManager)
+  public CrmApplicationController(IServiceManager serviceManager, IMemoryCache cache, IWebHostEnvironment environment) : base(serviceManager)
   {
     _cache = cache;
+    _environment = environment;
   }
 
   /// <summary>
@@ -123,6 +130,26 @@ public class CrmApplicationController : BaseApiController
       : Ok(ApiResponseHelper.Success(applications, "Applications retrieved successfully"));
   }
 
+  /// <summary>
+  /// Uploads an application document and returns the saved relative file path.
+  /// </summary>
+  [HttpPost(RouteConstants.UploadCrmApplicationDocument)]
+  public async Task<IActionResult> UploadDocumentAsync([FromForm] IFormFile file, [FromForm] string? documentType, CancellationToken cancellationToken = default)
+  {
+    ValidateFile(file);
+
+    var safeDocumentType = string.IsNullOrWhiteSpace(documentType) ? "general" : documentType.Trim();
+    var relativeFilePath = await SaveFileAsync(file, Path.Combine("Uploads", "crm", "applications", "documents"), cancellationToken);
+
+    return Ok(ApiResponseHelper.Success(new
+    {
+      documentId = 0,
+      filePath = relativeFilePath,
+      fileName = file.FileName,
+      documentType = safeDocumentType
+    }, "Application document uploaded successfully"));
+  }
+
   private async Task<UsersDto> GetCurrentUserAsync()
   {
     var userId = User?.FindFirst("UserId")?.Value;
@@ -131,5 +158,43 @@ public class CrmApplicationController : BaseApiController
       return new UsersDto { UserId = 1, Username = "system" };
     }
     return new UsersDto { UserId = parsedUserId };
+  }
+
+  /// <summary>
+  /// Validates an uploaded document file.
+  /// </summary>
+  private static void ValidateFile(IFormFile? file)
+  {
+    if (file is null || file.Length <= 0)
+      throw new BadRequestException("A valid document file is required.");
+
+    if (file.Length > MaxUploadFileSizeBytes)
+      throw new BadRequestException("Document file size must be 10 MB or less.");
+
+    var extension = Path.GetExtension(file.FileName);
+    if (string.IsNullOrWhiteSpace(extension) || !AllowedDocumentExtensions.Contains(extension))
+      throw new BadRequestException("Unsupported document file type.");
+  }
+
+  /// <summary>
+  /// Saves an uploaded file and returns the public relative path.
+  /// </summary>
+  private async Task<string> SaveFileAsync(IFormFile file, string relativeDirectory, CancellationToken cancellationToken)
+  {
+    var webRootPath = string.IsNullOrWhiteSpace(_environment.WebRootPath)
+      ? Path.Combine(_environment.ContentRootPath, "wwwroot")
+      : _environment.WebRootPath;
+
+    var directoryPath = Path.Combine(webRootPath, relativeDirectory);
+    Directory.CreateDirectory(directoryPath);
+
+    var extension = Path.GetExtension(file.FileName);
+    var fileName = $"{Guid.NewGuid():N}{extension}";
+    var fullPath = Path.Combine(directoryPath, fileName);
+
+    await using var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None);
+    await file.CopyToAsync(stream, cancellationToken);
+
+    return "/" + Path.Combine(relativeDirectory, fileName).Replace("\\", "/");
   }
 }

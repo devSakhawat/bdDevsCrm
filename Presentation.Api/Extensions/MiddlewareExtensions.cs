@@ -15,7 +15,10 @@ public static class MiddlewareExtensions
     // [1] Exception handler — সবচেয়ে বাইরে
     app.UseMiddleware<StandardExceptionMiddleware>();
 
-    // [2] CorrelationId + PipelineContext + Stopwatch
+    // [2] Security headers (before any other response is written)
+    app.UseSecurityHeaders();
+
+    // [3] CorrelationId + PipelineContext + Stopwatch
     app.UseMiddleware<CorrelationIdMiddleware>();
 
     // [3] Performance monitoring
@@ -45,7 +48,10 @@ public static class MiddlewareExtensions
     // [11] Token blacklist — auth-এর পরে
     app.UseMiddleware<TokenBlacklistMiddleware>();
 
-    // [12] Authorization
+    // [12] Rate limiting — after authentication so IP is available
+    app.UseRateLimiter();
+
+    // [13] Authorization
     app.UseAuthorization();
 
     // [13] Audit — user context পাওয়ার পরে

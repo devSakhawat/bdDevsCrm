@@ -36,7 +36,7 @@ internal sealed class CrmSystemConfigurationService : ICrmSystemConfigurationSer
         int newId = await _repository.CrmSystemConfigurations.CreateAndIdAsync(entity, cancellationToken);
         await _repository.SaveAsync(cancellationToken);
 
-        _logger.LogInformation("SystemConfig created. ID: {Id}, Key: {Key}", newId, record.ConfigKey);
+        _logger.LogInformation("SystemConfig created. ID: {Id}", newId);
         return entity.MapTo<CrmSystemConfigurationDto>() with { ConfigId = newId };
     }
 

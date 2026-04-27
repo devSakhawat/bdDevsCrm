@@ -28,7 +28,7 @@ internal sealed class CrmDegreeLevelService : ICrmDegreeLevelService
     {
         if (record == null) throw new BadRequestException(nameof(CreateCrmDegreeLevelRecord));
 
-        _logger.LogInformation("Creating degree level. Name: {Name}, Time: {Time}", record.Name, DateTime.UtcNow);
+        _logger.LogInformation("Creating degree level. Time: {Time}", DateTime.UtcNow);
 
         bool exists = await _repository.CrmDegreeLevels.ExistsAsync(
             x => x.Name.Trim().ToLower() == record.Name.Trim().ToLower(), cancellationToken: cancellationToken);

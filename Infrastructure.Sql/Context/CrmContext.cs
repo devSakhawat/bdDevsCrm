@@ -143,6 +143,14 @@ public partial class CrmContext : DbContext
   public virtual DbSet<CrmStudentStatus> CrmStudentStatus { get; set; }
 
   public virtual DbSet<CrmOffice> CrmOffice { get; set; }
+  public virtual DbSet<CrmAgent> CrmAgent { get; set; }
+  public virtual DbSet<CrmCounselor> CrmCounselor { get; set; }
+  public virtual DbSet<CrmLead> CrmLead { get; set; }
+  public virtual DbSet<CrmStudent> CrmStudent { get; set; }
+  public virtual DbSet<CrmEnquiry> CrmEnquiry { get; set; }
+  public virtual DbSet<CrmFollowUp> CrmFollowUp { get; set; }
+  public virtual DbSet<CrmNote> CrmNote { get; set; }
+  public virtual DbSet<CrmTask> CrmTask { get; set; }
 
   public virtual DbSet<CurrencyRate> CurrencyRate { get; set; }
 
@@ -1899,6 +1907,117 @@ public partial class CrmContext : DbContext
       entity.Property(e => e.Email).HasMaxLength(150).IsUnicode(false);
       entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
       entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmAgent>(entity =>
+    {
+      entity.HasKey(e => e.AgentId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM agent data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmAgent_Status");
+      entity.Property(e => e.AgentName).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.AgentCode).HasMaxLength(50).IsUnicode(false);
+      entity.Property(e => e.ContactPerson).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.Email).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.Phone).HasMaxLength(30).IsUnicode(false);
+      entity.Property(e => e.Address).HasMaxLength(500).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmCounselor>(entity =>
+    {
+      entity.HasKey(e => e.CounselorId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM counselor data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmCounselor_Status");
+      entity.Property(e => e.CounselorName).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.CounselorCode).HasMaxLength(50).IsUnicode(false);
+      entity.Property(e => e.Email).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.Phone).HasMaxLength(30).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmLead>(entity =>
+    {
+      entity.HasKey(e => e.LeadId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM lead data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmLead_Status");
+      entity.Property(e => e.LeadName).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.Email).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.Phone).HasMaxLength(30).IsUnicode(false);
+      entity.Property(e => e.CountryOfInterest).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.CourseOfInterest).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.Notes).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.Budget).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmStudent>(entity =>
+    {
+      entity.HasKey(e => e.StudentId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM student data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmStudent_Status");
+      entity.Property(e => e.StudentName).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.Email).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.Phone).HasMaxLength(30).IsUnicode(false);
+      entity.Property(e => e.PassportNumber).HasMaxLength(50).IsUnicode(false);
+      entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmEnquiry>(entity =>
+    {
+      entity.HasKey(e => e.EnquiryId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM enquiry data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmEnquiry_Status");
+      entity.Property(e => e.EnquiryDate).HasColumnType("datetime");
+      entity.Property(e => e.Notes).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmFollowUp>(entity =>
+    {
+      entity.HasKey(e => e.FollowUpId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM follow-up data"));
+      entity.Property(e => e.FollowUpDate).HasColumnType("datetime");
+      entity.Property(e => e.NextFollowUpDate).HasColumnType("datetime");
+      entity.Property(e => e.FollowUpType).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.Notes).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmNote>(entity =>
+    {
+      entity.HasKey(e => e.NoteId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM note data"));
+      entity.Property(e => e.NoteText).HasMaxLength(2000).IsUnicode(false);
+      entity.Property(e => e.EntityType).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.NoteDate).HasColumnType("datetime");
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmTask>(entity =>
+    {
+      entity.HasKey(e => e.TaskId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM task data"));
+      entity.Property(e => e.TaskTitle).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.TaskDescription).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.RelatedEntityType).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.Priority).HasMaxLength(50).IsUnicode(false);
+      entity.Property(e => e.DueDate).HasColumnType("datetime");
+      entity.Property(e => e.CompletedDate).HasColumnType("datetime");
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
       entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
     });
   }

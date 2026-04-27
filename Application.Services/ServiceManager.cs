@@ -123,6 +123,14 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ICrmStatementOfPurposeService> _statementOfPurposeService;
   private readonly Lazy<ICrmAdditionalInfoService> _additionalInfoService;
   private readonly Lazy<ICrmAdditionalDocumentService> _additionalDocumentService;
+  private readonly Lazy<ICrmAgentService> _crmAgentService;
+  private readonly Lazy<ICrmCounselorService> _crmCounselorService;
+  private readonly Lazy<ICrmLeadService> _crmLeadService;
+  private readonly Lazy<ICrmStudentService> _crmStudentService;
+  private readonly Lazy<ICrmEnquiryService> _crmEnquiryService;
+  private readonly Lazy<ICrmFollowUpService> _crmFollowUpService;
+  private readonly Lazy<ICrmNoteService> _crmNoteService;
+  private readonly Lazy<ICrmTaskService> _crmTaskService;
   #endregion CRM
 
   #region DMS Lazy Fields
@@ -237,6 +245,14 @@ public sealed class ServiceManager : IServiceManager
     _statementOfPurposeService = new Lazy<ICrmStatementOfPurposeService>(() => new CrmStatementOfPurposeService(repository, loggerFactory.CreateLogger<CrmStatementOfPurposeService>(), configuration, httpContextAccessor));
     _additionalInfoService = new Lazy<ICrmAdditionalInfoService>(() => new CrmAdditionalInfoService(repository, loggerFactory.CreateLogger<CrmAdditionalInfoService>(), configuration, httpContextAccessor));
     _additionalDocumentService = new Lazy<ICrmAdditionalDocumentService>(() => new CrmAdditionalDocumentsService(repository, loggerFactory.CreateLogger<CrmAdditionalDocumentsService>(), configuration, httpContextAccessor));
+    _crmAgentService = new Lazy<ICrmAgentService>(() => new CrmAgentService(repository, loggerFactory.CreateLogger<CrmAgentService>(), configuration));
+    _crmCounselorService = new Lazy<ICrmCounselorService>(() => new CrmCounselorService(repository, loggerFactory.CreateLogger<CrmCounselorService>(), configuration));
+    _crmLeadService = new Lazy<ICrmLeadService>(() => new CrmLeadService(repository, loggerFactory.CreateLogger<CrmLeadService>(), configuration));
+    _crmStudentService = new Lazy<ICrmStudentService>(() => new CrmStudentService(repository, loggerFactory.CreateLogger<CrmStudentService>(), configuration));
+    _crmEnquiryService = new Lazy<ICrmEnquiryService>(() => new CrmEnquiryService(repository, loggerFactory.CreateLogger<CrmEnquiryService>(), configuration));
+    _crmFollowUpService = new Lazy<ICrmFollowUpService>(() => new CrmFollowUpService(repository, loggerFactory.CreateLogger<CrmFollowUpService>(), configuration));
+    _crmNoteService = new Lazy<ICrmNoteService>(() => new CrmNoteService(repository, loggerFactory.CreateLogger<CrmNoteService>(), configuration));
+    _crmTaskService = new Lazy<ICrmTaskService>(() => new CrmTaskService(repository, loggerFactory.CreateLogger<CrmTaskService>(), configuration));
     #endregion Crm
 
     #region DMS Lazy Initializations
@@ -344,6 +360,14 @@ public sealed class ServiceManager : IServiceManager
   public ICrmStatementOfPurposeService StatementOfPurposes => _statementOfPurposeService.Value;
   public ICrmAdditionalInfoService AdditionalInfos => _additionalInfoService.Value;
   public ICrmAdditionalDocumentService AdditionalDocuments => _additionalDocumentService.Value;
+  public ICrmAgentService CrmAgents => _crmAgentService.Value;
+  public ICrmCounselorService CrmCounselors => _crmCounselorService.Value;
+  public ICrmLeadService CrmLeads => _crmLeadService.Value;
+  public ICrmStudentService CrmStudents => _crmStudentService.Value;
+  public ICrmEnquiryService CrmEnquiries => _crmEnquiryService.Value;
+  public ICrmFollowUpService CrmFollowUps => _crmFollowUpService.Value;
+  public ICrmNoteService CrmNotes => _crmNoteService.Value;
+  public ICrmTaskService CrmTasks => _crmTaskService.Value;
   #endregion Crm
 
   #region DMS Property Exposures

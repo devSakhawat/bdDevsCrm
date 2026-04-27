@@ -99,6 +99,14 @@ public interface IServiceManager
   ICrmAgentTypeService CrmAgentTypes { get; }
   ICrmStudentStatusService CrmStudentStatuses { get; }
   ICrmOfficeService CrmOffices { get; }
+  ICrmAgentService CrmAgents { get; }
+  ICrmCounselorService CrmCounselors { get; }
+  ICrmLeadService CrmLeads { get; }
+  ICrmStudentService CrmStudents { get; }
+  ICrmEnquiryService CrmEnquiries { get; }
+  ICrmFollowUpService CrmFollowUps { get; }
+  ICrmNoteService CrmNotes { get; }
+  ICrmTaskService CrmTasks { get; }
   #endregion Crm
 
   #region DMS

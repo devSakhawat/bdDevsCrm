@@ -1,23 +1,16 @@
-﻿//using bdDevs.Shared.DataTransferObjects; // Assuming DTOs are here
-//using Domain.Entities.Models;
-//using Domain.Contracts.Repositories;
+﻿using Domain.Contracts.Repositories;
+using Domain.Entities.Entities.CRM;
 
-//namespace Infrastructure.Repositories.CRM
-//{
-//  public interface ICrmStudentRepository : IRepositoryBase<CrmStudent>
-//  {
-//    // EF Core Simple List
-//    Task<IEnumerable<CrmStudent>> StudentsAsync(bool trackChanges, CancellationToken cancellationToken = default);
+namespace Domain.Contracts.CRM;
 
-//    // EF Core Single
-//    Task<CrmStudent?> StudentAsync(int id, bool trackChanges, CancellationToken cancellationToken = default);
+public interface ICrmStudentRepository : IRepositoryBase<CrmStudent>
+{
+    /// <summary>Retrieves all CrmStudent records asynchronously.</summary>
+    Task<IEnumerable<CrmStudent>> CrmStudentsAsync(bool trackChanges, CancellationToken cancellationToken = default);
 
-//    // ADO.NET Example: Complex DTO (Joining Student, Batch, Course)
-//    Task<IEnumerable<StudentDetailsDto>> StudentDetailsAsync(CancellationToken cancellationToken = default);
+    /// <summary>Retrieves a single CrmStudent record by ID asynchronously.</summary>
+    Task<CrmStudent?> CrmStudentAsync(int studentId, bool trackChanges, CancellationToken cancellationToken = default);
 
-//    // CUD
-//    void CreateStudent(CrmStudent student);
-//    void UpdateStudent(CrmStudent student);
-//    void DeleteStudent(CrmStudent student);
-//  }
-//}
+    /// <summary>Retrieves CrmStudent records by a collection of IDs asynchronously.</summary>
+    Task<IEnumerable<CrmStudent>> CrmStudentsByIdsAsync(IEnumerable<int> ids, bool trackChanges, CancellationToken cancellationToken = default);
+}

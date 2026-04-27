@@ -8,6 +8,7 @@ using bdDevs.Shared.DataTransferObjects.Authentication;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 using Domain.Exceptions;
 using bdDevs.Shared.Constants;
+using bdDevs.Shared.DataTransferObjects.Layout;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -211,6 +212,15 @@ public class AuthenticationController : ControllerBase
     currentUser.Password = "";
 
     return Ok(ApiResponseHelper.Success(currentUser, "User info retrieved"));
+  }
+
+  [HttpGet(RouteConstants.HeaderSummary)]
+  [AuthorizeUser]
+  public async Task<IActionResult> HeaderSummary(CancellationToken cancellationToken = default)
+  {
+    UsersDto currentUser = HttpContext.CurrentUser()!;
+    HeaderSummaryDto headerSummary = await _serviceManager.Header.GetHeaderSummaryAsync(currentUser, cancellationToken);
+    return Ok(ApiResponseHelper.Success(headerSummary, "Header summary retrieved"));
   }
 
   [AuthorizeUser]

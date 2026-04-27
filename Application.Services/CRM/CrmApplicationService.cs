@@ -142,6 +142,10 @@ WHERE ca.ApplicationId = @ApplicationId";
 		if (workExperiences is not null && workExperiences.Any())
 			result.WorkExperienceHistories = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmWorkExperience, WorkExperienceHistoryDto>(workExperiences);
 
+		var additionalDocuments = await _repository.CrmAdditionalDocuments.CrmAdditionalDocumentsByApplicantIdAsync(result.ApplicantId, trackChanges, cancellationToken);
+		if (additionalDocuments is not null && additionalDocuments.Any())
+			result.AdditionalDocuments = MyMapper.JsonCloneIEnumerableToIEnumerable<CrmAdditionalDocument, AdditionalDocumentDto>(additionalDocuments);
+
 		_logger.LogInformation("CRM application fetched successfully. ID: {ApplicationId}, Time: {Time}", applicationId, DateTime.UtcNow);
 
 		return result;

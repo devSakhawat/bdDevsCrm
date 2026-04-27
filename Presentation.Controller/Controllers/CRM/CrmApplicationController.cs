@@ -6,7 +6,9 @@ using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.Extensions;
 using bdDevs.Shared.Records.CRM;
 using Domain.Contracts.Services;
+using Domain.Contracts.Services.Core.Infrastructure;
 using Domain.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Presentation.AuthorizeAttributes;
@@ -21,10 +23,12 @@ namespace Presentation.Controllers.CRM;
 public class CrmApplicationController : BaseApiController
 {
   private readonly IMemoryCache _cache;
+  private readonly IFileUploadService _fileUploadService;
 
-  public CrmApplicationController(IServiceManager serviceManager, IMemoryCache cache) : base(serviceManager)
+  public CrmApplicationController(IServiceManager serviceManager, IMemoryCache cache, IFileUploadService fileUploadService) : base(serviceManager)
   {
     _cache = cache;
+    _fileUploadService = fileUploadService;
   }
 
   /// <summary>
@@ -123,6 +127,40 @@ public class CrmApplicationController : BaseApiController
       : Ok(ApiResponseHelper.Success(applications, "Applications retrieved successfully"));
   }
 
+  /// <summary>
+  /// Uploads an application document and returns the saved relative file path.
+  /// </summary>
+  [HttpPost(RouteConstants.UploadCrmApplicationDocument)]
+  public async Task<IActionResult> UploadDocumentAsync(
+    [FromForm] IFormFile file,
+    [FromForm] string? documentType,
+    [FromForm] int? applicantId,
+    [FromForm] int? applicationId,
+    CancellationToken cancellationToken = default)
+  {
+    var safeDocumentType = string.IsNullOrWhiteSpace(documentType) ? "general" : documentType.Trim();
+    var relativeFilePath = await _fileUploadService.SaveApplicationDocumentAsync(file, cancellationToken);
+    var resolvedApplicantId = await ResolveApplicantIdAsync(applicantId, applicationId, cancellationToken);
+    var currentUser = await GetCurrentUserAsync();
+
+    var createdDocument = await _serviceManager.AdditionalDocuments.CreateAdditionalDocumentAsync(new AdditionalDocumentDto
+    {
+      ApplicantId = resolvedApplicantId,
+      DocumentTitle = safeDocumentType,
+      DocumentName = Path.GetFileName(file.FileName),
+      DocumentPath = relativeFilePath,
+      RecordType = safeDocumentType
+    }, currentUser, cancellationToken);
+
+    return Ok(ApiResponseHelper.Success(new
+    {
+      documentId = createdDocument.AdditionalDocumentId,
+      filePath = relativeFilePath,
+      fileName = createdDocument.DocumentName,
+      documentType = safeDocumentType
+    }, "Application document uploaded successfully"));
+  }
+
   private async Task<UsersDto> GetCurrentUserAsync()
   {
     var userId = User?.FindFirst("UserId")?.Value;
@@ -131,5 +169,28 @@ public class CrmApplicationController : BaseApiController
       return new UsersDto { UserId = 1, Username = "system" };
     }
     return new UsersDto { UserId = parsedUserId };
+  }
+
+  /// <summary>
+  /// Resolves the applicant identifier required for document persistence.
+  /// </summary>
+  /// <param name="applicantId">Applicant identifier sent directly from the form, if available.</param>
+  /// <param name="applicationId">Application identifier used to resolve applicant ownership when editing.</param>
+  /// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
+  /// <returns>The resolved applicant identifier.</returns>
+  /// <exception cref="BadRequestException">Thrown when neither a valid applicant ID nor application ID can resolve an applicant.</exception>
+  private async Task<int> ResolveApplicantIdAsync(int? applicantId, int? applicationId, CancellationToken cancellationToken)
+  {
+    if (applicantId.HasValue && applicantId.Value > 0)
+      return applicantId.Value;
+
+    if (applicationId.HasValue && applicationId.Value > 0)
+    {
+      var application = await _serviceManager.CrmApplications.ApplicationAsync(applicationId.Value, trackChanges: false, cancellationToken: cancellationToken);
+      if (application.ApplicantId > 0)
+        return application.ApplicantId;
+    }
+
+    throw new BadRequestException("ApplicantId or ApplicationId is required for document upload.");
   }
 }

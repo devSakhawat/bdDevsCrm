@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Document Type Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Document Type Management</h1>
+        <p class="page-header__subtitle">Education CRM master data module for managing document type records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Document Type</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddDocumentType" class="btn btn--primary">Add Document Type</button>
+        <button type="button" id="btnRefreshDocumentType" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="documentTypeGrid"></div>
+</section>
+
+<div id="documentTypeWindow" style="display:none;">
+    <form id="documentTypeForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelDocumentType" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveDocumentType" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/documenttype/documentTypeSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/documenttype/documentTypeSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/documenttype/documentTypeDetails.js" asp-append-version="true"></script>
+}

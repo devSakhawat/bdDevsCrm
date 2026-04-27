@@ -11,8 +11,7 @@ builder.Services.ConfigureSerilog(configuration, environment);
 builder.Host.UseSerilog();
 
 // ── Controllers + Newtonsoft JSON ────────────────────────
-builder.Services.AddControllers()
-    .AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson();
 
 // ── Swagger / OpenAPI ────────────────────────────────────
 builder.Services.AddSwaggerDocumentation();

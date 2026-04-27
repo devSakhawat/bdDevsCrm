@@ -6,4 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\css\layout.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\layout.css" />
+  </ItemGroup>
+
 </Project>

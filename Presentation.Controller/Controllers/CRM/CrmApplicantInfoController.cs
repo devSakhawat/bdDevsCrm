@@ -3,9 +3,11 @@ using Domain.Contracts.Services;
 using bdDevs.Shared;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.Records.CRM;
+using Domain.Contracts.Services.Core.Infrastructure;
 using Domain.Exceptions;
 using bdDevs.Shared.Constants;
 using Application.Shared.Grid;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Presentation.ActionFilters;
@@ -21,10 +23,12 @@ namespace Presentation.Controllers.CRM;
 public class CrmApplicantInfoController : BaseApiController
 {
     private readonly IMemoryCache _cache;
+    private readonly IFileUploadService _fileUploadService;
 
-    public CrmApplicantInfoController(IServiceManager serviceManager, IMemoryCache cache) : base(serviceManager)
+    public CrmApplicantInfoController(IServiceManager serviceManager, IMemoryCache cache, IFileUploadService fileUploadService) : base(serviceManager)
     {
         _cache = cache;
+        _fileUploadService = fileUploadService;
     }
 
     /// <summary>
@@ -40,6 +44,34 @@ public class CrmApplicantInfoController : BaseApiController
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<ApplicantInfoDto>(), "No applicant infos found."));
 
         return Ok(ApiResponseHelper.Success(applicantInfos, "Applicant infos retrieved successfully"));
+    }
+
+    /// <summary>
+    /// Retrieves genders for dropdown list.
+    /// </summary>
+    [HttpGet(RouteConstants.GenderDDL)]
+    [ResponseCache(Duration = 300)]
+    public IActionResult GendersForDDL()
+    {
+        var genders = new List<GenderDDLDto>
+        {
+            new() { GenderId = 1, GenderName = "Male" },
+            new() { GenderId = 2, GenderName = "Female" },
+            new() { GenderId = 3, GenderName = "Other" }
+        };
+
+        return Ok(ApiResponseHelper.Success(genders, "Genders retrieved successfully"));
+    }
+
+    /// <summary>
+    /// Uploads applicant photo and returns the saved relative file path.
+    /// </summary>
+    [HttpPost(RouteConstants.UploadCrmApplicantPhoto)]
+    public async Task<IActionResult> UploadPhotoAsync([FromForm] IFormFile file, CancellationToken cancellationToken = default)
+    {
+        var relativeFilePath = await _fileUploadService.SaveApplicantPhotoAsync(file, cancellationToken);
+
+        return Ok(ApiResponseHelper.Success(new { filePath = relativeFilePath }, "Applicant photo uploaded successfully"));
     }
 
     /// <summary>

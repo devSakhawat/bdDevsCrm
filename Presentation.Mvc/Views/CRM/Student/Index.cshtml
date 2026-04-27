@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Student Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Student Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Student records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Student</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddStudent" class="btn btn--primary">Add Student</button>
+        <button type="button" id="btnRefreshStudent" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="studentGrid"></div>
+</section>
+
+<div id="studentWindow" style="display:none;">
+    <form id="studentForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelStudent" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveStudent" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/student/studentSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/student/studentSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/student/studentDetails.js" asp-append-version="true"></script>
+}

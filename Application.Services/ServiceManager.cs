@@ -92,6 +92,13 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ICrmYearService> _crmyear;
 
   private readonly Lazy<ICrmCourseIntakeService> _crmCourseIntakeService;
+  // New CRM services for reference data
+  private readonly Lazy<ICrmLeadSourceService> _crmLeadSourceService;
+  private readonly Lazy<ICrmLeadStatusService> _crmLeadStatusService;
+  private readonly Lazy<ICrmVisaTypeService> _crmVisaTypeService;
+  private readonly Lazy<ICrmAgentTypeService> _crmAgentTypeService;
+  private readonly Lazy<ICrmStudentStatusService> _crmStudentStatusService;
+  private readonly Lazy<ICrmOfficeService> _crmOfficeService;
   // New CRM services for Intake and Payment Method
   private readonly Lazy<ICrmIntakeMonthService> _crmIntakeMonthService;
   private readonly Lazy<ICrmIntakeYearService> _crmIntakeYearService;
@@ -116,6 +123,14 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ICrmStatementOfPurposeService> _statementOfPurposeService;
   private readonly Lazy<ICrmAdditionalInfoService> _additionalInfoService;
   private readonly Lazy<ICrmAdditionalDocumentService> _additionalDocumentService;
+  private readonly Lazy<ICrmAgentService> _crmAgentService;
+  private readonly Lazy<ICrmCounselorService> _crmCounselorService;
+  private readonly Lazy<ICrmLeadService> _crmLeadService;
+  private readonly Lazy<ICrmStudentService> _crmStudentService;
+  private readonly Lazy<ICrmEnquiryService> _crmEnquiryService;
+  private readonly Lazy<ICrmFollowUpService> _crmFollowUpService;
+  private readonly Lazy<ICrmNoteService> _crmNoteService;
+  private readonly Lazy<ICrmTaskService> _crmTaskService;
   #endregion CRM
 
   #region DMS Lazy Fields
@@ -203,6 +218,14 @@ public sealed class ServiceManager : IServiceManager
     _crmPaymentMethodService = new Lazy<ICrmPaymentMethodService>(() => new CrmPaymentMethodService(repository, loggerFactory.CreateLogger<CrmPaymentMethodService>(), configuration));
     _crmCourseIntakeService = new Lazy<ICrmCourseIntakeService>(() => new CrmCourseIntakeService(repository, _hybridCache, loggerFactory.CreateLogger<CrmCourseIntakeService>(), configuration));
 
+    // New reference data CRM services initialization
+    _crmLeadSourceService = new Lazy<ICrmLeadSourceService>(() => new CrmLeadSourceService(repository, loggerFactory.CreateLogger<CrmLeadSourceService>(), configuration));
+    _crmLeadStatusService = new Lazy<ICrmLeadStatusService>(() => new CrmLeadStatusService(repository, loggerFactory.CreateLogger<CrmLeadStatusService>(), configuration));
+    _crmVisaTypeService = new Lazy<ICrmVisaTypeService>(() => new CrmVisaTypeService(repository, loggerFactory.CreateLogger<CrmVisaTypeService>(), configuration));
+    _crmAgentTypeService = new Lazy<ICrmAgentTypeService>(() => new CrmAgentTypeService(repository, loggerFactory.CreateLogger<CrmAgentTypeService>(), configuration));
+    _crmStudentStatusService = new Lazy<ICrmStudentStatusService>(() => new CrmStudentStatusService(repository, loggerFactory.CreateLogger<CrmStudentStatusService>(), configuration));
+    _crmOfficeService = new Lazy<ICrmOfficeService>(() => new CrmOfficeService(repository, loggerFactory.CreateLogger<CrmOfficeService>(), configuration));
+
     // Existing Crm services initialization
     _crmApplicationService = new Lazy<ICrmApplicationService>(() => new CrmApplicationService(repository, loggerFactory.CreateLogger<CrmApplicationService>(), configuration, httpContextAccessor));
     _applicantCourseService = new Lazy<ICrmApplicantCourseService>(() => new CrmApplicantCourseService(repository, loggerFactory.CreateLogger<CrmApplicantCourseService>(), configuration, httpContextAccessor));
@@ -222,6 +245,14 @@ public sealed class ServiceManager : IServiceManager
     _statementOfPurposeService = new Lazy<ICrmStatementOfPurposeService>(() => new CrmStatementOfPurposeService(repository, loggerFactory.CreateLogger<CrmStatementOfPurposeService>(), configuration, httpContextAccessor));
     _additionalInfoService = new Lazy<ICrmAdditionalInfoService>(() => new CrmAdditionalInfoService(repository, loggerFactory.CreateLogger<CrmAdditionalInfoService>(), configuration, httpContextAccessor));
     _additionalDocumentService = new Lazy<ICrmAdditionalDocumentService>(() => new CrmAdditionalDocumentsService(repository, loggerFactory.CreateLogger<CrmAdditionalDocumentsService>(), configuration, httpContextAccessor));
+    _crmAgentService = new Lazy<ICrmAgentService>(() => new CrmAgentService(repository, loggerFactory.CreateLogger<CrmAgentService>(), configuration));
+    _crmCounselorService = new Lazy<ICrmCounselorService>(() => new CrmCounselorService(repository, loggerFactory.CreateLogger<CrmCounselorService>(), configuration));
+    _crmLeadService = new Lazy<ICrmLeadService>(() => new CrmLeadService(repository, loggerFactory.CreateLogger<CrmLeadService>(), configuration));
+    _crmStudentService = new Lazy<ICrmStudentService>(() => new CrmStudentService(repository, loggerFactory.CreateLogger<CrmStudentService>(), configuration));
+    _crmEnquiryService = new Lazy<ICrmEnquiryService>(() => new CrmEnquiryService(repository, loggerFactory.CreateLogger<CrmEnquiryService>(), configuration));
+    _crmFollowUpService = new Lazy<ICrmFollowUpService>(() => new CrmFollowUpService(repository, loggerFactory.CreateLogger<CrmFollowUpService>(), configuration));
+    _crmNoteService = new Lazy<ICrmNoteService>(() => new CrmNoteService(repository, loggerFactory.CreateLogger<CrmNoteService>(), configuration));
+    _crmTaskService = new Lazy<ICrmTaskService>(() => new CrmTaskService(repository, loggerFactory.CreateLogger<CrmTaskService>(), configuration));
     #endregion Crm
 
     #region DMS Lazy Initializations
@@ -302,6 +333,14 @@ public sealed class ServiceManager : IServiceManager
   public ICrmPaymentMethodService CrmPaymentMethods => _crmPaymentMethodService.Value;
   public ICrmCourseIntakeService CrmCourseIntakes => _crmCourseIntakeService.Value;
 
+  // New reference data CRM service properties
+  public ICrmLeadSourceService CrmLeadSources => _crmLeadSourceService.Value;
+  public ICrmLeadStatusService CrmLeadStatuses => _crmLeadStatusService.Value;
+  public ICrmVisaTypeService CrmVisaTypes => _crmVisaTypeService.Value;
+  public ICrmAgentTypeService CrmAgentTypes => _crmAgentTypeService.Value;
+  public ICrmStudentStatusService CrmStudentStatuses => _crmStudentStatusService.Value;
+  public ICrmOfficeService CrmOffices => _crmOfficeService.Value;
+
   // Existing Crm service properties
   public ICrmApplicationService CrmApplications => _crmApplicationService.Value;
   public ICrmApplicantCourseService ApplicantCourses => _applicantCourseService.Value;
@@ -321,6 +360,14 @@ public sealed class ServiceManager : IServiceManager
   public ICrmStatementOfPurposeService StatementOfPurposes => _statementOfPurposeService.Value;
   public ICrmAdditionalInfoService AdditionalInfos => _additionalInfoService.Value;
   public ICrmAdditionalDocumentService AdditionalDocuments => _additionalDocumentService.Value;
+  public ICrmAgentService CrmAgents => _crmAgentService.Value;
+  public ICrmCounselorService CrmCounselors => _crmCounselorService.Value;
+  public ICrmLeadService CrmLeads => _crmLeadService.Value;
+  public ICrmStudentService CrmStudents => _crmStudentService.Value;
+  public ICrmEnquiryService CrmEnquiries => _crmEnquiryService.Value;
+  public ICrmFollowUpService CrmFollowUps => _crmFollowUpService.Value;
+  public ICrmNoteService CrmNotes => _crmNoteService.Value;
+  public ICrmTaskService CrmTasks => _crmTaskService.Value;
   #endregion Crm
 
   #region DMS Property Exposures

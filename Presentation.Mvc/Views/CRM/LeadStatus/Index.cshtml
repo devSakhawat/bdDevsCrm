@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Lead Status Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Lead Status Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Lead Status records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Lead Status</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddLeadStatus" class="btn btn--primary">Add Lead Status</button>
+        <button type="button" id="btnRefreshLeadStatus" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="leadStatusGrid"></div>
+</section>
+
+<div id="leadStatusWindow" style="display:none;">
+    <form id="leadStatusForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelLeadStatus" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveLeadStatus" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/leadstatus/leadStatusSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/leadstatus/leadStatusSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/leadstatus/leadStatusDetails.js" asp-append-version="true"></script>
+}

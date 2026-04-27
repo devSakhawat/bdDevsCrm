@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Note Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Note Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Note records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Note</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddNote" class="btn btn--primary">Add Note</button>
+        <button type="button" id="btnRefreshNote" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="noteGrid"></div>
+</section>
+
+<div id="noteWindow" style="display:none;">
+    <form id="noteForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelNote" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveNote" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/note/noteSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/note/noteSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/note/noteDetails.js" asp-append-version="true"></script>
+}

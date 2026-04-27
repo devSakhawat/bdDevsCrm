@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Agent Type Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Agent Type Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Agent Type records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Agent Type</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddAgentType" class="btn btn--primary">Add Agent Type</button>
+        <button type="button" id="btnRefreshAgentType" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="agentTypeGrid"></div>
+</section>
+
+<div id="agentTypeWindow" style="display:none;">
+    <form id="agentTypeForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelAgentType" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveAgentType" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/agenttype/agentTypeSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/agenttype/agentTypeSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/agenttype/agentTypeDetails.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Lead Source Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Lead Source Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Lead Source records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Lead Source</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddLeadSource" class="btn btn--primary">Add Lead Source</button>
+        <button type="button" id="btnRefreshLeadSource" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="leadSourceGrid"></div>
+</section>
+
+<div id="leadSourceWindow" style="display:none;">
+    <form id="leadSourceForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelLeadSource" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveLeadSource" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/leadsource/leadSourceSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/leadsource/leadSourceSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/leadsource/leadSourceDetails.js" asp-append-version="true"></script>
+}

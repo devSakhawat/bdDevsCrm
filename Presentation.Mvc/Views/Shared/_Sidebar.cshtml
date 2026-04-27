@@ -4,9 +4,11 @@
         || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
     var hrOperationPaths = new[] { "/Employee", "/Department", "/Branch", "/Designation", "/Shift" };
     var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Companies", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus", "/Currency", "/CurrencyRate", "/BoardInstitute", "/ApproverType", "/ApproverHistory", "/DocumentTemplate", "/DocumentParameter", "/ApproverTypeToGroupMapping", "/DocumentType", "/PasswordHistory", "/Competencies", "/CompetencyLevel", "/ApproverOrder", "/ApproverDetails", "/AssignApprover", "/DocumentQueryMapping", "/DocumentParameterMapping", "/AuditTrail", "/AuditLog", "/AppsTokenInfo", "/AppsTransactionLog", "/SystemSettings", "/QueryAnalyzer", "/TokenBlacklist", "/Timesheet", "/Common" };
+    var crmPaths = new[] { "/AgentType", "/LeadSource", "/LeadStatus", "/StudentStatus", "/Office", "/VisaType", "/Agent", "/Counselor", "/Lead", "/Student", "/Enquiry", "/FollowUp", "/Note", "/Task", "/PaymentMethod", "/ApplicantInfo", "/Course", "/Institute", "/InstituteType", "/IntakeMonth", "/IntakeYear", "/Month", "/Year", "/CourseIntake", "/ApplicantCourse", "/ApplicantReference", "/Application", "/AdditionalDocument", "/AdditionalInfo", "/EducationHistory", "/WorkExperience", "/PermanentAddress", "/PresentAddress", "/GmatInformation", "/IeltsInformation", "/ToeflInformation", "/OthersInformation", "/StatementOfPurpose" };
     bool IsCurrent(params string[] prefixes) => prefixes.Any(prefix => currentPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
     var isHrOperations = IsCurrent(hrOperationPaths);
     var isSystemSetup = IsCurrent(systemSetupPaths);
+    var isCrm = IsCurrent(crmPaths);
 }
 
 <aside class="app-sidebar" id="appSidebar" aria-label="Primary navigation">
@@ -101,6 +103,75 @@
             <a class="nav-sublink @(IsCurrent("/Common") ? "is-active" : string.Empty)" asp-controller="Common" asp-action="Index">Common Utilities</a>
             <a class="nav-sublink @(IsCurrent("/Workflow") ? "is-active" : string.Empty)" asp-controller="Workflow" asp-action="Index">Workflow Management</a>
             <a class="nav-sublink @(IsCurrent("/AccessControl") ? "is-active" : string.Empty)" asp-controller="AccessControl" asp-action="Index">Access Control</a>
+        </div>
+    </div>
+
+    <div class="app-sidebar__section">
+        <p class="app-sidebar__caption">CRM</p>
+
+        <button class="nav-group" type="button" data-nav-toggle aria-expanded="@(isCrm.ToString().ToLowerInvariant())">
+            <span class="nav-group__lead">
+                <span class="nav-link__icon">📋</span>
+                <span class="nav-link__text">CRM</span>
+            </span>
+            <span class="nav-group__chevron">⌄</span>
+        </button>
+        <div class="nav-group__items @(isCrm ? "is-open" : string.Empty)">
+
+            <span class="nav-sublink nav-sublink--group-label">Setup</span>
+            <a class="nav-sublink @(IsCurrent("/AgentType") ? "is-active" : string.Empty)" asp-controller="AgentType" asp-action="Index">Agent Type</a>
+            <a class="nav-sublink @(IsCurrent("/LeadSource") ? "is-active" : string.Empty)" asp-controller="LeadSource" asp-action="Index">Lead Source</a>
+            <a class="nav-sublink @(IsCurrent("/LeadStatus") ? "is-active" : string.Empty)" asp-controller="LeadStatus" asp-action="Index">Lead Status</a>
+            <a class="nav-sublink @(IsCurrent("/StudentStatus") ? "is-active" : string.Empty)" asp-controller="StudentStatus" asp-action="Index">Student Status</a>
+            <a class="nav-sublink @(IsCurrent("/Office") ? "is-active" : string.Empty)" asp-controller="Office" asp-action="Index">Office</a>
+            <a class="nav-sublink @(IsCurrent("/VisaType") ? "is-active" : string.Empty)" asp-controller="VisaType" asp-action="Index">Visa Type</a>
+            <a class="nav-sublink @(IsCurrent("/PaymentMethod") ? "is-active" : string.Empty)" asp-controller="PaymentMethod" asp-action="Index">Payment Method</a>
+
+            <span class="nav-sublink nav-sublink--group-label">People</span>
+            <a class="nav-sublink @(IsCurrent("/Agent") ? "is-active" : string.Empty)" asp-controller="Agent" asp-action="Index">Agent</a>
+            <a class="nav-sublink @(IsCurrent("/Counselor") ? "is-active" : string.Empty)" asp-controller="Counselor" asp-action="Index">Counselor</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Pipeline</span>
+            <a class="nav-sublink @(IsCurrent("/Lead") ? "is-active" : string.Empty)" asp-controller="Lead" asp-action="Index">Lead</a>
+            <a class="nav-sublink @(IsCurrent("/Student") ? "is-active" : string.Empty)" asp-controller="Student" asp-action="Index">Student</a>
+            <a class="nav-sublink @(IsCurrent("/Enquiry") ? "is-active" : string.Empty)" asp-controller="Enquiry" asp-action="Index">Enquiry</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Activity</span>
+            <a class="nav-sublink @(IsCurrent("/FollowUp") ? "is-active" : string.Empty)" asp-controller="FollowUp" asp-action="Index">Follow Up</a>
+            <a class="nav-sublink @(IsCurrent("/Note") ? "is-active" : string.Empty)" asp-controller="Note" asp-action="Index">Note</a>
+            <a class="nav-sublink @(IsCurrent("/Task") ? "is-active" : string.Empty)" asp-controller="Task" asp-action="Index">Task</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Institutes &amp; Courses</span>
+            <a class="nav-sublink @(IsCurrent("/Institute") ? "is-active" : string.Empty)" asp-controller="Institute" asp-action="Index">Institute</a>
+            <a class="nav-sublink @(IsCurrent("/InstituteType") ? "is-active" : string.Empty)" asp-controller="InstituteType" asp-action="Index">Institute Type</a>
+            <a class="nav-sublink @(IsCurrent("/Course") ? "is-active" : string.Empty)" asp-controller="Course" asp-action="Index">Course</a>
+            <a class="nav-sublink @(IsCurrent("/CourseIntake") ? "is-active" : string.Empty)" asp-controller="CourseIntake" asp-action="Index">Course Intake</a>
+            <a class="nav-sublink @(IsCurrent("/IntakeMonth") ? "is-active" : string.Empty)" asp-controller="IntakeMonth" asp-action="Index">Intake Month</a>
+            <a class="nav-sublink @(IsCurrent("/IntakeYear") ? "is-active" : string.Empty)" asp-controller="IntakeYear" asp-action="Index">Intake Year</a>
+            <a class="nav-sublink @(IsCurrent("/Month") ? "is-active" : string.Empty)" asp-controller="Month" asp-action="Index">Month</a>
+            <a class="nav-sublink @(IsCurrent("/Year") ? "is-active" : string.Empty)" asp-controller="Year" asp-action="Index">Year</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Applicant</span>
+            <a class="nav-sublink @(IsCurrent("/ApplicantInfo") ? "is-active" : string.Empty)" asp-controller="ApplicantInfo" asp-action="Index">Applicant Info</a>
+            <a class="nav-sublink @(IsCurrent("/ApplicantCourse") ? "is-active" : string.Empty)" asp-controller="ApplicantCourse" asp-action="Index">Applicant Course</a>
+            <a class="nav-sublink @(IsCurrent("/ApplicantReference") ? "is-active" : string.Empty)" asp-controller="ApplicantReference" asp-action="Index">Applicant Reference</a>
+            <a class="nav-sublink @(IsCurrent("/Application") ? "is-active" : string.Empty)" asp-controller="Application" asp-action="Index">Application</a>
+            <a class="nav-sublink @(IsCurrent("/AdditionalDocument") ? "is-active" : string.Empty)" asp-controller="AdditionalDocument" asp-action="Index">Additional Document</a>
+            <a class="nav-sublink @(IsCurrent("/AdditionalInfo") ? "is-active" : string.Empty)" asp-controller="AdditionalInfo" asp-action="Index">Additional Info</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Academic History</span>
+            <a class="nav-sublink @(IsCurrent("/EducationHistory") ? "is-active" : string.Empty)" asp-controller="EducationHistory" asp-action="Index">Education History</a>
+            <a class="nav-sublink @(IsCurrent("/WorkExperience") ? "is-active" : string.Empty)" asp-controller="WorkExperience" asp-action="Index">Work Experience</a>
+            <a class="nav-sublink @(IsCurrent("/GmatInformation") ? "is-active" : string.Empty)" asp-controller="GmatInformation" asp-action="Index">GMAT Information</a>
+            <a class="nav-sublink @(IsCurrent("/IeltsInformation") ? "is-active" : string.Empty)" asp-controller="IeltsInformation" asp-action="Index">IELTS Information</a>
+            <a class="nav-sublink @(IsCurrent("/ToeflInformation") ? "is-active" : string.Empty)" asp-controller="ToeflInformation" asp-action="Index">TOEFL Information</a>
+            <a class="nav-sublink @(IsCurrent("/OthersInformation") ? "is-active" : string.Empty)" asp-controller="OthersInformation" asp-action="Index">Others Information</a>
+            <a class="nav-sublink @(IsCurrent("/StatementOfPurpose") ? "is-active" : string.Empty)" asp-controller="StatementOfPurpose" asp-action="Index">Statement of Purpose</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Address</span>
+            <a class="nav-sublink @(IsCurrent("/PermanentAddress") ? "is-active" : string.Empty)" asp-controller="PermanentAddress" asp-action="Index">Permanent Address</a>
+            <a class="nav-sublink @(IsCurrent("/PresentAddress") ? "is-active" : string.Empty)" asp-controller="PresentAddress" asp-action="Index">Present Address</a>
+
         </div>
     </div>
 </aside>

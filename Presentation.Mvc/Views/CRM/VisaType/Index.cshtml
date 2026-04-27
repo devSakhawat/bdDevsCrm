@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Visa Type Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Visa Type Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Visa Type records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Visa Type</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddVisaType" class="btn btn--primary">Add Visa Type</button>
+        <button type="button" id="btnRefreshVisaType" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="visaTypeGrid"></div>
+</section>
+
+<div id="visaTypeWindow" style="display:none;">
+    <form id="visaTypeForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelVisaType" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveVisaType" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/visatype/visaTypeSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/visatype/visaTypeSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/visatype/visaTypeDetails.js" asp-append-version="true"></script>
+}

@@ -33,6 +33,9 @@ builder.Services.ConfigureFileLimit();
 // ── Cookie Policy ────────────────────────────────────────
 builder.Services.ConfigureCookiePolicy(environment);
 
+// ── Rate Limiting ─────────────────────────────────────────
+builder.Services.ConfigureRateLimiting();
+
 // ── Application Insights ─────────────────────────────────
 builder.Services.ConfigureApplicationInsights(configuration);
 

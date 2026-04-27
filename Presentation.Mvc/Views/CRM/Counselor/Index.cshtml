@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Counselor Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Counselor Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Counselor records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Counselor</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddCounselor" class="btn btn--primary">Add Counselor</button>
+        <button type="button" id="btnRefreshCounselor" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="counselorGrid"></div>
+</section>
+
+<div id="counselorWindow" style="display:none;">
+    <form id="counselorForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelCounselor" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveCounselor" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counselor/counselorSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counselor/counselorSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counselor/counselorDetails.js" asp-append-version="true"></script>
+}

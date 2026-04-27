@@ -933,6 +933,146 @@ public static class RouteConstants
 	public const string ReadCompetencyLevel = "competency-level/{id:int}";
 	#endregion CompetencyLevel
 
+	#region CrmLeadSource
+	public const string CreateCrmLeadSource = "crm-lead-source";
+	public const string UpdateCrmLeadSource = "crm-lead-source/{key}";
+	public const string DeleteCrmLeadSource = "crm-lead-source/{key}";
+	public const string CrmLeadSourceSummary = "crm-lead-source-summary";
+	public const string ReadCrmLeadSources = "crm-lead-sources";
+	public const string CrmLeadSourceDDL = "crm-lead-sources-ddl";
+	public const string ReadCrmLeadSource = "crm-lead-source/{id:int}";
+	#endregion CrmLeadSource
+
+	#region CrmLeadStatus
+	public const string CreateCrmLeadStatus = "crm-lead-status";
+	public const string UpdateCrmLeadStatus = "crm-lead-status/{key}";
+	public const string DeleteCrmLeadStatus = "crm-lead-status/{key}";
+	public const string CrmLeadStatusSummary = "crm-lead-status-summary";
+	public const string ReadCrmLeadStatuses = "crm-lead-statuses";
+	public const string CrmLeadStatusDDL = "crm-lead-statuses-ddl";
+	public const string ReadCrmLeadStatus = "crm-lead-status/{id:int}";
+	#endregion CrmLeadStatus
+
+	#region CrmVisaType
+	public const string CreateCrmVisaType = "crm-visa-type";
+	public const string UpdateCrmVisaType = "crm-visa-type/{key}";
+	public const string DeleteCrmVisaType = "crm-visa-type/{key}";
+	public const string CrmVisaTypeSummary = "crm-visa-type-summary";
+	public const string ReadCrmVisaTypes = "crm-visa-types";
+	public const string CrmVisaTypeDDL = "crm-visa-types-ddl";
+	public const string ReadCrmVisaType = "crm-visa-type/{id:int}";
+	#endregion CrmVisaType
+
+	#region CrmAgentType
+	public const string CreateCrmAgentType = "crm-agent-type";
+	public const string UpdateCrmAgentType = "crm-agent-type/{key}";
+	public const string DeleteCrmAgentType = "crm-agent-type/{key}";
+	public const string CrmAgentTypeSummary = "crm-agent-type-summary";
+	public const string ReadCrmAgentTypes = "crm-agent-types";
+	public const string CrmAgentTypeDDL = "crm-agent-types-ddl";
+	public const string ReadCrmAgentType = "crm-agent-type/{id:int}";
+	#endregion CrmAgentType
+
+	#region CrmStudentStatus
+	public const string CreateCrmStudentStatus = "crm-student-status";
+	public const string UpdateCrmStudentStatus = "crm-student-status/{key}";
+	public const string DeleteCrmStudentStatus = "crm-student-status/{key}";
+	public const string CrmStudentStatusSummary = "crm-student-status-summary";
+	public const string ReadCrmStudentStatuses = "crm-student-statuses";
+	public const string CrmStudentStatusDDL = "crm-student-statuses-ddl";
+	public const string ReadCrmStudentStatus = "crm-student-status/{id:int}";
+	#endregion CrmStudentStatus
+
+	#region CrmOffice
+	public const string CreateCrmOffice = "crm-office";
+	public const string UpdateCrmOffice = "crm-office/{key}";
+	public const string DeleteCrmOffice = "crm-office/{key}";
+	public const string CrmOfficeSummary = "crm-office-summary";
+	public const string ReadCrmOffices = "crm-offices";
+	public const string CrmOfficeDDL = "crm-offices-ddl";
+	public const string ReadCrmOffice = "crm-office/{id:int}";
+	#endregion CrmOffice
+
+	#region CrmAgent
+	public const string CreateCrmAgent = "crm-agent";
+	public const string UpdateCrmAgent = "crm-agent/{key}";
+	public const string DeleteCrmAgent = "crm-agent/{key}";
+	public const string CrmAgentSummary = "crm-agent-summary";
+	public const string ReadCrmAgents = "crm-agents";
+	public const string CrmAgentDDL = "crm-agents-ddl";
+	public const string ReadCrmAgent = "crm-agent/{id:int}";
+	#endregion CrmAgent
+
+	#region CrmCounselor
+	public const string CreateCrmCounselor = "crm-counselor";
+	public const string UpdateCrmCounselor = "crm-counselor/{key}";
+	public const string DeleteCrmCounselor = "crm-counselor/{key}";
+	public const string CrmCounselorSummary = "crm-counselor-summary";
+	public const string ReadCrmCounselors = "crm-counselors";
+	public const string CrmCounselorDDL = "crm-counselors-ddl";
+	public const string ReadCrmCounselor = "crm-counselor/{id:int}";
+	#endregion CrmCounselor
+
+	#region CrmLead
+	public const string CreateCrmLead = "crm-lead";
+	public const string UpdateCrmLead = "crm-lead/{key}";
+	public const string DeleteCrmLead = "crm-lead/{key}";
+	public const string CrmLeadSummary = "crm-lead-summary";
+	public const string ReadCrmLeads = "crm-leads";
+	public const string CrmLeadDDL = "crm-leads-ddl";
+	public const string ReadCrmLead = "crm-lead/{id:int}";
+	#endregion CrmLead
+
+	#region CrmStudent
+	public const string CreateCrmStudent = "crm-student";
+	public const string UpdateCrmStudent = "crm-student/{key}";
+	public const string DeleteCrmStudent = "crm-student/{key}";
+	public const string CrmStudentSummary = "crm-student-summary";
+	public const string ReadCrmStudents = "crm-students";
+	public const string CrmStudentDDL = "crm-students-ddl";
+	public const string ReadCrmStudent = "crm-student/{id:int}";
+	#endregion CrmStudent
+
+	#region CrmEnquiry
+	public const string CreateCrmEnquiry = "crm-enquiry";
+	public const string UpdateCrmEnquiry = "crm-enquiry/{key}";
+	public const string DeleteCrmEnquiry = "crm-enquiry/{key}";
+	public const string CrmEnquirySummary = "crm-enquiry-summary";
+	public const string ReadCrmEnquiries = "crm-enquiries";
+	public const string CrmEnquiryDDL = "crm-enquiries-ddl";
+	public const string ReadCrmEnquiry = "crm-enquiry/{id:int}";
+	#endregion CrmEnquiry
+
+	#region CrmFollowUp
+	public const string CreateCrmFollowUp = "crm-followup";
+	public const string UpdateCrmFollowUp = "crm-followup/{key}";
+	public const string DeleteCrmFollowUp = "crm-followup/{key}";
+	public const string CrmFollowUpSummary = "crm-followup-summary";
+	public const string ReadCrmFollowUps = "crm-followups";
+	public const string CrmFollowUpDDL = "crm-followups-ddl";
+	public const string ReadCrmFollowUp = "crm-followup/{id:int}";
+	#endregion CrmFollowUp
+
+	#region CrmNote
+	public const string CreateCrmNote = "crm-note";
+	public const string UpdateCrmNote = "crm-note/{key}";
+	public const string DeleteCrmNote = "crm-note/{key}";
+	public const string CrmNoteSummary = "crm-note-summary";
+	public const string ReadCrmNotes = "crm-notes";
+	public const string CrmNoteDDL = "crm-notes-ddl";
+	public const string ReadCrmNote = "crm-note/{id:int}";
+	#endregion CrmNote
+
+	#region CrmTask
+	public const string CreateCrmTask = "crm-task";
+	public const string UpdateCrmTask = "crm-task/{key}";
+	public const string DeleteCrmTask = "crm-task/{key}";
+	public const string CrmTaskSummary = "crm-task-summary";
+	public const string ReadCrmTasks = "crm-tasks";
+	public const string CrmTaskDDL = "crm-tasks-ddl";
+	public const string ReadCrmTask = "crm-task/{id:int}";
+	#endregion CrmTask
+
 	#region TokenBlacklist
 	public const string CreateTokenBlacklist = "token-blacklist";
 	public const string UpdateTokenBlacklist = "token-blacklist/{key:guid}";

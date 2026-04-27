@@ -91,6 +91,14 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ICrmPaymentMethodRepository> _crmPaymentMethodRepository;
   private readonly Lazy<ICrmCourseIntakeRepository> _crmCourseIntakeRepository;
 
+  // New reference data CRM repositories
+  private readonly Lazy<ICrmLeadSourceRepository> _crmLeadSourceRepository;
+  private readonly Lazy<ICrmLeadStatusRepository> _crmLeadStatusRepository;
+  private readonly Lazy<ICrmVisaTypeRepository> _crmVisaTypeRepository;
+  private readonly Lazy<ICrmAgentTypeRepository> _crmAgentTypeRepository;
+  private readonly Lazy<ICrmStudentStatusRepository> _crmStudentStatusRepository;
+  private readonly Lazy<ICrmOfficeRepository> _crmOfficeRepository;
+
 
   // Existing CRM repositories
   private readonly Lazy<ICrmApplicationRepository> _crmApplicationRepository;
@@ -111,6 +119,14 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ICrmStatementOfPurposeRepository> _statementOfPurposeRepository;
   private readonly Lazy<ICrmAdditionalInfoRepository> _additionalInfoRepository;
   private readonly Lazy<ICrmAdditionalDocumentRepository> _additionalDocumentRepository;
+  private readonly Lazy<ICrmAgentRepository> _crmAgentRepository;
+  private readonly Lazy<ICrmCounselorRepository> _crmCounselorRepository;
+  private readonly Lazy<ICrmLeadRepository> _crmLeadRepository;
+  private readonly Lazy<ICrmStudentRepository> _crmStudentRepository;
+  private readonly Lazy<ICrmEnquiryRepository> _crmEnquiryRepository;
+  private readonly Lazy<ICrmFollowUpRepository> _crmFollowUpRepository;
+  private readonly Lazy<ICrmNoteRepository> _crmNoteRepository;
+  private readonly Lazy<ICrmTaskRepository> _crmTaskRepository;
   #endregion CRM
 
   #region DMS - Private Lazy Fields
@@ -206,6 +222,14 @@ public class RepositoryManager : IRepositoryManager
     _crmPaymentMethodRepository = new Lazy<ICrmPaymentMethodRepository>(() => new CrmPaymentMethodRepository(_repositoryContext));
     _crmCourseIntakeRepository = new Lazy<ICrmCourseIntakeRepository>(() => new CrmCourseIntakeRepository(_repositoryContext));
 
+    // New reference data CRM repositories initialization
+    _crmLeadSourceRepository = new Lazy<ICrmLeadSourceRepository>(() => new CrmLeadSourceRepository(_repositoryContext));
+    _crmLeadStatusRepository = new Lazy<ICrmLeadStatusRepository>(() => new CrmLeadStatusRepository(_repositoryContext));
+    _crmVisaTypeRepository = new Lazy<ICrmVisaTypeRepository>(() => new CrmVisaTypeRepository(_repositoryContext));
+    _crmAgentTypeRepository = new Lazy<ICrmAgentTypeRepository>(() => new CrmAgentTypeRepository(_repositoryContext));
+    _crmStudentStatusRepository = new Lazy<ICrmStudentStatusRepository>(() => new CrmStudentStatusRepository(_repositoryContext));
+    _crmOfficeRepository = new Lazy<ICrmOfficeRepository>(() => new CrmOfficeRepository(_repositoryContext));
+
     // FIX: Add missing CRM repositories initialization
     _applicantCourseRepository = new Lazy<ICrmApplicantCourseRepository>(() => new CrmApplicantCourseRepository(_repositoryContext));
     _applicantInfoRepository = new Lazy<ICrmApplicantInfoRepository>(() => new CrmApplicantInfoRepository(_repositoryContext));
@@ -224,6 +248,14 @@ public class RepositoryManager : IRepositoryManager
     _statementOfPurposeRepository = new Lazy<ICrmStatementOfPurposeRepository>(() => new CrmStatementOfPurposeRepository(_repositoryContext));
     _additionalInfoRepository = new Lazy<ICrmAdditionalInfoRepository>(() => new CrmAdditionalInfoRepository(_repositoryContext));
     _additionalDocumentRepository = new Lazy<ICrmAdditionalDocumentRepository>(() => new CrmAdditionalDocumentRepository(_repositoryContext));
+    _crmAgentRepository = new Lazy<ICrmAgentRepository>(() => new CrmAgentRepository(_repositoryContext));
+    _crmCounselorRepository = new Lazy<ICrmCounselorRepository>(() => new CrmCounselorRepository(_repositoryContext));
+    _crmLeadRepository = new Lazy<ICrmLeadRepository>(() => new CrmLeadRepository(_repositoryContext));
+    _crmStudentRepository = new Lazy<ICrmStudentRepository>(() => new CrmStudentRepository(_repositoryContext));
+    _crmEnquiryRepository = new Lazy<ICrmEnquiryRepository>(() => new CrmEnquiryRepository(_repositoryContext));
+    _crmFollowUpRepository = new Lazy<ICrmFollowUpRepository>(() => new CrmFollowUpRepository(_repositoryContext));
+    _crmNoteRepository = new Lazy<ICrmNoteRepository>(() => new CrmNoteRepository(_repositoryContext));
+    _crmTaskRepository = new Lazy<ICrmTaskRepository>(() => new CrmTaskRepository(_repositoryContext));
 
     #endregion CRM
 
@@ -333,6 +365,22 @@ public class RepositoryManager : IRepositoryManager
   public ICrmIntakeYearRepository CrmIntakeYears => _crmIntakeYearRepository.Value;
   public ICrmPaymentMethodRepository CrmPaymentMethods => _crmPaymentMethodRepository.Value;
   public ICrmCourseIntakeRepository CrmCourseIntakes => _crmCourseIntakeRepository.Value;
+
+  // New reference data CRM repository properties
+  public ICrmLeadSourceRepository CrmLeadSources => _crmLeadSourceRepository.Value;
+  public ICrmLeadStatusRepository CrmLeadStatuses => _crmLeadStatusRepository.Value;
+  public ICrmVisaTypeRepository CrmVisaTypes => _crmVisaTypeRepository.Value;
+  public ICrmAgentTypeRepository CrmAgentTypes => _crmAgentTypeRepository.Value;
+  public ICrmStudentStatusRepository CrmStudentStatuses => _crmStudentStatusRepository.Value;
+  public ICrmOfficeRepository CrmOffices => _crmOfficeRepository.Value;
+  public ICrmAgentRepository CrmAgents => _crmAgentRepository.Value;
+  public ICrmCounselorRepository CrmCounselors => _crmCounselorRepository.Value;
+  public ICrmLeadRepository CrmLeads => _crmLeadRepository.Value;
+  public ICrmStudentRepository CrmStudents => _crmStudentRepository.Value;
+  public ICrmEnquiryRepository CrmEnquiries => _crmEnquiryRepository.Value;
+  public ICrmFollowUpRepository CrmFollowUps => _crmFollowUpRepository.Value;
+  public ICrmNoteRepository CrmNotes => _crmNoteRepository.Value;
+  public ICrmTaskRepository CrmTasks => _crmTaskRepository.Value;
   #endregion CRM
 
   #region DMS - Repository Properties

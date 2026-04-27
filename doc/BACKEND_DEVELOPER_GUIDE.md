@@ -1060,7 +1060,69 @@ app.UseCors();  // Must be before UseAuthorization()
 
 ### Build Status
 
-✅ **Last Build:** Successful (0 errors, 78 warnings — nullable reference warnings ignored)
+✅ **Last Build:** Successful (0 errors, 0 warnings — 2026-04-27)
+
+---
+
+## CRM v1 Module Status (2026-04-27)
+
+### Phase Completion
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| Phase 0 | Build fix (prerequisite) | ✅ Complete |
+| Phase 1 | 14 new CRM v1 module backends | ✅ Complete |
+| Phase 2 | 14 new CRM v1 module frontends | ✅ Complete |
+| Phase 3 | Existing 20 CRM UI verification | ✅ Complete |
+| Phase 4 | CRUD Records migration | ✅ Complete |
+| Phase 5 | Security hardening | ✅ Complete |
+| Phase 6 | Integration testing + docs | ✅ Complete |
+
+### Phase 1 — 14 New CRM Backend Modules
+
+All 14 modules have the full stack: Entity → Repository → Service → Controller → Records → DTO → Validator.
+
+| Module | Controller | Service | Records |
+|--------|-----------|---------|---------|
+| CrmAgentType | `CrmAgentTypeController` | `CrmAgentTypeService` | `CreateCrmAgentTypeRecord` |
+| CrmLeadSource | `CrmLeadSourceController` | `CrmLeadSourceService` | `CreateCrmLeadSourceRecord` |
+| CrmLeadStatus | `CrmLeadStatusController` | `CrmLeadStatusService` | `CreateCrmLeadStatusRecord` |
+| CrmStudentStatus | `CrmStudentStatusController` | `CrmStudentStatusService` | `CreateCrmStudentStatusRecord` |
+| CrmOffice | `CrmOfficeController` | `CrmOfficeService` | `CreateCrmOfficeRecord` |
+| CrmVisaType | `CrmVisaTypeController` | `CrmVisaTypeService` | `CreateCrmVisaTypeRecord` |
+| CrmAgent | `CrmAgentController` | `CrmAgentService` | `CreateCrmAgentRecord` |
+| CrmCounselor | `CrmCounselorController` | `CrmCounselorService` | `CreateCrmCounselorRecord` |
+| CrmLead | `CrmLeadController` | `CrmLeadService` | `CreateCrmLeadRecord` |
+| CrmStudent | `CrmStudentController` | `CrmStudentService` | `CreateCrmStudentRecord` |
+| CrmEnquiry | `CrmEnquiryController` | `CrmEnquiryService` | `CreateCrmEnquiryRecord` |
+| CrmFollowUp | `CrmFollowUpController` | `CrmFollowUpService` | `CreateCrmFollowUpRecord` |
+| CrmNote | `CrmNoteController` | `CrmNoteService` | `CreateCrmNoteRecord` |
+| CrmTask | `CrmTaskController` | `CrmTaskService` | `CreateCrmTaskRecord` |
+
+### Phase 2 — 14 New CRM Frontend Modules
+
+Each module has:
+- `Presentation.Mvc/Controllers/CRM/{Name}Controller.cs`
+- `Presentation.Mvc/Views/CRM/{Name}/Index.cshtml`
+- `wwwroot/js/modules/crm/{name}/{name}Settings.js`
+- `wwwroot/js/modules/crm/{name}/{name}Summary.js`
+- `wwwroot/js/modules/crm/{name}/{name}Details.js`
+
+All modules are wired into the CRM sidebar navigation group in `_Sidebar.cshtml`.
+
+### Phase 5 — Security Hardening
+
+Added `Presentation.Api/Extensions/SecurityExtensions.cs` with:
+- **Rate Limiting:** 120 requests/minute per IP (global), 20 requests/minute per IP (AuthPolicy for auth endpoints)
+- **Security Headers:** `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-XSS-Protection: 0`, `Permissions-Policy`, `Cache-Control: no-store` for API responses
+
+### Phase 6 — Testing
+
+Unit tests are in `bdDevsCrm.UnitTests/CRM/` using **xUnit + Moq**:
+- `CrmAgentTypeServiceTests.cs` — 10 tests (CRUD + read operations)
+- `CrmLeadSourceServiceTests.cs` — 8 tests (CRUD + read operations)
+
+Run tests: `dotnet test bdDevsCrm.UnitTests/bdDevsCrm.UnitTests.csproj`
 
 ---
 

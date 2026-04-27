@@ -603,9 +603,12 @@
         isDraftMode = data.isDraft === true || data.isDraft === 1;
 
         // Documents (Tab 5)
-        const persistedDocuments = Array.isArray(data.documents)
-            ? data.documents
-            : (Array.isArray(data.additionalDocuments) ? data.additionalDocuments : []);
+        let persistedDocuments = [];
+        if (Array.isArray(data.documents)) {
+            persistedDocuments = data.documents;
+        } else if (Array.isArray(data.additionalDocuments)) {
+            persistedDocuments = data.additionalDocuments;
+        }
 
         if (persistedDocuments.length > 0) {
             uploadedDocuments = persistedDocuments.map(doc => ({
@@ -741,9 +744,9 @@
 
         uploadedDocuments.forEach((doc, index) => {
             html += '<tr>';
-            html += `<td>${doc.fileName}</td>`;
-            html += `<td>${doc.documentType || 'General'}</td>`;
-            html += `<td>${doc.fileSize}</td>`;
+            html += `<td>${escapeHtml(doc.fileName || '')}</td>`;
+            html += `<td>${escapeHtml(doc.documentType || 'General')}</td>`;
+            html += `<td>${escapeHtml(doc.fileSize || '')}</td>`;
             html += `<td><button type="button" class="btn btn-sm btn-danger btn-remove-document" data-index="${index}">Remove</button></td>`;
             html += '</tr>';
         });
@@ -784,6 +787,20 @@
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    /**
+     * Escape HTML special characters before injecting text into markup.
+     * @param {string} value - Text value to escape
+     * @returns {string} - Escaped text
+     */
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 
     /**

@@ -174,6 +174,11 @@ public class CrmApplicationController : BaseApiController
   /// <summary>
   /// Resolves the applicant identifier required for document persistence.
   /// </summary>
+  /// <param name="applicantId">Applicant identifier sent directly from the form, if available.</param>
+  /// <param name="applicationId">Application identifier used to resolve applicant ownership when editing.</param>
+  /// <param name="cancellationToken">Token to monitor for cancellation requests.</param>
+  /// <returns>The resolved applicant identifier.</returns>
+  /// <exception cref="BadRequestException">Thrown when neither a valid applicant ID nor application ID can resolve an applicant.</exception>
   private async Task<int> ResolveApplicantIdAsync(int? applicantId, int? applicationId, CancellationToken cancellationToken)
   {
     if (applicantId.HasValue && applicantId.Value > 0)

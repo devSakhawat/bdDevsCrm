@@ -52,7 +52,7 @@ public sealed class FileUploadService : IFileUploadService
       throw new BadRequestException($"A valid {fileType} file is required.");
 
     if (file.Length > _fileSettings.MaxFileSizeBytes)
-      throw new BadRequestException($"{fileType} file size must be {_fileSettings.MaxFileSizeBytes / 1_000_000} MB or less.");
+      throw new BadRequestException($"{fileType} file size must be {(_fileSettings.MaxFileSizeBytes / 1_000_000d):0.##} MB or less.");
 
     string extension = Path.GetExtension(file.FileName);
     if (string.IsNullOrWhiteSpace(extension) || !allowedExtensions.Contains(extension, StringComparer.OrdinalIgnoreCase))

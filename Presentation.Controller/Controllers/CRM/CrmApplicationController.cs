@@ -6,14 +6,13 @@ using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.Extensions;
 using bdDevs.Shared.Records.CRM;
 using Domain.Contracts.Services;
+using Domain.Contracts.Services.Core.Infrastructure;
 using Domain.Exceptions;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Presentation.AuthorizeAttributes;
 using Presentation.Controllers.BaseController;
-using System.IO;
 
 namespace Presentation.Controllers.CRM;
 
@@ -24,14 +23,12 @@ namespace Presentation.Controllers.CRM;
 public class CrmApplicationController : BaseApiController
 {
   private readonly IMemoryCache _cache;
-  private readonly IWebHostEnvironment _environment;
-  private static readonly HashSet<string> AllowedDocumentExtensions = new(StringComparer.OrdinalIgnoreCase) { ".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png" };
-  private const long MaxUploadFileSizeBytes = 10 * 1024 * 1024;
+  private readonly IFileUploadService _fileUploadService;
 
-  public CrmApplicationController(IServiceManager serviceManager, IMemoryCache cache, IWebHostEnvironment environment) : base(serviceManager)
+  public CrmApplicationController(IServiceManager serviceManager, IMemoryCache cache, IFileUploadService fileUploadService) : base(serviceManager)
   {
     _cache = cache;
-    _environment = environment;
+    _fileUploadService = fileUploadService;
   }
 
   /// <summary>
@@ -134,18 +131,32 @@ public class CrmApplicationController : BaseApiController
   /// Uploads an application document and returns the saved relative file path.
   /// </summary>
   [HttpPost(RouteConstants.UploadCrmApplicationDocument)]
-  public async Task<IActionResult> UploadDocumentAsync([FromForm] IFormFile file, [FromForm] string? documentType, CancellationToken cancellationToken = default)
+  public async Task<IActionResult> UploadDocumentAsync(
+    [FromForm] IFormFile file,
+    [FromForm] string? documentType,
+    [FromForm] int? applicantId,
+    [FromForm] int? applicationId,
+    CancellationToken cancellationToken = default)
   {
-    ValidateFile(file);
-
     var safeDocumentType = string.IsNullOrWhiteSpace(documentType) ? "general" : documentType.Trim();
-    var relativeFilePath = await SaveFileAsync(file, Path.Combine("Uploads", "crm", "applications", "documents"), cancellationToken);
+    var relativeFilePath = await _fileUploadService.SaveApplicationDocumentAsync(file, cancellationToken);
+    var resolvedApplicantId = await ResolveApplicantIdAsync(applicantId, applicationId, cancellationToken);
+    var currentUser = await GetCurrentUserAsync();
+
+    var createdDocument = await _serviceManager.AdditionalDocuments.CreateAdditionalDocumentAsync(new AdditionalDocumentDto
+    {
+      ApplicantId = resolvedApplicantId,
+      DocumentTitle = safeDocumentType,
+      DocumentName = Path.GetFileName(file.FileName),
+      DocumentPath = relativeFilePath,
+      RecordType = safeDocumentType
+    }, currentUser, cancellationToken);
 
     return Ok(ApiResponseHelper.Success(new
     {
-      documentId = 0,
+      documentId = createdDocument.AdditionalDocumentId,
       filePath = relativeFilePath,
-      fileName = file.FileName,
+      fileName = createdDocument.DocumentName,
       documentType = safeDocumentType
     }, "Application document uploaded successfully"));
   }
@@ -161,40 +172,20 @@ public class CrmApplicationController : BaseApiController
   }
 
   /// <summary>
-  /// Validates an uploaded document file.
+  /// Resolves the applicant identifier required for document persistence.
   /// </summary>
-  private static void ValidateFile(IFormFile? file)
+  private async Task<int> ResolveApplicantIdAsync(int? applicantId, int? applicationId, CancellationToken cancellationToken)
   {
-    if (file is null || file.Length <= 0)
-      throw new BadRequestException("A valid document file is required.");
+    if (applicantId.HasValue && applicantId.Value > 0)
+      return applicantId.Value;
 
-    if (file.Length > MaxUploadFileSizeBytes)
-      throw new BadRequestException("Document file size must be 10 MB or less.");
+    if (applicationId.HasValue && applicationId.Value > 0)
+    {
+      var application = await _serviceManager.CrmApplications.ApplicationAsync(applicationId.Value, trackChanges: false, cancellationToken: cancellationToken);
+      if (application.ApplicantId > 0)
+        return application.ApplicantId;
+    }
 
-    var extension = Path.GetExtension(file.FileName);
-    if (string.IsNullOrWhiteSpace(extension) || !AllowedDocumentExtensions.Contains(extension))
-      throw new BadRequestException("Unsupported document file type.");
-  }
-
-  /// <summary>
-  /// Saves an uploaded file and returns the public relative path.
-  /// </summary>
-  private async Task<string> SaveFileAsync(IFormFile file, string relativeDirectory, CancellationToken cancellationToken)
-  {
-    var webRootPath = string.IsNullOrWhiteSpace(_environment.WebRootPath)
-      ? Path.Combine(_environment.ContentRootPath, "wwwroot")
-      : _environment.WebRootPath;
-
-    var directoryPath = Path.Combine(webRootPath, relativeDirectory);
-    Directory.CreateDirectory(directoryPath);
-
-    var extension = Path.GetExtension(file.FileName);
-    var fileName = $"{Guid.NewGuid():N}{extension}";
-    var fullPath = Path.Combine(directoryPath, fileName);
-
-    await using var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None);
-    await file.CopyToAsync(stream, cancellationToken);
-
-    return "/" + Path.Combine(relativeDirectory, fileName).Replace("\\", "/");
+    throw new BadRequestException("ApplicantId or ApplicationId is required for document upload.");
   }
 }

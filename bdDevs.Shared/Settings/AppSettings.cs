@@ -63,6 +63,10 @@ public class FileSettings
 {
   public long MaxFileSizeBytes { get; set; } = 10_000_000;
   public string UploadPath { get; set; } = "wwwroot/Uploads";
+  public string ApplicantPhotoRelativePath { get; set; } = "crm/applicants/photos";
+  public string ApplicationDocumentRelativePath { get; set; } = "crm/applications/documents";
+  public string[] AllowedImageExtensions { get; set; } = [".jpg", ".jpeg", ".png", ".webp"];
+  public string[] AllowedDocumentExtensions { get; set; } = [".pdf", ".doc", ".docx", ".jpg", ".jpeg", ".png"];
 }
 
 public class CorsSettings

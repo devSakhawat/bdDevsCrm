@@ -3,17 +3,16 @@ using Domain.Contracts.Services;
 using bdDevs.Shared;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using bdDevs.Shared.Records.CRM;
+using Domain.Contracts.Services.Core.Infrastructure;
 using Domain.Exceptions;
 using bdDevs.Shared.Constants;
 using Application.Shared.Grid;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Presentation.ActionFilters;
 using bdDevs.Shared.Extensions;
 using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
-using System.IO;
 
 namespace Presentation.Controllers.CRM;
 
@@ -24,14 +23,12 @@ namespace Presentation.Controllers.CRM;
 public class CrmApplicantInfoController : BaseApiController
 {
     private readonly IMemoryCache _cache;
-    private readonly IWebHostEnvironment _environment;
-    private static readonly HashSet<string> AllowedImageExtensions = new(StringComparer.OrdinalIgnoreCase) { ".jpg", ".jpeg", ".png", ".webp" };
-    private const long MaxUploadFileSizeBytes = 10 * 1024 * 1024;
+    private readonly IFileUploadService _fileUploadService;
 
-    public CrmApplicantInfoController(IServiceManager serviceManager, IMemoryCache cache, IWebHostEnvironment environment) : base(serviceManager)
+    public CrmApplicantInfoController(IServiceManager serviceManager, IMemoryCache cache, IFileUploadService fileUploadService) : base(serviceManager)
     {
         _cache = cache;
-        _environment = environment;
+        _fileUploadService = fileUploadService;
     }
 
     /// <summary>
@@ -72,9 +69,7 @@ public class CrmApplicantInfoController : BaseApiController
     [HttpPost(RouteConstants.UploadCrmApplicantPhoto)]
     public async Task<IActionResult> UploadPhotoAsync([FromForm] IFormFile file, CancellationToken cancellationToken = default)
     {
-        ValidateFile(file, AllowedImageExtensions, "photo");
-
-        var relativeFilePath = await SaveFileAsync(file, Path.Combine("Uploads", "crm", "applicants", "photos"), cancellationToken);
+        var relativeFilePath = await _fileUploadService.SaveApplicantPhotoAsync(file, cancellationToken);
 
         return Ok(ApiResponseHelper.Success(new { filePath = relativeFilePath }, "Applicant photo uploaded successfully"));
     }
@@ -212,43 +207,5 @@ public class CrmApplicantInfoController : BaseApiController
         }
 
         return new UsersDto { UserId = parsedUserId };
-    }
-
-    /// <summary>
-    /// Validates an uploaded file.
-    /// </summary>
-    private static void ValidateFile(IFormFile? file, IReadOnlySet<string> allowedExtensions, string fileType)
-    {
-        if (file is null || file.Length <= 0)
-            throw new BadRequestException($"A valid {fileType} file is required.");
-
-        if (file.Length > MaxUploadFileSizeBytes)
-            throw new BadRequestException($"{fileType} file size must be 10 MB or less.");
-
-        var extension = Path.GetExtension(file.FileName);
-        if (string.IsNullOrWhiteSpace(extension) || !allowedExtensions.Contains(extension))
-            throw new BadRequestException($"Unsupported {fileType} file type.");
-    }
-
-    /// <summary>
-    /// Saves an uploaded file and returns the public relative path.
-    /// </summary>
-    private async Task<string> SaveFileAsync(IFormFile file, string relativeDirectory, CancellationToken cancellationToken)
-    {
-        var webRootPath = string.IsNullOrWhiteSpace(_environment.WebRootPath)
-            ? Path.Combine(_environment.ContentRootPath, "wwwroot")
-            : _environment.WebRootPath;
-
-        var directoryPath = Path.Combine(webRootPath, relativeDirectory);
-        Directory.CreateDirectory(directoryPath);
-
-        var extension = Path.GetExtension(file.FileName);
-        var fileName = $"{Guid.NewGuid():N}{extension}";
-        var fullPath = Path.Combine(directoryPath, fileName);
-
-        await using var stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write, FileShare.None);
-        await file.CopyToAsync(stream, cancellationToken);
-
-        return "/" + Path.Combine(relativeDirectory, fileName).Replace("\\", "/");
     }
 }

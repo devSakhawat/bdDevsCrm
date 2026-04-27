@@ -28,6 +28,7 @@ public static class ConfigureServiceManager
     services.AddScoped<ICookieManagementService, CookieManagementService>();
     services.AddScoped<IHttpContextService, HttpContextService>();
     services.AddScoped<ICacheManagementService, CacheManagementService>();
+    services.AddScoped<IFileUploadService, FileUploadService>();
 
     // HybridCache — Redis + Memory
     services.AddSingleton<IHybridCacheService, HybridCacheService>();

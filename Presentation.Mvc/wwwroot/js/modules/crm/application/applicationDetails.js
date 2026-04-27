@@ -603,8 +603,18 @@
         isDraftMode = data.isDraft === true || data.isDraft === 1;
 
         // Documents (Tab 5)
-        if (data.documents && Array.isArray(data.documents)) {
-            uploadedDocuments = data.documents;
+        const persistedDocuments = Array.isArray(data.documents)
+            ? data.documents
+            : (Array.isArray(data.additionalDocuments) ? data.additionalDocuments : []);
+
+        if (persistedDocuments.length > 0) {
+            uploadedDocuments = persistedDocuments.map(doc => ({
+                documentId: doc.documentId || doc.additionalDocumentId || 0,
+                fileName: doc.fileName || doc.documentName || '',
+                filePath: doc.filePath || doc.documentPath || '',
+                fileSize: doc.fileSize || '',
+                documentType: doc.documentType || doc.recordType || doc.documentTitle || 'General'
+            }));
             displayUploadedDocuments();
         }
     }
@@ -644,6 +654,15 @@
         const files = e.target.files;
         if (!files || files.length === 0) return;
 
+        const applicantId = applicantDropdown?.value() || null;
+        const applicationId = parseInt($('#applicationId').val()) || 0;
+
+        if ((!applicantId || applicantId <= 0) && applicationId <= 0) {
+            window.AppToast?.warning('Please select an applicant before uploading documents');
+            $('#documentFile').val('');
+            return;
+        }
+
         window.AppLoader?.show();
 
         try {
@@ -659,6 +678,12 @@
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('documentType', $('#documentType').val() || 'General');
+                if (applicantId && applicantId > 0) {
+                    formData.append('applicantId', applicantId);
+                }
+                if (applicationId > 0) {
+                    formData.append('applicationId', applicationId);
+                }
 
                 const response = await fetch(
                     window.ApplicationModule.config.apiEndpoints.uploadDocument,
@@ -676,10 +701,10 @@
                 if (result.success && result.data) {
                     uploadedDocuments.push({
                         documentId: result.data.documentId || 0,
-                        fileName: file.name,
+                        fileName: result.data.fileName || file.name,
                         filePath: result.data.filePath,
                         fileSize: formatFileSize(file.size),
-                        documentType: $('#documentType').val() || 'General'
+                        documentType: result.data.documentType || $('#documentType').val() || 'General'
                     });
 
                     window.AppToast?.success(`File ${file.name} uploaded successfully`);

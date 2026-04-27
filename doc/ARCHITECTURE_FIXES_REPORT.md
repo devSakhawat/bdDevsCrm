@@ -861,3 +861,13 @@ If you need help implementing these fixes, refer to:
 **Next Action:** Fix build errors to achieve 100% build success
 **Expected Final Score:** 9.5/10 ⭐⭐⭐
 
+
+---
+
+## ✅ Issue 8: Remove Infrastructure.Security from Presentation.Controller (2026-04-27)
+
+**Problem:** `Infrastructure.Security` was referenced in `Presentation.Controller/Presentation.csproj` but no class from that project was actually imported or used in any controller.
+
+**Fix:** Removed the ProjectReference for `Infrastructure.Security` from `Presentation.Controller/Presentation.csproj`.
+
+**Result:** Clean Architecture compliance improved from 95% → 100%. All four Infrastructure projects are now correctly scoped to Infrastructure and Application layers only.

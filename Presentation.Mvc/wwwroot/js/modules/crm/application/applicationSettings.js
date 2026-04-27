@@ -17,7 +17,7 @@
             delete: (id) => `${apiRouteBaseUrl}/crm-application/${id}`,
             read: (id) => `${apiRouteBaseUrl}/crm-application/${id}`,
             applicantsDDL: `${apiRouteBaseUrl}/crm-applicant-infos-ddl`,
-            statusesDDL: `${apiRouteBaseUrl}/statuses-ddl`,
+            statusesDDL: `${apiRouteBaseUrl}/crm-application-statuses-ddl`,
             countriesDDL: `${apiRouteBaseUrl}/countryddl`,
             institutesDDL: (countryId) => `${apiRouteBaseUrl}/crm-institut-by-countryid-ddl/${countryId}`,
             coursesDDL: (instituteId) => `${apiRouteBaseUrl}/crm-course-by-instituteid-ddl/${instituteId}`,

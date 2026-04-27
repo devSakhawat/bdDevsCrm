@@ -6,16 +6,17 @@
     'use strict';
 
     window.CourseModule = window.CourseModule || {};
+    const apiRouteBaseUrl = window.AppConfig.apiRouteBaseUrl || `${window.location.origin}/bdDevs-crm`;
 
     window.CourseModule.config = {
         apiEndpoints: {
-            summary: window.AppConfig.apiBaseUrl + '/crm/crm-course-summary',
-            create: window.AppConfig.apiBaseUrl + '/crm/crm-course',
-            update: (id) => window.AppConfig.apiBaseUrl + `/crm/crm-course/${id}`,
-            delete: (id) => window.AppConfig.apiBaseUrl + `/crm/crm-course/${id}`,
-            read: (id) => window.AppConfig.apiBaseUrl + `/crm/crm-course/${id}`,
-            institutesDDL: window.AppConfig.apiBaseUrl + '/crm/crm-institutes-ddl',
-            coursesByInstitute: (instituteId) => window.AppConfig.apiBaseUrl + `/crm/crm-courses-by-institute/${instituteId}`
+            summary: `${apiRouteBaseUrl}/crm-course-summary`,
+            create: `${apiRouteBaseUrl}/crm-course`,
+            update: (id) => `${apiRouteBaseUrl}/crm-course/${id}`,
+            delete: (id) => `${apiRouteBaseUrl}/crm-course/${id}`,
+            read: (id) => `${apiRouteBaseUrl}/crm-course/${id}`,
+            institutesDDL: `${apiRouteBaseUrl}/crm-institutes-ddl`,
+            coursesByInstitute: (instituteId) => `${apiRouteBaseUrl}/crm-course-by-instituteid-ddl/${instituteId}`
         },
         gridOptions: {
             pageSize: 20,

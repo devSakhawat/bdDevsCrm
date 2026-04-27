@@ -8,16 +8,17 @@
 
     // Module configuration
     window.InstituteModule = window.InstituteModule || {};
+    const apiRouteBaseUrl = window.AppConfig.apiRouteBaseUrl || `${window.location.origin}/bdDevs-crm`;
 
     window.InstituteModule.config = {
         apiEndpoints: {
-            summary: window.AppConfig.apiBaseUrl + '/crm/crm-institute-summary',
-            create: window.AppConfig.apiBaseUrl + '/crm/crm-institute',
-            update: (id) => window.AppConfig.apiBaseUrl + `/crm/crm-institute/${id}`,
-            delete: (id) => window.AppConfig.apiBaseUrl + `/crm/crm-institute/${id}`,
-            read: (id) => window.AppConfig.apiBaseUrl + `/crm/crm-institute/${id}`,
-            countriesDDL: window.AppConfig.apiBaseUrl + '/core/systemadmin/countries-ddl',
-            institutesByCountry: (countryId) => window.AppConfig.apiBaseUrl + `/crm/crm-institutes-by-country/${countryId}`
+            summary: `${apiRouteBaseUrl}/crm-institute-summary`,
+            create: `${apiRouteBaseUrl}/crm-institute`,
+            update: (id) => `${apiRouteBaseUrl}/crm-institute/${id}`,
+            delete: (id) => `${apiRouteBaseUrl}/crm-institute/${id}`,
+            read: (id) => `${apiRouteBaseUrl}/crm-institute/${id}`,
+            countriesDDL: `${apiRouteBaseUrl}/countryddl`,
+            institutesByCountry: (countryId) => `${apiRouteBaseUrl}/crm-institut-by-countryid-ddl/${countryId}`
         },
         gridOptions: {
             pageSize: 20,

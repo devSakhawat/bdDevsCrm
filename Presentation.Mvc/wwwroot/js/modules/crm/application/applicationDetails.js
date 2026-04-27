@@ -603,8 +603,21 @@
         isDraftMode = data.isDraft === true || data.isDraft === 1;
 
         // Documents (Tab 5)
-        if (data.documents && Array.isArray(data.documents)) {
-            uploadedDocuments = data.documents;
+        let persistedDocuments = [];
+        if (Array.isArray(data.documents)) {
+            persistedDocuments = data.documents;
+        } else if (Array.isArray(data.additionalDocuments)) {
+            persistedDocuments = data.additionalDocuments;
+        }
+
+        if (persistedDocuments.length > 0) {
+            uploadedDocuments = persistedDocuments.map(doc => ({
+                documentId: doc.documentId || doc.additionalDocumentId || 0,
+                fileName: doc.fileName || doc.documentName || '',
+                filePath: doc.filePath || doc.documentPath || '',
+                fileSize: doc.fileSize || '',
+                documentType: doc.documentType || doc.recordType || doc.documentTitle || 'General'
+            }));
             displayUploadedDocuments();
         }
     }
@@ -644,6 +657,15 @@
         const files = e.target.files;
         if (!files || files.length === 0) return;
 
+        const applicantId = applicantDropdown?.value() || null;
+        const applicationId = parseInt($('#applicationId').val()) || 0;
+
+        if ((!applicantId || applicantId <= 0) && applicationId <= 0) {
+            window.AppToast?.warning('Please select an applicant before uploading documents');
+            $('#documentFile').val('');
+            return;
+        }
+
         window.AppLoader?.show();
 
         try {
@@ -659,6 +681,12 @@
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('documentType', $('#documentType').val() || 'General');
+                if (applicantId && applicantId > 0) {
+                    formData.append('applicantId', applicantId);
+                }
+                if (applicationId > 0) {
+                    formData.append('applicationId', applicationId);
+                }
 
                 const response = await fetch(
                     window.ApplicationModule.config.apiEndpoints.uploadDocument,
@@ -676,10 +704,10 @@
                 if (result.success && result.data) {
                     uploadedDocuments.push({
                         documentId: result.data.documentId || 0,
-                        fileName: file.name,
+                        fileName: result.data.fileName || file.name,
                         filePath: result.data.filePath,
                         fileSize: formatFileSize(file.size),
-                        documentType: $('#documentType').val() || 'General'
+                        documentType: result.data.documentType || $('#documentType').val() || 'General'
                     });
 
                     window.AppToast?.success(`File ${file.name} uploaded successfully`);
@@ -716,9 +744,9 @@
 
         uploadedDocuments.forEach((doc, index) => {
             html += '<tr>';
-            html += `<td>${doc.fileName}</td>`;
-            html += `<td>${doc.documentType || 'General'}</td>`;
-            html += `<td>${doc.fileSize}</td>`;
+            html += `<td>${escapeHtml(doc.fileName || '')}</td>`;
+            html += `<td>${escapeHtml(doc.documentType || 'General')}</td>`;
+            html += `<td>${escapeHtml(doc.fileSize || '')}</td>`;
             html += `<td><button type="button" class="btn btn-sm btn-danger btn-remove-document" data-index="${index}">Remove</button></td>`;
             html += '</tr>';
         });
@@ -759,6 +787,20 @@
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+    }
+
+    /**
+     * Escape HTML special characters before injecting text into markup.
+     * @param {string} value - Text value to escape
+     * @returns {string} - Escaped text
+     */
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 
     /**

@@ -100,6 +100,12 @@ public interface IRepositoryManager : IDisposable
   ICrmIntakeMonthRepository CrmIntakeMonths { get; }
   ICrmIntakeYearRepository CrmIntakeYears { get; }
   ICrmPaymentMethodRepository CrmPaymentMethods { get; }
+  ICrmDocumentTypeRepository CrmDocumentTypes { get; }
+  ICrmLeadSourceRepository CrmLeadSources { get; }
+  ICrmLeadStageRepository CrmLeadStages { get; }
+  ICrmApplicationStatusRepository CrmApplicationStatuses { get; }
+  ICrmVisaStatusRepository CrmVisaStatuses { get; }
+  ICrmCommunicationTypeRepository CrmCommunicationTypes { get; }
   ICrmCourseIntakeRepository CrmCourseIntakes { get; }
   #endregion CRM
 

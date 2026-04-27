@@ -89,6 +89,12 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ICrmIntakeMonthRepository> _crmIntakeMonthRepository;
   private readonly Lazy<ICrmIntakeYearRepository> _crmIntakeYearRepository;
   private readonly Lazy<ICrmPaymentMethodRepository> _crmPaymentMethodRepository;
+  private readonly Lazy<ICrmDocumentTypeRepository> _crmDocumentTypeRepository;
+  private readonly Lazy<ICrmLeadSourceRepository> _leadSourceRepository;
+  private readonly Lazy<ICrmLeadStageRepository> _leadStageRepository;
+  private readonly Lazy<ICrmApplicationStatusRepository> _applicationStatusRepository;
+  private readonly Lazy<ICrmVisaStatusRepository> _visaStatusRepository;
+  private readonly Lazy<ICrmCommunicationTypeRepository> _communicationTypeRepository;
   private readonly Lazy<ICrmCourseIntakeRepository> _crmCourseIntakeRepository;
 
 
@@ -204,6 +210,12 @@ public class RepositoryManager : IRepositoryManager
     _crmIntakeMonthRepository = new Lazy<ICrmIntakeMonthRepository>(() => new CrmIntakeMonthRepository(_repositoryContext));
     _crmIntakeYearRepository = new Lazy<ICrmIntakeYearRepository>(() => new CrmIntakeYearRepository(_repositoryContext));
     _crmPaymentMethodRepository = new Lazy<ICrmPaymentMethodRepository>(() => new CrmPaymentMethodRepository(_repositoryContext));
+    _crmDocumentTypeRepository = new Lazy<ICrmDocumentTypeRepository>(() => new CrmDocumentTypeRepository(_repositoryContext));
+    _leadSourceRepository = new Lazy<ICrmLeadSourceRepository>(() => new CrmLeadSourceRepository(_repositoryContext));
+    _leadStageRepository = new Lazy<ICrmLeadStageRepository>(() => new CrmLeadStageRepository(_repositoryContext));
+    _applicationStatusRepository = new Lazy<ICrmApplicationStatusRepository>(() => new CrmApplicationStatusRepository(_repositoryContext));
+    _visaStatusRepository = new Lazy<ICrmVisaStatusRepository>(() => new CrmVisaStatusRepository(_repositoryContext));
+    _communicationTypeRepository = new Lazy<ICrmCommunicationTypeRepository>(() => new CrmCommunicationTypeRepository(_repositoryContext));
     _crmCourseIntakeRepository = new Lazy<ICrmCourseIntakeRepository>(() => new CrmCourseIntakeRepository(_repositoryContext));
 
     // FIX: Add missing CRM repositories initialization
@@ -332,6 +344,12 @@ public class RepositoryManager : IRepositoryManager
   public ICrmIntakeMonthRepository CrmIntakeMonths => _crmIntakeMonthRepository.Value;
   public ICrmIntakeYearRepository CrmIntakeYears => _crmIntakeYearRepository.Value;
   public ICrmPaymentMethodRepository CrmPaymentMethods => _crmPaymentMethodRepository.Value;
+  public ICrmDocumentTypeRepository CrmDocumentTypes => _crmDocumentTypeRepository.Value;
+  public ICrmLeadSourceRepository CrmLeadSources => _leadSourceRepository.Value;
+  public ICrmLeadStageRepository CrmLeadStages => _leadStageRepository.Value;
+  public ICrmApplicationStatusRepository CrmApplicationStatuses => _applicationStatusRepository.Value;
+  public ICrmVisaStatusRepository CrmVisaStatuses => _visaStatusRepository.Value;
+  public ICrmCommunicationTypeRepository CrmCommunicationTypes => _communicationTypeRepository.Value;
   public ICrmCourseIntakeRepository CrmCourseIntakes => _crmCourseIntakeRepository.Value;
   #endregion CRM
 

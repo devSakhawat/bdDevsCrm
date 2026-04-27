@@ -192,7 +192,44 @@ public record country_record { }  // Should be PascalCase
 public record CreateCountry { }  // Missing Record suffix
 ```
 
-### 10. DTOs (Data Transfer Objects)
+### 10. Module Prefix Conventions
+
+**Rule**: Every artifact that belongs to a business module must carry the module prefix so that its domain origin is immediately clear.
+
+| Module | Prefix | Scope |
+|---|---|---|
+| CRM (Customer Relationship) | `Crm` | All entities, DTOs, Records, Repos, Services, Controllers inside `CRM/` |
+| DMS (Document Management) | `Dms` | All artifacts inside `DMS/` |
+| System / Core | *(no prefix)* | Shared system artifacts (Company, Branch, Users, etc.) |
+
+```csharp
+// ✅ GOOD – CRM module artifacts all carry the Crm prefix
+public class CrmLead { }
+public class CrmLeadDto { }
+public record CreateCrmLeadRecord(...);
+public interface ICrmLeadRepository { }
+public class CrmLeadService { }
+public class CrmLeadController { }
+
+// ❌ BAD – prefix missing or wrong capitalisation
+public class Lead { }          // Ambiguous – could belong to any module
+public class CRMLead { }       // CRM is 3+ chars → must be PascalCase: Crm
+public class crmlead { }       // Violates PascalCase rule
+
+// ✅ GOOD – DMS module
+public class DmsDocument { }
+public class DmsDocumentDto { }
+
+// ❌ BAD
+public class DMSDocument { }   // Should be Dms
+```
+
+**Cross-reference:** The full per-layer pattern for CRM artifacts is locked in
+`doc/EDUCATION_CRM_V1_IMPLEMENTATION_PACKAGE.md` § 5 "Naming Convention Lock".
+
+---
+
+### 11. DTOs (Data Transfer Objects)
 
 **Rule**: PascalCase + `DTO` or `Dto` suffix (prefer `Dto` for consistency with acronym rules)
 
@@ -547,7 +584,9 @@ Before committing code, verify:
 - [ ] All C# classes, methods, properties use PascalCase
 - [ ] All private fields use `_camelCase`
 - [ ] All parameters and local variables use camelCase
-- [ ] Acronyms follow the 2-char/3+-char rule
+- [ ] Acronyms follow the 2-char/3+-char rule (`Crm`, `Dms`, not `CRM`, `DMS`)
+- [ ] CRM module artifacts carry the `Crm` prefix on every layer (entity → controller)
+- [ ] DMS module artifacts carry the `Dms` prefix on every layer
 - [ ] JavaScript variables and functions use camelCase
 - [ ] JavaScript constants use UPPER_SNAKE_CASE
 - [ ] File names match class names exactly

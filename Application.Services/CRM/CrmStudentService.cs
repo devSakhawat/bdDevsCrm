@@ -159,7 +159,7 @@ internal sealed class CrmStudentService : ICrmStudentService
             {
                 LeadId = lead.LeadId,
                 StudentName = lead.LeadName,
-                StudentCode = $"STD-{DateTime.UtcNow:yyyyMMddHHmmss}-{Guid.NewGuid():N}"[..28],
+                StudentCode = $"STD-{DateTime.UtcNow:yyyyMMddHHmmssfff}-{Guid.NewGuid():N}"[..39],
                 Email = lead.Email,
                 Phone = lead.Phone,
                 CounselorId = lead.AssignedCounselorId,

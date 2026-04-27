@@ -92,13 +92,30 @@ internal sealed class CrmStudentDocumentService : ICrmStudentDocumentService
             ?? throw new NotFoundException("DmsDocumentType", "DocumentTypeId", request.DocumentTypeId.ToString());
         ValidateFile(file, documentType);
 
-        var baseStoragePath = _config["CrmDocumentStorage:RootPath"];
-        var storageRoot = string.IsNullOrWhiteSpace(baseStoragePath)
-            ? Path.Combine(AppContext.BaseDirectory, "Uploads", "StudentDocuments")
-            : baseStoragePath;
-        var uploadsRoot = Path.Combine(storageRoot, request.StudentId.ToString(CultureInfo.InvariantCulture));
+        var configuredStoragePath = _config["CrmDocumentStorage:RootPath"];
+        var fallbackStorageRoot = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "Uploads", "StudentDocuments"));
+        var configuredStorageRoot = string.IsNullOrWhiteSpace(configuredStoragePath)
+            ? fallbackStorageRoot
+            : Path.GetFullPath(configuredStoragePath);
+        if (!configuredStorageRoot.StartsWith(fallbackStorageRoot, StringComparison.OrdinalIgnoreCase) &&
+            !fallbackStorageRoot.StartsWith(configuredStorageRoot, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new BadRequestException("Configured student document storage path is invalid.");
+        }
+
+        var uploadsRoot = Path.GetFullPath(Path.Combine(configuredStorageRoot, request.StudentId.ToString(CultureInfo.InvariantCulture)));
+        if (!uploadsRoot.StartsWith(configuredStorageRoot, StringComparison.OrdinalIgnoreCase))
+        {
+            throw new BadRequestException("Resolved student document storage path is invalid.");
+        }
         Directory.CreateDirectory(uploadsRoot);
-        var extension = Path.GetExtension(file.FileName);
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        var allowedExtensions = (documentType.AcceptedExtensions ?? string.Empty)
+            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Select(x => x.StartsWith('.') ? x.ToLowerInvariant() : $".{x.ToLowerInvariant()}")
+            .ToList();
+        if (allowedExtensions.Any() && !allowedExtensions.Contains(extension))
+            throw new BadRequestException($"File type {extension} is not allowed for {documentType.Name}.");
         var storedFileName = $"{Guid.NewGuid():N}{extension}";
         var fullPath = Path.Combine(uploadsRoot, storedFileName);
         await using (var stream = File.Create(fullPath))
@@ -200,13 +217,6 @@ internal sealed class CrmStudentDocumentService : ICrmStudentDocumentService
 
     private void ValidateFile(IFormFile file, DmsDocumentType documentType)
     {
-        var allowedExtensions = (documentType.AcceptedExtensions ?? string.Empty)
-            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-            .Select(x => x.StartsWith('.') ? x.ToLowerInvariant() : $".{x.ToLowerInvariant()}")
-            .ToList();
-        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-        if (allowedExtensions.Any() && !allowedExtensions.Contains(extension))
-            throw new BadRequestException($"File type {extension} is not allowed for {documentType.Name}.");
         var maxFileSizeMb = documentType.MaxFileSizeMb ?? 10;
         if (file.Length > maxFileSizeMb * 1024L * 1024L)
             throw new BadRequestException($"File exceeds {maxFileSizeMb} MB limit.");

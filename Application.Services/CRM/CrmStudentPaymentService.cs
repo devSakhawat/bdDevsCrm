@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+using System.Globalization;
+using System.Collections.Concurrent;
 using System.Threading;
 using Application.Shared.Grid;
 using bdDevs.Shared.DataTransferObjects.CRM;
@@ -15,7 +16,7 @@ namespace Application.Services.CRM;
 
 internal sealed class CrmStudentPaymentService : ICrmStudentPaymentService
 {
-    private static readonly SemaphoreSlim ReceiptLock = new(1, 1);
+    private static readonly ConcurrentDictionary<string, SemaphoreSlim> ReceiptLocks = new();
     private readonly IRepositoryManager _repository;
     private readonly ILogger<CrmStudentPaymentService> _logger;
     private readonly IConfiguration _configuration;
@@ -172,7 +173,9 @@ internal sealed class CrmStudentPaymentService : ICrmStudentPaymentService
 
     private async Task<string> GenerateReceiptNoInternalAsync(int branchId, DateTime paymentDate, CancellationToken cancellationToken)
     {
-        await ReceiptLock.WaitAsync(cancellationToken);
+        var lockKey = $"{branchId}:{paymentDate:yyyyMM}";
+        var receiptLock = ReceiptLocks.GetOrAdd(lockKey, _ => new SemaphoreSlim(1, 1));
+        await receiptLock.WaitAsync(cancellationToken);
         try
         {
             var branch = await _repository.Branches.FirstOrDefaultAsync(x => x.Branchid == branchId, false, cancellationToken);
@@ -193,7 +196,7 @@ internal sealed class CrmStudentPaymentService : ICrmStudentPaymentService
         }
         finally
         {
-            ReceiptLock.Release();
+            receiptLock.Release();
         }
     }
 

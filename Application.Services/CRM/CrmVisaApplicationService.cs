@@ -166,7 +166,12 @@ internal sealed class CrmVisaApplicationService : ICrmVisaApplicationService
             throw new BadRequestException("Application must be Unconditional Offer or Enrolled before visa processing.");
         var student = await _repository.CrmStudents.CrmStudentAsync(studentId, false, cancellationToken)
             ?? throw new NotFoundException("Student", "StudentId", studentId.ToString());
-        if (!student.PassportExpiryDate.HasValue || student.PassportExpiryDate.Value.Date < DateTime.UtcNow.Date)
+        if (!student.PassportExpiryDate.HasValue)
+            throw new BadRequestException("Student passport is missing or expired.");
+        var normalizedPassportExpiry = student.PassportExpiryDate.Value.Kind == DateTimeKind.Unspecified
+            ? DateTime.SpecifyKind(student.PassportExpiryDate.Value, DateTimeKind.Utc)
+            : student.PassportExpiryDate.Value.ToUniversalTime();
+        if (normalizedPassportExpiry.Date < DateTime.UtcNow.Date)
             throw new BadRequestException("Student passport is missing or expired.");
     }
 

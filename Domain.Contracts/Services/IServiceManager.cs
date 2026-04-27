@@ -93,6 +93,12 @@ public interface IServiceManager
   ICrmIntakeYearService CrmIntakeYears { get; }
   ICrmPaymentMethodService CrmPaymentMethods { get; }
   ICrmCourseIntakeService CrmCourseIntakes { get; }
+  ICrmLeadSourceService CrmLeadSources { get; }
+  ICrmLeadStatusService CrmLeadStatuses { get; }
+  ICrmVisaTypeService CrmVisaTypes { get; }
+  ICrmAgentTypeService CrmAgentTypes { get; }
+  ICrmStudentStatusService CrmStudentStatuses { get; }
+  ICrmOfficeService CrmOffices { get; }
   #endregion Crm
 
   #region DMS

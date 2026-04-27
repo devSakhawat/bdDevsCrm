@@ -132,6 +132,18 @@ public partial class CrmContext : DbContext
 
   public virtual DbSet<CrmYear> CrmYear { get; set; }
 
+  public virtual DbSet<CrmLeadSource> CrmLeadSource { get; set; }
+
+  public virtual DbSet<CrmLeadStatus> CrmLeadStatus { get; set; }
+
+  public virtual DbSet<CrmVisaType> CrmVisaType { get; set; }
+
+  public virtual DbSet<CrmAgentType> CrmAgentType { get; set; }
+
+  public virtual DbSet<CrmStudentStatus> CrmStudentStatus { get; set; }
+
+  public virtual DbSet<CrmOffice> CrmOffice { get; set; }
+
   public virtual DbSet<CurrencyRate> CurrencyRate { get; set; }
 
   public virtual DbSet<Currency> Currency { get; set; }
@@ -1810,6 +1822,85 @@ public partial class CrmContext : DbContext
     });
 
     OnModelCreatingPartial(modelBuilder);
+
+    modelBuilder.Entity<CrmLeadSource>(entity =>
+    {
+      entity.HasKey(e => e.LeadSourceId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM lead source reference data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmLeadSource_Status");
+      entity.Property(e => e.SourceName).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.SourceCode).HasMaxLength(50).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmLeadStatus>(entity =>
+    {
+      entity.HasKey(e => e.LeadStatusId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM lead status reference data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmLeadStatus_Status");
+      entity.Property(e => e.StatusName).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.StatusCode).HasMaxLength(50).IsUnicode(false);
+      entity.Property(e => e.ColorCode).HasMaxLength(20).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmVisaType>(entity =>
+    {
+      entity.HasKey(e => e.VisaTypeId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM visa type reference data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmVisaType_Status");
+      entity.Property(e => e.VisaTypeName).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.VisaCode).HasMaxLength(50).IsUnicode(false);
+      entity.Property(e => e.Description).HasMaxLength(500).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmAgentType>(entity =>
+    {
+      entity.HasKey(e => e.AgentTypeId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM agent type reference data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmAgentType_Status");
+      entity.Property(e => e.AgentTypeName).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.Description).HasMaxLength(500).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmStudentStatus>(entity =>
+    {
+      entity.HasKey(e => e.StudentStatusId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM student status reference data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmStudentStatus_Status");
+      entity.Property(e => e.StatusName).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.StatusCode).HasMaxLength(50).IsUnicode(false);
+      entity.Property(e => e.ColorCode).HasMaxLength(20).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmOffice>(entity =>
+    {
+      entity.HasKey(e => e.OfficeId);
+      entity.ToTable(tb => tb.HasComment("Stores CRM office reference data"));
+      entity.HasIndex(e => e.IsActive, "IX_CrmOffice_Status");
+      entity.Property(e => e.OfficeName).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.OfficeCode).HasMaxLength(50).IsUnicode(false);
+      entity.Property(e => e.Address).HasMaxLength(500).IsUnicode(false);
+      entity.Property(e => e.City).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.Phone).HasMaxLength(30).IsUnicode(false);
+      entity.Property(e => e.Email).HasMaxLength(150).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())").HasColumnType("datetime");
+      entity.Property(e => e.IsActive).HasDefaultValue(true);
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
   }
 
   partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

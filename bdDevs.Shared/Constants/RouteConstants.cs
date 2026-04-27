@@ -933,6 +933,66 @@ public static class RouteConstants
 	public const string ReadCompetencyLevel = "competency-level/{id:int}";
 	#endregion CompetencyLevel
 
+	#region CrmLeadSource
+	public const string CreateCrmLeadSource = "crm-lead-source";
+	public const string UpdateCrmLeadSource = "crm-lead-source/{key}";
+	public const string DeleteCrmLeadSource = "crm-lead-source/{key}";
+	public const string CrmLeadSourceSummary = "crm-lead-source-summary";
+	public const string ReadCrmLeadSources = "crm-lead-sources";
+	public const string CrmLeadSourceDDL = "crm-lead-sources-ddl";
+	public const string ReadCrmLeadSource = "crm-lead-source/{id:int}";
+	#endregion CrmLeadSource
+
+	#region CrmLeadStatus
+	public const string CreateCrmLeadStatus = "crm-lead-status";
+	public const string UpdateCrmLeadStatus = "crm-lead-status/{key}";
+	public const string DeleteCrmLeadStatus = "crm-lead-status/{key}";
+	public const string CrmLeadStatusSummary = "crm-lead-status-summary";
+	public const string ReadCrmLeadStatuses = "crm-lead-statuses";
+	public const string CrmLeadStatusDDL = "crm-lead-statuses-ddl";
+	public const string ReadCrmLeadStatus = "crm-lead-status/{id:int}";
+	#endregion CrmLeadStatus
+
+	#region CrmVisaType
+	public const string CreateCrmVisaType = "crm-visa-type";
+	public const string UpdateCrmVisaType = "crm-visa-type/{key}";
+	public const string DeleteCrmVisaType = "crm-visa-type/{key}";
+	public const string CrmVisaTypeSummary = "crm-visa-type-summary";
+	public const string ReadCrmVisaTypes = "crm-visa-types";
+	public const string CrmVisaTypeDDL = "crm-visa-types-ddl";
+	public const string ReadCrmVisaType = "crm-visa-type/{id:int}";
+	#endregion CrmVisaType
+
+	#region CrmAgentType
+	public const string CreateCrmAgentType = "crm-agent-type";
+	public const string UpdateCrmAgentType = "crm-agent-type/{key}";
+	public const string DeleteCrmAgentType = "crm-agent-type/{key}";
+	public const string CrmAgentTypeSummary = "crm-agent-type-summary";
+	public const string ReadCrmAgentTypes = "crm-agent-types";
+	public const string CrmAgentTypeDDL = "crm-agent-types-ddl";
+	public const string ReadCrmAgentType = "crm-agent-type/{id:int}";
+	#endregion CrmAgentType
+
+	#region CrmStudentStatus
+	public const string CreateCrmStudentStatus = "crm-student-status";
+	public const string UpdateCrmStudentStatus = "crm-student-status/{key}";
+	public const string DeleteCrmStudentStatus = "crm-student-status/{key}";
+	public const string CrmStudentStatusSummary = "crm-student-status-summary";
+	public const string ReadCrmStudentStatuses = "crm-student-statuses";
+	public const string CrmStudentStatusDDL = "crm-student-statuses-ddl";
+	public const string ReadCrmStudentStatus = "crm-student-status/{id:int}";
+	#endregion CrmStudentStatus
+
+	#region CrmOffice
+	public const string CreateCrmOffice = "crm-office";
+	public const string UpdateCrmOffice = "crm-office/{key}";
+	public const string DeleteCrmOffice = "crm-office/{key}";
+	public const string CrmOfficeSummary = "crm-office-summary";
+	public const string ReadCrmOffices = "crm-offices";
+	public const string CrmOfficeDDL = "crm-offices-ddl";
+	public const string ReadCrmOffice = "crm-office/{id:int}";
+	#endregion CrmOffice
+
 	#region TokenBlacklist
 	public const string CreateTokenBlacklist = "token-blacklist";
 	public const string UpdateTokenBlacklist = "token-blacklist/{key:guid}";

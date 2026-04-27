@@ -9,8 +9,6 @@ using Application.Shared.Grid;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Presentation.ActionFilters;
-using bdDevs.Shared.Extensions;
-using bdDevs.Shared.DataTransferObjects.Core.SystemAdmin;
 
 namespace Presentation.Controllers.CRM;
 
@@ -111,15 +109,5 @@ public class CrmStudentStatusController : BaseApiController
             return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmStudentStatusDto>(), "No records found."));
 
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
-    }
-
-    private async Task<UsersDto> GetCurrentUserAsync()
-    {
-        var userId = User?.FindFirst("UserId")?.Value;
-        if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int parsedUserId))
-        {
-            return new UsersDto { UserId = 1, Username = "system" };
-        }
-        return new UsersDto { UserId = parsedUserId };
     }
 }

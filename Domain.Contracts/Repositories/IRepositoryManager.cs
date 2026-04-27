@@ -79,6 +79,11 @@ public interface IRepositoryManager : IDisposable
 
   // Existing CRM repositories
   ICrmApplicationRepository CrmApplications { get; }
+  ICrmScholarshipApplicationRepository CrmScholarshipApplications { get; }
+  ICrmVisaApplicationRepository CrmVisaApplications { get; }
+  ICrmVisaStatusHistoryRepository CrmVisaStatusHistories { get; }
+  ICrmStudentPaymentRepository CrmStudentPayments { get; }
+  ICrmPaymentRefundRepository CrmPaymentRefunds { get; }
   ICrmApplicationConditionRepository CrmApplicationConditions { get; }
   ICrmApplicationDocumentRepository CrmApplicationDocuments { get; }
   ICrmApplicantCourseRepository CrmApplicantCourses { get; }

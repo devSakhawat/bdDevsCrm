@@ -500,6 +500,62 @@ public static class RouteConstants
 	public const string CrmApplicationBoard = "crm-application-board";
 	#endregion CrmApplication
 
+	#region CrmScholarshipApplication
+	public const string CreateCrmScholarshipApplication = "crm-scholarship-application";
+	public const string UpdateCrmScholarshipApplication = "crm-scholarship-application/{key}";
+	public const string DeleteCrmScholarshipApplication = "crm-scholarship-application/{key}";
+	public const string CrmScholarshipApplicationSummary = "crm-scholarship-application-summary";
+	public const string ReadCrmScholarshipApplications = "crm-scholarship-applications";
+	public const string ReadCrmScholarshipApplication = "crm-scholarship-application/{id:int}";
+	public const string ScholarshipApplicationsByApplicationId = "crm-scholarship-applications-by-application/{applicationId:int}";
+	public const string CrmScholarshipCommissionImpact = "crm-scholarship-commission-impact/{applicationId:int}";
+	#endregion CrmScholarshipApplication
+
+	#region CrmVisaApplication
+	public const string CreateCrmVisaApplication = "crm-visa-application";
+	public const string UpdateCrmVisaApplication = "crm-visa-application/{key}";
+	public const string DeleteCrmVisaApplication = "crm-visa-application/{key}";
+	public const string CrmVisaApplicationSummary = "crm-visa-application-summary";
+	public const string ReadCrmVisaApplications = "crm-visa-applications";
+	public const string ReadCrmVisaApplication = "crm-visa-application/{id:int}";
+	public const string VisaApplicationsByApplicationId = "crm-visa-applications-by-application/{applicationId:int}";
+	public const string VisaApplicationsByStudentId = "crm-visa-applications-by-student/{studentId:int}";
+	public const string CrmVisaApplicationStatusTransition = "crm-visa-application-status-transition";
+	#endregion CrmVisaApplication
+
+	#region CrmVisaStatusHistory
+	public const string CreateCrmVisaStatusHistory = "crm-visa-status-history";
+	public const string UpdateCrmVisaStatusHistory = "crm-visa-status-history/{key}";
+	public const string DeleteCrmVisaStatusHistory = "crm-visa-status-history/{key}";
+	public const string CrmVisaStatusHistorySummary = "crm-visa-status-history-summary";
+	public const string ReadCrmVisaStatusHistories = "crm-visa-status-histories";
+	public const string ReadCrmVisaStatusHistory = "crm-visa-status-history/{id:int}";
+	public const string VisaStatusHistoriesByVisaApplicationId = "crm-visa-status-histories-by-visa-application/{visaApplicationId:int}";
+	#endregion CrmVisaStatusHistory
+
+	#region CrmStudentPayment
+	public const string CreateCrmStudentPayment = "crm-student-payment";
+	public const string UpdateCrmStudentPayment = "crm-student-payment/{key}";
+	public const string DeleteCrmStudentPayment = "crm-student-payment/{key}";
+	public const string CrmStudentPaymentSummary = "crm-student-payment-summary";
+	public const string ReadCrmStudentPayments = "crm-student-payments";
+	public const string ReadCrmStudentPayment = "crm-student-payment/{id:int}";
+	public const string StudentPaymentsByStudentId = "crm-student-payments-by-student/{studentId:int}";
+	public const string StudentPaymentsByApplicationId = "crm-student-payments-by-application/{applicationId:int}";
+	public const string CrmStudentPaymentStatusTransition = "crm-student-payment-status-transition";
+	public const string CrmStudentPaymentReceipt = "crm-student-payment-receipt/{paymentId:int}";
+	#endregion CrmStudentPayment
+
+	#region CrmPaymentRefund
+	public const string CreateCrmPaymentRefund = "crm-payment-refund";
+	public const string UpdateCrmPaymentRefund = "crm-payment-refund/{key}";
+	public const string DeleteCrmPaymentRefund = "crm-payment-refund/{key}";
+	public const string CrmPaymentRefundSummary = "crm-payment-refund-summary";
+	public const string ReadCrmPaymentRefunds = "crm-payment-refunds";
+	public const string ReadCrmPaymentRefund = "crm-payment-refund/{id:int}";
+	public const string PaymentRefundsByPaymentId = "crm-payment-refunds-by-payment/{paymentId:int}";
+	#endregion CrmPaymentRefund
+
 	#region CrmApplicationCondition
 	public const string CreateCrmApplicationCondition = "crm-application-condition";
 	public const string UpdateCrmApplicationCondition = "crm-application-condition/{key}";

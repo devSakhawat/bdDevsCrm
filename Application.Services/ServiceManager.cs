@@ -106,6 +106,11 @@ public sealed class ServiceManager : IServiceManager
 
   // Existing Crm services
   private readonly Lazy<ICrmApplicationService> _crmApplicationService;
+  private readonly Lazy<ICrmScholarshipApplicationService> _crmScholarshipApplicationService;
+  private readonly Lazy<ICrmVisaApplicationService> _crmVisaApplicationService;
+  private readonly Lazy<ICrmVisaStatusHistoryService> _crmVisaStatusHistoryService;
+  private readonly Lazy<ICrmStudentPaymentService> _crmStudentPaymentService;
+  private readonly Lazy<ICrmPaymentRefundService> _crmPaymentRefundService;
   private readonly Lazy<ICrmApplicationConditionService> _crmApplicationConditionService;
   private readonly Lazy<ICrmApplicationDocumentService> _crmApplicationDocumentService;
   private readonly Lazy<ICrmApplicantCourseService> _applicantCourseService;
@@ -246,6 +251,11 @@ public sealed class ServiceManager : IServiceManager
 
     // Existing Crm services initialization
     _crmApplicationService = new Lazy<ICrmApplicationService>(() => new CrmApplicationService(repository, loggerFactory.CreateLogger<CrmApplicationService>(), configuration, httpContextAccessor));
+    _crmScholarshipApplicationService = new Lazy<ICrmScholarshipApplicationService>(() => new CrmScholarshipApplicationService(repository, loggerFactory.CreateLogger<CrmScholarshipApplicationService>(), configuration));
+    _crmVisaApplicationService = new Lazy<ICrmVisaApplicationService>(() => new CrmVisaApplicationService(repository, loggerFactory.CreateLogger<CrmVisaApplicationService>(), configuration));
+    _crmVisaStatusHistoryService = new Lazy<ICrmVisaStatusHistoryService>(() => new CrmVisaStatusHistoryService(repository, loggerFactory.CreateLogger<CrmVisaStatusHistoryService>(), configuration));
+    _crmStudentPaymentService = new Lazy<ICrmStudentPaymentService>(() => new CrmStudentPaymentService(repository, loggerFactory.CreateLogger<CrmStudentPaymentService>(), configuration));
+    _crmPaymentRefundService = new Lazy<ICrmPaymentRefundService>(() => new CrmPaymentRefundService(repository, loggerFactory.CreateLogger<CrmPaymentRefundService>(), configuration));
     _crmApplicationConditionService = new Lazy<ICrmApplicationConditionService>(() => new CrmApplicationConditionService(repository, loggerFactory.CreateLogger<CrmApplicationConditionService>(), configuration));
     _crmApplicationDocumentService = new Lazy<ICrmApplicationDocumentService>(() => new CrmApplicationDocumentService(repository, loggerFactory.CreateLogger<CrmApplicationDocumentService>(), configuration));
     _applicantCourseService = new Lazy<ICrmApplicantCourseService>(() => new CrmApplicantCourseService(repository, loggerFactory.CreateLogger<CrmApplicantCourseService>(), configuration, httpContextAccessor));
@@ -379,6 +389,11 @@ public sealed class ServiceManager : IServiceManager
 
   // Existing Crm service properties
   public ICrmApplicationService CrmApplications => _crmApplicationService.Value;
+  public ICrmScholarshipApplicationService CrmScholarshipApplications => _crmScholarshipApplicationService.Value;
+  public ICrmVisaApplicationService CrmVisaApplications => _crmVisaApplicationService.Value;
+  public ICrmVisaStatusHistoryService CrmVisaStatusHistories => _crmVisaStatusHistoryService.Value;
+  public ICrmStudentPaymentService CrmStudentPayments => _crmStudentPaymentService.Value;
+  public ICrmPaymentRefundService CrmPaymentRefunds => _crmPaymentRefundService.Value;
   public ICrmApplicationConditionService CrmApplicationConditions => _crmApplicationConditionService.Value;
   public ICrmApplicationDocumentService CrmApplicationDocuments => _crmApplicationDocumentService.Value;
   public ICrmApplicantCourseService ApplicantCourses => _applicantCourseService.Value;

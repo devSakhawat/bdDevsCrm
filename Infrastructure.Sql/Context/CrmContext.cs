@@ -89,6 +89,11 @@ public partial class CrmContext : DbContext
   public virtual DbSet<CrmApplicantReference> CrmApplicantReference { get; set; }
 
   public virtual DbSet<CrmApplication> CrmApplication { get; set; }
+  public virtual DbSet<CrmScholarshipApplication> CrmScholarshipApplication { get; set; }
+  public virtual DbSet<CrmVisaApplication> CrmVisaApplication { get; set; }
+  public virtual DbSet<CrmVisaStatusHistory> CrmVisaStatusHistory { get; set; }
+  public virtual DbSet<CrmStudentPayment> CrmStudentPayment { get; set; }
+  public virtual DbSet<CrmPaymentRefund> CrmPaymentRefund { get; set; }
   public virtual DbSet<CrmApplicationCondition> CrmApplicationCondition { get; set; }
   public virtual DbSet<CrmApplicationDocument> CrmApplicationDocument { get; set; }
 
@@ -696,6 +701,73 @@ public partial class CrmContext : DbContext
       entity.Property(e => e.RejectionReason).HasMaxLength(1000).IsUnicode(false);
       entity.Property(e => e.PortalUsername).HasMaxLength(500).IsUnicode(false);
       entity.Property(e => e.PortalPassword).HasMaxLength(500).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmScholarshipApplication>(entity =>
+    {
+      entity.HasKey(e => e.ScholarshipApplicationId);
+      entity.Property(e => e.ScholarshipName).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.ScholarshipType).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.GrantedAmount).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.Currency).HasMaxLength(20).IsUnicode(false);
+      entity.Property(e => e.ScholarshipPercentage).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.ConfirmedDate).HasColumnType("datetime");
+      entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+      entity.Property(e => e.Notes).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmVisaApplication>(entity =>
+    {
+      entity.HasKey(e => e.VisaApplicationId);
+      entity.Property(e => e.EmbassyName).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.ApplicationRefNo).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.SubmittedDate).HasColumnType("datetime");
+      entity.Property(e => e.BiometricDate).HasColumnType("datetime");
+      entity.Property(e => e.InterviewDate).HasColumnType("datetime");
+      entity.Property(e => e.DecisionDate).HasColumnType("datetime");
+      entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+      entity.Property(e => e.RefusalReason).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.Notes).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmVisaStatusHistory>(entity =>
+    {
+      entity.HasKey(e => e.VisaStatusHistoryId);
+      entity.Property(e => e.ChangedDate).HasColumnType("datetime");
+      entity.Property(e => e.Notes).HasMaxLength(1000).IsUnicode(false);
+    });
+
+    modelBuilder.Entity<CrmStudentPayment>(entity =>
+    {
+      entity.HasKey(e => e.StudentPaymentId);
+      entity.Property(e => e.ReceiptNo).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.Amount).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.Currency).HasMaxLength(20).IsUnicode(false);
+      entity.Property(e => e.ExchangeRate).HasColumnType("decimal(18,6)");
+      entity.Property(e => e.AmountBdt).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.PaymentDate).HasColumnType("datetime");
+      entity.Property(e => e.PaymentMethod).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.BankName).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.TransactionRef).HasMaxLength(200).IsUnicode(false);
+      entity.Property(e => e.Notes).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+      entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+    });
+
+    modelBuilder.Entity<CrmPaymentRefund>(entity =>
+    {
+      entity.HasKey(e => e.PaymentRefundId);
+      entity.Property(e => e.RefundAmount).HasColumnType("decimal(18,2)");
+      entity.Property(e => e.RefundDate).HasColumnType("datetime");
+      entity.Property(e => e.RefundMethod).HasMaxLength(100).IsUnicode(false);
+      entity.Property(e => e.Reason).HasMaxLength(1000).IsUnicode(false);
+      entity.Property(e => e.ProcessedDate).HasColumnType("datetime");
       entity.Property(e => e.CreatedDate).HasColumnType("datetime");
       entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
     });

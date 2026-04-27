@@ -102,6 +102,11 @@ public class RepositoryManager : IRepositoryManager
 
   // Existing CRM repositories
   private readonly Lazy<ICrmApplicationRepository> _crmApplicationRepository;
+  private readonly Lazy<ICrmScholarshipApplicationRepository> _crmScholarshipApplicationRepository;
+  private readonly Lazy<ICrmVisaApplicationRepository> _crmVisaApplicationRepository;
+  private readonly Lazy<ICrmVisaStatusHistoryRepository> _crmVisaStatusHistoryRepository;
+  private readonly Lazy<ICrmStudentPaymentRepository> _crmStudentPaymentRepository;
+  private readonly Lazy<ICrmPaymentRefundRepository> _crmPaymentRefundRepository;
   private readonly Lazy<ICrmApplicationConditionRepository> _crmApplicationConditionRepository;
   private readonly Lazy<ICrmApplicationDocumentRepository> _crmApplicationDocumentRepository;
   private readonly Lazy<ICrmApplicantCourseRepository> _applicantCourseRepository;
@@ -229,6 +234,11 @@ public class RepositoryManager : IRepositoryManager
 
     #region CRM
     _crmApplicationRepository = new Lazy<ICrmApplicationRepository>(() => new CrmApplicationRepository(_repositoryContext));
+    _crmScholarshipApplicationRepository = new Lazy<ICrmScholarshipApplicationRepository>(() => new CrmScholarshipApplicationRepository(_repositoryContext));
+    _crmVisaApplicationRepository = new Lazy<ICrmVisaApplicationRepository>(() => new CrmVisaApplicationRepository(_repositoryContext));
+    _crmVisaStatusHistoryRepository = new Lazy<ICrmVisaStatusHistoryRepository>(() => new CrmVisaStatusHistoryRepository(_repositoryContext));
+    _crmStudentPaymentRepository = new Lazy<ICrmStudentPaymentRepository>(() => new CrmStudentPaymentRepository(_repositoryContext));
+    _crmPaymentRefundRepository = new Lazy<ICrmPaymentRefundRepository>(() => new CrmPaymentRefundRepository(_repositoryContext));
     _crmApplicationConditionRepository = new Lazy<ICrmApplicationConditionRepository>(() => new CrmApplicationConditionRepository(_repositoryContext));
     _crmApplicationDocumentRepository = new Lazy<ICrmApplicationDocumentRepository>(() => new CrmApplicationDocumentRepository(_repositoryContext));
     _crminstituteTypeRepository = new Lazy<ICrmInstituteTypeRepository>(() => new CrmInstituteTypeRepository(_repositoryContext));
@@ -378,6 +388,11 @@ public class RepositoryManager : IRepositoryManager
 
   // Existing Crm repository properties
   public ICrmApplicationRepository CrmApplications => _crmApplicationRepository.Value;
+  public ICrmScholarshipApplicationRepository CrmScholarshipApplications => _crmScholarshipApplicationRepository.Value;
+  public ICrmVisaApplicationRepository CrmVisaApplications => _crmVisaApplicationRepository.Value;
+  public ICrmVisaStatusHistoryRepository CrmVisaStatusHistories => _crmVisaStatusHistoryRepository.Value;
+  public ICrmStudentPaymentRepository CrmStudentPayments => _crmStudentPaymentRepository.Value;
+  public ICrmPaymentRefundRepository CrmPaymentRefunds => _crmPaymentRefundRepository.Value;
   public ICrmApplicationConditionRepository CrmApplicationConditions => _crmApplicationConditionRepository.Value;
   public ICrmApplicationDocumentRepository CrmApplicationDocuments => _crmApplicationDocumentRepository.Value;
   public ICrmApplicantCourseRepository CrmApplicantCourses => _applicantCourseRepository.Value;

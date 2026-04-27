@@ -111,8 +111,13 @@ public interface IRepositoryManager : IDisposable
   ICrmCounselorRepository CrmCounselors { get; }
   ICrmLeadRepository CrmLeads { get; }
   ICrmStudentRepository CrmStudents { get; }
+  ICrmStudentAcademicProfileRepository CrmStudentAcademicProfiles { get; }
+  ICrmStudentStatusHistoryRepository CrmStudentStatusHistories { get; }
   ICrmEnquiryRepository CrmEnquiries { get; }
   ICrmFollowUpRepository CrmFollowUps { get; }
+  ICrmFollowUpHistoryRepository CrmFollowUpHistories { get; }
+  ICrmCounsellingSessionRepository CrmCounsellingSessions { get; }
+  ICrmSessionProgramShortlistRepository CrmSessionProgramShortlists { get; }
   ICrmNoteRepository CrmNotes { get; }
   ICrmTaskRepository CrmTasks { get; }
   ICrmDegreeLevelRepository CrmDegreeLevels { get; }

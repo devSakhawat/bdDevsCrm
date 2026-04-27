@@ -1,0 +1,58 @@
+@{
+    ViewData["Title"] = "Counselling Session Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Counselling Session Management</h1>
+        <p class="page-header__subtitle">Manage counselling sessions, shortlist programs, and review timeline by lead.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Counselling Session</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddCounsellingSession" class="btn btn--primary">Add Session</button>
+        <button type="button" id="btnRefreshCounsellingSession" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="counsellingSessionGrid"></div>
+</section>
+
+<section class="dashboard-grid dashboard-grid--two-column mt-16">
+    <div class="card">
+        <div class="card__header">
+            <h3 class="card__title">Program Shortlist</h3>
+            <p class="card__subtitle">Selected session's shortlisted programs.</p>
+        </div>
+        <div id="sessionProgramShortlistGrid"></div>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h3 class="card__title">Session History Timeline</h3>
+            <p class="card__subtitle">All sessions for the selected lead.</p>
+        </div>
+        <div id="counsellingSessionTimeline" class="timeline-panel">
+            <div class="empty-state">Select a session to view its lead timeline.</div>
+        </div>
+    </div>
+</section>
+
+<div id="counsellingSessionWindow" style="display:none;">
+    <form id="counsellingSessionForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelCounsellingSession" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveCounsellingSession" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counsellingsession/counsellingSessionSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counsellingsession/counsellingSessionSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counsellingsession/counsellingSessionDetails.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counsellingsession/counsellingSessionPage.js" asp-append-version="true"></script>
+}

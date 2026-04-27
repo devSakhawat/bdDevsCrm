@@ -1,6 +1,5 @@
-namespace bdDevs.Shared.Records.CRM;
+﻿namespace bdDevs.Shared.Records.CRM;
 
-/// <summary>Record for creating a new CRM student.</summary>
 public record CreateCrmStudentRecord(
     string StudentName,
     string? StudentCode,
@@ -10,17 +9,41 @@ public record CreateCrmStudentRecord(
     int? StudentStatusId,
     int? AgentId,
     int? CounselorId,
+    int? BranchId,
+    int? ProcessingOfficerId,
     DateTime? DateOfBirth,
+    byte? Gender,
     string? PassportNumber,
+    DateTime? PassportExpiryDate,
+    DateTime? PassportIssueDate,
+    int? PassportIssueCountryId,
     int? VisaTypeId,
     string? Nationality,
+    int? NationalityCountryId,
+    string? EmergencyContactName,
+    string? EmergencyContactPhone,
+    string? EmergencyContactRelation,
+    int? PreferredCountryId,
+    int? PreferredDegreeLevelId,
+    string? DesiredIntake,
+    byte? IeltsStatus,
+    decimal? IeltsScore,
+    DateTime? IeltsExamDate,
+    bool IsApplicationReady,
+    DateTime? ApplicationReadyDate,
+    int? ApplicationReadySetBy,
+    bool ConsentPersonalData,
+    bool ConsentMarketing,
+    bool ConsentDocumentProcessing,
+    bool ConsentInternationalSharing,
+    bool ConsentTermsAccepted,
+    bool IsDeleted,
     bool IsActive,
     DateTime CreatedDate,
     int CreatedBy,
     DateTime? UpdatedDate,
     int? UpdatedBy);
 
-/// <summary>Record for updating an existing CRM student.</summary>
 public record UpdateCrmStudentRecord(
     int StudentId,
     string StudentName,
@@ -31,16 +54,40 @@ public record UpdateCrmStudentRecord(
     int? StudentStatusId,
     int? AgentId,
     int? CounselorId,
+    int? BranchId,
+    int? ProcessingOfficerId,
     DateTime? DateOfBirth,
+    byte? Gender,
     string? PassportNumber,
+    DateTime? PassportExpiryDate,
+    DateTime? PassportIssueDate,
+    int? PassportIssueCountryId,
     int? VisaTypeId,
     string? Nationality,
+    int? NationalityCountryId,
+    string? EmergencyContactName,
+    string? EmergencyContactPhone,
+    string? EmergencyContactRelation,
+    int? PreferredCountryId,
+    int? PreferredDegreeLevelId,
+    string? DesiredIntake,
+    byte? IeltsStatus,
+    decimal? IeltsScore,
+    DateTime? IeltsExamDate,
+    bool IsApplicationReady,
+    DateTime? ApplicationReadyDate,
+    int? ApplicationReadySetBy,
+    bool ConsentPersonalData,
+    bool ConsentMarketing,
+    bool ConsentDocumentProcessing,
+    bool ConsentInternationalSharing,
+    bool ConsentTermsAccepted,
+    bool IsDeleted,
     bool IsActive,
     DateTime CreatedDate,
     int CreatedBy,
     DateTime? UpdatedDate,
     int? UpdatedBy);
 
-/// <summary>Record for deleting a CRM student.</summary>
-/// <param name="StudentId">ID of the student to delete.</param>
 public record DeleteCrmStudentRecord(int StudentId);
+public record ChangeCrmStudentStatusRecord(int StudentId, int NewStatus, int ChangedBy, string? Notes);

@@ -1,0 +1,5 @@
+﻿namespace bdDevs.Shared.Records.CRM;
+
+public record CreateCrmStudentAcademicProfileRecord(int StudentId, string? SscResult, int? SscYear, string? SscInstitute, string? HscResult, int? HscYear, string? HscInstitute, string? BachelorResult, int? BachelorYear, string? BachelorInstitute, string? MasterResult, int? MasterYear, string? MasterInstitute, string? PhdResult, int? PhdYear, string? PhdInstitute, string? CurrentEnglishProficiency, decimal? CurrentEnglishScore, DateTime CreatedDate, int CreatedBy, DateTime? UpdatedDate, int? UpdatedBy);
+public record UpdateCrmStudentAcademicProfileRecord(int StudentAcademicProfileId, int StudentId, string? SscResult, int? SscYear, string? SscInstitute, string? HscResult, int? HscYear, string? HscInstitute, string? BachelorResult, int? BachelorYear, string? BachelorInstitute, string? MasterResult, int? MasterYear, string? MasterInstitute, string? PhdResult, int? PhdYear, string? PhdInstitute, string? CurrentEnglishProficiency, decimal? CurrentEnglishScore, DateTime CreatedDate, int CreatedBy, DateTime? UpdatedDate, int? UpdatedBy);
+public record DeleteCrmStudentAcademicProfileRecord(int StudentAcademicProfileId);

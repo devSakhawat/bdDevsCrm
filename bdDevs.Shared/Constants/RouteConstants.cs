@@ -1031,7 +1031,30 @@ public static class RouteConstants
 	public const string ReadCrmStudents = "crm-students";
 	public const string CrmStudentDDL = "crm-students-ddl";
 	public const string ReadCrmStudent = "crm-student/{id:int}";
+	public const string CrmStudentsByBranchId = "crm-students-by-branch/{branchId:int}";
+	public const string CrmStudentStatusTransition = "crm-student-status-transition";
+	public const string CrmStudentApplicationReadyCheck = "crm-student-application-ready/{studentId:int}";
 	#endregion CrmStudent
+
+	#region CrmStudentAcademicProfile
+	public const string CreateCrmStudentAcademicProfile = "crm-student-academic-profile";
+	public const string UpdateCrmStudentAcademicProfile = "crm-student-academic-profile/{key}";
+	public const string DeleteCrmStudentAcademicProfile = "crm-student-academic-profile/{key}";
+	public const string CrmStudentAcademicProfileSummary = "crm-student-academic-profile-summary";
+	public const string ReadCrmStudentAcademicProfiles = "crm-student-academic-profiles";
+	public const string ReadCrmStudentAcademicProfile = "crm-student-academic-profile/{id:int}";
+	public const string StudentAcademicProfilesByStudentId = "crm-student-academic-profiles-by-student/{studentId:int}";
+	#endregion CrmStudentAcademicProfile
+
+	#region CrmStudentStatusHistory
+	public const string CreateCrmStudentStatusHistory = "crm-student-status-history";
+	public const string UpdateCrmStudentStatusHistory = "crm-student-status-history/{key}";
+	public const string DeleteCrmStudentStatusHistory = "crm-student-status-history/{key}";
+	public const string CrmStudentStatusHistorySummary = "crm-student-status-history-summary";
+	public const string ReadCrmStudentStatusHistories = "crm-student-status-histories";
+	public const string ReadCrmStudentStatusHistory = "crm-student-status-history/{id:int}";
+	public const string StudentStatusHistoriesByStudentId = "crm-student-status-histories-by-student/{studentId:int}";
+	#endregion CrmStudentStatusHistory
 
 	#region CrmEnquiry
 	public const string CreateCrmEnquiry = "crm-enquiry";
@@ -1051,7 +1074,42 @@ public static class RouteConstants
 	public const string ReadCrmFollowUps = "crm-followups";
 	public const string CrmFollowUpDDL = "crm-followups-ddl";
 	public const string ReadCrmFollowUp = "crm-followup/{id:int}";
+	public const string CrmFollowUpsByLeadId = "crm-followups-by-lead/{leadId:int}";
+	public const string CrmFollowUpStatusTransition = "crm-followup-status-transition";
+	public const string CrmProcessOverdueFollowUps = "crm-followups-process-overdue";
+	public const string CrmMarkUnresponsiveLeads = "crm-followups-mark-unresponsive";
 	#endregion CrmFollowUp
+
+	#region CrmFollowUpHistory
+	public const string CreateCrmFollowUpHistory = "crm-followup-history";
+	public const string UpdateCrmFollowUpHistory = "crm-followup-history/{key}";
+	public const string DeleteCrmFollowUpHistory = "crm-followup-history/{key}";
+	public const string CrmFollowUpHistorySummary = "crm-followup-history-summary";
+	public const string ReadCrmFollowUpHistories = "crm-followup-histories";
+	public const string ReadCrmFollowUpHistory = "crm-followup-history/{id:int}";
+	public const string FollowUpHistoriesByFollowUpId = "crm-followup-histories-by-followup/{followUpId:int}";
+	#endregion CrmFollowUpHistory
+
+	#region CrmCounsellingSession
+	public const string CreateCrmCounsellingSession = "crm-counselling-session";
+	public const string UpdateCrmCounsellingSession = "crm-counselling-session/{key}";
+	public const string DeleteCrmCounsellingSession = "crm-counselling-session/{key}";
+	public const string CrmCounsellingSessionSummary = "crm-counselling-session-summary";
+	public const string ReadCrmCounsellingSessions = "crm-counselling-sessions";
+	public const string ReadCrmCounsellingSession = "crm-counselling-session/{id:int}";
+	public const string CounsellingSessionsByLeadId = "crm-counselling-sessions-by-lead/{leadId:int}";
+	public const string CrmCounsellingSessionEligibility = "crm-counselling-session-eligibility/{studentId:int}";
+	#endregion CrmCounsellingSession
+
+	#region CrmSessionProgramShortlist
+	public const string CreateCrmSessionProgramShortlist = "crm-session-program-shortlist";
+	public const string UpdateCrmSessionProgramShortlist = "crm-session-program-shortlist/{key}";
+	public const string DeleteCrmSessionProgramShortlist = "crm-session-program-shortlist/{key}";
+	public const string CrmSessionProgramShortlistSummary = "crm-session-program-shortlist-summary";
+	public const string ReadCrmSessionProgramShortlists = "crm-session-program-shortlists";
+	public const string ReadCrmSessionProgramShortlist = "crm-session-program-shortlist/{id:int}";
+	public const string SessionProgramShortlistsBySessionId = "crm-session-program-shortlists-by-session/{sessionId:int}";
+	#endregion CrmSessionProgramShortlist
 
 	#region CrmNote
 	public const string CreateCrmNote = "crm-note";

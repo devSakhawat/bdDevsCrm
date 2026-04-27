@@ -103,8 +103,13 @@ public interface IServiceManager
   ICrmCounselorService CrmCounselors { get; }
   ICrmLeadService CrmLeads { get; }
   ICrmStudentService CrmStudents { get; }
+  ICrmStudentAcademicProfileService CrmStudentAcademicProfiles { get; }
+  ICrmStudentStatusHistoryService CrmStudentStatusHistories { get; }
   ICrmEnquiryService CrmEnquiries { get; }
   ICrmFollowUpService CrmFollowUps { get; }
+  ICrmFollowUpHistoryService CrmFollowUpHistories { get; }
+  ICrmCounsellingSessionService CrmCounsellingSessions { get; }
+  ICrmSessionProgramShortlistService CrmSessionProgramShortlists { get; }
   ICrmNoteService CrmNotes { get; }
   ICrmTaskService CrmTasks { get; }
   ICrmDegreeLevelService CrmDegreeLevels { get; }

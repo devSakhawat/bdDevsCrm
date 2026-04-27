@@ -1,4 +1,4 @@
-using Domain.Exceptions;
+﻿using Domain.Exceptions;
 ﻿using Application.Services.Authentication;
 using Application.Services.Core.HR;
 using Application.Services.Core.SystemAdmin;
@@ -127,8 +127,13 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ICrmCounselorService> _crmCounselorService;
   private readonly Lazy<ICrmLeadService> _crmLeadService;
   private readonly Lazy<ICrmStudentService> _crmStudentService;
+  private readonly Lazy<ICrmStudentAcademicProfileService> _crmStudentAcademicProfileService;
+  private readonly Lazy<ICrmStudentStatusHistoryService> _crmStudentStatusHistoryService;
   private readonly Lazy<ICrmEnquiryService> _crmEnquiryService;
   private readonly Lazy<ICrmFollowUpService> _crmFollowUpService;
+  private readonly Lazy<ICrmFollowUpHistoryService> _crmFollowUpHistoryService;
+  private readonly Lazy<ICrmCounsellingSessionService> _crmCounsellingSessionService;
+  private readonly Lazy<ICrmSessionProgramShortlistService> _crmSessionProgramShortlistService;
   private readonly Lazy<ICrmNoteService> _crmNoteService;
   private readonly Lazy<ICrmTaskService> _crmTaskService;
   private readonly Lazy<ICrmDegreeLevelService> _crmDegreeLevelService;
@@ -257,8 +262,13 @@ public sealed class ServiceManager : IServiceManager
     _crmCounselorService = new Lazy<ICrmCounselorService>(() => new CrmCounselorService(repository, loggerFactory.CreateLogger<CrmCounselorService>(), configuration));
     _crmLeadService = new Lazy<ICrmLeadService>(() => new CrmLeadService(repository, loggerFactory.CreateLogger<CrmLeadService>(), configuration));
     _crmStudentService = new Lazy<ICrmStudentService>(() => new CrmStudentService(repository, loggerFactory.CreateLogger<CrmStudentService>(), configuration));
+    _crmStudentAcademicProfileService = new Lazy<ICrmStudentAcademicProfileService>(() => new CrmStudentAcademicProfileService(repository, loggerFactory.CreateLogger<CrmStudentAcademicProfileService>(), configuration));
+    _crmStudentStatusHistoryService = new Lazy<ICrmStudentStatusHistoryService>(() => new CrmStudentStatusHistoryService(repository, loggerFactory.CreateLogger<CrmStudentStatusHistoryService>(), configuration));
     _crmEnquiryService = new Lazy<ICrmEnquiryService>(() => new CrmEnquiryService(repository, loggerFactory.CreateLogger<CrmEnquiryService>(), configuration));
     _crmFollowUpService = new Lazy<ICrmFollowUpService>(() => new CrmFollowUpService(repository, loggerFactory.CreateLogger<CrmFollowUpService>(), configuration));
+    _crmFollowUpHistoryService = new Lazy<ICrmFollowUpHistoryService>(() => new CrmFollowUpHistoryService(repository, loggerFactory.CreateLogger<CrmFollowUpHistoryService>(), configuration));
+    _crmCounsellingSessionService = new Lazy<ICrmCounsellingSessionService>(() => new CrmCounsellingSessionService(repository, loggerFactory.CreateLogger<CrmCounsellingSessionService>(), configuration));
+    _crmSessionProgramShortlistService = new Lazy<ICrmSessionProgramShortlistService>(() => new CrmSessionProgramShortlistService(repository, loggerFactory.CreateLogger<CrmSessionProgramShortlistService>(), configuration));
     _crmNoteService = new Lazy<ICrmNoteService>(() => new CrmNoteService(repository, loggerFactory.CreateLogger<CrmNoteService>(), configuration));
     _crmTaskService = new Lazy<ICrmTaskService>(() => new CrmTaskService(repository, loggerFactory.CreateLogger<CrmTaskService>(), configuration));
     _crmDegreeLevelService = new Lazy<ICrmDegreeLevelService>(() => new CrmDegreeLevelService(repository, loggerFactory.CreateLogger<CrmDegreeLevelService>(), configuration));
@@ -380,8 +390,13 @@ public sealed class ServiceManager : IServiceManager
   public ICrmCounselorService CrmCounselors => _crmCounselorService.Value;
   public ICrmLeadService CrmLeads => _crmLeadService.Value;
   public ICrmStudentService CrmStudents => _crmStudentService.Value;
+  public ICrmStudentAcademicProfileService CrmStudentAcademicProfiles => _crmStudentAcademicProfileService.Value;
+  public ICrmStudentStatusHistoryService CrmStudentStatusHistories => _crmStudentStatusHistoryService.Value;
   public ICrmEnquiryService CrmEnquiries => _crmEnquiryService.Value;
   public ICrmFollowUpService CrmFollowUps => _crmFollowUpService.Value;
+  public ICrmFollowUpHistoryService CrmFollowUpHistories => _crmFollowUpHistoryService.Value;
+  public ICrmCounsellingSessionService CrmCounsellingSessions => _crmCounsellingSessionService.Value;
+  public ICrmSessionProgramShortlistService CrmSessionProgramShortlists => _crmSessionProgramShortlistService.Value;
   public ICrmNoteService CrmNotes => _crmNoteService.Value;
   public ICrmTaskService CrmTasks => _crmTaskService.Value;
   public ICrmDegreeLevelService CrmDegreeLevels => _crmDegreeLevelService.Value;

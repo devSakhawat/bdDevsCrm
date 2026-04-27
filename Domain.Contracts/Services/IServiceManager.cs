@@ -107,6 +107,14 @@ public interface IServiceManager
   ICrmFollowUpService CrmFollowUps { get; }
   ICrmNoteService CrmNotes { get; }
   ICrmTaskService CrmTasks { get; }
+  ICrmDegreeLevelService CrmDegreeLevels { get; }
+  ICrmFacultyService CrmFaculties { get; }
+  ICrmCourseFeeService CrmCourseFees { get; }
+  ICrmCountryDocumentRequirementService CrmCountryDocumentRequirements { get; }
+  ICrmBranchTargetService CrmBranchTargets { get; }
+  ICrmSystemConfigurationService CrmSystemConfigurations { get; }
+  ICrmMasterDataSuggestionService CrmMasterDataSuggestions { get; }
+  ICrmAgentLeadService CrmAgentLeads { get; }
   #endregion Crm
 
   #region DMS

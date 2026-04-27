@@ -127,6 +127,14 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ICrmFollowUpRepository> _crmFollowUpRepository;
   private readonly Lazy<ICrmNoteRepository> _crmNoteRepository;
   private readonly Lazy<ICrmTaskRepository> _crmTaskRepository;
+  private readonly Lazy<ICrmDegreeLevelRepository> _crmDegreeLevelRepository;
+  private readonly Lazy<ICrmFacultyRepository> _crmFacultyRepository;
+  private readonly Lazy<ICrmCourseFeeRepository> _crmCourseFeeRepository;
+  private readonly Lazy<ICrmCountryDocumentRequirementRepository> _crmCountryDocumentRequirementRepository;
+  private readonly Lazy<ICrmBranchTargetRepository> _crmBranchTargetRepository;
+  private readonly Lazy<ICrmSystemConfigurationRepository> _crmSystemConfigurationRepository;
+  private readonly Lazy<ICrmMasterDataSuggestionRepository> _crmMasterDataSuggestionRepository;
+  private readonly Lazy<ICrmAgentLeadRepository> _crmAgentLeadRepository;
   #endregion CRM
 
   #region DMS - Private Lazy Fields
@@ -256,6 +264,14 @@ public class RepositoryManager : IRepositoryManager
     _crmFollowUpRepository = new Lazy<ICrmFollowUpRepository>(() => new CrmFollowUpRepository(_repositoryContext));
     _crmNoteRepository = new Lazy<ICrmNoteRepository>(() => new CrmNoteRepository(_repositoryContext));
     _crmTaskRepository = new Lazy<ICrmTaskRepository>(() => new CrmTaskRepository(_repositoryContext));
+    _crmDegreeLevelRepository = new Lazy<ICrmDegreeLevelRepository>(() => new CrmDegreeLevelRepository(_repositoryContext));
+    _crmFacultyRepository = new Lazy<ICrmFacultyRepository>(() => new CrmFacultyRepository(_repositoryContext));
+    _crmCourseFeeRepository = new Lazy<ICrmCourseFeeRepository>(() => new CrmCourseFeeRepository(_repositoryContext));
+    _crmCountryDocumentRequirementRepository = new Lazy<ICrmCountryDocumentRequirementRepository>(() => new CrmCountryDocumentRequirementRepository(_repositoryContext));
+    _crmBranchTargetRepository = new Lazy<ICrmBranchTargetRepository>(() => new CrmBranchTargetRepository(_repositoryContext));
+    _crmSystemConfigurationRepository = new Lazy<ICrmSystemConfigurationRepository>(() => new CrmSystemConfigurationRepository(_repositoryContext));
+    _crmMasterDataSuggestionRepository = new Lazy<ICrmMasterDataSuggestionRepository>(() => new CrmMasterDataSuggestionRepository(_repositoryContext));
+    _crmAgentLeadRepository = new Lazy<ICrmAgentLeadRepository>(() => new CrmAgentLeadRepository(_repositoryContext));
 
     #endregion CRM
 
@@ -381,6 +397,14 @@ public class RepositoryManager : IRepositoryManager
   public ICrmFollowUpRepository CrmFollowUps => _crmFollowUpRepository.Value;
   public ICrmNoteRepository CrmNotes => _crmNoteRepository.Value;
   public ICrmTaskRepository CrmTasks => _crmTaskRepository.Value;
+  public ICrmDegreeLevelRepository CrmDegreeLevels => _crmDegreeLevelRepository.Value;
+  public ICrmFacultyRepository CrmFaculties => _crmFacultyRepository.Value;
+  public ICrmCourseFeeRepository CrmCourseFees => _crmCourseFeeRepository.Value;
+  public ICrmCountryDocumentRequirementRepository CrmCountryDocumentRequirements => _crmCountryDocumentRequirementRepository.Value;
+  public ICrmBranchTargetRepository CrmBranchTargets => _crmBranchTargetRepository.Value;
+  public ICrmSystemConfigurationRepository CrmSystemConfigurations => _crmSystemConfigurationRepository.Value;
+  public ICrmMasterDataSuggestionRepository CrmMasterDataSuggestions => _crmMasterDataSuggestionRepository.Value;
+  public ICrmAgentLeadRepository CrmAgentLeads => _crmAgentLeadRepository.Value;
   #endregion CRM
 
   #region DMS - Repository Properties

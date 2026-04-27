@@ -115,6 +115,14 @@ public interface IRepositoryManager : IDisposable
   ICrmFollowUpRepository CrmFollowUps { get; }
   ICrmNoteRepository CrmNotes { get; }
   ICrmTaskRepository CrmTasks { get; }
+  ICrmDegreeLevelRepository CrmDegreeLevels { get; }
+  ICrmFacultyRepository CrmFaculties { get; }
+  ICrmCourseFeeRepository CrmCourseFees { get; }
+  ICrmCountryDocumentRequirementRepository CrmCountryDocumentRequirements { get; }
+  ICrmBranchTargetRepository CrmBranchTargets { get; }
+  ICrmSystemConfigurationRepository CrmSystemConfigurations { get; }
+  ICrmMasterDataSuggestionRepository CrmMasterDataSuggestions { get; }
+  ICrmAgentLeadRepository CrmAgentLeads { get; }
   #endregion CRM
 
   #region DMS

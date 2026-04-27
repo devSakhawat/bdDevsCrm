@@ -59,4 +59,19 @@ public partial class CrmCourse
     public string? After2YearsPswcompletingCourse { get; set; }
 
     public string? DocumentId { get; set; }
+
+    // Phase 1 upgrade — academic structure
+    public int? FacultyId { get; set; }
+    public int? DegreeLevelId { get; set; }
+    public int? Duration { get; set; }
+    /// <summary>DurationUnit: 1=Years, 2=Months, 3=Weeks</summary>
+    public byte? DurationUnit { get; set; }
+    /// <summary>StudyMode: 1=FullTime, 2=PartTime, 3=Online, 4=Blended</summary>
+    public byte? StudyMode { get; set; }
+    public string? LanguageOfInstruction { get; set; }
+
+    // Phase 1 upgrade — per-course entry requirement overrides
+    public decimal? OverrideMinIelts { get; set; }
+    public decimal? OverrideMinToefl { get; set; }
+    public decimal? OverrideMinAcademic { get; set; }
 }

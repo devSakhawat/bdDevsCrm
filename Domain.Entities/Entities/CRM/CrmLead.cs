@@ -46,4 +46,14 @@ public partial class CrmLead
     public virtual CrmCounselor? AssignedCounselor { get; set; }
 
     public virtual CrmAgent? Agent { get; set; }
+
+    // Phase 3 upgrade
+    public int? BranchId { get; set; }
+    /// <summary>Priority: 1=Low, 2=Medium, 3=High</summary>
+    public byte Priority { get; set; } = 2;
+    public int? InterestedCountryId { get; set; }
+    public int? InterestedDegreeLevelId { get; set; }
+    public bool IsDeleted { get; set; }
+    public int? DeletedBy { get; set; }
+    public DateTime? DeletedDate { get; set; }
 }

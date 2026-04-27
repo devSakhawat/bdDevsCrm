@@ -151,6 +151,14 @@ public partial class CrmContext : DbContext
   public virtual DbSet<CrmFollowUp> CrmFollowUp { get; set; }
   public virtual DbSet<CrmNote> CrmNote { get; set; }
   public virtual DbSet<CrmTask> CrmTask { get; set; }
+  public virtual DbSet<CrmDegreeLevel> CrmDegreeLevel { get; set; }
+  public virtual DbSet<CrmFaculty> CrmFaculty { get; set; }
+  public virtual DbSet<CrmCourseFee> CrmCourseFee { get; set; }
+  public virtual DbSet<CrmCountryDocumentRequirement> CrmCountryDocumentRequirement { get; set; }
+  public virtual DbSet<CrmBranchTarget> CrmBranchTarget { get; set; }
+  public virtual DbSet<CrmSystemConfiguration> CrmSystemConfiguration { get; set; }
+  public virtual DbSet<CrmMasterDataSuggestion> CrmMasterDataSuggestion { get; set; }
+  public virtual DbSet<CrmAgentLead> CrmAgentLead { get; set; }
 
   public virtual DbSet<CurrencyRate> CurrencyRate { get; set; }
 

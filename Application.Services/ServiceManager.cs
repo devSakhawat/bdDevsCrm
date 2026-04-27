@@ -131,6 +131,14 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ICrmFollowUpService> _crmFollowUpService;
   private readonly Lazy<ICrmNoteService> _crmNoteService;
   private readonly Lazy<ICrmTaskService> _crmTaskService;
+  private readonly Lazy<ICrmDegreeLevelService> _crmDegreeLevelService;
+  private readonly Lazy<ICrmFacultyService> _crmFacultyService;
+  private readonly Lazy<ICrmCourseFeeService> _crmCourseFeeService;
+  private readonly Lazy<ICrmCountryDocumentRequirementService> _crmCountryDocumentRequirementService;
+  private readonly Lazy<ICrmBranchTargetService> _crmBranchTargetService;
+  private readonly Lazy<ICrmSystemConfigurationService> _crmSystemConfigurationService;
+  private readonly Lazy<ICrmMasterDataSuggestionService> _crmMasterDataSuggestionService;
+  private readonly Lazy<ICrmAgentLeadService> _crmAgentLeadService;
   #endregion CRM
 
   #region DMS Lazy Fields
@@ -253,6 +261,14 @@ public sealed class ServiceManager : IServiceManager
     _crmFollowUpService = new Lazy<ICrmFollowUpService>(() => new CrmFollowUpService(repository, loggerFactory.CreateLogger<CrmFollowUpService>(), configuration));
     _crmNoteService = new Lazy<ICrmNoteService>(() => new CrmNoteService(repository, loggerFactory.CreateLogger<CrmNoteService>(), configuration));
     _crmTaskService = new Lazy<ICrmTaskService>(() => new CrmTaskService(repository, loggerFactory.CreateLogger<CrmTaskService>(), configuration));
+    _crmDegreeLevelService = new Lazy<ICrmDegreeLevelService>(() => new CrmDegreeLevelService(repository, loggerFactory.CreateLogger<CrmDegreeLevelService>(), configuration));
+    _crmFacultyService = new Lazy<ICrmFacultyService>(() => new CrmFacultyService(repository, loggerFactory.CreateLogger<CrmFacultyService>(), configuration));
+    _crmCourseFeeService = new Lazy<ICrmCourseFeeService>(() => new CrmCourseFeeService(repository, loggerFactory.CreateLogger<CrmCourseFeeService>(), configuration));
+    _crmCountryDocumentRequirementService = new Lazy<ICrmCountryDocumentRequirementService>(() => new CrmCountryDocumentRequirementService(repository, loggerFactory.CreateLogger<CrmCountryDocumentRequirementService>(), configuration));
+    _crmBranchTargetService = new Lazy<ICrmBranchTargetService>(() => new CrmBranchTargetService(repository, loggerFactory.CreateLogger<CrmBranchTargetService>(), configuration));
+    _crmSystemConfigurationService = new Lazy<ICrmSystemConfigurationService>(() => new CrmSystemConfigurationService(repository, loggerFactory.CreateLogger<CrmSystemConfigurationService>(), configuration));
+    _crmMasterDataSuggestionService = new Lazy<ICrmMasterDataSuggestionService>(() => new CrmMasterDataSuggestionService(repository, loggerFactory.CreateLogger<CrmMasterDataSuggestionService>(), configuration));
+    _crmAgentLeadService = new Lazy<ICrmAgentLeadService>(() => new CrmAgentLeadService(repository, loggerFactory.CreateLogger<CrmAgentLeadService>(), configuration));
     #endregion Crm
 
     #region DMS Lazy Initializations
@@ -368,6 +384,14 @@ public sealed class ServiceManager : IServiceManager
   public ICrmFollowUpService CrmFollowUps => _crmFollowUpService.Value;
   public ICrmNoteService CrmNotes => _crmNoteService.Value;
   public ICrmTaskService CrmTasks => _crmTaskService.Value;
+  public ICrmDegreeLevelService CrmDegreeLevels => _crmDegreeLevelService.Value;
+  public ICrmFacultyService CrmFaculties => _crmFacultyService.Value;
+  public ICrmCourseFeeService CrmCourseFees => _crmCourseFeeService.Value;
+  public ICrmCountryDocumentRequirementService CrmCountryDocumentRequirements => _crmCountryDocumentRequirementService.Value;
+  public ICrmBranchTargetService CrmBranchTargets => _crmBranchTargetService.Value;
+  public ICrmSystemConfigurationService CrmSystemConfigurations => _crmSystemConfigurationService.Value;
+  public ICrmMasterDataSuggestionService CrmMasterDataSuggestions => _crmMasterDataSuggestionService.Value;
+  public ICrmAgentLeadService CrmAgentLeads => _crmAgentLeadService.Value;
   #endregion Crm
 
   #region DMS Property Exposures

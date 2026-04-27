@@ -50,6 +50,25 @@ public partial class CrmInstitute
     public string? InstitutePhoneNo { get; set; }
 
     public string? InstituteMobileNo { get; set; }
-
     public bool? Status { get; set; }
+
+    // Phase 1 upgrade — partnership & ranking
+    public string? AccreditationStatus { get; set; }
+    public int? WorldRanking { get; set; }
+    public DateTime? PartnershipStartDate { get; set; }
+    public DateTime? PartnershipExpiryDate { get; set; }
+    public decimal? CommissionRate { get; set; }
+    /// <summary>CommissionType: 1=Percentage, 2=Fixed</summary>
+    public byte? CommissionType { get; set; }
+    public string? AdmissionContactName { get; set; }
+    public string? AdmissionContactEmail { get; set; }
+    public string? AdmissionContactPhone { get; set; }
+
+    // Phase 1 upgrade — entry requirements
+    public decimal? MinIeltsScore { get; set; }
+    public decimal? MinToeflScore { get; set; }
+    public decimal? MinAcademicScore { get; set; }
+    public int? MinWorkExpYears { get; set; }
+    public bool RequiresSop { get; set; }
+    public int? RequiredRefLetters { get; set; }
 }

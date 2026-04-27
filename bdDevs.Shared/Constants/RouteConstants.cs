@@ -1073,6 +1073,87 @@ public static class RouteConstants
 	public const string ReadCrmTask = "crm-task/{id:int}";
 	#endregion CrmTask
 
+	#region CrmDegreeLevel
+	public const string CreateCrmDegreeLevel = "crm-degree-level";
+	public const string UpdateCrmDegreeLevel = "crm-degree-level/{key}";
+	public const string DeleteCrmDegreeLevel = "crm-degree-level/{key}";
+	public const string CrmDegreeLevelSummary = "crm-degree-level-summary";
+	public const string ReadCrmDegreeLevels = "crm-degree-levels";
+	public const string CrmDegreeLevelDDL = "crm-degree-levels-ddl";
+	public const string ReadCrmDegreeLevel = "crm-degree-level/{id:int}";
+	#endregion CrmDegreeLevel
+
+	#region CrmFaculty
+	public const string CreateCrmFaculty = "crm-faculty";
+	public const string UpdateCrmFaculty = "crm-faculty/{key}";
+	public const string DeleteCrmFaculty = "crm-faculty/{key}";
+	public const string CrmFacultySummary = "crm-faculty-summary";
+	public const string ReadCrmFaculties = "crm-faculties";
+	public const string CrmFacultyDDL = "crm-faculties-ddl";
+	public const string ReadCrmFaculty = "crm-faculty/{id:int}";
+	public const string CrmFacultiesByInstituteId = "crm-faculties-by-institute/{instituteId:int}";
+	#endregion CrmFaculty
+
+	#region CrmCourseFee
+	public const string CreateCrmCourseFee = "crm-course-fee";
+	public const string UpdateCrmCourseFee = "crm-course-fee/{key}";
+	public const string DeleteCrmCourseFee = "crm-course-fee/{key}";
+	public const string CrmCourseFeeSummary = "crm-course-fee-summary";
+	public const string ReadCrmCourseFees = "crm-course-fees";
+	public const string ReadCrmCourseFee = "crm-course-fee/{id:int}";
+	public const string CrmCourseFeesByCourseId = "crm-course-fees-by-course/{courseId:int}";
+	#endregion CrmCourseFee
+
+	#region CrmCountryDocumentRequirement
+	public const string CreateCrmCountryDocReq = "crm-country-doc-req";
+	public const string UpdateCrmCountryDocReq = "crm-country-doc-req/{key}";
+	public const string DeleteCrmCountryDocReq = "crm-country-doc-req/{key}";
+	public const string CrmCountryDocReqSummary = "crm-country-doc-req-summary";
+	public const string ReadCrmCountryDocReqs = "crm-country-doc-reqs";
+	public const string ReadCrmCountryDocReq = "crm-country-doc-req/{id:int}";
+	public const string CrmCountryDocReqsByCountryId = "crm-country-doc-reqs-by-country/{countryId:int}";
+	#endregion CrmCountryDocumentRequirement
+
+	#region CrmBranchTarget
+	public const string CreateCrmBranchTarget = "crm-branch-target";
+	public const string UpdateCrmBranchTarget = "crm-branch-target/{key}";
+	public const string DeleteCrmBranchTarget = "crm-branch-target/{key}";
+	public const string CrmBranchTargetSummary = "crm-branch-target-summary";
+	public const string ReadCrmBranchTargets = "crm-branch-targets";
+	public const string ReadCrmBranchTarget = "crm-branch-target/{id:int}";
+	public const string CrmBranchTargetsByBranchId = "crm-branch-targets-by-branch/{branchId:int}";
+	#endregion CrmBranchTarget
+
+	#region CrmSystemConfiguration
+	public const string CreateCrmSystemConfig = "crm-system-config";
+	public const string UpdateCrmSystemConfig = "crm-system-config/{key}";
+	public const string DeleteCrmSystemConfig = "crm-system-config/{key}";
+	public const string CrmSystemConfigSummary = "crm-system-config-summary";
+	public const string ReadCrmSystemConfigs = "crm-system-configs";
+	public const string ReadCrmSystemConfig = "crm-system-config/{id:int}";
+	public const string CrmSystemConfigByKey = "crm-system-config-by-key/{key}";
+	#endregion CrmSystemConfiguration
+
+	#region CrmMasterDataSuggestion
+	public const string CreateCrmMasterDataSuggestion = "crm-master-data-suggestion";
+	public const string UpdateCrmMasterDataSuggestion = "crm-master-data-suggestion/{key}";
+	public const string DeleteCrmMasterDataSuggestion = "crm-master-data-suggestion/{key}";
+	public const string CrmMasterDataSuggestionSummary = "crm-master-data-suggestion-summary";
+	public const string ReadCrmMasterDataSuggestions = "crm-master-data-suggestions";
+	public const string ReadCrmMasterDataSuggestion = "crm-master-data-suggestion/{id:int}";
+	#endregion CrmMasterDataSuggestion
+
+	#region CrmAgentLead
+	public const string CreateCrmAgentLead = "crm-agent-lead";
+	public const string UpdateCrmAgentLead = "crm-agent-lead/{key}";
+	public const string DeleteCrmAgentLead = "crm-agent-lead/{key}";
+	public const string CrmAgentLeadSummary = "crm-agent-lead-summary";
+	public const string ReadCrmAgentLeads = "crm-agent-leads";
+	public const string ReadCrmAgentLead = "crm-agent-lead/{id:int}";
+	public const string CrmAgentLeadByLeadId = "crm-agent-lead-by-lead/{leadId:int}";
+	public const string CrmAgentLeadsByAgentId = "crm-agent-leads-by-agent/{agentId:int}";
+	#endregion CrmAgentLead
+
 	#region TokenBlacklist
 	public const string CreateTokenBlacklist = "token-blacklist";
 	public const string UpdateTokenBlacklist = "token-blacklist/{key:guid}";

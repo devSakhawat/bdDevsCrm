@@ -132,6 +132,7 @@ public interface IServiceManager
   ICrmSystemConfigurationService CrmSystemConfigurations { get; }
   ICrmMasterDataSuggestionService CrmMasterDataSuggestions { get; }
   ICrmAgentLeadService CrmAgentLeads { get; }
+  ICrmBranchTransferService CrmBranchTransfers { get; }
   #endregion Crm
 
   #region DMS

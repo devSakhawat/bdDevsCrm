@@ -1348,6 +1348,17 @@ public static class RouteConstants
 	public const string CrmAgentLeadsByAgentId = "crm-agent-leads-by-agent/{agentId:int}";
 	#endregion CrmAgentLead
 
+	#region CrmBranchTransfer
+	public const string CreateCrmBranchTransfer = "crm-branch-transfer";
+	public const string UpdateCrmBranchTransfer = "crm-branch-transfer/{key}";
+	public const string DeleteCrmBranchTransfer = "crm-branch-transfer/{key}";
+	public const string CrmBranchTransferSummary = "crm-branch-transfer-summary";
+	public const string ReadCrmBranchTransfers = "crm-branch-transfers";
+	public const string ReadCrmBranchTransfer = "crm-branch-transfer/{id:int}";
+	public const string CrmBranchTransfersByEntity = "crm-branch-transfers-by-entity/{entityType:int}/{entityId:int}";
+	public const string ApproveCrmBranchTransfer = "crm-branch-transfer-approve/{key}";
+	#endregion CrmBranchTransfer
+
 	#region CrmCommunicationLog
 	public const string CreateCrmCommunicationLog = "crm-communication-log";
 	public const string UpdateCrmCommunicationLog = "crm-communication-log/{key}";

@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "CRM Reports";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">CRM Reports</h1>
+        <p class="page-header__subtitle">Generate and view CRM module reports from the report builder.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Reports</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnRefreshCrmReport" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<div class="layout-two-col" style="display:flex;gap:1.5rem;">
+    <aside class="report-sidebar" style="width:300px;flex-shrink:0;">
+        <h2 class="section-title">Available Reports</h2>
+        <div id="crmReportList" style="max-height:600px;overflow-y:auto;"></div>
+    </aside>
+
+    <section class="report-content" style="flex:1;">
+        <div id="crmReportHeader" style="margin-bottom:1rem;display:none;">
+            <h2 id="crmReportTitle" class="section-title"></h2>
+            <div id="crmReportActions" style="margin-bottom:.75rem;">
+                <button type="button" id="btnRunReport" class="btn btn--primary">Run Report</button>
+                <button type="button" id="btnExportCsv" class="btn btn--secondary">Export CSV</button>
+            </div>
+        </div>
+        <div id="crmReportResultGrid"></div>
+        <div id="crmReportPlaceholder" style="padding:3rem;text-align:center;color:#999;">
+            Select a report from the list to run it.
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/crmreport/crmReportViewer.js" asp-append-version="true"></script>
+}

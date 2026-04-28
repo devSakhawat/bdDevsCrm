@@ -140,6 +140,7 @@ public interface IRepositoryManager : IDisposable
   ICrmSystemConfigurationRepository CrmSystemConfigurations { get; }
   ICrmMasterDataSuggestionRepository CrmMasterDataSuggestions { get; }
   ICrmAgentLeadRepository CrmAgentLeads { get; }
+  ICrmBranchTransferRepository CrmBranchTransfers { get; }
   #endregion CRM
 
   #region DMS

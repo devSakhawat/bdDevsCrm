@@ -152,6 +152,7 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ICrmSystemConfigurationRepository> _crmSystemConfigurationRepository;
   private readonly Lazy<ICrmMasterDataSuggestionRepository> _crmMasterDataSuggestionRepository;
   private readonly Lazy<ICrmAgentLeadRepository> _crmAgentLeadRepository;
+  private readonly Lazy<ICrmBranchTransferRepository> _crmBranchTransferRepository;
   #endregion CRM
 
   #region DMS - Private Lazy Fields
@@ -306,6 +307,7 @@ public class RepositoryManager : IRepositoryManager
     _crmSystemConfigurationRepository = new Lazy<ICrmSystemConfigurationRepository>(() => new CrmSystemConfigurationRepository(_repositoryContext));
     _crmMasterDataSuggestionRepository = new Lazy<ICrmMasterDataSuggestionRepository>(() => new CrmMasterDataSuggestionRepository(_repositoryContext));
     _crmAgentLeadRepository = new Lazy<ICrmAgentLeadRepository>(() => new CrmAgentLeadRepository(_repositoryContext));
+    _crmBranchTransferRepository = new Lazy<ICrmBranchTransferRepository>(() => new CrmBranchTransferRepository(_repositoryContext));
 
     #endregion CRM
 
@@ -456,6 +458,7 @@ public class RepositoryManager : IRepositoryManager
   public ICrmSystemConfigurationRepository CrmSystemConfigurations => _crmSystemConfigurationRepository.Value;
   public ICrmMasterDataSuggestionRepository CrmMasterDataSuggestions => _crmMasterDataSuggestionRepository.Value;
   public ICrmAgentLeadRepository CrmAgentLeads => _crmAgentLeadRepository.Value;
+  public ICrmBranchTransferRepository CrmBranchTransfers => _crmBranchTransferRepository.Value;
   #endregion CRM
 
   #region DMS - Repository Properties

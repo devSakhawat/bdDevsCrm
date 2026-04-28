@@ -183,6 +183,17 @@
             <a class="nav-sublink @(IsCurrent("/AgentLead") ? "is-active" : string.Empty)" asp-controller="AgentLead" asp-action="Index">Agent Lead Assignment</a>
             <a class="nav-sublink @(IsCurrent("/Agent/Performance") ? "is-active" : string.Empty)" href="/Agent/Performance">Agent Performance</a>
 
+            <span class="nav-sublink nav-sublink--group-label">Branch Transfers</span>
+            <a class="nav-sublink @(IsCurrent("/BranchTransfer") ? "is-active" : string.Empty)" asp-controller="BranchTransfer" asp-action="Index">Branch Transfers</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Audit &amp; Security</span>
+            <a class="nav-sublink @(IsCurrent("/CrmAudit/AuditLog") ? "is-active" : string.Empty)" asp-controller="CrmAudit" asp-action="AuditLog">CRM Audit Log</a>
+            <a class="nav-sublink @(IsCurrent("/CrmAudit/SecurityDashboard") ? "is-active" : string.Empty)" asp-controller="CrmAudit" asp-action="SecurityDashboard">Security Dashboard</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Reporting &amp; KPIs</span>
+            <a class="nav-sublink @(IsCurrent("/CrmKpi") ? "is-active" : string.Empty)" asp-controller="CrmKpi" asp-action="Index">KPI Dashboard</a>
+            <a class="nav-sublink @(IsCurrent("/CrmReport") ? "is-active" : string.Empty)" asp-controller="CrmReport" asp-action="Index">CRM Reports</a>
+
         </div>
     </div>
 </aside>

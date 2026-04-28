@@ -176,6 +176,7 @@ public partial class CrmContext : DbContext
   public virtual DbSet<CrmSystemConfiguration> CrmSystemConfiguration { get; set; }
   public virtual DbSet<CrmMasterDataSuggestion> CrmMasterDataSuggestion { get; set; }
   public virtual DbSet<CrmAgentLead> CrmAgentLead { get; set; }
+  public virtual DbSet<CrmBranchTransfer> CrmBranchTransfer { get; set; }
 
   public virtual DbSet<CurrencyRate> CurrencyRate { get; set; }
 

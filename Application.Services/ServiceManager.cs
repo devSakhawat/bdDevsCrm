@@ -156,6 +156,7 @@ public sealed class ServiceManager : IServiceManager
   private readonly Lazy<ICrmSystemConfigurationService> _crmSystemConfigurationService;
   private readonly Lazy<ICrmMasterDataSuggestionService> _crmMasterDataSuggestionService;
   private readonly Lazy<ICrmAgentLeadService> _crmAgentLeadService;
+  private readonly Lazy<ICrmBranchTransferService> _crmBranchTransferService;
   #endregion CRM
 
   #region DMS Lazy Fields
@@ -303,6 +304,7 @@ public sealed class ServiceManager : IServiceManager
     _crmSystemConfigurationService = new Lazy<ICrmSystemConfigurationService>(() => new CrmSystemConfigurationService(repository, loggerFactory.CreateLogger<CrmSystemConfigurationService>(), configuration));
     _crmMasterDataSuggestionService = new Lazy<ICrmMasterDataSuggestionService>(() => new CrmMasterDataSuggestionService(repository, loggerFactory.CreateLogger<CrmMasterDataSuggestionService>(), configuration));
     _crmAgentLeadService = new Lazy<ICrmAgentLeadService>(() => new CrmAgentLeadService(repository, loggerFactory.CreateLogger<CrmAgentLeadService>(), configuration));
+    _crmBranchTransferService = new Lazy<ICrmBranchTransferService>(() => new CrmBranchTransferService(repository, loggerFactory.CreateLogger<CrmBranchTransferService>(), configuration));
     #endregion Crm
 
     #region DMS Lazy Initializations
@@ -443,6 +445,7 @@ public sealed class ServiceManager : IServiceManager
   public ICrmSystemConfigurationService CrmSystemConfigurations => _crmSystemConfigurationService.Value;
   public ICrmMasterDataSuggestionService CrmMasterDataSuggestions => _crmMasterDataSuggestionService.Value;
   public ICrmAgentLeadService CrmAgentLeads => _crmAgentLeadService.Value;
+  public ICrmBranchTransferService CrmBranchTransfers => _crmBranchTransferService.Value;
   #endregion Crm
 
   #region DMS Property Exposures

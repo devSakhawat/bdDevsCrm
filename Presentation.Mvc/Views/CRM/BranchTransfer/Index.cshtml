@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Branch Transfer Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Branch Transfer Management</h1>
+        <p class="page-header__subtitle">Manage lead, student, and application branch transfers with approval workflow.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Branch Transfer</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddBranchTransfer" class="btn btn--primary">New Transfer Request</button>
+        <button type="button" id="btnRefreshBranchTransfer" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="branchTransferGrid"></div>
+</section>
+
+<div id="branchTransferWindow" style="display:none;">
+    <form id="branchTransferForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelBranchTransfer" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveBranchTransfer" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/branchtransfer/branchTransferSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/branchtransfer/branchTransferSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/branchtransfer/branchTransferDetails.js" asp-append-version="true"></script>
+}

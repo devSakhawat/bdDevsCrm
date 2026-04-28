@@ -60,8 +60,6 @@ internal sealed class CrmApplicationService : ICrmApplicationService
         entity.PortalPassword = string.IsNullOrWhiteSpace(record.PortalPassword) ? null : EncryptDecryptHelper.Encrypt(record.PortalPassword);
         _repository.CrmApplications.UpdateByState(entity);
         await _repository.SaveAsync(cancellationToken);
-        if (record.NewStatus == 9)
-            await _commissionService.EnsureCommissionForEnrollmentAsync(record.ApplicationId, record.ChangedBy, cancellationToken);
         return entity.MapTo<CrmApplicationDto>();
     }
 

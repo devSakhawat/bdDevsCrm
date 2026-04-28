@@ -492,8 +492,9 @@ internal sealed class CrmCommissionService : ICrmCommissionService
     }
 
     private sealed record CommissionDraft(int UniversityId, int? AgentId, int BranchId, string StudentNameSnapshot, string UniversityNameSnapshot, decimal TuitionFeeBase, decimal CommissionRate, byte CommissionType, decimal GrossAmount, decimal ScholarshipDeduction, decimal NetAmount, string Currency, decimal ExchangeRate, decimal NetAmountBdt, DateTime DueDate, string? Notes);
-    public sealed class ExchangeRateLookupDto
+    private sealed class ExchangeRateLookupDto
     {
+        public ExchangeRateLookupDto() { }
         public decimal Rate { get; set; }
     }
 }

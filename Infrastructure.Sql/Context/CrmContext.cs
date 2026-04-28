@@ -130,6 +130,14 @@ public partial class CrmContext : DbContext
 
   public virtual DbSet<CrmCommunicationType> CrmCommunicationType { get; set; }
 
+  public virtual DbSet<CrmCounsellingType> CrmCounsellingType { get; set; }
+
+  public virtual DbSet<CrmCommissionType> CrmCommissionType { get; set; }
+
+  public virtual DbSet<CrmCommunicationTemplate> CrmCommunicationTemplate { get; set; }
+
+  public virtual DbSet<CrmAgent> CrmAgent { get; set; }
+
   public virtual DbSet<CrmPermanentAddress> CrmPermanentAddress { get; set; }
 
   public virtual DbSet<CrmPresentAddress> CrmPresentAddress { get; set; }

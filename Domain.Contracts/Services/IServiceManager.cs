@@ -100,6 +100,10 @@ public interface IServiceManager
   ICrmApplicationStatusService CrmApplicationStatuses { get; }
   ICrmVisaStatusService CrmVisaStatuses { get; }
   ICrmCommunicationTypeService CrmCommunicationTypes { get; }
+  ICrmCounsellingTypeService CrmCounsellingTypes { get; }
+  ICrmCommissionTypeService CrmCommissionTypes { get; }
+  ICrmCommunicationTemplateService CrmCommunicationTemplates { get; }
+  ICrmAgentService CrmAgents { get; }
   ICrmCourseIntakeService CrmCourseIntakes { get; }
   #endregion Crm
 

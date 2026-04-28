@@ -95,6 +95,10 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ICrmApplicationStatusRepository> _applicationStatusRepository;
   private readonly Lazy<ICrmVisaStatusRepository> _visaStatusRepository;
   private readonly Lazy<ICrmCommunicationTypeRepository> _communicationTypeRepository;
+  private readonly Lazy<ICrmCounsellingTypeRepository> _counsellingTypeRepository;
+  private readonly Lazy<ICrmCommissionTypeRepository> _commissionTypeRepository;
+  private readonly Lazy<ICrmCommunicationTemplateRepository> _communicationTemplateRepository;
+  private readonly Lazy<ICrmAgentRepository> _crmAgentRepository;
   private readonly Lazy<ICrmCourseIntakeRepository> _crmCourseIntakeRepository;
 
 
@@ -216,6 +220,10 @@ public class RepositoryManager : IRepositoryManager
     _applicationStatusRepository = new Lazy<ICrmApplicationStatusRepository>(() => new CrmApplicationStatusRepository(_repositoryContext));
     _visaStatusRepository = new Lazy<ICrmVisaStatusRepository>(() => new CrmVisaStatusRepository(_repositoryContext));
     _communicationTypeRepository = new Lazy<ICrmCommunicationTypeRepository>(() => new CrmCommunicationTypeRepository(_repositoryContext));
+    _counsellingTypeRepository = new Lazy<ICrmCounsellingTypeRepository>(() => new CrmCounsellingTypeRepository(_repositoryContext));
+    _commissionTypeRepository = new Lazy<ICrmCommissionTypeRepository>(() => new CrmCommissionTypeRepository(_repositoryContext));
+    _communicationTemplateRepository = new Lazy<ICrmCommunicationTemplateRepository>(() => new CrmCommunicationTemplateRepository(_repositoryContext));
+    _crmAgentRepository = new Lazy<ICrmAgentRepository>(() => new CrmAgentRepository(_repositoryContext));
     _crmCourseIntakeRepository = new Lazy<ICrmCourseIntakeRepository>(() => new CrmCourseIntakeRepository(_repositoryContext));
 
     // FIX: Add missing CRM repositories initialization
@@ -350,6 +358,10 @@ public class RepositoryManager : IRepositoryManager
   public ICrmApplicationStatusRepository CrmApplicationStatuses => _applicationStatusRepository.Value;
   public ICrmVisaStatusRepository CrmVisaStatuses => _visaStatusRepository.Value;
   public ICrmCommunicationTypeRepository CrmCommunicationTypes => _communicationTypeRepository.Value;
+  public ICrmCounsellingTypeRepository CrmCounsellingTypes => _counsellingTypeRepository.Value;
+  public ICrmCommissionTypeRepository CrmCommissionTypes => _commissionTypeRepository.Value;
+  public ICrmCommunicationTemplateRepository CrmCommunicationTemplates => _communicationTemplateRepository.Value;
+  public ICrmAgentRepository CrmAgents => _crmAgentRepository.Value;
   public ICrmCourseIntakeRepository CrmCourseIntakes => _crmCourseIntakeRepository.Value;
   #endregion CRM
 

@@ -719,6 +719,46 @@ public static class RouteConstants
 	public const string ReadCrmCommunicationType = "crm-communication-type/{id:int}";
 	#endregion CrmCommunicationType
 
+	#region CrmCounsellingType
+	public const string CreateCrmCounsellingType = "crm-counselling-type";
+	public const string UpdateCrmCounsellingType = "crm-counselling-type/{key}";
+	public const string DeleteCrmCounsellingType = "crm-counselling-type/{key}";
+	public const string CrmCounsellingTypeSummary = "crm-counselling-type-summary";
+	public const string ReadCrmCounsellingTypes = "crm-counselling-types";
+	public const string CrmCounsellingTypeDDL = "crm-counselling-types-ddl";
+	public const string ReadCrmCounsellingType = "crm-counselling-type/{id:int}";
+	#endregion CrmCounsellingType
+
+	#region CrmCommissionType
+	public const string CreateCrmCommissionType = "crm-commission-type";
+	public const string UpdateCrmCommissionType = "crm-commission-type/{key}";
+	public const string DeleteCrmCommissionType = "crm-commission-type/{key}";
+	public const string CrmCommissionTypeSummary = "crm-commission-type-summary";
+	public const string ReadCrmCommissionTypes = "crm-commission-types";
+	public const string CrmCommissionTypeDDL = "crm-commission-types-ddl";
+	public const string ReadCrmCommissionType = "crm-commission-type/{id:int}";
+	#endregion CrmCommissionType
+
+	#region CrmCommunicationTemplate
+	public const string CreateCrmCommunicationTemplate = "crm-communication-template";
+	public const string UpdateCrmCommunicationTemplate = "crm-communication-template/{key}";
+	public const string DeleteCrmCommunicationTemplate = "crm-communication-template/{key}";
+	public const string CrmCommunicationTemplateSummary = "crm-communication-template-summary";
+	public const string ReadCrmCommunicationTemplates = "crm-communication-templates";
+	public const string CrmCommunicationTemplateDDL = "crm-communication-templates-ddl";
+	public const string ReadCrmCommunicationTemplate = "crm-communication-template/{id:int}";
+	#endregion CrmCommunicationTemplate
+
+	#region CrmAgent
+	public const string CreateCrmAgent = "crm-agent";
+	public const string UpdateCrmAgent = "crm-agent/{key}";
+	public const string DeleteCrmAgent = "crm-agent/{key}";
+	public const string CrmAgentSummary = "crm-agent-summary";
+	public const string ReadCrmAgents = "crm-agents";
+	public const string CrmAgentDDL = "crm-agents-ddl";
+	public const string ReadCrmAgent = "crm-agent/{id:int}";
+	#endregion CrmAgent
+
 	#region CrmIntakeYear
 	public const string CreateCrmIntakeYear = "crm-intake-year";
 	public const string UpdateCrmIntakeYear = "crm-intake-year/{key}";

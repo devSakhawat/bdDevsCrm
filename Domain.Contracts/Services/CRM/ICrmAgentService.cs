@@ -27,4 +27,7 @@ public interface ICrmAgentService
 
     /// <summary>Retrieves a paginated summary grid of agents.</summary>
     Task<GridEntity<CrmAgentDto>> AgentsSummaryAsync(GridOptions options, CancellationToken cancellationToken = default);
+
+    /// <summary>Retrieves consolidated performance metrics for a single agent.</summary>
+    Task<CrmAgentPerformanceDto> PerformanceAsync(int agentId, CancellationToken cancellationToken = default);
 }

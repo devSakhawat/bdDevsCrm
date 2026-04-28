@@ -10,9 +10,9 @@ public class CreateCrmApplicationRecordValidator : BaseRecordValidator<CreateCrm
 {
     public CreateCrmApplicationRecordValidator()
     {
-        RuleFor(x => x.StateId)
-            .GreaterThan(0)
-            .WithMessage("StateId must be greater than 0");
+        RuleFor(x => x.Status)
+            .GreaterThan((byte)0)
+            .WithMessage("Status must be greater than 0");
 
         RuleFor(x => x.CreatedBy)
             .GreaterThan(0)
@@ -32,9 +32,9 @@ public class UpdateCrmApplicationRecordValidator : BaseRecordValidator<UpdateCrm
             .GreaterThan(0)
             .WithMessage("ApplicationId must be greater than 0");
 
-        RuleFor(x => x.StateId)
-            .GreaterThan(0)
-            .WithMessage("StateId must be greater than 0");
+        RuleFor(x => x.Status)
+            .GreaterThan((byte)0)
+            .WithMessage("Status must be greater than 0");
 
         RuleFor(x => x.CreatedBy)
             .GreaterThan(0)

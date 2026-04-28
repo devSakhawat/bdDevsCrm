@@ -4,6 +4,7 @@ using Domain.Contracts.Services.CRM;
 using bdDevs.Shared.DataTransferObjects.CRM;
 using Domain.Exceptions;
 using Application.Shared.Grid;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using bdDevs.Shared.Records.CRM;
@@ -136,5 +137,24 @@ internal sealed class CrmAgentService : ICrmAgentService
         const string sql = @"SELECT AgentId, AgentName, AgentCode, AgentTypeId, ContactPerson, Email, Phone, Address, Country, CommissionRate, IsActive, CreatedDate, CreatedBy, UpdatedDate, UpdatedBy FROM CrmAgent";
         const string orderBy = "AgentName ASC";
         return await _repository.CrmAgents.AdoGridDataAsync<CrmAgentDto>(sql, options, orderBy, string.Empty, cancellationToken);
+    }
+
+    public async Task<CrmAgentPerformanceDto> PerformanceAsync(int agentId, CancellationToken cancellationToken = default)
+    {
+        const string sql = @"SELECT TOP 1
+            a.AgentId,
+            a.AgentName,
+            CAST(ISNULL(a.CommissionRate, 0) AS decimal(18,2)) AS CommissionRate,
+            (SELECT COUNT(1) FROM CrmAgentLead al WHERE al.AgentId = a.AgentId AND al.IsActive = 1) AS AssignedLeadCount,
+            (SELECT COUNT(1) FROM CrmCommission c WHERE c.AgentId = a.AgentId AND c.IsDeleted = 0) AS TotalCommissions,
+            (SELECT COUNT(1) FROM CrmCommission c INNER JOIN CrmApplication app ON app.ApplicationId = c.ApplicationId WHERE c.AgentId = a.AgentId AND c.IsDeleted = 0 AND app.Status = 9) AS EnrolledStudentCount,
+            (SELECT COUNT(1) FROM CrmCommission c WHERE c.AgentId = a.AgentId AND c.IsDeleted = 0 AND c.Status IN (1, 2, 3)) AS PendingCommissions,
+            CAST((SELECT ISNULL(SUM(c.NetAmount), 0) FROM CrmCommission c WHERE c.AgentId = a.AgentId AND c.IsDeleted = 0) AS decimal(18,2)) AS TotalNetAmount,
+            CAST((SELECT ISNULL(SUM(ISNULL(c.PaidAmount, 0)), 0) FROM CrmCommission c WHERE c.AgentId = a.AgentId AND c.IsDeleted = 0) AS decimal(18,2)) AS TotalPaidAmount,
+            CAST((SELECT ISNULL(SUM(c.NetAmount - ISNULL(c.PaidAmount, 0)), 0) FROM CrmCommission c WHERE c.AgentId = a.AgentId AND c.IsDeleted = 0) AS decimal(18,2)) AS OutstandingAmount
+        FROM CrmAgent a
+        WHERE a.AgentId = @AgentId";
+        return await _repository.CrmAgents.AdoExecuteSingleDataAsync<CrmAgentPerformanceDto>(sql, [new SqlParameter("@AgentId", agentId)], cancellationToken)
+            ?? throw new NotFoundException("CrmAgent", "AgentId", agentId.ToString());
     }
 }

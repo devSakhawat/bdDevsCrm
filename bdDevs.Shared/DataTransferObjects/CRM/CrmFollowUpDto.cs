@@ -1,4 +1,4 @@
-namespace bdDevs.Shared.DataTransferObjects.CRM;
+﻿namespace bdDevs.Shared.DataTransferObjects.CRM;
 
 public record CrmFollowUpDto
 {
@@ -6,10 +6,16 @@ public record CrmFollowUpDto
     public int? LeadId { get; init; }
     public int? EnquiryId { get; init; }
     public DateTime FollowUpDate { get; init; }
+    public string? ScheduledTime { get; init; }
     public string? FollowUpType { get; init; }
+    public byte ContactMethod { get; init; }
     public string? Notes { get; init; }
     public DateTime? NextFollowUpDate { get; init; }
-    public bool IsCompleted { get; init; }
+    public byte Status { get; init; }
+    public string? MissedReason { get; init; }
+    public int? OverriddenById { get; init; }
+    public int? CancelledById { get; init; }
+    public DateTime? CancelledDate { get; init; }
     public int? CounselorId { get; init; }
     public DateTime CreatedDate { get; init; }
     public int CreatedBy { get; init; }

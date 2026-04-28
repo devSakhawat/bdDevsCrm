@@ -6,7 +6,7 @@
 <section class="page-header">
     <div>
         <h1 class="page-header__title">Student Management</h1>
-        <p class="page-header__subtitle">CRM v1 module for managing Student records.</p>
+        <p class="page-header__subtitle">Manage student profile, academic profile, readiness checks, and status history in a tabbed workspace.</p>
         <div class="breadcrumb">
             <span class="breadcrumb__item">CRM</span>
             <span class="breadcrumb__item is-current">Student</span>
@@ -22,6 +22,27 @@
     <div id="studentGrid"></div>
 </section>
 
+<section class="card mt-16">
+    <div class="card__header">
+        <h3 class="card__title">Student Workspace</h3>
+        <p class="card__subtitle">Select a student row to inspect profile, academic profile, documents/applications placeholders, and status history.</p>
+    </div>
+    <div id="studentWorkspaceTabStrip">
+        <ul>
+            <li class="k-state-active">Profile</li>
+            <li>Academic</li>
+            <li>Documents</li>
+            <li>Applications</li>
+            <li>Status History</li>
+        </ul>
+        <div><div id="studentProfilePanel" class="detail-panel empty-state">Select a student to view profile.</div></div>
+        <div><div id="studentAcademicPanel" class="detail-panel empty-state">Select a student to view academic profile.</div></div>
+        <div><div id="studentDocumentsPanel" class="detail-panel empty-state">Document integration will surface here once document endpoints are connected.</div></div>
+        <div><div id="studentApplicationsPanel" class="detail-panel empty-state">Application grid integration will surface here once application endpoints are connected.</div></div>
+        <div><div id="studentStatusHistoryPanel" class="timeline-panel empty-state">Select a student to view status history.</div></div>
+    </div>
+</section>
+
 <div id="studentWindow" style="display:none;">
     <form id="studentForm" class="form-layout form-layout--grid"></form>
     <div class="form-action-bar">
@@ -35,4 +56,5 @@
     <script src="~/js/modules/crm/student/studentSettings.js" asp-append-version="true"></script>
     <script src="~/js/modules/crm/student/studentSummary.js" asp-append-version="true"></script>
     <script src="~/js/modules/crm/student/studentDetails.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/student/studentPage.js" asp-append-version="true"></script>
 }

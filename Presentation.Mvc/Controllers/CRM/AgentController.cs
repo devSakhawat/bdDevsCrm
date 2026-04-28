@@ -9,4 +9,10 @@ public class AgentController : Controller
     {
         return View("~/Views/CRM/Agent/Index.cshtml");
     }
+
+    [HttpGet]
+    public IActionResult Performance()
+    {
+        return View("~/Views/CRM/Agent/Performance.cshtml");
+    }
 }

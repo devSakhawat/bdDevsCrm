@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Agent Performance Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Agent Performance Dashboard</h1>
+        <p class="page-header__subtitle">Commission totals, enrolled students, and pending commissions per agent.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item"><a href="/Agent">Agent</a></span>
+            <span class="breadcrumb__item is-current">Performance Dashboard</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <a href="/Agent" class="btn btn--secondary">Back to Agents</a>
+        <button type="button" id="btnRefreshPerformance" class="btn btn--primary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <h2 class="section-heading">Agent Performance Metrics</h2>
+    <div id="agentPerformanceGrid"></div>
+</section>
+
+<!-- Agent Detail Panel -->
+<div id="agentDetailPanel" style="display:none; margin-top:24px;">
+    <div class="card">
+        <h3 id="agentDetailTitle" class="card__title">Agent Details</h3>
+        <div id="agentDetailContent" class="dashboard-kpi-row"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/agent/agentPerformanceDashboard.js" asp-append-version="true"></script>
+}

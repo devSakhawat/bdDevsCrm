@@ -1,4 +1,4 @@
-@{
+﻿@{
     ViewData["Title"] = "Lead Management";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -15,6 +15,7 @@
     <div class="page-header__actions">
         <button type="button" id="btnAddLead" class="btn btn--primary">Add Lead</button>
         <button type="button" id="btnRefreshLead" class="btn btn--secondary">Refresh</button>
+        <button type="button" id="btnConvertLead" class="btn btn--primary">Convert To Student</button>
     </div>
 </section>
 
@@ -35,4 +36,5 @@
     <script src="~/js/modules/crm/lead/leadSettings.js" asp-append-version="true"></script>
     <script src="~/js/modules/crm/lead/leadSummary.js" asp-append-version="true"></script>
     <script src="~/js/modules/crm/lead/leadDetails.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/lead/leadPage.js" asp-append-version="true"></script>
 }

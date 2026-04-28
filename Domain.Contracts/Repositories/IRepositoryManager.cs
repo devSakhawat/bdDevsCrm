@@ -79,6 +79,15 @@ public interface IRepositoryManager : IDisposable
 
   // Existing CRM repositories
   ICrmApplicationRepository CrmApplications { get; }
+  ICrmScholarshipApplicationRepository CrmScholarshipApplications { get; }
+  ICrmCommissionRepository CrmCommissions { get; }
+  ICrmCommunicationLogRepository CrmCommunicationLogs { get; }
+  ICrmVisaApplicationRepository CrmVisaApplications { get; }
+  ICrmVisaStatusHistoryRepository CrmVisaStatusHistories { get; }
+  ICrmStudentPaymentRepository CrmStudentPayments { get; }
+  ICrmPaymentRefundRepository CrmPaymentRefunds { get; }
+  ICrmApplicationConditionRepository CrmApplicationConditions { get; }
+  ICrmApplicationDocumentRepository CrmApplicationDocuments { get; }
   ICrmApplicantCourseRepository CrmApplicantCourses { get; }
   ICrmApplicantInfoRepository CrmApplicantInfos { get; }
   ICrmPermanentAddressRepository CrmPermanentAddresses { get; }
@@ -111,10 +120,27 @@ public interface IRepositoryManager : IDisposable
   ICrmCounselorRepository CrmCounselors { get; }
   ICrmLeadRepository CrmLeads { get; }
   ICrmStudentRepository CrmStudents { get; }
+  ICrmStudentDocumentRepository CrmStudentDocuments { get; }
+  ICrmDocumentVerificationHistoryRepository CrmDocumentVerificationHistories { get; }
+  ICrmStudentDocumentChecklistRepository CrmStudentDocumentChecklists { get; }
+  ICrmStudentAcademicProfileRepository CrmStudentAcademicProfiles { get; }
+  ICrmStudentStatusHistoryRepository CrmStudentStatusHistories { get; }
   ICrmEnquiryRepository CrmEnquiries { get; }
   ICrmFollowUpRepository CrmFollowUps { get; }
+  ICrmFollowUpHistoryRepository CrmFollowUpHistories { get; }
+  ICrmCounsellingSessionRepository CrmCounsellingSessions { get; }
+  ICrmSessionProgramShortlistRepository CrmSessionProgramShortlists { get; }
   ICrmNoteRepository CrmNotes { get; }
   ICrmTaskRepository CrmTasks { get; }
+  ICrmDegreeLevelRepository CrmDegreeLevels { get; }
+  ICrmFacultyRepository CrmFaculties { get; }
+  ICrmCourseFeeRepository CrmCourseFees { get; }
+  ICrmCountryDocumentRequirementRepository CrmCountryDocumentRequirements { get; }
+  ICrmBranchTargetRepository CrmBranchTargets { get; }
+  ICrmSystemConfigurationRepository CrmSystemConfigurations { get; }
+  ICrmMasterDataSuggestionRepository CrmMasterDataSuggestions { get; }
+  ICrmAgentLeadRepository CrmAgentLeads { get; }
+  ICrmBranchTransferRepository CrmBranchTransfers { get; }
   #endregion CRM
 
   #region DMS

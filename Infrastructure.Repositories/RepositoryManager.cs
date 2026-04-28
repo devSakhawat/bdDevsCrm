@@ -102,6 +102,15 @@ public class RepositoryManager : IRepositoryManager
 
   // Existing CRM repositories
   private readonly Lazy<ICrmApplicationRepository> _crmApplicationRepository;
+  private readonly Lazy<ICrmScholarshipApplicationRepository> _crmScholarshipApplicationRepository;
+  private readonly Lazy<ICrmCommissionRepository> _crmCommissionRepository;
+  private readonly Lazy<ICrmCommunicationLogRepository> _crmCommunicationLogRepository;
+  private readonly Lazy<ICrmVisaApplicationRepository> _crmVisaApplicationRepository;
+  private readonly Lazy<ICrmVisaStatusHistoryRepository> _crmVisaStatusHistoryRepository;
+  private readonly Lazy<ICrmStudentPaymentRepository> _crmStudentPaymentRepository;
+  private readonly Lazy<ICrmPaymentRefundRepository> _crmPaymentRefundRepository;
+  private readonly Lazy<ICrmApplicationConditionRepository> _crmApplicationConditionRepository;
+  private readonly Lazy<ICrmApplicationDocumentRepository> _crmApplicationDocumentRepository;
   private readonly Lazy<ICrmApplicantCourseRepository> _applicantCourseRepository;
   private readonly Lazy<ICrmApplicantInfoRepository> _applicantInfoRepository;
   private readonly Lazy<ICrmPermanentAddressRepository> _permanentAddressRepository;
@@ -123,10 +132,27 @@ public class RepositoryManager : IRepositoryManager
   private readonly Lazy<ICrmCounselorRepository> _crmCounselorRepository;
   private readonly Lazy<ICrmLeadRepository> _crmLeadRepository;
   private readonly Lazy<ICrmStudentRepository> _crmStudentRepository;
+  private readonly Lazy<ICrmStudentDocumentRepository> _crmStudentDocumentRepository;
+  private readonly Lazy<ICrmDocumentVerificationHistoryRepository> _crmDocumentVerificationHistoryRepository;
+  private readonly Lazy<ICrmStudentDocumentChecklistRepository> _crmStudentDocumentChecklistRepository;
+  private readonly Lazy<ICrmStudentAcademicProfileRepository> _crmStudentAcademicProfileRepository;
+  private readonly Lazy<ICrmStudentStatusHistoryRepository> _crmStudentStatusHistoryRepository;
   private readonly Lazy<ICrmEnquiryRepository> _crmEnquiryRepository;
   private readonly Lazy<ICrmFollowUpRepository> _crmFollowUpRepository;
+  private readonly Lazy<ICrmFollowUpHistoryRepository> _crmFollowUpHistoryRepository;
+  private readonly Lazy<ICrmCounsellingSessionRepository> _crmCounsellingSessionRepository;
+  private readonly Lazy<ICrmSessionProgramShortlistRepository> _crmSessionProgramShortlistRepository;
   private readonly Lazy<ICrmNoteRepository> _crmNoteRepository;
   private readonly Lazy<ICrmTaskRepository> _crmTaskRepository;
+  private readonly Lazy<ICrmDegreeLevelRepository> _crmDegreeLevelRepository;
+  private readonly Lazy<ICrmFacultyRepository> _crmFacultyRepository;
+  private readonly Lazy<ICrmCourseFeeRepository> _crmCourseFeeRepository;
+  private readonly Lazy<ICrmCountryDocumentRequirementRepository> _crmCountryDocumentRequirementRepository;
+  private readonly Lazy<ICrmBranchTargetRepository> _crmBranchTargetRepository;
+  private readonly Lazy<ICrmSystemConfigurationRepository> _crmSystemConfigurationRepository;
+  private readonly Lazy<ICrmMasterDataSuggestionRepository> _crmMasterDataSuggestionRepository;
+  private readonly Lazy<ICrmAgentLeadRepository> _crmAgentLeadRepository;
+  private readonly Lazy<ICrmBranchTransferRepository> _crmBranchTransferRepository;
   #endregion CRM
 
   #region DMS - Private Lazy Fields
@@ -211,6 +237,15 @@ public class RepositoryManager : IRepositoryManager
 
     #region CRM
     _crmApplicationRepository = new Lazy<ICrmApplicationRepository>(() => new CrmApplicationRepository(_repositoryContext));
+    _crmScholarshipApplicationRepository = new Lazy<ICrmScholarshipApplicationRepository>(() => new CrmScholarshipApplicationRepository(_repositoryContext));
+    _crmCommissionRepository = new Lazy<ICrmCommissionRepository>(() => new CrmCommissionRepository(_repositoryContext));
+    _crmCommunicationLogRepository = new Lazy<ICrmCommunicationLogRepository>(() => new CrmCommunicationLogRepository(_repositoryContext));
+    _crmVisaApplicationRepository = new Lazy<ICrmVisaApplicationRepository>(() => new CrmVisaApplicationRepository(_repositoryContext));
+    _crmVisaStatusHistoryRepository = new Lazy<ICrmVisaStatusHistoryRepository>(() => new CrmVisaStatusHistoryRepository(_repositoryContext));
+    _crmStudentPaymentRepository = new Lazy<ICrmStudentPaymentRepository>(() => new CrmStudentPaymentRepository(_repositoryContext));
+    _crmPaymentRefundRepository = new Lazy<ICrmPaymentRefundRepository>(() => new CrmPaymentRefundRepository(_repositoryContext));
+    _crmApplicationConditionRepository = new Lazy<ICrmApplicationConditionRepository>(() => new CrmApplicationConditionRepository(_repositoryContext));
+    _crmApplicationDocumentRepository = new Lazy<ICrmApplicationDocumentRepository>(() => new CrmApplicationDocumentRepository(_repositoryContext));
     _crminstituteTypeRepository = new Lazy<ICrmInstituteTypeRepository>(() => new CrmInstituteTypeRepository(_repositoryContext));
     _crmcourseRepository = new Lazy<ICrmCourseRepository>(() => new CrmCourseRepository(_repositoryContext));
     _crmmonthRepository = new Lazy<ICrmMonthRepository>(() => new CrmMonthRepository(_repositoryContext));
@@ -252,10 +287,27 @@ public class RepositoryManager : IRepositoryManager
     _crmCounselorRepository = new Lazy<ICrmCounselorRepository>(() => new CrmCounselorRepository(_repositoryContext));
     _crmLeadRepository = new Lazy<ICrmLeadRepository>(() => new CrmLeadRepository(_repositoryContext));
     _crmStudentRepository = new Lazy<ICrmStudentRepository>(() => new CrmStudentRepository(_repositoryContext));
+    _crmStudentDocumentRepository = new Lazy<ICrmStudentDocumentRepository>(() => new CrmStudentDocumentRepository(_repositoryContext));
+    _crmDocumentVerificationHistoryRepository = new Lazy<ICrmDocumentVerificationHistoryRepository>(() => new CrmDocumentVerificationHistoryRepository(_repositoryContext));
+    _crmStudentDocumentChecklistRepository = new Lazy<ICrmStudentDocumentChecklistRepository>(() => new CrmStudentDocumentChecklistRepository(_repositoryContext));
+    _crmStudentAcademicProfileRepository = new Lazy<ICrmStudentAcademicProfileRepository>(() => new CrmStudentAcademicProfileRepository(_repositoryContext));
+    _crmStudentStatusHistoryRepository = new Lazy<ICrmStudentStatusHistoryRepository>(() => new CrmStudentStatusHistoryRepository(_repositoryContext));
     _crmEnquiryRepository = new Lazy<ICrmEnquiryRepository>(() => new CrmEnquiryRepository(_repositoryContext));
     _crmFollowUpRepository = new Lazy<ICrmFollowUpRepository>(() => new CrmFollowUpRepository(_repositoryContext));
+    _crmFollowUpHistoryRepository = new Lazy<ICrmFollowUpHistoryRepository>(() => new CrmFollowUpHistoryRepository(_repositoryContext));
+    _crmCounsellingSessionRepository = new Lazy<ICrmCounsellingSessionRepository>(() => new CrmCounsellingSessionRepository(_repositoryContext));
+    _crmSessionProgramShortlistRepository = new Lazy<ICrmSessionProgramShortlistRepository>(() => new CrmSessionProgramShortlistRepository(_repositoryContext));
     _crmNoteRepository = new Lazy<ICrmNoteRepository>(() => new CrmNoteRepository(_repositoryContext));
     _crmTaskRepository = new Lazy<ICrmTaskRepository>(() => new CrmTaskRepository(_repositoryContext));
+    _crmDegreeLevelRepository = new Lazy<ICrmDegreeLevelRepository>(() => new CrmDegreeLevelRepository(_repositoryContext));
+    _crmFacultyRepository = new Lazy<ICrmFacultyRepository>(() => new CrmFacultyRepository(_repositoryContext));
+    _crmCourseFeeRepository = new Lazy<ICrmCourseFeeRepository>(() => new CrmCourseFeeRepository(_repositoryContext));
+    _crmCountryDocumentRequirementRepository = new Lazy<ICrmCountryDocumentRequirementRepository>(() => new CrmCountryDocumentRequirementRepository(_repositoryContext));
+    _crmBranchTargetRepository = new Lazy<ICrmBranchTargetRepository>(() => new CrmBranchTargetRepository(_repositoryContext));
+    _crmSystemConfigurationRepository = new Lazy<ICrmSystemConfigurationRepository>(() => new CrmSystemConfigurationRepository(_repositoryContext));
+    _crmMasterDataSuggestionRepository = new Lazy<ICrmMasterDataSuggestionRepository>(() => new CrmMasterDataSuggestionRepository(_repositoryContext));
+    _crmAgentLeadRepository = new Lazy<ICrmAgentLeadRepository>(() => new CrmAgentLeadRepository(_repositoryContext));
+    _crmBranchTransferRepository = new Lazy<ICrmBranchTransferRepository>(() => new CrmBranchTransferRepository(_repositoryContext));
 
     #endregion CRM
 
@@ -342,6 +394,15 @@ public class RepositoryManager : IRepositoryManager
 
   // Existing Crm repository properties
   public ICrmApplicationRepository CrmApplications => _crmApplicationRepository.Value;
+  public ICrmScholarshipApplicationRepository CrmScholarshipApplications => _crmScholarshipApplicationRepository.Value;
+  public ICrmCommissionRepository CrmCommissions => _crmCommissionRepository.Value;
+  public ICrmCommunicationLogRepository CrmCommunicationLogs => _crmCommunicationLogRepository.Value;
+  public ICrmVisaApplicationRepository CrmVisaApplications => _crmVisaApplicationRepository.Value;
+  public ICrmVisaStatusHistoryRepository CrmVisaStatusHistories => _crmVisaStatusHistoryRepository.Value;
+  public ICrmStudentPaymentRepository CrmStudentPayments => _crmStudentPaymentRepository.Value;
+  public ICrmPaymentRefundRepository CrmPaymentRefunds => _crmPaymentRefundRepository.Value;
+  public ICrmApplicationConditionRepository CrmApplicationConditions => _crmApplicationConditionRepository.Value;
+  public ICrmApplicationDocumentRepository CrmApplicationDocuments => _crmApplicationDocumentRepository.Value;
   public ICrmApplicantCourseRepository CrmApplicantCourses => _applicantCourseRepository.Value;
   public ICrmApplicantInfoRepository CrmApplicantInfos => _applicantInfoRepository.Value;
   public ICrmPermanentAddressRepository CrmPermanentAddresses => _permanentAddressRepository.Value;
@@ -377,10 +438,27 @@ public class RepositoryManager : IRepositoryManager
   public ICrmCounselorRepository CrmCounselors => _crmCounselorRepository.Value;
   public ICrmLeadRepository CrmLeads => _crmLeadRepository.Value;
   public ICrmStudentRepository CrmStudents => _crmStudentRepository.Value;
+  public ICrmStudentDocumentRepository CrmStudentDocuments => _crmStudentDocumentRepository.Value;
+  public ICrmDocumentVerificationHistoryRepository CrmDocumentVerificationHistories => _crmDocumentVerificationHistoryRepository.Value;
+  public ICrmStudentDocumentChecklistRepository CrmStudentDocumentChecklists => _crmStudentDocumentChecklistRepository.Value;
+  public ICrmStudentAcademicProfileRepository CrmStudentAcademicProfiles => _crmStudentAcademicProfileRepository.Value;
+  public ICrmStudentStatusHistoryRepository CrmStudentStatusHistories => _crmStudentStatusHistoryRepository.Value;
   public ICrmEnquiryRepository CrmEnquiries => _crmEnquiryRepository.Value;
   public ICrmFollowUpRepository CrmFollowUps => _crmFollowUpRepository.Value;
+  public ICrmFollowUpHistoryRepository CrmFollowUpHistories => _crmFollowUpHistoryRepository.Value;
+  public ICrmCounsellingSessionRepository CrmCounsellingSessions => _crmCounsellingSessionRepository.Value;
+  public ICrmSessionProgramShortlistRepository CrmSessionProgramShortlists => _crmSessionProgramShortlistRepository.Value;
   public ICrmNoteRepository CrmNotes => _crmNoteRepository.Value;
   public ICrmTaskRepository CrmTasks => _crmTaskRepository.Value;
+  public ICrmDegreeLevelRepository CrmDegreeLevels => _crmDegreeLevelRepository.Value;
+  public ICrmFacultyRepository CrmFaculties => _crmFacultyRepository.Value;
+  public ICrmCourseFeeRepository CrmCourseFees => _crmCourseFeeRepository.Value;
+  public ICrmCountryDocumentRequirementRepository CrmCountryDocumentRequirements => _crmCountryDocumentRequirementRepository.Value;
+  public ICrmBranchTargetRepository CrmBranchTargets => _crmBranchTargetRepository.Value;
+  public ICrmSystemConfigurationRepository CrmSystemConfigurations => _crmSystemConfigurationRepository.Value;
+  public ICrmMasterDataSuggestionRepository CrmMasterDataSuggestions => _crmMasterDataSuggestionRepository.Value;
+  public ICrmAgentLeadRepository CrmAgentLeads => _crmAgentLeadRepository.Value;
+  public ICrmBranchTransferRepository CrmBranchTransfers => _crmBranchTransferRepository.Value;
   #endregion CRM
 
   #region DMS - Repository Properties

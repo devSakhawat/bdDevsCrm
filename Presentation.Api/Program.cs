@@ -1,4 +1,4 @@
-using Presentation.Api.Extensions;
+﻿using Presentation.Api.Extensions;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,6 +53,8 @@ builder.Services.AddRepositoryManager();
 builder.Services.AddServiceManager(configuration);
 builder.Services.AddInfrastructureServices();
 builder.Services.AddMapster();
+builder.Services.AddHostedService<Presentation.Api.BackgroundServices.CrmFollowUpMaintenanceBackgroundService>();
+builder.Services.AddHostedService<Presentation.Api.BackgroundServices.CrmDocumentMaintenanceBackgroundService>();
 
 // ── Authentication + Authorization ───────────────────────
 builder.Services.AddJwtAuthentication(configuration);

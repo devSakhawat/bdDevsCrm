@@ -70,6 +70,15 @@ public interface IServiceManager
   
   // Existing Crm services
   ICrmApplicationService CrmApplications { get; }
+  ICrmScholarshipApplicationService CrmScholarshipApplications { get; }
+  ICrmCommissionService CrmCommissions { get; }
+  ICrmCommunicationLogService CrmCommunicationLogs { get; }
+  ICrmVisaApplicationService CrmVisaApplications { get; }
+  ICrmVisaStatusHistoryService CrmVisaStatusHistories { get; }
+  ICrmStudentPaymentService CrmStudentPayments { get; }
+  ICrmPaymentRefundService CrmPaymentRefunds { get; }
+  ICrmApplicationConditionService CrmApplicationConditions { get; }
+  ICrmApplicationDocumentService CrmApplicationDocuments { get; }
   ICrmApplicantCourseService ApplicantCourses { get; }
   ICrmApplicantInfoService ApplicantInfos { get; }
   ICrmPermanentAddressService PermanentAddresses { get; }
@@ -103,10 +112,27 @@ public interface IServiceManager
   ICrmCounselorService CrmCounselors { get; }
   ICrmLeadService CrmLeads { get; }
   ICrmStudentService CrmStudents { get; }
+  ICrmStudentDocumentService CrmStudentDocuments { get; }
+  ICrmDocumentVerificationHistoryService CrmDocumentVerificationHistories { get; }
+  ICrmStudentDocumentChecklistService CrmStudentDocumentChecklists { get; }
+  ICrmStudentAcademicProfileService CrmStudentAcademicProfiles { get; }
+  ICrmStudentStatusHistoryService CrmStudentStatusHistories { get; }
   ICrmEnquiryService CrmEnquiries { get; }
   ICrmFollowUpService CrmFollowUps { get; }
+  ICrmFollowUpHistoryService CrmFollowUpHistories { get; }
+  ICrmCounsellingSessionService CrmCounsellingSessions { get; }
+  ICrmSessionProgramShortlistService CrmSessionProgramShortlists { get; }
   ICrmNoteService CrmNotes { get; }
   ICrmTaskService CrmTasks { get; }
+  ICrmDegreeLevelService CrmDegreeLevels { get; }
+  ICrmFacultyService CrmFaculties { get; }
+  ICrmCourseFeeService CrmCourseFees { get; }
+  ICrmCountryDocumentRequirementService CrmCountryDocumentRequirements { get; }
+  ICrmBranchTargetService CrmBranchTargets { get; }
+  ICrmSystemConfigurationService CrmSystemConfigurations { get; }
+  ICrmMasterDataSuggestionService CrmMasterDataSuggestions { get; }
+  ICrmAgentLeadService CrmAgentLeads { get; }
+  ICrmBranchTransferService CrmBranchTransfers { get; }
   #endregion Crm
 
   #region DMS

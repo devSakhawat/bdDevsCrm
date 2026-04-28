@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "CRM Security Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">CRM Security Dashboard</h1>
+        <p class="page-header__subtitle">Monitor security events, login history, and suspicious activity in the CRM module.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Security Dashboard</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnRefreshSecurity" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="dashboard-kpi-row" id="securityKpiCards">
+    <div class="kpi-card">
+        <div class="kpi-card__label">Logins Today</div>
+        <div class="kpi-card__value" id="kpiLoginsToday">—</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-card__label">Failed Logins</div>
+        <div class="kpi-card__value kpi-card__value--danger" id="kpiFailedLogins">—</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-card__label">Unique Users Today</div>
+        <div class="kpi-card__value" id="kpiUniqueUsers">—</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-card__label">CRM Actions Today</div>
+        <div class="kpi-card__value" id="kpiCrmActions">—</div>
+    </div>
+</section>
+
+<section class="table-shell" style="margin-top:1.5rem;">
+    <h2 class="section-title">Recent Security Events</h2>
+    <div id="crmSecurityEventsGrid"></div>
+</section>
+
+@section Scripts {
+    <script src="~/js/modules/crm/crmaudit/crmSecurityDashboard.js" asp-append-version="true"></script>
+}

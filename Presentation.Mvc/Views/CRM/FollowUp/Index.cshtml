@@ -6,7 +6,7 @@
 <section class="page-header">
     <div>
         <h1 class="page-header__title">Follow Up Management</h1>
-        <p class="page-header__subtitle">CRM v1 module for managing Follow Up records.</p>
+        <p class="page-header__subtitle">Track scheduled follow-ups, state transitions, and follow-up history.</p>
         <div class="breadcrumb">
             <span class="breadcrumb__item">CRM</span>
             <span class="breadcrumb__item is-current">Follow Up</span>
@@ -22,6 +22,29 @@
     <div id="followUpGrid"></div>
 </section>
 
+<section class="dashboard-grid dashboard-grid--two-column mt-16">
+    <div class="card">
+        <div class="card__header">
+            <h3 class="card__title">Follow-up History</h3>
+            <p class="card__subtitle">Selected follow-up status transitions.</p>
+        </div>
+        <div id="followUpHistoryList" class="timeline-panel">
+            <div class="empty-state">Select a follow-up to view history.</div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card__header">
+            <h3 class="card__title">State Hints</h3>
+            <p class="card__subtitle">1=Pending, 2=Completed, 3=Missed, 4=Overridden, 5=Cancelled</p>
+        </div>
+        <ul class="list-panel">
+            <li>Completed requires remarks with at least 10 characters.</li>
+            <li>Pending follow-ups before today are automatically marked missed by the daily job.</li>
+            <li>Three consecutive missed follow-ups can mark the lead as unresponsive.</li>
+        </ul>
+    </div>
+</section>
+
 <div id="followUpWindow" style="display:none;">
     <form id="followUpForm" class="form-layout form-layout--grid"></form>
     <div class="form-action-bar">
@@ -35,4 +58,5 @@
     <script src="~/js/modules/crm/followup/followUpSettings.js" asp-append-version="true"></script>
     <script src="~/js/modules/crm/followup/followUpSummary.js" asp-append-version="true"></script>
     <script src="~/js/modules/crm/followup/followUpDetails.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/followup/followUpPage.js" asp-append-version="true"></script>
 }

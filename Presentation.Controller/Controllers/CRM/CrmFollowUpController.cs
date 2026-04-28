@@ -1,4 +1,4 @@
-using Presentation.AuthorizeAttributes;
+﻿using Presentation.AuthorizeAttributes;
 using Domain.Contracts.Services;
 using bdDevs.Shared;
 using bdDevs.Shared.DataTransferObjects.CRM;
@@ -12,7 +12,6 @@ using Presentation.ActionFilters;
 
 namespace Presentation.Controllers.CRM;
 
-/// <summary>CrmFollowUp management endpoints.</summary>
 [AuthorizeUser]
 public class CrmFollowUpController : BaseApiController
 {
@@ -23,17 +22,14 @@ public class CrmFollowUpController : BaseApiController
         _cache = cache;
     }
 
-    /// <summary>Retrieves paginated summary grid.</summary>
     [HttpPost(RouteConstants.CrmFollowUpSummary)]
     public async Task<IActionResult> SummaryAsync([FromBody] GridOptions options, CancellationToken cancellationToken = default)
     {
         if (options == null) throw new NullModelBadRequestException(nameof(GridOptions));
         var summaryGrid = await _serviceManager.CrmFollowUps.FollowUpsSummaryAsync(options, cancellationToken);
-        if (!summaryGrid.Items.Any()) return Ok(ApiResponseHelper.Success(new GridEntity<CrmFollowUpDto>(), "No records found."));
         return Ok(ApiResponseHelper.Success(summaryGrid, "Summary retrieved successfully"));
     }
 
-    /// <summary>Creates a new follow-up record.</summary>
     [HttpPost(RouteConstants.CreateCrmFollowUp)]
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> CreateAsync([FromBody] CreateCrmFollowUpRecord record, CancellationToken cancellationToken = default)
@@ -43,49 +39,71 @@ public class CrmFollowUpController : BaseApiController
         return Ok(ApiResponseHelper.Created(created, "Record created successfully."));
     }
 
-    /// <summary>Updates an existing follow-up record.</summary>
     [HttpPut(RouteConstants.UpdateCrmFollowUp)]
     [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
     public async Task<IActionResult> UpdateAsync([FromRoute] int key, [FromBody] UpdateCrmFollowUpRecord record, CancellationToken cancellationToken = default)
     {
         if (key != record.FollowUpId) throw new IdMismatchBadRequestException(key.ToString(), nameof(UpdateCrmFollowUpRecord));
-        var updated = await _serviceManager.CrmFollowUps.UpdateAsync(record, trackChanges: false, cancellationToken: cancellationToken);
+        var updated = await _serviceManager.CrmFollowUps.UpdateAsync(record, false, cancellationToken);
         return Ok(ApiResponseHelper.Updated(updated, "Record updated successfully."));
     }
 
-    /// <summary>Deletes a follow-up record.</summary>
+    [HttpPost(RouteConstants.CrmFollowUpStatusTransition)]
+    [ServiceFilter(typeof(EmptyObjectFilterAttribute))]
+    public async Task<IActionResult> ChangeStatusAsync([FromBody] ChangeCrmFollowUpStatusRecord record, CancellationToken cancellationToken = default)
+    {
+        var updated = await _serviceManager.CrmFollowUps.ChangeStatusAsync(record, cancellationToken);
+        return Ok(ApiResponseHelper.Updated(updated, "Follow-up state updated successfully."));
+    }
+
+    [HttpPost(RouteConstants.CrmProcessOverdueFollowUps)]
+    public async Task<IActionResult> ProcessOverdueAsync(CancellationToken cancellationToken = default)
+    {
+        var affected = await _serviceManager.CrmFollowUps.ProcessOverdueFollowUpsAsync(cancellationToken);
+        return Ok(ApiResponseHelper.Success(affected, "Overdue follow-up job completed successfully."));
+    }
+
+    [HttpPost(RouteConstants.CrmMarkUnresponsiveLeads)]
+    public async Task<IActionResult> ProcessUnresponsiveAsync(CancellationToken cancellationToken = default)
+    {
+        var affected = await _serviceManager.CrmFollowUps.ProcessUnresponsiveLeadsAsync(cancellationToken);
+        return Ok(ApiResponseHelper.Success(affected, "Unresponsive lead job completed successfully."));
+    }
+
     [HttpDelete(RouteConstants.DeleteCrmFollowUp)]
     public async Task<IActionResult> DeleteAsync([FromRoute] int key, CancellationToken cancellationToken = default)
     {
-        var deleteRecord = new DeleteCrmFollowUpRecord(key);
-        await _serviceManager.CrmFollowUps.DeleteAsync(deleteRecord, trackChanges: false, cancellationToken: cancellationToken);
+        await _serviceManager.CrmFollowUps.DeleteAsync(new DeleteCrmFollowUpRecord(key), false, cancellationToken);
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
-    /// <summary>Retrieves a follow-up record by ID.</summary>
     [HttpGet(RouteConstants.ReadCrmFollowUp)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken = default)
     {
         if (id <= 0) throw new IdParametersBadRequestException();
-        var record = await _serviceManager.CrmFollowUps.FollowUpAsync(id, trackChanges: false, cancellationToken: cancellationToken);
+        var record = await _serviceManager.CrmFollowUps.FollowUpAsync(id, false, cancellationToken);
         return Ok(ApiResponseHelper.Success(record, "Record retrieved successfully"));
     }
 
-    /// <summary>Retrieves all follow-up records.</summary>
     [HttpGet(RouteConstants.ReadCrmFollowUps)]
     public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.CrmFollowUps.FollowUpsAsync(trackChanges: false, cancellationToken: cancellationToken);
-        if (!records.Any()) return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmFollowUpDto>(), "No records found."));
+        var records = await _serviceManager.CrmFollowUps.FollowUpsAsync(false, cancellationToken);
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }
 
-    /// <summary>Retrieves follow-ups for dropdown list.</summary>
+    [HttpGet(RouteConstants.CrmFollowUpsByLeadId)]
+    public async Task<IActionResult> GetByLeadIdAsync([FromRoute] int leadId, CancellationToken cancellationToken = default)
+    {
+        if (leadId <= 0) throw new IdParametersBadRequestException();
+        var records = await _serviceManager.CrmFollowUps.FollowUpsByLeadIdAsync(leadId, false, cancellationToken);
+        return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
+    }
+
     [HttpGet(RouteConstants.CrmFollowUpDDL)]
     public async Task<IActionResult> GetForDDLAsync(CancellationToken cancellationToken = default)
     {
-        var records = await _serviceManager.CrmFollowUps.FollowUpForDDLAsync(cancellationToken: cancellationToken);
-        if (!records.Any()) return Ok(ApiResponseHelper.Success(Enumerable.Empty<CrmFollowUpDto>(), "No records found."));
+        var records = await _serviceManager.CrmFollowUps.FollowUpForDDLAsync(cancellationToken);
         return Ok(ApiResponseHelper.Success(records, "Records retrieved successfully"));
     }
 }

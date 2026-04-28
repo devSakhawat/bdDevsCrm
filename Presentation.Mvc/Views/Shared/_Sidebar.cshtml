@@ -4,7 +4,7 @@
         || currentPath.StartsWith("/Home", StringComparison.OrdinalIgnoreCase);
     var hrOperationPaths = new[] { "/Employee", "/Department", "/Branch", "/Designation", "/Shift" };
     var systemSetupPaths = new[] { "/Module", "/Menu", "/Group", "/Users", "/Company", "/Companies", "/Country", "/Thana", "/Workflow", "/AccessControl", "/AccessRestriction", "/AuditType", "/Holiday", "/MaritalStatus", "/Currency", "/CurrencyRate", "/BoardInstitute", "/ApproverType", "/ApproverHistory", "/DocumentTemplate", "/DocumentParameter", "/ApproverTypeToGroupMapping", "/DocumentType", "/PasswordHistory", "/Competencies", "/CompetencyLevel", "/ApproverOrder", "/ApproverDetails", "/AssignApprover", "/DocumentQueryMapping", "/DocumentParameterMapping", "/AuditTrail", "/AuditLog", "/AppsTokenInfo", "/AppsTransactionLog", "/SystemSettings", "/QueryAnalyzer", "/TokenBlacklist", "/Timesheet", "/Common" };
-    var crmPaths = new[] { "/AgentType", "/LeadSource", "/LeadStatus", "/StudentStatus", "/Office", "/VisaType", "/Agent", "/Counselor", "/Lead", "/Student", "/Enquiry", "/FollowUp", "/Note", "/Task", "/PaymentMethod", "/ApplicantInfo", "/Course", "/Institute", "/InstituteType", "/IntakeMonth", "/IntakeYear", "/Month", "/Year", "/CourseIntake", "/ApplicantCourse", "/ApplicantReference", "/Application", "/AdditionalDocument", "/AdditionalInfo", "/EducationHistory", "/WorkExperience", "/PermanentAddress", "/PresentAddress", "/GmatInformation", "/IeltsInformation", "/ToeflInformation", "/OthersInformation", "/StatementOfPurpose" };
+    var crmPaths = new[] { "/AgentType", "/LeadSource", "/LeadStatus", "/StudentStatus", "/Office", "/VisaType", "/Agent", "/Counselor", "/Lead", "/Student", "/Enquiry", "/FollowUp", "/Note", "/Task", "/PaymentMethod", "/ApplicantInfo", "/Course", "/Institute", "/InstituteType", "/IntakeMonth", "/IntakeYear", "/Month", "/Year", "/CourseIntake", "/ApplicantCourse", "/ApplicantReference", "/Application", "/AdditionalDocument", "/AdditionalInfo", "/EducationHistory", "/WorkExperience", "/PermanentAddress", "/PresentAddress", "/GmatInformation", "/IeltsInformation", "/ToeflInformation", "/OthersInformation", "/StatementOfPurpose", "/Commission", "/CommunicationLog", "/AgentLead" };
     bool IsCurrent(params string[] prefixes) => prefixes.Any(prefix => currentPath.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
     var isHrOperations = IsCurrent(hrOperationPaths);
     var isSystemSetup = IsCurrent(systemSetupPaths);
@@ -171,6 +171,28 @@
             <span class="nav-sublink nav-sublink--group-label">Address</span>
             <a class="nav-sublink @(IsCurrent("/PermanentAddress") ? "is-active" : string.Empty)" asp-controller="PermanentAddress" asp-action="Index">Permanent Address</a>
             <a class="nav-sublink @(IsCurrent("/PresentAddress") ? "is-active" : string.Empty)" asp-controller="PresentAddress" asp-action="Index">Present Address</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Commissions</span>
+            <a class="nav-sublink @(IsCurrent("/Commission") ? "is-active" : string.Empty)" asp-controller="Commission" asp-action="Index">Commission List</a>
+            <a class="nav-sublink @(IsCurrent("/Commission/Dashboard") ? "is-active" : string.Empty)" href="/Commission/Dashboard">Commission Dashboard</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Activity Logs</span>
+            <a class="nav-sublink @(IsCurrent("/CommunicationLog") ? "is-active" : string.Empty)" asp-controller="CommunicationLog" asp-action="Index">Communication Log</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Agent Management</span>
+            <a class="nav-sublink @(IsCurrent("/AgentLead") ? "is-active" : string.Empty)" asp-controller="AgentLead" asp-action="Index">Agent Lead Assignment</a>
+            <a class="nav-sublink @(IsCurrent("/Agent/Performance") ? "is-active" : string.Empty)" href="/Agent/Performance">Agent Performance</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Branch Transfers</span>
+            <a class="nav-sublink @(IsCurrent("/BranchTransfer") ? "is-active" : string.Empty)" asp-controller="BranchTransfer" asp-action="Index">Branch Transfers</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Audit &amp; Security</span>
+            <a class="nav-sublink @(IsCurrent("/CrmAudit/AuditLog") ? "is-active" : string.Empty)" asp-controller="CrmAudit" asp-action="AuditLog">CRM Audit Log</a>
+            <a class="nav-sublink @(IsCurrent("/CrmAudit/SecurityDashboard") ? "is-active" : string.Empty)" asp-controller="CrmAudit" asp-action="SecurityDashboard">Security Dashboard</a>
+
+            <span class="nav-sublink nav-sublink--group-label">Reporting &amp; KPIs</span>
+            <a class="nav-sublink @(IsCurrent("/CrmKpi") ? "is-active" : string.Empty)" asp-controller="CrmKpi" asp-action="Index">KPI Dashboard</a>
+            <a class="nav-sublink @(IsCurrent("/CrmReport") ? "is-active" : string.Empty)" asp-controller="CrmReport" asp-action="Index">CRM Reports</a>
 
         </div>
     </div>

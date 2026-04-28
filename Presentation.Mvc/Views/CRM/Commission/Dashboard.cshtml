@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Commission Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Commission Dashboard</h1>
+        <p class="page-header__subtitle">Overview of commission status, aging, and per-agent summaries.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item"><a href="/Commission">Commission</a></span>
+            <span class="breadcrumb__item is-current">Dashboard</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <a href="/Commission" class="btn btn--secondary">Back to List</a>
+        <button type="button" id="btnRefreshDashboard" class="btn btn--primary">Refresh</button>
+    </div>
+</section>
+
+<!-- KPI Cards -->
+<div id="dashboardKpiCards" class="dashboard-kpi-row"></div>
+
+<!-- Aging Report -->
+<section class="table-shell" style="margin-top:24px;">
+    <h2 class="section-heading">Aging Report</h2>
+    <div id="agingReportGrid"></div>
+</section>
+
+<!-- Per-Agent Commission Summary -->
+<section class="table-shell" style="margin-top:24px;">
+    <h2 class="section-heading">Per-Agent Commission Summary</h2>
+    <div id="agentSummaryGrid"></div>
+</section>
+
+@section Scripts {
+    <script src="~/js/modules/crm/commission/commissionDashboard.js" asp-append-version="true"></script>
+}

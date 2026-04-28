@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Commission Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Commission Management</h1>
+        <p class="page-header__subtitle">CRM v1 module for managing Commission records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Commission</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <a href="/Commission/Dashboard" class="btn btn--secondary">Dashboard</a>
+        <button type="button" id="btnAddCommission" class="btn btn--primary">Add Commission</button>
+        <button type="button" id="btnRefreshCommission" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="commissionGrid"></div>
+</section>
+
+<div id="commissionWindow" style="display:none;">
+    <form id="commissionForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelCommission" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveCommission" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/commission/commissionSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/commission/commissionSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/commission/commissionDetails.js" asp-append-version="true"></script>
+}

@@ -76,7 +76,7 @@ public class CrmCommissionTypeController : BaseApiController
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
-    [HttpGet(RouteConstants.ReadCrmCommissionTypes)]
+    [HttpGet(RouteConstants.ReadCrmCommissionType)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken = default)
     {
         if (id <= 0)

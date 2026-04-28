@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Commission Type Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Commission Type Management</h1>
+        <p class="page-header__subtitle">Education CRM master data module for managing commission type records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Commission Type</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddCommissionType" class="btn btn--primary">Add Commission Type</button>
+        <button type="button" id="btnRefreshCommissionType" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="commissionTypeGrid"></div>
+</section>
+
+<div id="commissionTypeWindow" style="display:none;">
+    <form id="commissionTypeForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelCommissionType" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveCommissionType" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/commissiontype/commissionTypeSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/commissiontype/commissionTypeSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/commissiontype/commissionTypeDetails.js" asp-append-version="true"></script>
+}

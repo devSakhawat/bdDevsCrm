@@ -76,7 +76,7 @@ public class CrmCounsellingTypeController : BaseApiController
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
-    [HttpGet(RouteConstants.ReadCrmCounsellingTypes)]
+    [HttpGet(RouteConstants.ReadCrmCounsellingType)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken = default)
     {
         if (id <= 0)

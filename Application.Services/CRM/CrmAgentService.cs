@@ -6,7 +6,6 @@ using Domain.Contracts.Repositories;
 using Domain.Contracts.Services.CRM;
 using Domain.Entities.Entities.CRM;
 using Domain.Exceptions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services.CRM;
@@ -15,13 +14,10 @@ internal sealed class CrmAgentService : ICrmAgentService
 {
     private readonly IRepositoryManager _repository;
     private readonly ILogger<CrmAgentService> _logger;
-    private readonly IConfiguration _configuration;
-
-    public CrmAgentService(IRepositoryManager repository, ILogger<CrmAgentService> logger, IConfiguration configuration)
+    public CrmAgentService(IRepositoryManager repository, ILogger<CrmAgentService> logger)
     {
         _repository = repository;
         _logger = logger;
-        _configuration = configuration;
     }
 
     public async Task<CrmAgentDto> CreateAsync(CreateCrmAgentRecord record, CancellationToken cancellationToken = default)
@@ -111,7 +107,7 @@ internal sealed class CrmAgentService : ICrmAgentService
 
     public async Task<GridEntity<CrmAgentDto>> AgentSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
     {
-        const string query = @"SELECT AgentId, AgentName, AgencyName, PrimaryPhone, PrimaryEmail, CommissionTypeId, DefaultCommissionValue, CountryId, IsActive, CreatedDate, CreatedBy, UpdatedDate, UpdatedBy FROM CrmAgent";
+        const string query = @"SELECT a.AgentId, a.AgentName, a.AgencyName, a.PrimaryPhone, a.PrimaryEmail, a.CommissionTypeId, a.DefaultCommissionValue, a.CountryId, ct.CommissionTypeName, c.CountryName, a.IsActive, a.CreatedDate, a.CreatedBy, a.UpdatedDate, a.UpdatedBy FROM CrmAgent a LEFT JOIN CrmCommissionType ct ON ct.CommissionTypeId = a.CommissionTypeId LEFT JOIN CrmCountry c ON c.CountryId = a.CountryId";
         const string orderBy = "AgentName ASC";
         return await _repository.CrmAgents.AdoGridDataAsync<CrmAgentDto>(query, options, orderBy, string.Empty, cancellationToken);
     }

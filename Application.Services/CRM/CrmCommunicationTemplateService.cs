@@ -6,7 +6,6 @@ using Domain.Contracts.Repositories;
 using Domain.Contracts.Services.CRM;
 using Domain.Entities.Entities.CRM;
 using Domain.Exceptions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services.CRM;
@@ -15,13 +14,10 @@ internal sealed class CrmCommunicationTemplateService : ICrmCommunicationTemplat
 {
     private readonly IRepositoryManager _repository;
     private readonly ILogger<CrmCommunicationTemplateService> _logger;
-    private readonly IConfiguration _configuration;
-
-    public CrmCommunicationTemplateService(IRepositoryManager repository, ILogger<CrmCommunicationTemplateService> logger, IConfiguration configuration)
+    public CrmCommunicationTemplateService(IRepositoryManager repository, ILogger<CrmCommunicationTemplateService> logger)
     {
         _repository = repository;
         _logger = logger;
-        _configuration = configuration;
     }
 
     public async Task<CrmCommunicationTemplateDto> CreateAsync(CreateCrmCommunicationTemplateRecord record, CancellationToken cancellationToken = default)
@@ -111,7 +107,7 @@ internal sealed class CrmCommunicationTemplateService : ICrmCommunicationTemplat
 
     public async Task<GridEntity<CrmCommunicationTemplateDto>> CommunicationTemplateSummaryAsync(GridOptions options, CancellationToken cancellationToken = default)
     {
-        const string query = @"SELECT CommunicationTemplateId, CommunicationTypeId, TemplateName, Subject, TemplateBody, IsActive, CreatedDate, CreatedBy, UpdatedDate, UpdatedBy FROM CrmCommunicationTemplate";
+        const string query = @"SELECT ct.CommunicationTemplateId, ct.CommunicationTypeId, t.CommunicationTypeName, ct.TemplateName, ct.Subject, ct.TemplateBody, ct.IsActive, ct.CreatedDate, ct.CreatedBy, ct.UpdatedDate, ct.UpdatedBy FROM CrmCommunicationTemplate ct LEFT JOIN CrmCommunicationType t ON t.CommunicationTypeId = ct.CommunicationTypeId";
         const string orderBy = "TemplateName ASC";
         return await _repository.CrmCommunicationTemplates.AdoGridDataAsync<CrmCommunicationTemplateDto>(query, options, orderBy, string.Empty, cancellationToken);
     }

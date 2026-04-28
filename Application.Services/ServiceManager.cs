@@ -221,10 +221,10 @@ public sealed class ServiceManager : IServiceManager
     _applicationStatusService = new Lazy<ICrmApplicationStatusService>(() => new CrmApplicationStatusService(repository, loggerFactory.CreateLogger<CrmApplicationStatusService>(), configuration));
     _visaStatusService = new Lazy<ICrmVisaStatusService>(() => new CrmVisaStatusService(repository, loggerFactory.CreateLogger<CrmVisaStatusService>(), configuration));
     _communicationTypeService = new Lazy<ICrmCommunicationTypeService>(() => new CrmCommunicationTypeService(repository, loggerFactory.CreateLogger<CrmCommunicationTypeService>(), configuration));
-    _counsellingTypeService = new Lazy<ICrmCounsellingTypeService>(() => new CrmCounsellingTypeService(repository, loggerFactory.CreateLogger<CrmCounsellingTypeService>(), configuration));
-    _commissionTypeService = new Lazy<ICrmCommissionTypeService>(() => new CrmCommissionTypeService(repository, loggerFactory.CreateLogger<CrmCommissionTypeService>(), configuration));
-    _communicationTemplateService = new Lazy<ICrmCommunicationTemplateService>(() => new CrmCommunicationTemplateService(repository, loggerFactory.CreateLogger<CrmCommunicationTemplateService>(), configuration));
-    _crmAgentService = new Lazy<ICrmAgentService>(() => new CrmAgentService(repository, loggerFactory.CreateLogger<CrmAgentService>(), configuration));
+    _counsellingTypeService = new Lazy<ICrmCounsellingTypeService>(() => new CrmCounsellingTypeService(repository, loggerFactory.CreateLogger<CrmCounsellingTypeService>()));
+    _commissionTypeService = new Lazy<ICrmCommissionTypeService>(() => new CrmCommissionTypeService(repository, loggerFactory.CreateLogger<CrmCommissionTypeService>()));
+    _communicationTemplateService = new Lazy<ICrmCommunicationTemplateService>(() => new CrmCommunicationTemplateService(repository, loggerFactory.CreateLogger<CrmCommunicationTemplateService>()));
+    _crmAgentService = new Lazy<ICrmAgentService>(() => new CrmAgentService(repository, loggerFactory.CreateLogger<CrmAgentService>()));
     _crmCourseIntakeService = new Lazy<ICrmCourseIntakeService>(() => new CrmCourseIntakeService(repository, _hybridCache, loggerFactory.CreateLogger<CrmCourseIntakeService>(), configuration));
 
     // Existing Crm services initialization

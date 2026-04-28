@@ -18,6 +18,10 @@ public record CrmAgentDto
 
     public int CountryId { get; init; }
 
+    public string? CommissionTypeName { get; init; }
+
+    public string? CountryName { get; init; }
+
     public bool IsActive { get; init; }
 
     public DateTime CreatedDate { get; init; }

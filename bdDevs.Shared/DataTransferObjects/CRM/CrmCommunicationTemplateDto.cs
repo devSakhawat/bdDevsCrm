@@ -6,6 +6,8 @@ public record CrmCommunicationTemplateDto
 
     public int CommunicationTypeId { get; init; }
 
+    public string? CommunicationTypeName { get; init; }
+
     public string TemplateName { get; init; } = string.Empty;
 
     public string? Subject { get; init; }

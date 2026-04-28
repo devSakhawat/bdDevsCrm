@@ -76,7 +76,7 @@ public class CrmAgentController : BaseApiController
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
-    [HttpGet(RouteConstants.ReadCrmAgents)]
+    [HttpGet(RouteConstants.ReadCrmAgent)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken = default)
     {
         if (id <= 0)

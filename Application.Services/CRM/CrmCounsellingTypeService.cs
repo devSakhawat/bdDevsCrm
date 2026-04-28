@@ -6,7 +6,6 @@ using Domain.Contracts.Repositories;
 using Domain.Contracts.Services.CRM;
 using Domain.Entities.Entities.CRM;
 using Domain.Exceptions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services.CRM;
@@ -15,13 +14,10 @@ internal sealed class CrmCounsellingTypeService : ICrmCounsellingTypeService
 {
     private readonly IRepositoryManager _repository;
     private readonly ILogger<CrmCounsellingTypeService> _logger;
-    private readonly IConfiguration _configuration;
-
-    public CrmCounsellingTypeService(IRepositoryManager repository, ILogger<CrmCounsellingTypeService> logger, IConfiguration configuration)
+    public CrmCounsellingTypeService(IRepositoryManager repository, ILogger<CrmCounsellingTypeService> logger)
     {
         _repository = repository;
         _logger = logger;
-        _configuration = configuration;
     }
 
     public async Task<CrmCounsellingTypeDto> CreateAsync(CreateCrmCounsellingTypeRecord record, CancellationToken cancellationToken = default)

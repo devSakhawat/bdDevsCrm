@@ -6,7 +6,6 @@ using Domain.Contracts.Repositories;
 using Domain.Contracts.Services.CRM;
 using Domain.Entities.Entities.CRM;
 using Domain.Exceptions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Services.CRM;
@@ -15,13 +14,10 @@ internal sealed class CrmCommissionTypeService : ICrmCommissionTypeService
 {
     private readonly IRepositoryManager _repository;
     private readonly ILogger<CrmCommissionTypeService> _logger;
-    private readonly IConfiguration _configuration;
-
-    public CrmCommissionTypeService(IRepositoryManager repository, ILogger<CrmCommissionTypeService> logger, IConfiguration configuration)
+    public CrmCommissionTypeService(IRepositoryManager repository, ILogger<CrmCommissionTypeService> logger)
     {
         _repository = repository;
         _logger = logger;
-        _configuration = configuration;
     }
 
     public async Task<CrmCommissionTypeDto> CreateAsync(CreateCrmCommissionTypeRecord record, CancellationToken cancellationToken = default)

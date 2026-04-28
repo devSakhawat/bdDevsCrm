@@ -76,7 +76,7 @@ public class CrmCommunicationTemplateController : BaseApiController
         return Ok(ApiResponseHelper.NoContent<object>("Record deleted successfully"));
     }
 
-    [HttpGet(RouteConstants.ReadCrmCommunicationTemplates)]
+    [HttpGet(RouteConstants.ReadCrmCommunicationTemplate)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] int id, CancellationToken cancellationToken = default)
     {
         if (id <= 0)

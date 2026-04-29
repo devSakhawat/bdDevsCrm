@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Counselling Type Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="page-header">
+    <div>
+        <h1 class="page-header__title">Counselling Type Management</h1>
+        <p class="page-header__subtitle">Education CRM master data module for managing counselling type records.</p>
+        <div class="breadcrumb">
+            <span class="breadcrumb__item">CRM</span>
+            <span class="breadcrumb__item is-current">Counselling Type</span>
+        </div>
+    </div>
+    <div class="page-header__actions">
+        <button type="button" id="btnAddCounsellingType" class="btn btn--primary">Add Counselling Type</button>
+        <button type="button" id="btnRefreshCounsellingType" class="btn btn--secondary">Refresh</button>
+    </div>
+</section>
+
+<section class="table-shell">
+    <div id="counsellingTypeGrid"></div>
+</section>
+
+<div id="counsellingTypeWindow" style="display:none;">
+    <form id="counsellingTypeForm" class="form-layout form-layout--grid"></form>
+    <div class="form-action-bar">
+        <button type="button" id="btnCancelCounsellingType" class="btn btn--ghost">Cancel</button>
+        <button type="button" id="btnSaveCounsellingType" class="btn btn--primary">Save</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/modules/crm/common/crmSimpleCrudFactory.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counsellingtype/counsellingTypeSettings.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counsellingtype/counsellingTypeSummary.js" asp-append-version="true"></script>
+    <script src="~/js/modules/crm/counsellingtype/counsellingTypeDetails.js" asp-append-version="true"></script>
+}
